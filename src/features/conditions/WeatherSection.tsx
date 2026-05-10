@@ -203,14 +203,14 @@ function weatherCodeLabel(code: number): string {
 function trendLabel(trend: PressureTrend): string {
   switch (trend) {
     case 'falling-fast':
-      return 'Falling fast — front incoming';
+      return 'Falling fast — front coming, often the best bite';
     case 'falling':
-      return 'Falling';
+      return 'Falling — bite often picks up';
     case 'rising-fast':
-      return 'Rising fast — high pressure';
+      return 'Rising fast — bite usually slows';
     case 'rising':
-      return 'Rising';
+      return 'Rising — slow improvement';
     case 'steady':
-      return 'Steady';
+      return 'Steady — typical bite for this time of day';
   }
 }

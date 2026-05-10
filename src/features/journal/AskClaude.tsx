@@ -4,6 +4,7 @@ import { Card, CardHeader, CardSubtitle, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button';
 import { askPatterns, type PatternsHistoryTurn } from '@/lib/ai/patterns';
 import { cn } from '@/lib/utils';
+import { friendlyError } from '@/lib/errors';
 
 const SUGGESTED_QUESTIONS = [
   'What fly has worked best for me this year?',
@@ -38,7 +39,7 @@ export function AskClaude() {
       });
       setHistory((h) => [...h, { role: 'assistant', content: res.answer }]);
     } catch (e) {
-      const msg = e instanceof Error ? e.message : String(e);
+      const msg = friendlyError(e);
       setError(msg);
       // Roll back the unanswered user turn so the chat stays consistent.
       setHistory((h) => h.slice(0, -1));

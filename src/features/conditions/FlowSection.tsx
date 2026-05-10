@@ -39,6 +39,11 @@ export function FlowSection({ provider }: { provider: FlowProvider }) {
                 unit="°F"
               />
             </div>
+            {data.waterTempF != null && (
+              <div className="text-xs text-accent">
+                {waterTempHint(data.waterTempF)}
+              </div>
+            )}
             <div className="text-xs text-muted">
               {data.siteName} ·{' '}
               {data.observedAt
@@ -62,4 +67,17 @@ function providerKey(p: FlowProvider): string {
     case 'uk-ea':
       return p.stationRef;
   }
+}
+
+/**
+ * Plain-English hint for what the current water temp means for trout.
+ * Mirrors the briefing-prompt heuristics so the passive card and the
+ * AI briefing say compatible things.
+ */
+function waterTempHint(tempF: number): string {
+  if (tempF < 38) return 'Cold — fish lethargic; tiny midges, slow drifts.';
+  if (tempF < 45) return 'Cool — nymphing weather; few risers.';
+  if (tempF <= 65) return 'Prime trout zone — whole-day potential.';
+  if (tempF <= 70) return 'Warm — fish early or late; release fast.';
+  return 'Hot — stress zone; please avoid targeting trout.';
 }

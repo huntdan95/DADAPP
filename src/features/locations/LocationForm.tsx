@@ -12,6 +12,7 @@ import type {
 import { Button } from '@/components/ui/Button';
 import { Field, Input, Select } from '@/components/ui/Input';
 import { BASEMAPS } from '@/features/map/basemaps';
+import { friendlyError } from '@/lib/errors';
 import {
   nearestUsgsGauge,
   reverseGeocode,
@@ -171,7 +172,7 @@ export function LocationForm({
 
       setAutoStatus(parts.length > 0 ? `Filled: ${parts.join(' · ')}` : 'Nothing found');
     } catch (e) {
-      setAutoStatus(e instanceof Error ? e.message : String(e));
+      setAutoStatus(friendlyError(e));
     } finally {
       setAutoFilling(false);
     }

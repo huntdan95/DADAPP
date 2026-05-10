@@ -28,6 +28,7 @@ import {
 } from '@/lib/log/snapshot';
 import { analyzePhoto } from '@/lib/ai/analyzePhoto';
 import { FISHING_METHODS, type FishingMethod } from '@/lib/journal/types';
+import { friendlyError } from '@/lib/errors';
 
 /**
  * Photo-first log entry. Three entry points:
@@ -152,7 +153,7 @@ export function QuickLog({
 
       setPhase('preview');
     } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
+      setError(friendlyError(e));
       setPhase('pick');
     }
   }
@@ -188,7 +189,7 @@ export function QuickLog({
       });
       setPhase('preview');
     } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
+      setError(friendlyError(e));
       setPhase('pick');
     }
   }
@@ -209,7 +210,7 @@ export function QuickLog({
       await saveLogEntry(entry);
       onSaved(entry);
     } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
+      setError(friendlyError(e));
     }
   }
 

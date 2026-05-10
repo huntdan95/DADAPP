@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { Loader2, AlertTriangle } from 'lucide-react';
 import type { AsyncState } from './useAsync';
 import { cn } from '@/lib/utils';
+import { friendlyError } from '@/lib/errors';
 
 /**
  * Wrapper that renders children only on success. Loading shows a small
@@ -39,7 +40,7 @@ export function SectionStatus<T>({
         )}
       >
         <AlertTriangle className="w-4 h-4 mt-0.5 flex-shrink-0" />
-        <span>{state.error.message}</span>
+        <span>{friendlyError(state.error)}</span>
       </div>
     );
   }

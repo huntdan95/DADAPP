@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/Button';
 import { BottomNav } from '@/components/ui/BottomNav';
 import { ConditionsCard } from '@/features/conditions/ConditionsCard';
 import { SignInScreen } from '@/features/auth/SignInScreen';
+import { WelcomeBanner } from '@/features/onboarding/WelcomeBanner';
 import { InstallPrompt } from '@/features/pwa/InstallPrompt';
 import { UpdateAvailable } from '@/features/pwa/UpdateAvailable';
 import { getLocationStore, type LocationStore } from '@/lib/store';
@@ -150,6 +151,7 @@ export default function App() {
       <main className="flex-1 overflow-y-auto w-full max-w-2xl mx-auto px-4 py-4 flex flex-col gap-4 min-h-0">
         {tab === 'conditions' && (
           <>
+            {auth.kind === 'signed-in' && <WelcomeBanner />}
             {locations.map((loc) => (
               <ConditionsCard
                 key={`${loc.id}:${refreshKey}`}

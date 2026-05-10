@@ -9,6 +9,7 @@ import { activeHatchesForLocation } from '@/lib/hatches/store';
 import type { Catch } from '@/lib/journal/types';
 import type { LogEntry } from '@/lib/log/types';
 import { fetchBriefing } from '@/lib/ai/briefing';
+import { friendlyError } from '@/lib/errors';
 import { getFirebaseApp, getFirebaseAuth } from '@/lib/firebase';
 import {
   damScheduleKey,
@@ -81,15 +82,14 @@ export function BriefingSection({ location }: { location: Location }) {
       });
       setBriefing(res.briefing);
     } catch (e) {
-      const msg = e instanceof Error ? e.message : String(e);
-      setError(msg);
+      setError(friendlyError(e));
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <CardSection label="Briefing">
+    <CardSection label="How's the bite?">
       {briefing ? (
         <div className="rounded-xl bg-accent/5 border border-accent/30 p-3">
           <div className="text-sm whitespace-pre-wrap">{briefing}</div>
@@ -99,7 +99,7 @@ export function BriefingSection({ location }: { location: Location }) {
             disabled={loading}
             className="text-xs text-muted hover:text-text mt-2 underline"
           >
-            Regenerate
+            Ask again
           </button>
         </div>
       ) : (
@@ -113,12 +113,12 @@ export function BriefingSection({ location }: { location: Location }) {
             ) : (
               <>
                 <Sparkles className="w-4 h-4" />
-                Get briefing
+                How's the bite?
               </>
             )}
           </Button>
           <span className="text-xs text-muted">
-            3-sentence pre-trip read from Claude
+            Quick read on today, written by Claude
           </span>
         </div>
       )}

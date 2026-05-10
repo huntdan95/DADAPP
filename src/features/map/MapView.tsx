@@ -8,7 +8,7 @@ import {
 } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { Anchor, Crosshair, Loader2 } from 'lucide-react';
+import { Anchor, Crosshair, Info, Loader2 } from 'lucide-react';
 import { BASEMAPS, type BasemapKey } from './basemaps';
 import { MapMarker } from './MapMarker';
 import { BoatLaunchLayer } from './BoatLaunchLayer';
@@ -22,6 +22,7 @@ import {
   listAllBoatLaunches,
 } from '@/lib/boatLaunches/store';
 import { cn } from '@/lib/utils';
+import { friendlyError } from '@/lib/errors';
 
 export function MapView({ locations }: { locations: Location[] }) {
   const [basemap, setBasemap] = useState<BasemapKey>('osm');
@@ -38,6 +39,24 @@ export function MapView({ locations }: { locations: Location[] }) {
     { lat: number; lng: number; zoom: number } | null
   >(null);
   const [selectedLaunch, setSelectedLaunch] = useState<BoatLaunch | null>(null);
+  /** Device geolocation — captured on mount, displayed as a blue dot. Independent of the launch-ranking flow. */
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [locError, setLocError] = useState<string | null>(null);
+  const [legendOpen, setLegendOpen] = useState(false);
+
+  // Try to fix our position on mount so we can show "you are here" without
+  // requiring the user to tap anything. If permission is denied we just
+  // skip — they can still drive the map manually.
+  useEffect(() => {
+    if (!('geolocation' in navigator)) return;
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+      },
+      () => undefined,
+      { enableHighAccuracy: false, timeout: 8000, maximumAge: 5 * 60_000 }
+    );
+  }, []);
 
   // Lazy-load boat launches once. ~7K records cached client-side after the
   // first read; subsequent map mounts reuse module-level cache.
@@ -70,14 +89,15 @@ export function MapView({ locations }: { locations: Location[] }) {
 
   const findNearest = useCallback(() => {
     if (!('geolocation' in navigator)) {
-      alert('Geolocation not available on this device');
+      setLocError('Your device or browser does not support location.');
       return;
     }
     if (launches.length === 0) {
-      alert('No boat launches loaded yet. Try seeding them first.');
+      setLocError('Boat launches are still loading — try again in a sec.');
       return;
     }
     setFindingLocation(true);
+    setLocError(null);
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         const user = {
@@ -88,13 +108,14 @@ export function MapView({ locations }: { locations: Location[] }) {
           .map((l) => ({ ...l, miles: distanceMiles(user, l) }))
           .sort((a, b) => a.miles - b.miles)
           .slice(0, 5);
+        setUserLocation(user);
         setNearest({ user, list: ranked });
         setRecenterTo({ lat: user.lat, lng: user.lng, zoom: 11 });
         setFindingLocation(false);
       },
       (err) => {
         setFindingLocation(false);
-        alert(`Couldn't get location: ${err.message}`);
+        setLocError(friendlyError(err.message));
       },
       { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 }
     );
@@ -133,14 +154,15 @@ export function MapView({ locations }: { locations: Location[] }) {
           onLaunchClick={setSelectedLaunch}
         />
 
-        {nearest && (
-          <Marker position={[nearest.user.lat, nearest.user.lng]} icon={youIcon}>
+        {userLocation && (
+          <Marker position={[userLocation.lat, userLocation.lng]} icon={youIcon}>
             <Popup>You are here</Popup>
           </Marker>
         )}
       </MapContainer>
 
       <BasemapSwitcher current={basemap} onChange={setBasemap} />
+      <MapLegend open={legendOpen} onToggle={() => setLegendOpen((v) => !v)} />
 
       <div className="absolute top-2 left-2 z-[1000] flex flex-col gap-2">
         <button
@@ -169,6 +191,11 @@ export function MapView({ locations }: { locations: Location[] }) {
           )}
           Find nearest
         </button>
+        {locError && (
+          <div className="text-xs text-warn bg-surface/90 backdrop-blur border border-warn/40 rounded-xl px-2 py-1 max-w-[200px]">
+            {locError}
+          </div>
+        )}
       </div>
 
       {nearest && (
@@ -221,6 +248,79 @@ function RecenterOn({
     if (target) map.setView([target.lat, target.lng], target.zoom);
   }, [target, map]);
   return null;
+}
+
+/**
+ * Collapsible "what do these markers mean?" pill. Closed state is a small
+ * "i" button so it doesn't compete with the basemap switcher; open state
+ * lists the marker types in plain English.
+ */
+function MapLegend({
+  open,
+  onToggle,
+}: {
+  open: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <div className="absolute top-12 right-2 z-[1000]">
+      {open ? (
+        <div className="bg-surface/95 backdrop-blur border border-border rounded-xl p-3 shadow w-56 text-xs">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-muted uppercase tracking-wider text-[10px]">
+              Legend
+            </span>
+            <button
+              type="button"
+              onClick={onToggle}
+              className="text-muted hover:text-text"
+            >
+              ×
+            </button>
+          </div>
+          <ul className="flex flex-col gap-1.5">
+            <LegendRow color="#4ade80" label="Spot — bite likely good" />
+            <LegendRow color="#fbbf24" label="Spot — mixed signals" />
+            <LegendRow color="#ef4444" label="Spot — likely tough" />
+            <LegendRow color="#7a857a" label="Spot — no data yet" />
+            <li className="flex items-center gap-2">
+              <span className="inline-block w-3 h-3 relative">
+                <svg viewBox="0 0 14 14" className="w-full h-full">
+                  <polygon points="7,2 13,12 1,12" fill="#60a5fa" stroke="#0a0e0a" strokeWidth="1.5" />
+                </svg>
+              </span>
+              Boat launch
+            </li>
+            <li className="flex items-center gap-2">
+              <span className="inline-block w-3 h-3 rounded-full bg-[#3b82f6] border-2 border-white" />
+              You are here
+            </li>
+          </ul>
+        </div>
+      ) : (
+        <button
+          type="button"
+          onClick={onToggle}
+          aria-label="Show legend"
+          className="bg-surface/95 backdrop-blur border border-border rounded-xl p-2 shadow"
+        >
+          <Info className="w-4 h-4 text-muted" />
+        </button>
+      )}
+    </div>
+  );
+}
+
+function LegendRow({ color, label }: { color: string; label: string }) {
+  return (
+    <li className="flex items-center gap-2">
+      <span
+        className="inline-block w-3 h-3 rounded-sm"
+        style={{ backgroundColor: color }}
+      />
+      {label}
+    </li>
+  );
 }
 
 function BasemapSwitcher({

@@ -10,6 +10,7 @@ import {
   type DamScheduleDoc,
 } from '@/lib/damSchedule/store';
 import { cn } from '@/lib/utils';
+import { friendlyError } from '@/lib/errors';
 
 /**
  * Tap-to-cycle hour grid for entering today's generation schedule.
@@ -83,7 +84,7 @@ export function DamScheduleEditor({
       await writeDamSchedule(key, doc_, userEmail);
       onSaved();
     } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
+      setError(friendlyError(e));
     } finally {
       setBusy(false);
     }

@@ -34,7 +34,7 @@ export function HatchSection({ location }: { location: Location }) {
   const top = hatches.slice(0, 4);
 
   return (
-    <CardSection label="Active Hatches">
+    <CardSection label="What's hatching">
       {hex && (
         <div className="rounded-xl border border-info/40 bg-info/10 p-3 mb-3">
           <div className="text-sm font-semibold text-info flex items-center gap-2">

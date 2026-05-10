@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { signInWithGoogle } from '@/lib/firebase';
+import { friendlyError } from '@/lib/errors';
 
 export function SignInScreen() {
   const [busy, setBusy] = useState(false);
@@ -13,7 +14,7 @@ export function SignInScreen() {
     try {
       await signInWithGoogle();
     } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
+      setError(friendlyError(e));
     } finally {
       setBusy(false);
     }
