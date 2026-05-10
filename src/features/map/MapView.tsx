@@ -18,6 +18,7 @@ import { ConditionsCard } from '@/features/conditions/ConditionsCard';
 import { BottomSheet } from '@/components/ui/BottomSheet';
 import {
   type BoatLaunch,
+  callSeedBoatLaunches,
   distanceMiles,
   listAllBoatLaunches,
 } from '@/lib/boatLaunches/store';
@@ -43,6 +44,8 @@ export function MapView({ locations }: { locations: Location[] }) {
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [locError, setLocError] = useState<string | null>(null);
   const [legendOpen, setLegendOpen] = useState(false);
+  const [seeding, setSeeding] = useState(false);
+  const [seedError, setSeedError] = useState<string | null>(null);
 
   // Try to fix our position on mount so we can show "you are here" without
   // requiring the user to tap anything. If permission is denied we just
@@ -60,23 +63,47 @@ export function MapView({ locations }: { locations: Location[] }) {
 
   // Lazy-load boat launches once. ~7K records cached client-side after the
   // first read; subsequent map mounts reuse module-level cache.
+  const reloadLaunches = useCallback(async () => {
+    try {
+      const list = await listAllBoatLaunches();
+      setLaunches(list);
+      setLaunchesLoaded(true);
+      return list.length;
+    } catch {
+      setLaunchesLoaded(true);
+      return 0;
+    }
+  }, []);
+
   useEffect(() => {
     if (launchesLoaded) return;
     let cancelled = false;
-    listAllBoatLaunches()
-      .then((list) => {
-        if (cancelled) return;
-        setLaunches(list);
-        setLaunchesLoaded(true);
-      })
-      .catch(() => {
-        if (cancelled) return;
-        setLaunchesLoaded(true);   // empty is fine; user sees seed prompt
-      });
+    (async () => {
+      if (cancelled) return;
+      await reloadLaunches();
+    })();
     return () => {
       cancelled = true;
     };
-  }, [launchesLoaded]);
+  }, [launchesLoaded, reloadLaunches]);
+
+  /**
+   * One-tap "load boat launches" for the empty-state. Calls the Cloud
+   * Function that scrapes OpenStreetMap (~60-90s end to end). On success
+   * we re-fetch from Firestore and the map populates.
+   */
+  async function loadLaunches() {
+    setSeeding(true);
+    setSeedError(null);
+    try {
+      await callSeedBoatLaunches();
+      await reloadLaunches();
+    } catch (e) {
+      setSeedError(friendlyError(e));
+    } finally {
+      setSeeding(false);
+    }
+  }
 
   const center = useMemo<[number, number]>(() => {
     if (locations.length === 0) return [39.5, -85.0];
@@ -204,6 +231,39 @@ export function MapView({ locations }: { locations: Location[] }) {
           onClose={() => setNearest(null)}
           onPick={(l) => setRecenterTo({ lat: l.lat, lng: l.lng, zoom: 14 })}
         />
+      )}
+
+      {launchesLoaded && launches.length === 0 && (
+        <div className="absolute bottom-2 left-2 right-2 z-[1000] max-w-md mx-auto bg-surface/95 backdrop-blur border border-info/40 rounded-xl p-3 shadow-lg">
+          <div className="text-sm font-semibold text-info">
+            Boat launches not loaded yet
+          </div>
+          <div className="text-xs text-muted mt-0.5 mb-2">
+            One-time setup pulls ~7,500 launches across MI, TN, IN, NC, FL,
+            GA, AL from OpenStreetMap. Takes 60-90 seconds.
+          </div>
+          <button
+            type="button"
+            onClick={loadLaunches}
+            disabled={seeding}
+            className="inline-flex items-center gap-2 px-3 h-9 rounded-xl bg-accent text-bg font-medium disabled:opacity-50"
+          >
+            {seeding ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Loading launches…
+              </>
+            ) : (
+              <>
+                <Anchor className="w-4 h-4" />
+                Load boat launches
+              </>
+            )}
+          </button>
+          {seedError && (
+            <div className="text-xs text-danger mt-2">{seedError}</div>
+          )}
+        </div>
       )}
 
       <BottomSheet

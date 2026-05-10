@@ -11,8 +11,10 @@ import {
 import { Button } from '@/components/ui/Button';
 import { BottomNav } from '@/components/ui/BottomNav';
 import { ConditionsCard } from '@/features/conditions/ConditionsCard';
+import { SpotPicker } from '@/features/conditions/SpotPicker';
 import { SignInScreen } from '@/features/auth/SignInScreen';
 import { WelcomeBanner } from '@/features/onboarding/WelcomeBanner';
+import { BottomSheet } from '@/components/ui/BottomSheet';
 import { InstallPrompt } from '@/features/pwa/InstallPrompt';
 import { UpdateAvailable } from '@/features/pwa/UpdateAvailable';
 import { getLocationStore, type LocationStore } from '@/lib/store';
@@ -30,6 +32,11 @@ const MapView = lazy(() =>
 const LocationsList = lazy(() =>
   import('@/features/locations/LocationsList').then((m) => ({
     default: m.LocationsList,
+  }))
+);
+const LocationForm = lazy(() =>
+  import('@/features/locations/LocationForm').then((m) => ({
+    default: m.LocationForm,
   }))
 );
 const LogFeed = lazy(() =>
@@ -59,6 +66,8 @@ export default function App() {
   const [tab, setTab] = useState<Tab>('conditions');
   const [locations, setLocations] = useState<Location[]>([]);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [selectedSpotId, setSelectedSpotId] = useState<string | null>(null);
+  const [addSpotOpen, setAddSpotOpen] = useState(false);
 
   // Only initialize the store once auth has resolved into a usable state.
   // Otherwise Firestore listeners fire while signed-out and 403.
@@ -96,6 +105,21 @@ export default function App() {
       Promise.all(seedLocations.map((l) => store.upsert(l))).catch(console.error);
     }
   }, [auth.kind, store, hasFirstSnapshot, seeded, locations.length]);
+
+  // Keep the Conditions-tab selection valid as the locations list changes.
+  // First load picks the first spot; if the selected spot gets deleted we
+  // fall back to the first available.
+  useEffect(() => {
+    if (locations.length === 0) {
+      if (selectedSpotId !== null) setSelectedSpotId(null);
+      return;
+    }
+    if (!selectedSpotId || !locations.some((l) => l.id === selectedSpotId)) {
+      setSelectedSpotId(locations[0].id);
+    }
+  }, [locations, selectedSpotId]);
+
+  const selectedLocation = locations.find((l) => l.id === selectedSpotId) ?? null;
 
   if (auth.kind === 'pending') {
     return (
@@ -152,17 +176,30 @@ export default function App() {
         {tab === 'conditions' && (
           <>
             {auth.kind === 'signed-in' && <WelcomeBanner />}
-            {locations.map((loc) => (
+            <SpotPicker
+              locations={locations}
+              currentId={selectedSpotId}
+              onPick={setSelectedSpotId}
+              onAdd={() => setAddSpotOpen(true)}
+            />
+            {selectedLocation ? (
               <ConditionsCard
-                key={`${loc.id}:${refreshKey}`}
-                location={loc}
+                key={`${selectedLocation.id}:${refreshKey}`}
+                location={selectedLocation}
               />
-            ))}
-            {locations.length === 0 && (
+            ) : locations.length === 0 ? (
               <div className="text-center text-muted py-12">
-                No locations yet — head to Spots to add one.
+                No spots yet — tap{' '}
+                <button
+                  type="button"
+                  className="underline text-accent"
+                  onClick={() => setAddSpotOpen(true)}
+                >
+                  Add a spot
+                </button>{' '}
+                to get started.
               </div>
-            )}
+            ) : null}
           </>
         )}
 
@@ -193,6 +230,25 @@ export default function App() {
       </main>
 
       <BottomNav tabs={TABS} current={tab} onChange={setTab} />
+
+      <BottomSheet
+        open={addSpotOpen}
+        onClose={() => setAddSpotOpen(false)}
+        title="Add a spot"
+      >
+        {addSpotOpen && store && (
+          <Suspense fallback={<TabFallback />}>
+            <LocationForm
+              onCancel={() => setAddSpotOpen(false)}
+              onSave={async (loc) => {
+                await store.upsert(loc);
+                setSelectedSpotId(loc.id);
+                setAddSpotOpen(false);
+              }}
+            />
+          </Suspense>
+        )}
+      </BottomSheet>
 
       <InstallPrompt />
       <UpdateAvailable />

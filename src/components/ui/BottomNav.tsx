@@ -21,7 +21,10 @@ export function BottomNav<TKey extends string>({
       className="shrink-0 z-30 bg-bg/95 backdrop-blur border-t border-border safe-bottom"
       role="navigation"
     >
-      <div className="max-w-2xl mx-auto grid grid-cols-3">
+      <div
+        className="max-w-2xl mx-auto grid"
+        style={{ gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))` }}
+      >
         {tabs.map((t) => {
           const active = t.key === current;
           const Icon = t.icon;
