@@ -16,7 +16,14 @@ export type DamScheduleProvider =
   | { kind: 'tva'; dam: string }
   | { kind: 'usace'; district: string; project: string }
   | { kind: 'consumers-energy'; dam: string }
-  | { kind: 'manual' };
+  | { kind: 'manual' }
+  /**
+   * Auto-derived from the downstream USGS gauge. Compares current discharge
+   * against a recent baseline to bucket "no generation / partial / heavy".
+   * No scraping needed — works as long as the gauge below the dam is on
+   * the IV API.
+   */
+  | { kind: 'auto'; flowSiteId: string };
 
 export type TidesProvider = { kind: 'noaa'; stationId: string };
 

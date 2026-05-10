@@ -1,10 +1,15 @@
 import { useEffect, useState } from 'react';
-import { Pencil, AlertTriangle } from 'lucide-react';
+import { Pencil, AlertTriangle, RefreshCcw, Loader2 } from 'lucide-react';
 import { CardSection } from '@/components/ui/Card';
 import { BottomSheet } from '@/components/ui/BottomSheet';
 import { Button } from '@/components/ui/Button';
 import { DamScheduleEditor } from '@/features/damSchedule/DamScheduleEditor';
-import type { DamScheduleProvider, Location } from '@/lib/providers/types';
+import type {
+  DamScheduleProvider,
+  DamScheduleReading,
+  Location,
+} from '@/lib/providers/types';
+import { fetchDamSchedule } from '@/lib/providers';
 import {
   damScheduleKey,
   todayLocalDate,
@@ -13,12 +18,15 @@ import {
 } from '@/lib/damSchedule/store';
 import { useAuth } from '@/lib/useAuth';
 import { cn, formatRelativeTime } from '@/lib/utils';
+import { friendlyError } from '@/lib/errors';
 
 /**
- * Live view of today's generation schedule for this location's dam,
- * plus an Edit button that opens the manual-entry sheet. Subscribes
- * directly to Firestore — when the cloud function eventually scrapes,
- * the bar updates without a refresh.
+ * Live view of today's generation schedule. Two data paths:
+ *
+ *  - `kind === 'auto'` → derive status from the downstream USGS flow gauge
+ *    (autoInfer.ts). Refetched on demand. No Firestore involved.
+ *  - everything else  → Firestore subscription on `damSchedules/{key}`,
+ *    edited via the manual sheet.
  */
 export function DamSection({
   provider,
@@ -28,31 +36,76 @@ export function DamSection({
   location: Location;
 }) {
   const auth = useAuth();
-  const [doc, setDoc] = useState<DamScheduleDoc | null>(null);
-  const [waiting, setWaiting] = useState(true);
-  const [editing, setEditing] = useState(false);
-
-  const date = todayLocalDate(location.timezone);
-  const key = damScheduleKey(provider, date);
   const isFirebase = auth.kind === 'signed-in';
+  const isAuto = provider.kind === 'auto';
+
+  // -- auto branch ---------------------------------------------------------
+  const [autoReading, setAutoReading] = useState<DamScheduleReading | null>(null);
+  const [autoLoading, setAutoLoading] = useState(false);
+  const [autoError, setAutoError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!isAuto) return;
+    let cancelled = false;
+    setAutoLoading(true);
+    setAutoError(null);
+    fetchDamSchedule(provider, location)
+      .then((r) => {
+        if (!cancelled) setAutoReading(r);
+      })
+      .catch((e) => {
+        if (!cancelled) setAutoError(friendlyError(e));
+      })
+      .finally(() => {
+        if (!cancelled) setAutoLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuto, providerCacheKey(provider), location.id]);
+
+  async function refetchAuto() {
+    if (!isAuto) return;
+    setAutoLoading(true);
+    setAutoError(null);
+    try {
+      const r = await fetchDamSchedule(provider, location);
+      setAutoReading(r);
+    } catch (e) {
+      setAutoError(friendlyError(e));
+    } finally {
+      setAutoLoading(false);
+    }
+  }
+
+  // -- firestore branch -----------------------------------------------------
+  const [doc, setDoc] = useState<DamScheduleDoc | null>(null);
+  const [waitingDoc, setWaitingDoc] = useState(true);
+  const [editing, setEditing] = useState(false);
+  const date = todayLocalDate(location.timezone);
+  const firestoreKey = isAuto ? null : damScheduleKey(provider, date);
+
+  useEffect(() => {
+    if (isAuto) return;
     if (!isFirebase) {
-      setWaiting(false);
+      setWaitingDoc(false);
       return;
     }
-    return watchDamSchedule(key, (d) => {
+    if (!firestoreKey) return;
+    return watchDamSchedule(firestoreKey, (d) => {
       setDoc(d);
-      setWaiting(false);
+      setWaitingDoc(false);
     });
-  }, [key, isFirebase]);
+  }, [firestoreKey, isFirebase, isAuto]);
 
   const userEmail =
     auth.kind === 'signed-in' ? auth.user.email ?? undefined : undefined;
-
   const damLabel = damLabelFor(provider);
 
-  if (!isFirebase) {
+  // ---- render -------------------------------------------------------------
+
+  if (!isAuto && !isFirebase) {
     return (
       <CardSection label="Dam Generation">
         <div className="text-xs text-muted">
@@ -62,7 +115,17 @@ export function DamSection({
     );
   }
 
-  if (waiting) {
+  if (isAuto && autoLoading && !autoReading) {
+    return (
+      <CardSection label="Dam Generation">
+        <div className="text-xs text-muted py-2 flex items-center gap-2">
+          <Loader2 className="w-3.5 h-3.5 animate-spin" />
+          Reading the gauge…
+        </div>
+      </CardSection>
+    );
+  }
+  if (!isAuto && waitingDoc) {
     return (
       <CardSection label="Dam Generation">
         <div className="text-xs text-muted py-2">Loading schedule…</div>
@@ -70,10 +133,15 @@ export function DamSection({
     );
   }
 
-  const hourly = doc?.hourlyUnits ?? Array.from({ length: 24 }, () => null);
+  // Unified shape that the bar UI consumes.
+  const hourly: Array<number | null> = isAuto
+    ? autoReading?.hourlyUnits ?? Array.from({ length: 24 }, () => null)
+    : doc?.hourlyUnits ?? Array.from({ length: 24 }, () => null);
+
   const currentHour = currentHourIn(location.timezone);
   const next = nextChangeIn(hourly, currentHour);
   const stale =
+    !isAuto &&
     doc?.updatedAt &&
     Date.now() - doc.updatedAt.toMillis() > 36 * 3600 * 1000;
 
@@ -118,29 +186,64 @@ export function DamSection({
               )}
             </div>
             <div>
-              {damLabel}
-              {doc?.source === 'scraped' && ' · scraped'}
-              {doc?.source === 'manual' && ' · manual'}
-              {!doc && ' · not entered yet'}
-              {doc?.updatedAt && ` · updated ${formatRelativeTime(
-                doc.updatedAt.toDate().toISOString()
-              )}`}
+              {isAuto ? (
+                <>
+                  Auto from gauge
+                  {autoReading?.scrapedAt &&
+                    ` · updated ${formatRelativeTime(autoReading.scrapedAt)}`}
+                </>
+              ) : (
+                <>
+                  {damLabel}
+                  {doc?.source === 'scraped' && ' · scraped'}
+                  {doc?.source === 'manual' && ' · manual'}
+                  {!doc && ' · not entered yet'}
+                  {doc?.updatedAt && ` · updated ${formatRelativeTime(
+                    doc.updatedAt.toDate().toISOString()
+                  )}`}
+                </>
+              )}
             </div>
+            {isAuto && (
+              <div className="text-[10px] text-muted/80 mt-0.5">
+                Estimated from downstream flow vs. baseline. Today's bar shows
+                the recent 24-hour pattern.
+              </div>
+            )}
             {stale && (
               <div className="text-warn flex items-center gap-1 mt-0.5">
                 <AlertTriangle className="w-3 h-3" />
                 Schedule may be stale — re-enter for today
               </div>
             )}
+            {autoError && (
+              <div className="text-danger mt-1">{autoError}</div>
+            )}
           </div>
-          <Button
-            size="sm"
-            variant="secondary"
-            onClick={() => setEditing(true)}
-          >
-            <Pencil className="w-4 h-4" />
-            Edit
-          </Button>
+          {isAuto ? (
+            <Button
+              size="sm"
+              variant="secondary"
+              onClick={refetchAuto}
+              disabled={autoLoading}
+            >
+              {autoLoading ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <RefreshCcw className="w-4 h-4" />
+              )}
+              Refresh
+            </Button>
+          ) : (
+            <Button
+              size="sm"
+              variant="secondary"
+              onClick={() => setEditing(true)}
+            >
+              <Pencil className="w-4 h-4" />
+              Edit
+            </Button>
+          )}
         </div>
       </div>
 
@@ -149,7 +252,7 @@ export function DamSection({
         onClose={() => setEditing(false)}
         title="Set today's schedule"
       >
-        {editing && (
+        {editing && !isAuto && (
           <DamScheduleEditor
             provider={provider}
             location={location}
@@ -164,6 +267,21 @@ export function DamSection({
   );
 }
 
+function providerCacheKey(p: DamScheduleProvider): string {
+  switch (p.kind) {
+    case 'auto':
+      return `auto:${p.flowSiteId}`;
+    case 'tva':
+      return `tva:${p.dam}`;
+    case 'usace':
+      return `usace:${p.district}/${p.project}`;
+    case 'consumers-energy':
+      return `ce:${p.dam}`;
+    case 'manual':
+      return 'manual';
+  }
+}
+
 function damLabelFor(p: DamScheduleProvider): string {
   switch (p.kind) {
     case 'tva':
@@ -174,6 +292,8 @@ function damLabelFor(p: DamScheduleProvider): string {
       return `${p.dam} (Consumers Energy)`;
     case 'manual':
       return 'Manual schedule';
+    case 'auto':
+      return `Auto from gauge ${p.flowSiteId}`;
   }
 }
 

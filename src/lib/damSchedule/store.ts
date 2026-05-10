@@ -37,6 +37,11 @@ export function damScheduleKey(provider: DamScheduleProvider, date: string): str
       return `ce__${slug(provider.dam)}__${date}`;
     case 'manual':
       return `manual__no-dam__${date}`;
+    case 'auto':
+      // Auto schedules don't persist — they read live from USGS each
+      // time. This key is only used as a stable identifier when a caller
+      // happens to ask; nothing reads/writes Firestore at this path.
+      return `auto__${slug(provider.flowSiteId)}__${date}`;
   }
 }
 

@@ -39,7 +39,7 @@ const COMMON_TIMEZONES = [
 ];
 
 type FlowKind = '' | 'usgs' | 'env-canada' | 'uk-ea';
-type DamKind = '' | 'tva' | 'usace' | 'consumers-energy' | 'manual';
+type DamKind = '' | 'tva' | 'usace' | 'consumers-energy' | 'manual' | 'auto';
 
 const dropIcon = L.divIcon({
   html: `<div style="width:20px;height:20px;border-radius:50%;background:#4ade80;border:3px solid #0a0e0a;box-shadow:0 0 0 2px #4ade80"></div>`,
@@ -166,6 +166,14 @@ export function LocationForm({
             gauge.hasWaterTemp ? ', water temp ✓' : ''
           })`
         );
+        // Tailwaters get an auto dam-status reading inferred from the
+        // same gauge — that's the whole point of "auto" mode. Skip if
+        // the user already picked a different dam-schedule kind on
+        // purpose.
+        if (type === 'tailwater' && (damKind === '' || damKind === 'manual')) {
+          setDamKind('auto');
+          parts.push('dam status: auto from gauge');
+        }
       } else {
         parts.push('no active USGS gauge within ~35 mi');
       }
@@ -184,11 +192,13 @@ export function LocationForm({
     if (lat == null || lng == null) return setError('Drop a pin on the map');
 
     const flow = makeFlowProvider(flowKind, flowSiteId.trim());
-    const damSchedule = makeDamProvider(damKind, damName.trim());
+    const damSchedule = makeDamProvider(damKind, damName.trim(), flowSiteId.trim());
 
     if (flowKind && flow == null) return setError('Flow site ID is required');
     if ((damKind === 'tva' || damKind === 'consumers-energy') && !damName)
       return setError('Dam name is required');
+    if (damKind === 'auto' && (!flow || flow.kind !== 'usgs'))
+      return setError('Auto dam status needs a USGS flow gauge — pick one above');
 
     const loc: Location = {
       id: initial?.id ?? slugify(name),
@@ -352,16 +362,24 @@ export function LocationForm({
         </div>
 
         <div className="grid grid-cols-2 gap-3 mt-3">
-          <Field label="Dam schedule">
+          <Field
+            label="Dam schedule"
+            hint={
+              damKind === 'auto'
+                ? 'Status derived from your flow gauge — no setup'
+                : undefined
+            }
+          >
             <Select
               value={damKind}
               onChange={(e) => setDamKind(e.target.value as DamKind)}
             >
               <option value="">none</option>
-              <option value="tva">TVA</option>
-              <option value="usace">USACE</option>
-              <option value="consumers-energy">Consumers Energy</option>
+              <option value="auto">Auto (from flow gauge)</option>
               <option value="manual">Manual entry</option>
+              <option value="tva">TVA (manual)</option>
+              <option value="usace">USACE (manual)</option>
+              <option value="consumers-energy">Consumers Energy (manual)</option>
             </Select>
           </Field>
           {(damKind === 'tva' || damKind === 'consumers-energy') && (
@@ -429,12 +447,18 @@ function makeFlowProvider(kind: FlowKind, value: string): FlowProvider | null {
   return null;
 }
 
-function makeDamProvider(kind: DamKind, dam: string): DamScheduleProvider | null {
+function makeDamProvider(
+  kind: DamKind,
+  dam: string,
+  flowSiteId: string
+): DamScheduleProvider | null {
   if (!kind) return null;
   if (kind === 'tva') return { kind: 'tva', dam };
   if (kind === 'consumers-energy') return { kind: 'consumers-energy', dam };
   if (kind === 'usace') return { kind: 'usace', district: '', project: '' };
   if (kind === 'manual') return { kind: 'manual' };
+  if (kind === 'auto' && flowSiteId)
+    return { kind: 'auto', flowSiteId };
   return null;
 }
 

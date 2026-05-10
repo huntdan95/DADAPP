@@ -27,7 +27,9 @@ export const seedLocations: Location[] = [
       // not publish water temp at any active TN tailwater gauge; that comes
       // from TVA in Phase 4.
       flow: { kind: 'usgs', siteId: '03424860' },
-      damSchedule: { kind: 'tva', dam: 'Center Hill' },
+      // Auto-derived dam status from the same gauge. Beats manual entry
+      // since USACE doesn't publish a forecast we can reliably scrape.
+      damSchedule: { kind: 'auto', flowSiteId: '03424860' },
     },
   },
   {
@@ -61,8 +63,9 @@ export const seedLocations: Location[] = [
       weather: { kind: 'open-meteo' },
       // Wellston gauge gives flow + water temp + gauge height.
       flow: { kind: 'usgs', siteId: '04125550' },
-      // Consumers Energy scraper is a stub — using manual until built.
-      damSchedule: { kind: 'manual' },
+      // Auto-derive Consumers Energy generation pattern from the Wellston
+      // gauge — no scraper needed.
+      damSchedule: { kind: 'auto', flowSiteId: '04125550' },
     },
   },
   {

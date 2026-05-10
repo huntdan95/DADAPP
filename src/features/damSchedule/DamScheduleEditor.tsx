@@ -169,5 +169,9 @@ function damNameFor(p: DamScheduleProvider): string {
       return p.dam;
     case 'manual':
       return 'Schedule';
+    case 'auto':
+      // The editor is never shown for auto-kind providers (DamSection
+      // hides the Edit button), but the type is still in the union.
+      return `Auto (gauge ${p.flowSiteId})`;
   }
 }

@@ -25,6 +25,7 @@ import { tvaFetchSchedule } from './damSchedule/tva';
 import { usaceFetchSchedule } from './damSchedule/usace';
 import { consumersEnergyFetchSchedule } from './damSchedule/consumersEnergy';
 import { manualFetchSchedule } from './damSchedule/manual';
+import { autoFetchSchedule } from './damSchedule/auto';
 import { noaaFetchTides } from './tides/noaa';
 
 export function fetchWeather(
@@ -61,6 +62,8 @@ export function fetchDamSchedule(
       return consumersEnergyFetchSchedule(provider.dam, location);
     case 'manual':
       return manualFetchSchedule(location);
+    case 'auto':
+      return autoFetchSchedule(provider.flowSiteId, location);
   }
 }
 
