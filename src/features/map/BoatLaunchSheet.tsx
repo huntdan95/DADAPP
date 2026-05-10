@@ -72,7 +72,8 @@ export function BoatLaunchSheet({
             <MapPin className="w-4 h-4 mt-0.5 shrink-0" />
             <div>
               <div>
-                {launch.state} · {launch.type === 'slipway' ? 'boat ramp' : launch.type}
+                {launch.state} · {launchTypeLabel(launch.type)}
+                {launch.source === 'user' && ' · added by you'}
               </div>
               <div className="text-xs num">
                 {launch.lat.toFixed(5)}, {launch.lng.toFixed(5)}
@@ -142,4 +143,25 @@ export function BoatLaunchSheet({
       )}
     </BottomSheet>
   );
+}
+
+/**
+ * Friendly label for the launch type. The 'slipway' fallback handles
+ * existing Firestore docs from before the type classification was
+ * added; new docs come in as 'ramp' directly.
+ */
+function launchTypeLabel(type: string): string {
+  switch (type) {
+    case 'ramp':
+    case 'slipway':
+      return 'Boat ramp';
+    case 'put-in':
+      return 'Canoe / kayak put-in';
+    case 'pier':
+      return 'Pier';
+    case 'rental':
+      return 'Boat rental';
+    default:
+      return type;
+  }
 }

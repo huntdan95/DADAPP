@@ -15,8 +15,16 @@ export interface BoatLaunch {
   lat: number;
   lng: number;
   state: string;
-  type: string;
-  source: 'osm';
+  /**
+   * 'ramp' = motorboat slipway. 'put-in' = canoe/kayak access (Tree Farm,
+   * Hole in the Wall, etc). 'pier' = dock with explicit boat=yes tag.
+   * 'rental' = boat rental.
+   *
+   * Older docs predate this classification — they store the raw OSM tag
+   * ('slipway') and we coerce that to 'ramp' at read time below.
+   */
+  type: 'ramp' | 'put-in' | 'pier' | 'rental' | string;
+  source: 'osm' | 'user';
 }
 
 export interface BoatLaunchSet {

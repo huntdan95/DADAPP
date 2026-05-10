@@ -5,9 +5,11 @@ import { FlowSection } from './FlowSection';
 import { DamSection } from './DamSection';
 import { SolunarSection } from './SolunarSection';
 import { HatchSection } from './HatchSection';
+import { SpeciesSection } from './SpeciesSection';
 import { TidesSection } from './TidesSection';
 import { BriefingSection } from './BriefingSection';
 import { useAuth } from '@/lib/useAuth';
+import { activeHatchesForLocation } from '@/lib/hatches/store';
 
 /**
  * The composition contract from §6 of the plan: render only the sections
@@ -15,27 +17,31 @@ import { useAuth } from '@/lib/useAuth';
  * water-type-specific branching here — that's the entire point.
  */
 /**
- * Insect-hatch matching is meaningful for freshwater trout / smallmouth
- * waters. We hide the hatch section at saltwater locations (anglers fish
- * baitfish patterns and crabs there, not mayflies) and we'd surface a
- * future "forage" section instead.
+ * River-type waters (tailwater / freestone) lead with the insect-hatch
+ * report. Stillwater and saltwater lead with a species + lure list
+ * because that's the actionable signal there.
  */
-function showsHatches(type: Location['type']): boolean {
-  return (
-    type === 'tailwater' ||
-    type === 'freestone' ||
-    type === 'lake' ||
-    type === 'pond' ||
-    type === 'reservoir' ||
-    type === 'great_lakes'
-  );
+function isRiverType(type: Location['type']): boolean {
+  return type === 'tailwater' || type === 'freestone';
 }
 
 export function ConditionsCard({ location }: { location: Location }) {
   const { dataProviders } = location;
   const auth = useAuth();
   const showBriefing = auth.kind === 'signed-in';
-  const showHatches = showsHatches(location.type);
+
+  // Decide what to show in the "what's biting / hatching" slot.
+  //   - Rivers with active hatch matches → HatchSection
+  //   - Rivers with NO hatch matches in our data → SpeciesSection (so
+  //     warm-water MI rivers without mayfly entries still show go-to
+  //     species and lures)
+  //   - Lakes / saltwater → SpeciesSection
+  const river = isRiverType(location.type);
+  const hatchesForRiver = river
+    ? activeHatchesForLocation(location, null)
+    : [];
+  const showHatches = river && hatchesForRiver.length > 0;
+  const showSpecies = !showHatches;
 
   return (
     <Card>
@@ -58,6 +64,7 @@ export function ConditionsCard({ location }: { location: Location }) {
       )}
       <SolunarSection location={location} />
       {showHatches && <HatchSection location={location} />}
+      {showSpecies && <SpeciesSection location={location} />}
       {showBriefing && <BriefingSection location={location} />}
     </Card>
   );

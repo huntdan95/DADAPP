@@ -69,7 +69,7 @@ export function BoatLaunchLayer({
         <Marker
           key={l.id}
           position={[l.lat, l.lng]}
-          icon={launchIcon(highlightedIds?.has(l.id) ?? false)}
+          icon={launchIcon(l, highlightedIds?.has(l.id) ?? false)}
           eventHandlers={
             onLaunchClick ? { click: () => onLaunchClick(l) } : undefined
           }
@@ -79,24 +79,59 @@ export function BoatLaunchLayer({
   );
 }
 
-const baseIcon = L.divIcon({
-  html: `<svg width="14" height="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
-    <polygon points="7,2 13,12 1,12" fill="#60a5fa" stroke="#0a0e0a" stroke-width="1.5"/>
-  </svg>`,
-  className: 'boat-launch-marker',
-  iconSize: [14, 14],
-  iconAnchor: [7, 12],
-});
+/**
+ * Markers vary by access type so anglers can tell at a glance whether a
+ * pin is a real motorboat ramp vs a canoe/kayak-only put-in.
+ *
+ *   ramp (default, motorboat-capable) → blue triangle
+ *   put-in (canoe/kayak)              → teal triangle
+ *   pier                              → cyan triangle
+ *   rental                            → blue triangle (no special)
+ *   user-added                        → accent-green triangle
+ *
+ * Highlighted (find-nearest result) overrides with a larger yellow icon.
+ */
+function colorForLaunch(launch: BoatLaunch): string {
+  if (launch.source === 'user') return '#4ade80';     // trout-belly accent
+  switch (launch.type) {
+    case 'put-in':
+      return '#2dd4bf';   // teal
+    case 'pier':
+      return '#22d3ee';   // cyan
+    case 'rental':
+    case 'ramp':
+    default:
+      return '#60a5fa';   // blue
+  }
+}
 
-const highlightIcon = L.divIcon({
-  html: `<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-    <polygon points="10,2 18,17 2,17" fill="#fbbf24" stroke="#0a0e0a" stroke-width="2"/>
-  </svg>`,
-  className: 'boat-launch-marker boat-launch-marker--highlight',
-  iconSize: [20, 20],
-  iconAnchor: [10, 17],
-});
+function buildIcon(color: string, highlighted: boolean) {
+  const size = highlighted ? 20 : 14;
+  const fill = highlighted ? '#fbbf24' : color;
+  const stroke = highlighted ? 2 : 1.5;
+  const points = highlighted ? '10,2 18,17 2,17' : '7,2 13,12 1,12';
+  return L.divIcon({
+    html: `<svg width="${size}" height="${size}" viewBox="0 0 ${
+      highlighted ? 20 : 14
+    } ${highlighted ? 20 : 14}" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="${points}" fill="${fill}" stroke="#0a0e0a" stroke-width="${stroke}"/>
+    </svg>`,
+    className:
+      'boat-launch-marker' + (highlighted ? ' boat-launch-marker--highlight' : ''),
+    iconSize: [size, size],
+    iconAnchor: [size / 2, highlighted ? 17 : 12],
+  });
+}
 
-function launchIcon(highlighted: boolean) {
-  return highlighted ? highlightIcon : baseIcon;
+/** Cache icons by color+highlighted state to avoid recreating per render. */
+const iconCache = new Map<string, L.DivIcon>();
+function launchIcon(launch: BoatLaunch, highlighted: boolean): L.DivIcon {
+  const color = colorForLaunch(launch);
+  const key = `${color}|${highlighted ? 1 : 0}`;
+  let icon = iconCache.get(key);
+  if (!icon) {
+    icon = buildIcon(color, highlighted);
+    iconCache.set(key, icon);
+  }
+  return icon;
 }

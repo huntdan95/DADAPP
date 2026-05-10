@@ -52,9 +52,37 @@ function storage() {
 
 const logsCol = () => collection(db(), 'users', uid(), 'logs');
 
+/**
+ * Recursively strip undefined values. Firestore rejects undefined and the
+ * QuickLog draft is full of optional fields — without this, saving a
+ * photo-less or no-spot entry blows up with
+ * "Function setDoc() called with invalid data. Unsupported field value:
+ * undefined (found in field locationId in document ...)".
+ */
+function stripUndefined<T>(value: T): T {
+  if (value === undefined) return undefined as unknown as T;
+  if (value === null) return value;
+  if (Array.isArray(value)) {
+    return value
+      .map((v) => stripUndefined(v))
+      .filter((v) => v !== undefined) as unknown as T;
+  }
+  if (typeof value === 'object') {
+    const out: Record<string, unknown> = {};
+    for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
+      if (v === undefined) continue;
+      const cleaned = stripUndefined(v);
+      if (cleaned !== undefined) out[k] = cleaned;
+    }
+    return out as unknown as T;
+  }
+  return value;
+}
+
 export async function saveLogEntry(entry: LogEntry): Promise<void> {
   // Stamp userId so collectionGroup queries (patterns.ts) can scope.
-  await setDoc(doc(logsCol(), entry.id), { ...entry, userId: uid() });
+  const cleaned = stripUndefined({ ...entry, userId: uid() });
+  await setDoc(doc(logsCol(), entry.id), cleaned as Record<string, unknown>);
 }
 
 export async function deleteLogEntry(entry: LogEntry): Promise<void> {

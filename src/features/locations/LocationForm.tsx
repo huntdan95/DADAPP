@@ -14,10 +14,15 @@ import { Field, Input, Select } from '@/components/ui/Input';
 import { BASEMAPS } from '@/features/map/basemaps';
 import { friendlyError } from '@/lib/errors';
 import {
-  nearestUsgsGauge,
+  nearestUsgsGauges,
   reverseGeocode,
   timezoneForState,
+  type NearbyGauge,
 } from '@/lib/geo/reverseGeocode';
+import {
+  nearestTideStations,
+  type NearbyTideStation,
+} from '@/lib/geo/nearestTideStations';
 
 const WATER_TYPES: WaterType[] = [
   'tailwater',
@@ -92,6 +97,17 @@ export function LocationForm({
       : ''
   );
 
+  /**
+   * Top-3 candidates collected during auto-fill. We auto-pick the closest
+   * one but show the alternatives as buttons so the user can switch if
+   * the auto-pick is wrong (e.g. nearest gauge is on a different river).
+   */
+  const [flowOptions, setFlowOptions] = useState<NearbyGauge[]>([]);
+  const [tideStationId, setTideStationId] = useState<string>(
+    initial?.dataProviders.tides?.stationId ?? ''
+  );
+  const [tideOptions, setTideOptions] = useState<NearbyTideStation[]>([]);
+
   const [error, setError] = useState<string | null>(null);
   const [autoFilling, setAutoFilling] = useState(false);
   const [autoStatus, setAutoStatus] = useState<string | null>(null);
@@ -157,25 +173,45 @@ export function LocationForm({
         parts.push(`river "${geo.river}"`);
       }
 
-      const gauge = await nearestUsgsGauge(lat, lng).catch(() => null);
-      if (gauge) {
+      // Pull top 3 USGS candidates so the user can override the auto-pick
+      // (closest gauge isn't always on the right river — e.g. a forebay
+      // gauge sometimes ranks before the downstream tailwater gauge).
+      const gauges = await nearestUsgsGauges(lat, lng, 3).catch(() => [] as NearbyGauge[]);
+      if (gauges.length > 0) {
+        // Prefer the closest gauge that publishes water temp; otherwise
+        // fall through to the absolute closest.
+        const pick = gauges.find((g) => g.hasWaterTemp) ?? gauges[0];
+        setFlowOptions(gauges);
         setFlowKind('usgs');
-        setFlowSiteId(gauge.siteId);
+        setFlowSiteId(pick.siteId);
         parts.push(
-          `gauge ${gauge.siteId} (${gauge.distanceMiles.toFixed(1)} mi${
-            gauge.hasWaterTemp ? ', water temp ✓' : ''
-          })`
+          `gauge ${pick.siteId} (${pick.distanceMiles.toFixed(1)} mi${
+            pick.hasWaterTemp ? ', water temp ✓' : ''
+          })${gauges.length > 1 ? ` (+${gauges.length - 1} alternatives)` : ''}`
         );
-        // Tailwaters get an auto dam-status reading inferred from the
-        // same gauge — that's the whole point of "auto" mode. Skip if
-        // the user already picked a different dam-schedule kind on
-        // purpose.
         if (type === 'tailwater' && (damKind === '' || damKind === 'manual')) {
           setDamKind('auto');
           parts.push('dam status: auto from gauge');
         }
       } else {
         parts.push('no active USGS gauge within ~35 mi');
+      }
+
+      // Tide stations only matter for saltwater — but pull them whenever
+      // the form is set to saltwater so the user gets a 3-way choice.
+      if (type === 'saltwater') {
+        const tides = await nearestTideStations(lat, lng, 3).catch(
+          () => [] as NearbyTideStation[]
+        );
+        if (tides.length > 0) {
+          setTideOptions(tides);
+          setTideStationId(tides[0].stationId);
+          parts.push(
+            `tide station ${tides[0].stationId} (${tides[0].distanceMiles.toFixed(1)} mi)`
+          );
+        } else {
+          parts.push('no NOAA tide station nearby');
+        }
       }
 
       setAutoStatus(parts.length > 0 ? `Filled: ${parts.join(' · ')}` : 'Nothing found');
@@ -193,6 +229,10 @@ export function LocationForm({
 
     const flow = makeFlowProvider(flowKind, flowSiteId.trim());
     const damSchedule = makeDamProvider(damKind, damName.trim(), flowSiteId.trim());
+    const tides =
+      tideStationId.trim() && type === 'saltwater'
+        ? { kind: 'noaa' as const, stationId: tideStationId.trim() }
+        : null;
 
     if (flowKind && flow == null) return setError('Flow site ID is required');
     if ((damKind === 'tva' || damKind === 'consumers-energy') && !damName)
@@ -214,6 +254,7 @@ export function LocationForm({
         weather: { kind: 'open-meteo' },
         ...(flow ? { flow } : {}),
         ...(damSchedule ? { damSchedule } : {}),
+        ...(tides ? { tides } : {}),
       },
     };
     onSave(loc);
@@ -360,6 +401,85 @@ export function LocationForm({
             </Field>
           )}
         </div>
+
+        {flowOptions.length > 0 && (
+          <div className="mt-2">
+            <div className="text-[11px] uppercase tracking-wider text-muted mb-1">
+              Nearby gauges — pick one
+            </div>
+            <div className="flex flex-col gap-1.5">
+              {flowOptions.map((g) => {
+                const selected = flowKind === 'usgs' && flowSiteId === g.siteId;
+                return (
+                  <button
+                    key={g.siteId}
+                    type="button"
+                    onClick={() => {
+                      setFlowKind('usgs');
+                      setFlowSiteId(g.siteId);
+                    }}
+                    className={
+                      'text-left px-3 py-2 rounded-lg border text-xs transition ' +
+                      (selected
+                        ? 'bg-accent/15 border-accent text-text'
+                        : 'bg-surface-2 border-border text-muted hover:border-accent/40')
+                    }
+                  >
+                    <div className="font-medium text-text">{g.name}</div>
+                    <div className="num">
+                      {g.siteId} · {g.distanceMiles.toFixed(1)} mi
+                      {g.hasWaterTemp && ' · water temp ✓'}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {type === 'saltwater' && (
+          <div className="mt-3">
+            <Field label="NOAA tide station ID">
+              <Input
+                value={tideStationId}
+                onChange={(e) => setTideStationId(e.target.value)}
+                placeholder="8726520"
+              />
+            </Field>
+            {tideOptions.length > 0 && (
+              <div className="mt-2">
+                <div className="text-[11px] uppercase tracking-wider text-muted mb-1">
+                  Nearby tide stations — pick one
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  {tideOptions.map((s) => {
+                    const selected = tideStationId === s.stationId;
+                    return (
+                      <button
+                        key={s.stationId}
+                        type="button"
+                        onClick={() => setTideStationId(s.stationId)}
+                        className={
+                          'text-left px-3 py-2 rounded-lg border text-xs transition ' +
+                          (selected
+                            ? 'bg-accent/15 border-accent text-text'
+                            : 'bg-surface-2 border-border text-muted hover:border-accent/40')
+                        }
+                      >
+                        <div className="font-medium text-text">{s.name}</div>
+                        <div className="num">
+                          {s.stationId}
+                          {s.state ? ` · ${s.state}` : ''} ·{' '}
+                          {s.distanceMiles.toFixed(1)} mi
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
         <div className="grid grid-cols-2 gap-3 mt-3">
           <Field

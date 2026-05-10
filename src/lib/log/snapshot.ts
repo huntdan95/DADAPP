@@ -1,4 +1,4 @@
-import { fetchWeather } from '@/lib/providers';
+import { fetchFlow, fetchWeather } from '@/lib/providers';
 import type { Location } from '@/lib/providers/types';
 import type { ConditionsSnapshot } from '@/lib/journal/types';
 import { computeSolunar } from '@/lib/solunar';
@@ -74,6 +74,63 @@ export async function snapshotForGps(
     moonIllumination: solunar.moonIllumination,
   };
 
+  return { conditions, flowReading };
+}
+
+/**
+ * Captures a snapshot for a pre-defined Location instead of a raw GPS
+ * point. Uses the location's declared flow provider directly (if any),
+ * which means tailwaters get the right gauge — not whatever happens to
+ * be physically nearest the user's phone.
+ */
+export async function snapshotForLocation(
+  location: Location
+): Promise<{
+  conditions: ConditionsSnapshot;
+  flowReading?: {
+    siteId: string;
+    siteName: string;
+    flowCfs?: number;
+    gaugeFt?: number;
+    waterTempF?: number;
+    observedAt?: string;
+  };
+}> {
+  const [weather, flow] = await Promise.all([
+    fetchWeather(location.dataProviders.weather, location).catch(() => undefined),
+    location.dataProviders.flow
+      ? fetchFlow(location.dataProviders.flow).catch(() => undefined)
+      : Promise.resolve(undefined),
+  ]);
+
+  let flowReading;
+  if (flow) {
+    flowReading = {
+      siteId:
+        location.dataProviders.flow?.kind === 'usgs'
+          ? location.dataProviders.flow.siteId
+          : 'unknown',
+      siteName: flow.siteName || location.name,
+      flowCfs: flow.flowCfs ?? undefined,
+      gaugeFt: flow.gaugeFt ?? undefined,
+      waterTempF: flow.waterTempF ?? undefined,
+      observedAt: flow.observedAt || undefined,
+    };
+  }
+
+  const solunar = computeSolunar(location);
+  const conditions: ConditionsSnapshot = {
+    airTempF: weather?.airTempF ?? Number.NaN,
+    waterTempF: flowReading?.waterTempF,
+    flowCfs: flowReading?.flowCfs,
+    pressureMb: weather?.pressureMb ?? Number.NaN,
+    pressureTrend: weather?.pressureTrend ?? 'steady',
+    weatherCode: weather?.weatherCode ?? 0,
+    cloudCoverPct: weather?.cloudCoverPct ?? undefined,
+    windMph: weather?.windMph ?? undefined,
+    moonPhase: solunar.moonPhase,
+    moonIllumination: solunar.moonIllumination,
+  };
   return { conditions, flowReading };
 }
 

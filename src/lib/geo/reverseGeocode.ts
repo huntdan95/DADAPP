@@ -145,9 +145,73 @@ export interface NearbyGauge {
 }
 
 /**
+ * Find the N closest active USGS gauges to a pin via NWIS site search.
+ * Filters to currently-active sites publishing flow (00060) and enriches
+ * each with a water-temp availability flag. Empty array if no gauge is
+ * within the bbox.
+ */
+export async function nearestUsgsGauges(
+  lat: number,
+  lng: number,
+  limit = 3,
+  searchDegrees = 0.5
+): Promise<NearbyGauge[]> {
+  // bbox = W,S,E,N (lon,lat,lon,lat) per the NWIS spec.
+  const w = (lng - searchDegrees).toFixed(4);
+  const s = (lat - searchDegrees).toFixed(4);
+  const e = (lng + searchDegrees).toFixed(4);
+  const n = (lat + searchDegrees).toFixed(4);
+
+  const url =
+    `https://waterservices.usgs.gov/nwis/site/?format=rdb` +
+    `&bBox=${w},${s},${e},${n}` +
+    `&siteStatus=active&parameterCd=00060&hasDataTypeCd=iv`;
+
+  const res = await fetch(url);
+  if (!res.ok) {
+    if (res.status === 404) return [];
+    throw new Error(`USGS site search HTTP ${res.status}`);
+  }
+  const text = await res.text();
+  const sites = parseUsgsRdb(text);
+  if (sites.length === 0) return [];
+
+  // Tag which sites publish water-temp so the user can prefer those.
+  const ids = sites.map((s) => s.siteId).join(',');
+  const tempUrl =
+    `https://waterservices.usgs.gov/nwis/iv/?format=json&sites=${ids}` +
+    `&parameterCd=00010&siteStatus=all`;
+  let withTemp = new Set<string>();
+  try {
+    const r2 = await fetch(tempUrl);
+    if (r2.ok) {
+      const j = (await r2.json()) as {
+        value: { timeSeries: Array<{ sourceInfo: { siteCode: Array<{ value: string }> } }> };
+      };
+      withTemp = new Set(
+        j.value.timeSeries.map((t) => t.sourceInfo.siteCode[0]?.value)
+      );
+    }
+  } catch {
+    // best-effort
+  }
+
+  const enriched = sites.map((site) => ({
+    ...site,
+    distanceMiles: distMiles({ lat, lng }, { lat: site.lat, lng: site.lng }),
+    hasWaterTemp: withTemp.has(site.siteId),
+  }));
+  enriched.sort((a, b) => a.distanceMiles - b.distanceMiles);
+  return enriched.slice(0, limit);
+}
+
+/**
  * Find the closest active USGS gauge to a pin via NWIS site search.
  * Filters to currently-active sites publishing flow (00060). Returns
  * the single nearest result, or null if no gauge is within the bbox.
+ *
+ * Kept for backwards compatibility — new code should prefer
+ * `nearestUsgsGauges` and present the top three options.
  */
 export async function nearestUsgsGauge(
   lat: number,

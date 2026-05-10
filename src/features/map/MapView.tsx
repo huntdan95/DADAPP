@@ -5,14 +5,16 @@ import {
   useMap,
   Marker,
   Popup,
+  ZoomControl,
 } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { Anchor, Crosshair, Info, Loader2 } from 'lucide-react';
+import { Anchor, Crosshair, Info, Loader2, Plus } from 'lucide-react';
 import { BASEMAPS, type BasemapKey } from './basemaps';
 import { MapMarker } from './MapMarker';
 import { BoatLaunchLayer } from './BoatLaunchLayer';
 import { BoatLaunchSheet } from './BoatLaunchSheet';
+import { AddLaunchForm } from './AddLaunchForm';
 import type { Location } from '@/lib/providers/types';
 import { ConditionsCard } from '@/features/conditions/ConditionsCard';
 import { BottomSheet } from '@/components/ui/BottomSheet';
@@ -22,6 +24,7 @@ import {
   distanceMiles,
   loadBoatLaunchesCached,
 } from '@/lib/boatLaunches/store';
+import { watchUserLaunches } from '@/lib/boatLaunches/userLaunches';
 import { cn } from '@/lib/utils';
 import { friendlyError } from '@/lib/errors';
 
@@ -30,6 +33,9 @@ export function MapView({ locations }: { locations: Location[] }) {
   const [selected, setSelected] = useState<Location | null>(null);
   const [showLaunches, setShowLaunches] = useState(true);
   const [launches, setLaunches] = useState<BoatLaunch[]>([]);
+  /** User-added launches subscribed live from Firestore. */
+  const [userLaunches, setUserLaunches] = useState<BoatLaunch[]>([]);
+  const [addLaunchOpen, setAddLaunchOpen] = useState(false);
   const [launchesLoaded, setLaunchesLoaded] = useState(false);
   const [findingLocation, setFindingLocation] = useState(false);
   const [nearest, setNearest] = useState<{
@@ -91,6 +97,17 @@ export function MapView({ locations }: { locations: Location[] }) {
     };
   }, [launchesLoaded, reloadLaunches]);
 
+  // Subscribe to user-added launches. Empty list if signed out.
+  useEffect(() => {
+    return watchUserLaunches(setUserLaunches);
+  }, []);
+
+  /** Combined list used by the map layer + find-nearest. */
+  const allLaunches = useMemo(
+    () => [...launches, ...userLaunches],
+    [launches, userLaunches]
+  );
+
   /**
    * One-tap "load boat launches" for the empty-state. Calls the Cloud
    * Function that scrapes OpenStreetMap (~60-90s end to end). On success
@@ -123,7 +140,7 @@ export function MapView({ locations }: { locations: Location[] }) {
       setLocError('Your device or browser does not support location.');
       return;
     }
-    if (launches.length === 0) {
+    if (allLaunches.length === 0) {
       setLocError('Boat launches are still loading — try again in a sec.');
       return;
     }
@@ -135,7 +152,7 @@ export function MapView({ locations }: { locations: Location[] }) {
           lat: pos.coords.latitude,
           lng: pos.coords.longitude,
         };
-        const ranked = launches
+        const ranked = allLaunches
           .map((l) => ({ ...l, miles: distanceMiles(user, l) }))
           .sort((a, b) => a.miles - b.miles)
           .slice(0, 5);
@@ -150,7 +167,7 @@ export function MapView({ locations }: { locations: Location[] }) {
       },
       { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 }
     );
-  }, [launches]);
+  }, [allLaunches]);
 
   const highlightedIds = useMemo(
     () => new Set(nearest?.list.map((l) => l.id) ?? []),
@@ -166,8 +183,13 @@ export function MapView({ locations }: { locations: Location[] }) {
         center={center}
         zoom={5}
         scrollWheelZoom
+        // Default zoom +/- buttons live top-left, where our Launches and
+        // Find-nearest pills sit. Disable the default and re-add to the
+        // bottom-right so the pills are no longer covered.
+        zoomControl={false}
         className="h-full w-full bg-surface"
       >
+        <ZoomControl position="bottomright" />
         <TileLayer
           key={bm.key}
           url={bm.url}
@@ -182,7 +204,7 @@ export function MapView({ locations }: { locations: Location[] }) {
         ))}
 
         <BoatLaunchLayer
-          launches={launches}
+          launches={allLaunches}
           visible={showLaunches}
           highlightedIds={highlightedIds}
           onLaunchClick={setSelectedLaunch}
@@ -210,12 +232,13 @@ export function MapView({ locations }: { locations: Location[] }) {
           )}
         >
           <Anchor className="w-3.5 h-3.5" />
-          Launches{launchesLoaded && launches.length > 0 ? ` (${launches.length})` : ''}
+          Launches
+          {launchesLoaded && allLaunches.length > 0 ? ` (${allLaunches.length})` : ''}
         </button>
         <button
           type="button"
           onClick={findNearest}
-          disabled={findingLocation || launches.length === 0}
+          disabled={findingLocation || allLaunches.length === 0}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border bg-surface/90 border-border text-text shadow backdrop-blur disabled:opacity-50"
         >
           {findingLocation ? (
@@ -224,6 +247,14 @@ export function MapView({ locations }: { locations: Location[] }) {
             <Crosshair className="w-3.5 h-3.5" />
           )}
           Find nearest
+        </button>
+        <button
+          type="button"
+          onClick={() => setAddLaunchOpen(true)}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border bg-surface/90 border-border text-accent shadow backdrop-blur"
+        >
+          <Plus className="w-3.5 h-3.5" />
+          Add launch
         </button>
         {locError && (
           <div className="text-xs text-warn bg-surface/90 backdrop-blur border border-warn/40 rounded-xl px-2 py-1 max-w-[200px]">
@@ -286,6 +317,20 @@ export function MapView({ locations }: { locations: Location[] }) {
         userLocation={nearest?.user ?? null}
         onClose={() => setSelectedLaunch(null)}
       />
+
+      <BottomSheet
+        open={addLaunchOpen}
+        onClose={() => setAddLaunchOpen(false)}
+        title="Add a launch"
+      >
+        {addLaunchOpen && (
+          <AddLaunchForm
+            initialCenter={userLocation ?? undefined}
+            onCancel={() => setAddLaunchOpen(false)}
+            onSaved={() => setAddLaunchOpen(false)}
+          />
+        )}
+      </BottomSheet>
     </div>
   );
 }

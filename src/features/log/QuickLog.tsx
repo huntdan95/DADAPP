@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import {
   Camera,
+  Crosshair,
   Image as ImageIcon,
   Loader2,
   MapPin,
@@ -25,9 +26,14 @@ import {
   getDeviceGps,
   nearestSavedLocation,
   snapshotForGps,
+  snapshotForLocation,
 } from '@/lib/log/snapshot';
 import { analyzePhoto } from '@/lib/ai/analyzePhoto';
-import { FISHING_METHODS, type FishingMethod } from '@/lib/journal/types';
+import {
+  FISHING_METHODS,
+  type ConditionsSnapshot,
+  type FishingMethod,
+} from '@/lib/journal/types';
 import { friendlyError } from '@/lib/errors';
 
 /**
@@ -62,6 +68,13 @@ export function QuickLog({
   const [kind, setKind] = useState<LogKind>('catch');
   const [loadingStatus, setLoadingStatus] = useState<string>('Working…');
   const [error, setError] = useState<string | null>(null);
+  /**
+   * Where conditions come from. 'gps' = grab my device GPS and snap
+   * weather there (the original behavior). A spot id = use that spot's
+   * lat/lng + declared providers (useful when logging a fish you caught
+   * earlier in the day, or from your truck on the drive home).
+   */
+  const [conditionsSource, setConditionsSource] = useState<'gps' | string>('gps');
 
   // Draft fields — populated by photo analysis + conditions snapshot.
   const [thumb, setThumb] = useState<string | null>(null);
@@ -77,6 +90,48 @@ export function QuickLog({
     libraryRef.current?.click();
   }
 
+  /**
+   * Resolves where the conditions come from based on the user's pick.
+   * GPS mode keeps the old behavior (matches the user against the
+   * nearest saved spot within 3 mi). Spot mode skips GPS entirely and
+   * uses the spot's coords + declared flow provider.
+   */
+  async function resolveConditionsContext(): Promise<{
+    gps?: { lat: number; lng: number };
+    matchedLoc: Location | null;
+    timezone: string;
+    snap: { conditions: ConditionsSnapshot; flowReading?: LogEntry['flowReading'] };
+  }> {
+    if (conditionsSource !== 'gps') {
+      const spot = locations.find((l) => l.id === conditionsSource);
+      if (spot) {
+        const snap = await snapshotForLocation(spot).catch(() => ({
+          conditions: zeroConditions(),
+          flowReading: undefined,
+        }));
+        return {
+          gps: { lat: spot.lat, lng: spot.lng },
+          matchedLoc: spot,
+          timezone: spot.timezone,
+          snap,
+        };
+      }
+    }
+    const gps = await getDeviceGps();
+    const matchedLoc = gps ? nearestSavedLocation(gps, locations) : null;
+    const timezone =
+      matchedLoc?.timezone ??
+      Intl.DateTimeFormat().resolvedOptions().timeZone ??
+      'America/New_York';
+    const snap = gps
+      ? await snapshotForGps(gps, timezone).catch(() => ({
+          conditions: zeroConditions(),
+          flowReading: undefined,
+        }))
+      : { conditions: zeroConditions(), flowReading: undefined };
+    return { gps: gps ?? undefined, matchedLoc, timezone, snap };
+  }
+
   async function startWithPhoto(file: File) {
     setError(null);
     setPhase('loading');
@@ -87,37 +142,28 @@ export function QuickLog({
       const thumbUrl = await makeThumbnailDataUrl(file);
       setThumb(thumbUrl);
 
-      // Run upload + GPS in parallel.
-      setLoadingStatus('Uploading + locating…');
-      const [{ url, path }, gps] = await Promise.all([
+      setLoadingStatus(
+        conditionsSource === 'gps'
+          ? 'Uploading + locating + snapping conditions…'
+          : 'Uploading + snapping spot conditions…'
+      );
+
+      // Run upload + conditions context in parallel.
+      const [{ url, path }, ctx] = await Promise.all([
         uploadLogPhoto(logId, file),
-        getDeviceGps(),
+        resolveConditionsContext(),
       ]);
 
-      const matchedLoc = gps ? nearestSavedLocation(gps, locations) : null;
-      const timezone =
-        matchedLoc?.timezone ??
-        Intl.DateTimeFormat().resolvedOptions().timeZone ??
-        'America/New_York';
+      const { gps, matchedLoc, snap } = ctx;
 
-      // Conditions snapshot + Claude analysis in parallel.
-      setLoadingStatus('Snapping conditions + analyzing photo…');
-      const [snap, analysis] = await Promise.all([
-        gps
-          ? snapshotForGps(gps, timezone).catch(() => ({
-              conditions: zeroConditions(),
-              flowReading: undefined,
-            }))
-          : Promise.resolve({ conditions: zeroConditions(), flowReading: undefined }),
-        analyzePhoto({
-          imageUrl: url,
-          hintLocation: matchedLoc?.name,
-        }).catch((e) => {
-          // Don't fail the whole flow on a Claude error — fall back to manual.
-          console.warn('analyzePhoto failed', e);
-          return null;
-        }),
-      ]);
+      setLoadingStatus('Analyzing photo…');
+      const analysis = await analyzePhoto({
+        imageUrl: url,
+        hintLocation: matchedLoc?.name,
+      }).catch((e) => {
+        console.warn('analyzePhoto failed', e);
+        return null;
+      });
 
       const inferredKind: LogKind =
         analysis?.kind === 'insect'
@@ -161,27 +207,19 @@ export function QuickLog({
   async function startNoteOnly() {
     setError(null);
     setPhase('loading');
-    setLoadingStatus('Locating + snapping conditions…');
+    setLoadingStatus(
+      conditionsSource === 'gps'
+        ? 'Locating + snapping conditions…'
+        : 'Snapping spot conditions…'
+    );
     try {
-      const gps = await getDeviceGps();
-      const matchedLoc = gps ? nearestSavedLocation(gps, locations) : null;
-      const timezone =
-        matchedLoc?.timezone ??
-        Intl.DateTimeFormat().resolvedOptions().timeZone ??
-        'America/New_York';
-      const snap = gps
-        ? await snapshotForGps(gps, timezone).catch(() => ({
-            conditions: zeroConditions(),
-            flowReading: undefined,
-          }))
-        : { conditions: zeroConditions(), flowReading: undefined };
-
+      const { gps, matchedLoc, snap } = await resolveConditionsContext();
       setKind('note');
       setDraft({
         id: newLogId(),
         kind: 'note',
         time: new Date().toISOString(),
-        gps: gps ?? undefined,
+        gps,
         locationId: matchedLoc?.id,
         locationName: matchedLoc?.name,
         conditions: snap.conditions,
@@ -238,6 +276,35 @@ export function QuickLog({
             if (f) startWithPhoto(f);
           }}
         />
+
+        <Field label="Conditions from">
+          <Select
+            value={conditionsSource}
+            onChange={(e) => setConditionsSource(e.target.value)}
+          >
+            <option value="gps">📍 Use my current location</option>
+            {locations.map((l) => (
+              <option key={l.id} value={l.id}>
+                🎣 {l.name}
+              </option>
+            ))}
+          </Select>
+        </Field>
+        <div className="text-[11px] text-muted -mt-2 flex items-start gap-1.5">
+          {conditionsSource === 'gps' ? (
+            <>
+              <Crosshair className="w-3 h-3 mt-0.5" />
+              Weather, flow + water temp will be snapped at your current GPS.
+            </>
+          ) : (
+            <>
+              <MapPin className="w-3 h-3 mt-0.5" />
+              Weather + flow will be pulled from the chosen spot's saved
+              providers (won't ping your GPS).
+            </>
+          )}
+        </div>
+
         <BigChoice
           label="Take a photo"
           hint="Claude will figure out fish or hatch and snap conditions."
