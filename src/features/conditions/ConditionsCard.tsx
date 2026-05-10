@@ -5,6 +5,8 @@ import { FlowSection } from './FlowSection';
 import { DamSection } from './DamSection';
 import { SolunarSection } from './SolunarSection';
 import { HatchSection } from './HatchSection';
+import { BriefingSection } from './BriefingSection';
+import { useAuth } from '@/lib/useAuth';
 
 /**
  * The composition contract from §6 of the plan: render only the sections
@@ -13,6 +15,8 @@ import { HatchSection } from './HatchSection';
  */
 export function ConditionsCard({ location }: { location: Location }) {
   const { dataProviders } = location;
+  const auth = useAuth();
+  const showBriefing = auth.kind === 'signed-in';
   return (
     <Card>
       <CardHeader>
@@ -31,6 +35,7 @@ export function ConditionsCard({ location }: { location: Location }) {
       )}
       <SolunarSection location={location} />
       <HatchSection location={location} />
+      {showBriefing && <BriefingSection location={location} />}
     </Card>
   );
 }

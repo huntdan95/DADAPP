@@ -30,9 +30,8 @@ Greenfield build following the plan at
 | 4 — Dam Schedule | done (manual-first) | TVA's site is now Cloudflare-bot-protected. Scraper Cloud Function shipped as a stub; manual entry is primary. Tap-to-cycle hourly grid, presets, "next change at X", staleness warnings. |
 | 5a — Boat Launches | done | OSM/Overpass-driven for MI, TN, IN, NC, FL, GA, AL — ~7,500 launches. Cloud Function seedBoatLaunches (monthly cron + on-demand callable). Map layer with viewport filtering, zoom-gating, and a "Find nearest" button using geolocation. |
 | 5b — Hatch Calendar | done | 16 hatches seeded in data/hatches.json, filtered by current month + state + water-temp window. Active hatches show on each conditions card with flies + notes. Hex hatch countdown on Manistee/MI locations May 15 → June peak. |
-| 7 — PWA Polish | done | vite-plugin-pwa with auto-update SW, manifest + icons (192/512/maskable/apple-touch), runtime caches for Open-Meteo, USGS, map tiles, and photos. Firestore offline persistence enabled. **Code-split heavy features**: main entry dropped from 977 KB → 116 KB. Install prompt (beforeinstallprompt + iOS instructions) and update-available toast. |
-| 6 — Claude API | not started | |
-| 7 — PWA Polish | not started | Code-split here too — bundle is 970 KB right now |
+| 6 — Claude API | done | 4 Cloud Functions powered by `@anthropic-ai/sdk`: pre-trip briefings (Sonnet 4.6 with cached hatch playbook), free-text → structured catch parsing (Haiku 4.5, forced tool use), Q&A over catch history (Sonnet 4.6, adaptive thinking, cached corpus), photo species ID + length estimate (Sonnet 4.6 vision). Per-user daily caps + token tracking in Firestore (`aiUsage/{uid}/days/{YYYY-MM-DD}`). |
+| 7 — PWA Polish | done | vite-plugin-pwa with auto-update SW, manifest + icons, runtime caches for Open-Meteo, USGS, map tiles, and photos. Firestore offline persistence enabled. **Code-split heavy features**: main entry dropped from 977 KB → 121 KB. Install prompt + update-available toast. |
 
 ## Run locally
 
@@ -66,6 +65,7 @@ App Hosting.
   ```
   firebase deploy --only firestore:rules,storage:rules
   cd functions && npm install && npm run build && cd ..
+  firebase functions:secrets:set ANTHROPIC_API_KEY   # paste your sk-ant-... key
   firebase deploy --only functions
   ```
 - **Sign in and seed**: open the Spots tab, scroll to "Boat launches",
@@ -105,6 +105,23 @@ moving from local mode to signed-in.
 [`src/lib/fishability.ts`](src/lib/fishability.ts) takes weather + flow +
 dam schedule and returns `good` / `fair` / `poor` / `unknown`. Used to
 color the map markers. Tunable from journal data later (Phase 6).
+
+### Claude API integration
+
+Four Cloud Functions in [`functions/src/claude/`](functions/src/claude/):
+
+- **[`briefing.ts`](functions/src/claude/briefing.ts)** — Sonnet 4.6, max_tokens 300. 3-sentence pre-trip read per location. System prompt bakes in a ~1.5K-token fishing playbook (pressure/water-temp/dam-generation/hatch/trolling heuristics) before a `cache_control: ephemeral` breakpoint — subsequent same-day calls read from cache at ~0.1× cost.
+- **[`parseJournal.ts`](functions/src/claude/parseJournal.ts)** — Haiku 4.5, max_tokens 500. Forced tool use (`log_catch`) with the Catch schema as `input_schema`. Returns validated JSON in one shot. Trolling fields are optional in the schema; system prompt instructs them only when `method === "troll"`.
+- **[`patterns.ts`](functions/src/claude/patterns.ts)** — Sonnet 4.6, max_tokens 800, adaptive thinking. Loads the user's full catch corpus (capped at 1000) via a `userId`-scoped collectionGroup query, serializes it into a cached system block, and answers natural-language questions over multi-turn history.
+- **[`identifySpecies.ts`](functions/src/claude/identifySpecies.ts)** — Sonnet 4.6 vision, max_tokens 300. Reads a Firebase Storage URL, forced tool use returns `{species, confidence, estimatedLengthInches, notes}`.
+
+**Cost guardrails** — [`_shared.ts`](functions/src/claude/_shared.ts) enforces per-user daily caps via Firestore transactions: 5 briefings, 20 parses, 10 patterns, 10 identifications. Token usage written back to `aiUsage/{uid}/days/{YYYY-MM-DD}` for visibility.
+
+**Frontend surfaces:**
+- "Get briefing" button on each [`ConditionsCard`](src/features/conditions/ConditionsCard.tsx)
+- "Describe it and let Claude fill the form" on the [`CatchForm`](src/features/journal/CatchForm.tsx) — text in, structured catch out, auto-fills every field including trolling depth/speed
+- "Identify species" button next to the photo input on `CatchForm`
+- [`AskClaude`](src/features/journal/AskClaude.tsx) chat card on the Trips tab with suggested-question seeds
 
 ### PWA / offline
 

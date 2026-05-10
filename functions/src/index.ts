@@ -1,19 +1,25 @@
 /**
- * Firebase Functions entry. Phase 5 ships boat-launch seeding from
- * OpenStreetMap via the Overpass API for MI, TN, IN, NC, FL, GA, AL.
- *
- * Phase 4's TVA scraper is a stub — TVA's site is behind Cloudflare bot
- * protection, so a scheduled scraper would need a headless browser
- * (Playwright). Manual entry from the client is the supported path.
+ * Firebase Functions entry. Phases:
+ *   - Phase 4: TVA scrape stub (manual entry is the actual user path).
+ *   - Phase 5: OpenStreetMap boat-launch seeder (callable + monthly cron).
+ *   - Phase 6: Claude API integration (briefing, parseJournal, patterns, identifySpecies).
  */
 
 import { initializeApp } from 'firebase-admin/app';
 
 initializeApp();
 
-export { seedBoatLaunches, seedBoatLaunchesCallable } from './scrapers/boatLaunches';
+// Phase 5 — boat launches
+export {
+  seedBoatLaunches,
+  seedBoatLaunchesCallable,
+} from './scrapers/boatLaunches';
+
+// Phase 4 — TVA dam schedule scraper stub
 export { scrapeTva } from './scrapers/tva';
 
-// Stubs — uncomment and implement when needed.
-// export { scrapeUsace } from './scrapers/usace';
-// export { scrapeConsumersEnergy } from './scrapers/consumersEnergy';
+// Phase 6 — Claude API
+export { briefing } from './claude/briefing';
+export { parseJournal } from './claude/parseJournal';
+export { patterns } from './claude/patterns';
+export { identifySpecies } from './claude/identifySpecies';

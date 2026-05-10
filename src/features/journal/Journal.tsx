@@ -14,6 +14,7 @@ import {
 import { StartTripForm } from './StartTripForm';
 import { CatchForm } from './CatchForm';
 import { TripDetail } from './TripDetail';
+import { AskClaude } from './AskClaude';
 
 type Sheet =
   | { kind: 'closed' }
@@ -100,6 +101,8 @@ export function Journal({
           ))}
         </div>
       )}
+
+      <AskClaude />
 
       <BottomSheet
         open={sheet.kind !== 'closed'}
