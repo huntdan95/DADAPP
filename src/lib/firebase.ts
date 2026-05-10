@@ -8,6 +8,11 @@ import {
   type Auth,
   type User,
 } from 'firebase/auth';
+import {
+  initializeFirestore,
+  persistentLocalCache,
+  persistentMultipleTabManager,
+} from 'firebase/firestore';
 import { getAnalytics, isSupported as analyticsSupported } from 'firebase/analytics';
 
 /**
@@ -34,6 +39,18 @@ export function getFirebaseApp(): FirebaseApp | null {
     cachedApp = getApps()[0];
   } else {
     cachedApp = initializeApp(config);
+    // Enable offline persistence the moment Firestore is wired up. This must
+    // happen before any other getFirestore() call — that's why we call it
+    // here in app init rather than lazily.
+    try {
+      initializeFirestore(cachedApp, {
+        localCache: persistentLocalCache({
+          tabManager: persistentMultipleTabManager(),
+        }),
+      });
+    } catch {
+      // Already initialized (HMR re-run, multiple init paths) — ignore.
+    }
     // Best-effort analytics init; not all browsers support it (e.g. webviews).
     analyticsSupported().then((ok) => {
       if (ok && cachedApp) getAnalytics(cachedApp);

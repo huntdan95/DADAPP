@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import {
   Activity,
   Map as MapIcon,
@@ -6,20 +6,39 @@ import {
   NotebookPen,
   RefreshCcw,
   LogOut,
+  Loader2,
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { BottomNav } from '@/components/ui/BottomNav';
 import { ConditionsCard } from '@/features/conditions/ConditionsCard';
-import { MapView } from '@/features/map/MapView';
-import { LocationsList } from '@/features/locations/LocationsList';
-import { Journal } from '@/features/journal/Journal';
-import { BoatLaunchesAdmin } from '@/features/boatLaunches/BoatLaunchesAdmin';
 import { SignInScreen } from '@/features/auth/SignInScreen';
+import { InstallPrompt } from '@/features/pwa/InstallPrompt';
+import { UpdateAvailable } from '@/features/pwa/UpdateAvailable';
 import { getLocationStore, type LocationStore } from '@/lib/store';
 import type { Location } from '@/lib/providers/types';
 import { useAuth } from '@/lib/useAuth';
 import { signOutCurrent } from '@/lib/firebase';
 import { seedLocations } from '@/seedLocations';
+
+// Heavy features are lazy-loaded — Map drags in Leaflet (~150KB), Journal
+// drags in Firebase Storage and image compression. Conditions tab is the
+// landing tab and stays in the initial chunk so first paint is fast.
+const MapView = lazy(() =>
+  import('@/features/map/MapView').then((m) => ({ default: m.MapView }))
+);
+const LocationsList = lazy(() =>
+  import('@/features/locations/LocationsList').then((m) => ({
+    default: m.LocationsList,
+  }))
+);
+const BoatLaunchesAdmin = lazy(() =>
+  import('@/features/boatLaunches/BoatLaunchesAdmin').then((m) => ({
+    default: m.BoatLaunchesAdmin,
+  }))
+);
+const Journal = lazy(() =>
+  import('@/features/journal/Journal').then((m) => ({ default: m.Journal }))
+);
 
 type Tab = 'conditions' | 'map' | 'spots' | 'trips';
 
@@ -29,6 +48,14 @@ const TABS = [
   { key: 'spots' as const, label: 'Spots', icon: ListChecks },
   { key: 'trips' as const, label: 'Trips', icon: NotebookPen },
 ];
+
+function TabFallback() {
+  return (
+    <div className="flex items-center justify-center py-12 text-muted">
+      <Loader2 className="w-5 h-5 animate-spin" />
+    </div>
+  );
+}
 
 export default function App() {
   const auth = useAuth();
@@ -74,7 +101,6 @@ export default function App() {
     }
   }, [auth.kind, store, hasFirstSnapshot, seeded, locations.length]);
 
-  // Pending auth state — Firebase is configured, just resolving the session.
   if (auth.kind === 'pending') {
     return (
       <div className="min-h-screen flex items-center justify-center text-muted">
@@ -83,12 +109,10 @@ export default function App() {
     );
   }
 
-  // Firebase configured but signed out → sign-in screen.
   if (auth.kind === 'signed-out') {
     return <SignInScreen />;
   }
 
-  // 'signed-in' (Firestore-backed) or 'no-firebase' (localStorage-backed) → app.
   const isFirebaseConfigured = auth.kind === 'signed-in';
 
   return (
@@ -145,24 +169,33 @@ export default function App() {
           </>
         )}
 
-        {tab === 'map' && <MapView locations={locations} />}
+        {tab === 'map' && (
+          <Suspense fallback={<TabFallback />}>
+            <MapView locations={locations} />
+          </Suspense>
+        )}
 
         {tab === 'spots' && store && (
-          <>
+          <Suspense fallback={<TabFallback />}>
             <LocationsList locations={locations} store={store} />
             {auth.kind === 'signed-in' && <BoatLaunchesAdmin />}
-          </>
+          </Suspense>
         )}
 
         {tab === 'trips' && (
-          <Journal
-            locations={locations}
-            isFirebaseConfigured={isFirebaseConfigured}
-          />
+          <Suspense fallback={<TabFallback />}>
+            <Journal
+              locations={locations}
+              isFirebaseConfigured={isFirebaseConfigured}
+            />
+          </Suspense>
         )}
       </main>
 
       <BottomNav tabs={TABS} current={tab} onChange={setTab} />
+
+      <InstallPrompt />
+      <UpdateAvailable />
     </div>
   );
 }

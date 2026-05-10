@@ -29,7 +29,8 @@ Greenfield build following the plan at
 | 3 — Journal MVP | done | Trip + Catch with **trolling support** (depth/speed), photo upload, conditions snapshot per catch, Firebase Auth (Google sign-in) gate |
 | 4 — Dam Schedule | done (manual-first) | TVA's site is now Cloudflare-bot-protected. Scraper Cloud Function shipped as a stub; manual entry is primary. Tap-to-cycle hourly grid, presets, "next change at X", staleness warnings. |
 | 5a — Boat Launches | done | OSM/Overpass-driven for MI, TN, IN, NC, FL, GA, AL — ~7,500 launches. Cloud Function seedBoatLaunches (monthly cron + on-demand callable). Map layer with viewport filtering, zoom-gating, and a "Find nearest" button using geolocation. |
-| 5b — Hatch Calendar | not started | |
+| 5b — Hatch Calendar | done | 16 hatches seeded in data/hatches.json, filtered by current month + state + water-temp window. Active hatches show on each conditions card with flies + notes. Hex hatch countdown on Manistee/MI locations May 15 → June peak. |
+| 7 — PWA Polish | done | vite-plugin-pwa with auto-update SW, manifest + icons (192/512/maskable/apple-touch), runtime caches for Open-Meteo, USGS, map tiles, and photos. Firestore offline persistence enabled. **Code-split heavy features**: main entry dropped from 977 KB → 116 KB. Install prompt (beforeinstallprompt + iOS instructions) and update-available toast. |
 | 6 — Claude API | not started | |
 | 7 — PWA Polish | not started | Code-split here too — bundle is 970 KB right now |
 
@@ -104,6 +105,28 @@ moving from local mode to signed-in.
 [`src/lib/fishability.ts`](src/lib/fishability.ts) takes weather + flow +
 dam schedule and returns `good` / `fair` / `poor` / `unknown`. Used to
 color the map markers. Tunable from journal data later (Phase 6).
+
+### PWA / offline
+
+- [`vite.config.ts`](vite.config.ts) — VitePWA plugin with `registerType: 'autoUpdate'`, manifest, and **runtime caching** for the data sources that matter on a flaky cell connection:
+  - Open-Meteo + USGS Water → `NetworkFirst`, 4 s timeout, 1 h fallback
+  - OSM / OpenTopo / Esri tiles → `CacheFirst`, 30 days
+  - Firebase Storage photos → `CacheFirst`, 14 days
+- [`src/lib/firebase.ts`](src/lib/firebase.ts) — Firestore initialized with `persistentLocalCache` so locations, dam schedules, and trip data round-trip offline.
+- [`src/main.tsx`](src/main.tsx) — one-shot SW registration; emits a `pwa-need-refresh` custom event when a new build is available.
+- [`src/features/pwa/InstallPrompt.tsx`](src/features/pwa/InstallPrompt.tsx) — `beforeinstallprompt` handler for Chrome/Edge; instruction card for iOS Safari (no install API there).
+- [`src/features/pwa/UpdateAvailable.tsx`](src/features/pwa/UpdateAvailable.tsx) — toast that surfaces the SW update and reloads on tap.
+
+Code-split heavy features in [`src/App.tsx`](src/App.tsx) via `React.lazy`:
+Map (Leaflet), Journal (Storage + image compression), Spots (Locations CRUD + boat launches admin) each load only on tab change. Result: main entry **116 KB** (gz 34 KB) vs 977 KB before.
+
+### Hatches
+
+[`data/hatches.json`](data/hatches.json) — 16 hatches covering Sulfurs, BWOs (spring + fall), Hendricksons, March Browns, Caddis (Grannom + Cinnamon), Yellow Sallies, Isonychias, Tricos, Hex, White Mayflies, year-round Midges, summer terrestrials, plus stubbed Western patterns (Salmonflies, PMDs) for future expansion.
+
+- [`src/lib/hatches/store.ts`](src/lib/hatches/store.ts) — filter by current month + state + water-temp window; ranks river-match higher.
+- [`src/features/conditions/HatchSection.tsx`](src/features/conditions/HatchSection.tsx) — top 4 hatches per location, "IN WINDOW" badge when water-temp lands inside the hatch's preferred range, flies suggestion + tactical notes.
+- **Hex countdown** on Manistee/MI locations: "Hex hatch: ~25 days out" surfaces in the card from May 15 through the typical peak (June 20).
 
 ### Boat launches
 
