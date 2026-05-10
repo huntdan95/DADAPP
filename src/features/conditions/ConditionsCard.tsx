@@ -7,6 +7,7 @@ import { SolunarSection } from './SolunarSection';
 import { HatchSection } from './HatchSection';
 import { SpeciesSection } from './SpeciesSection';
 import { TidesSection } from './TidesSection';
+import { TidesSetupPrompt } from './TidesSetupPrompt';
 import { BriefingSection } from './BriefingSection';
 import { useAuth } from '@/lib/useAuth';
 import { activeHatchesForLocation } from '@/lib/hatches/store';
@@ -59,8 +60,13 @@ export function ConditionsCard({ location }: { location: Location }) {
       {dataProviders.damSchedule && (
         <DamSection provider={dataProviders.damSchedule} location={location} />
       )}
-      {dataProviders.tides && (
+      {dataProviders.tides ? (
         <TidesSection provider={dataProviders.tides} location={location} />
+      ) : (
+        // Saltwater spots saved before the tide picker existed (or saved
+        // without tapping Auto-fill) come through here. Prompt to set up
+        // a station in one tap so the rest of the section can render.
+        location.type === 'saltwater' && <TidesSetupPrompt location={location} />
       )}
       <SolunarSection location={location} />
       {showHatches && <HatchSection location={location} />}

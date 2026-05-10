@@ -60,7 +60,15 @@ async function loadStations(): Promise<RawStation[]> {
 export async function nearestTideStations(
   lat: number,
   lng: number,
-  limit = 3
+  limit = 3,
+  /**
+   * Tide predictions are only meaningful within a reasonable distance.
+   * Stations more than ~50 mi from the pin tend to lag/lead the local
+   * tide by an hour or more, which is worse than no data. Inland pins
+   * usually produce zero qualifying stations — caller can treat that
+   * as "no tides here".
+   */
+  maxDistanceMiles = 50
 ): Promise<NearbyTideStation[]> {
   const list = await loadStations();
   const ranked = list
@@ -72,6 +80,7 @@ export async function nearestTideStations(
       lng: s.lng,
       distanceMiles: distMiles({ lat, lng }, { lat: s.lat, lng: s.lng }),
     }))
+    .filter((s) => s.distanceMiles <= maxDistanceMiles)
     .sort((a, b) => a.distanceMiles - b.distanceMiles)
     .slice(0, limit);
   return ranked;

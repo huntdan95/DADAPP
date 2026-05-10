@@ -197,21 +197,24 @@ export function LocationForm({
         parts.push('no active USGS gauge within ~35 mi');
       }
 
-      // Tide stations only matter for saltwater — but pull them whenever
-      // the form is set to saltwater so the user gets a 3-way choice.
-      if (type === 'saltwater') {
-        const tides = await nearestTideStations(lat, lng, 3).catch(
-          () => [] as NearbyTideStation[]
+      // Tide stations: ALWAYS check, regardless of the type field. Many
+      // backwaters, marshes, and brackish creeks (Homosassa, Mosquito
+      // Lagoon, low-country GA, etc) are tide-driven even when the user
+      // didn't pick "saltwater" as the type. We cap the search at 50 mi
+      // so inland pins return zero stations and we stay quiet there.
+      const tides = await nearestTideStations(lat, lng, 3, 50).catch(
+        () => [] as NearbyTideStation[]
+      );
+      if (tides.length > 0) {
+        setTideOptions(tides);
+        // Auto-pick the closest station so saving without further
+        // interaction still wires up a tide provider.
+        if (!tideStationId) setTideStationId(tides[0].stationId);
+        parts.push(
+          `tide station ${tides[0].stationId} (${tides[0].distanceMiles.toFixed(1)} mi)`
         );
-        if (tides.length > 0) {
-          setTideOptions(tides);
-          setTideStationId(tides[0].stationId);
-          parts.push(
-            `tide station ${tides[0].stationId} (${tides[0].distanceMiles.toFixed(1)} mi)`
-          );
-        } else {
-          parts.push('no NOAA tide station nearby');
-        }
+      } else if (type === 'saltwater') {
+        parts.push('no NOAA tide station within 50 mi');
       }
 
       setAutoStatus(parts.length > 0 ? `Filled: ${parts.join(' · ')}` : 'Nothing found');
@@ -229,10 +232,12 @@ export function LocationForm({
 
     const flow = makeFlowProvider(flowKind, flowSiteId.trim());
     const damSchedule = makeDamProvider(damKind, damName.trim(), flowSiteId.trim());
-    const tides =
-      tideStationId.trim() && type === 'saltwater'
-        ? { kind: 'noaa' as const, stationId: tideStationId.trim() }
-        : null;
+    // Save tides whenever a station is entered, regardless of water
+    // type. Lots of brackish / tidal-creek spots aren't strictly
+    // "saltwater" but the tide is the dominant signal.
+    const tides = tideStationId.trim()
+      ? { kind: 'noaa' as const, stationId: tideStationId.trim() }
+      : null;
 
     if (flowKind && flow == null) return setError('Flow site ID is required');
     if ((damKind === 'tva' || damKind === 'consumers-energy') && !damName)
@@ -437,9 +442,16 @@ export function LocationForm({
           </div>
         )}
 
-        {type === 'saltwater' && (
+        {(type === 'saltwater' || tideOptions.length > 0) && (
           <div className="mt-3">
-            <Field label="NOAA tide station ID">
+            <Field
+              label="NOAA tide station ID"
+              hint={
+                type !== 'saltwater'
+                  ? 'Coast is close enough that tide info is meaningful — pick a station or clear to skip'
+                  : undefined
+              }
+            >
               <Input
                 value={tideStationId}
                 onChange={(e) => setTideStationId(e.target.value)}
