@@ -66,6 +66,10 @@ STRUCTURE:
   Sentence 2: What's most likely to work and when.
   Sentence 3: A concrete tactical recommendation (fly/lure/depth/window).
 
+WEB SEARCH: You have a web_search tool. Use it ONCE per briefing, and only when the user's spot is a named, well-known fishery (e.g. Caney Fork below Center Hill, South Holston, Big Manistee below Tippy). Search for recent angler reports / hatch reports / fishing report posts from the last 2 weeks at that specific spot. If the search returns useful local intel (a specific fly working, a hatch coming off, a flow change anglers are reacting to), weave it into the second or third sentence as a concrete recommendation. If the search returns nothing useful, just write the briefing from the data provided — do not mention that the search failed.
+
+Do NOT search for: generic weather, generic fishing tips, anything you can already answer from the structured data provided below.
+
 FISHING HEURISTICS:
 
 Pressure:
@@ -135,7 +139,10 @@ export const briefing = onCall(
 
     const response = await anthropic().messages.create({
       model: MODELS.briefing,
-      max_tokens: 300,
+      // Search results land in the message stream as web-search blocks
+      // which can push the model past 300 output tokens before it gets
+      // to the actual prose. Bump the ceiling.
+      max_tokens: 1200,
       system: [
         {
           type: 'text',
@@ -143,6 +150,10 @@ export const briefing = onCall(
           cache_control: { type: 'ephemeral' },
         },
       ],
+      // Server-side web search. Free + integrated; Anthropic runs the
+      // query, returns sources, and Claude weaves the findings into the
+      // briefing if useful.
+      tools: [{ type: 'web_search_20260209', name: 'web_search' }],
       messages: [{ role: 'user', content: userMessage }],
     });
 

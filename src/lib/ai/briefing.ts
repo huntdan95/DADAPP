@@ -46,7 +46,67 @@ interface BriefingInput {
   }>;
 }
 
-/** Builds the request body and calls the Cloud Function. */
+// ---- client-side cache -----------------------------------------------------
+//
+// One briefing per spot per day. Conditions inside that window don't shift
+// enough to justify another Claude call (and the daily-cap server-side
+// would block excess attempts anyway). Cache key includes the local date in
+// the spot's timezone so a spot in TN rolls over at midnight TN-time.
+
+interface CacheEntry {
+  briefing: string;
+  cachedAt: number;
+}
+
+function cacheKey(locationId: string, dateYMD: string): string {
+  return `dad-fishing.briefing.v1.${locationId}.${dateYMD}`;
+}
+
+function todayYMD(timezone: string): string {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: timezone }).format(
+    new Date()
+  );
+}
+
+export function readCachedBriefing(location: Location): string | null {
+  try {
+    const raw = localStorage.getItem(
+      cacheKey(location.id, todayYMD(location.timezone))
+    );
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as CacheEntry;
+    return parsed?.briefing ?? null;
+  } catch {
+    return null;
+  }
+}
+
+function writeCachedBriefing(location: Location, briefing: string): void {
+  try {
+    localStorage.setItem(
+      cacheKey(location.id, todayYMD(location.timezone)),
+      JSON.stringify({ briefing, cachedAt: Date.now() })
+    );
+  } catch {
+    // quota — ignore
+  }
+}
+
+export function invalidateBriefingCache(location: Location): void {
+  try {
+    localStorage.removeItem(
+      cacheKey(location.id, todayYMD(location.timezone))
+    );
+  } catch {
+    // ignore
+  }
+}
+
+/**
+ * Builds the request body, hits the Cloud Function, and caches the result
+ * for the rest of the day at this spot. Pass `force: true` to bypass the
+ * cache (used by the "Ask again" button).
+ */
 export async function fetchBriefing(args: {
   location: Location;
   weather: WeatherReading;
@@ -56,10 +116,16 @@ export async function fetchBriefing(args: {
   damCurrentStatus?: string;
   activeHatches: Hatch[];
   recentCatches: Catch[];
+  force?: boolean;
 }): Promise<BriefingResponse> {
   const { location, weather, flow, damSchedule, activeHatches, recentCatches } = args;
-  const now = Date.now();
 
+  if (!args.force) {
+    const cached = readCachedBriefing(location);
+    if (cached) return { briefing: cached };
+  }
+
+  const now = Date.now();
   const req: BriefingInput = {
     locationName: location.name,
     waterType: location.type,
@@ -101,5 +167,7 @@ export async function fetchBriefing(args: {
     })),
   };
 
-  return _call(req);
+  const res = await _call(req);
+  writeCachedBriefing(location, res.briefing);
+  return res;
 }

@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Loader2, Sparkles } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Loader2, Sparkles, RefreshCcw } from 'lucide-react';
 import { collection, getDocs, getFirestore, limit as fsLimit, orderBy, query, where } from 'firebase/firestore';
 import { CardSection } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -8,7 +8,11 @@ import { fetchWeather, fetchFlow, fetchDamSchedule } from '@/lib/providers';
 import { activeHatchesForLocation } from '@/lib/hatches/store';
 import type { Catch } from '@/lib/journal/types';
 import type { LogEntry } from '@/lib/log/types';
-import { fetchBriefing } from '@/lib/ai/briefing';
+import {
+  fetchBriefing,
+  invalidateBriefingCache,
+  readCachedBriefing,
+} from '@/lib/ai/briefing';
 import { friendlyError } from '@/lib/errors';
 import { getFirebaseApp, getFirebaseAuth } from '@/lib/firebase';
 import {
@@ -26,11 +30,22 @@ export function BriefingSection({ location }: { location: Location }) {
   const [briefing, setBriefing] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [fromCache, setFromCache] = useState(false);
 
-  async function generate() {
+  // On location switch / mount, surface the cached briefing if we have one
+  // so the user sees it instantly without paying for another AI call.
+  useEffect(() => {
+    const cached = readCachedBriefing(location);
+    setBriefing(cached);
+    setFromCache(Boolean(cached));
+    setError(null);
+  }, [location]);
+
+  async function generate(opts: { force?: boolean } = {}) {
     setLoading(true);
     setError(null);
     try {
+      if (opts.force) invalidateBriefingCache(location);
       const [weather, flow, damSchedule] = await Promise.all([
         fetchWeather(location.dataProviders.weather, location),
         location.dataProviders.flow
@@ -79,8 +94,10 @@ export function BriefingSection({ location }: { location: Location }) {
         damNextChange: null,
         activeHatches: hatches,
         recentCatches,
+        force: opts.force,
       });
       setBriefing(res.briefing);
+      setFromCache(false);
     } catch (e) {
       setError(friendlyError(e));
     } finally {
@@ -93,18 +110,30 @@ export function BriefingSection({ location }: { location: Location }) {
       {briefing ? (
         <div className="rounded-xl bg-accent/5 border border-accent/30 p-3">
           <div className="text-sm whitespace-pre-wrap">{briefing}</div>
-          <button
-            type="button"
-            onClick={generate}
-            disabled={loading}
-            className="text-xs text-muted hover:text-text mt-2 underline"
-          >
-            Ask again
-          </button>
+          <div className="flex items-center gap-3 mt-2">
+            <button
+              type="button"
+              onClick={() => generate({ force: true })}
+              disabled={loading}
+              className="inline-flex items-center gap-1 text-xs text-muted hover:text-text underline"
+            >
+              {loading ? (
+                <Loader2 className="w-3 h-3 animate-spin" />
+              ) : (
+                <RefreshCcw className="w-3 h-3" />
+              )}
+              {loading ? 'Asking…' : 'Refresh'}
+            </button>
+            {fromCache && (
+              <span className="text-[10px] text-muted">
+                Today's briefing (cached)
+              </span>
+            )}
+          </div>
         </div>
       ) : (
         <div className="flex items-center gap-2">
-          <Button onClick={generate} disabled={loading} size="sm">
+          <Button onClick={() => generate()} disabled={loading} size="sm">
             {loading ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -118,7 +147,7 @@ export function BriefingSection({ location }: { location: Location }) {
             )}
           </Button>
           <span className="text-xs text-muted">
-            Quick read on today, written by Claude
+            Pulls weather + recent local angler reports
           </span>
         </div>
       )}
