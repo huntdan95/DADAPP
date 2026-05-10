@@ -1,0 +1,78 @@
+/**
+ * Dispatcher layer. UI calls fetchWeather/fetchFlow/etc with the provider
+ * declared on the Location; the dispatcher routes to the right
+ * implementation. To add a new provider kind: extend the union in types.ts,
+ * implement the module under the matching subfolder, and add a case here.
+ */
+
+import type {
+  DamScheduleProvider,
+  DamScheduleReading,
+  FlowProvider,
+  FlowReading,
+  Location,
+  TidesProvider,
+  TidesReading,
+  WeatherProvider,
+  WeatherReading,
+} from './types';
+
+import { openMeteoFetchWeather } from './weather/openMeteo';
+import { usgsFetchFlow } from './flow/usgs';
+import { envCanadaFetchFlow } from './flow/envCanada';
+import { ukEaFetchFlow } from './flow/ukEa';
+import { tvaFetchSchedule } from './damSchedule/tva';
+import { usaceFetchSchedule } from './damSchedule/usace';
+import { consumersEnergyFetchSchedule } from './damSchedule/consumersEnergy';
+import { manualFetchSchedule } from './damSchedule/manual';
+import { noaaFetchTides } from './tides/noaa';
+
+export function fetchWeather(
+  provider: WeatherProvider,
+  location: Location
+): Promise<WeatherReading> {
+  switch (provider.kind) {
+    case 'open-meteo':
+      return openMeteoFetchWeather(location);
+  }
+}
+
+export function fetchFlow(provider: FlowProvider): Promise<FlowReading> {
+  switch (provider.kind) {
+    case 'usgs':
+      return usgsFetchFlow(provider.siteId);
+    case 'env-canada':
+      return envCanadaFetchFlow(provider.stationId);
+    case 'uk-ea':
+      return ukEaFetchFlow(provider.stationRef);
+  }
+}
+
+export function fetchDamSchedule(
+  provider: DamScheduleProvider
+): Promise<DamScheduleReading> {
+  switch (provider.kind) {
+    case 'tva':
+      return tvaFetchSchedule(provider.dam);
+    case 'usace':
+      return usaceFetchSchedule(provider.district, provider.project);
+    case 'consumers-energy':
+      return consumersEnergyFetchSchedule(provider.dam);
+    case 'manual':
+      return manualFetchSchedule();
+  }
+}
+
+export function fetchTides(provider: TidesProvider): Promise<TidesReading> {
+  switch (provider.kind) {
+    case 'noaa':
+      return noaaFetchTides(provider.stationId);
+  }
+}
+
+export type {
+  WeatherReading,
+  FlowReading,
+  DamScheduleReading,
+  TidesReading,
+} from './types';

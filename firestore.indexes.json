@@ -1,0 +1,28 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "catches",
+      "queryScope": "COLLECTION_GROUP",
+      "fields": [
+        { "fieldPath": "locationId", "order": "ASCENDING" },
+        { "fieldPath": "time", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "catches",
+      "queryScope": "COLLECTION_GROUP",
+      "fields": [
+        { "fieldPath": "species", "order": "ASCENDING" },
+        { "fieldPath": "time", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "trips",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "date", "order": "DESCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
