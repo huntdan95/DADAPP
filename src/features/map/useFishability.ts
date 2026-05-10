@@ -28,7 +28,9 @@ export function useFishability(location: Location): {
           ? fetchFlow(location.dataProviders.flow).catch(() => undefined)
           : Promise.resolve(undefined),
         location.dataProviders.damSchedule
-          ? fetchDamSchedule(location.dataProviders.damSchedule).catch(() => undefined)
+          ? fetchDamSchedule(location.dataProviders.damSchedule, location).catch(
+              () => undefined
+            )
           : Promise.resolve(undefined),
       ]);
       if (cancelled) return;

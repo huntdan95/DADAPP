@@ -1,16 +1,39 @@
-import type { DamScheduleReading } from '../types';
+import type { DamScheduleReading, Location } from '../types';
+import {
+  damScheduleKey,
+  emptyHourly,
+  readDamSchedule,
+  todayLocalDate,
+} from '@/lib/damSchedule/store';
 
 /**
- * Phase 4 will replace this with a Firestore read populated by the scrapeTva
- * Cloud Function. Until then, we surface a neutral "schedule not yet wired"
- * placeholder so the UI section renders without breaking.
+ * Reads today's TVA generation schedule from Firestore. Phase 4 ships
+ * with manual entry as the primary path (TVA's site is Cloudflare-gated,
+ * so the scraper Cloud Function is a stub). The shape is the same
+ * either way — the source field reflects how the doc got there.
  */
-export async function tvaFetchSchedule(dam: string): Promise<DamScheduleReading> {
+export async function tvaFetchSchedule(
+  dam: string,
+  location: Location
+): Promise<DamScheduleReading> {
+  const date = todayLocalDate(location.timezone);
+  const key = damScheduleKey({ kind: 'tva', dam }, date);
+  const docu = await readDamSchedule(key);
+  if (!docu) {
+    return {
+      damName: dam,
+      authority: 'tva',
+      date,
+      hourlyUnits: emptyHourly(),
+      source: 'no schedule entered yet',
+    };
+  }
   return {
-    damName: dam,
+    damName: docu.damName,
     authority: 'tva',
-    date: new Date().toISOString().slice(0, 10),
-    hourlyUnits: Array.from({ length: 24 }, () => null),
-    source: 'pending Phase 4 (TVA scraper Cloud Function)',
+    date: docu.date,
+    hourlyUnits: docu.hourlyUnits,
+    source: docu.source === 'scraped' ? 'TVA scrape' : 'manual entry',
+    scrapedAt: docu.updatedAt?.toDate().toISOString(),
   };
 }

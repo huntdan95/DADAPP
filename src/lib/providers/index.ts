@@ -49,17 +49,18 @@ export function fetchFlow(provider: FlowProvider): Promise<FlowReading> {
 }
 
 export function fetchDamSchedule(
-  provider: DamScheduleProvider
+  provider: DamScheduleProvider,
+  location: Location
 ): Promise<DamScheduleReading> {
   switch (provider.kind) {
     case 'tva':
-      return tvaFetchSchedule(provider.dam);
+      return tvaFetchSchedule(provider.dam, location);
     case 'usace':
-      return usaceFetchSchedule(provider.district, provider.project);
+      return usaceFetchSchedule(provider.district, provider.project, location);
     case 'consumers-energy':
-      return consumersEnergyFetchSchedule(provider.dam);
+      return consumersEnergyFetchSchedule(provider.dam, location);
     case 'manual':
-      return manualFetchSchedule();
+      return manualFetchSchedule(location);
   }
 }
 

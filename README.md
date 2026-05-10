@@ -12,7 +12,7 @@ Greenfield build following the plan at
 | 1 — Single-Location Dashboard | done | Provider pattern wired; live Open-Meteo + USGS data |
 | 2 — Multi-Location + Map | done | localStorage / Firestore auto-pick, react-leaflet, basemap toggle, fishability-colored markers |
 | 3 — Journal MVP | done | Trip + Catch with **trolling support** (depth/speed), photo upload, conditions snapshot per catch, Firebase Auth (Google sign-in) gate |
-| 4 — TVA Dam Integration | not started | Cloud Function scraper + manual fallback |
+| 4 — Dam Schedule | done (manual-first) | TVA's site is now Cloudflare-bot-protected. Scraper Cloud Function shipped as a stub; manual entry is primary. Tap-to-cycle hourly grid, presets, "next change at X", staleness warnings. |
 | 5 — Hatch Calendar | not started | |
 | 6 — Claude API | not started | |
 | 7 — PWA Polish | not started | Code-split here too — bundle is 970 KB right now |
@@ -82,6 +82,22 @@ moving from local mode to signed-in.
 [`src/lib/fishability.ts`](src/lib/fishability.ts) takes weather + flow +
 dam schedule and returns `good` / `fair` / `poor` / `unknown`. Used to
 color the map markers. Tunable from journal data later (Phase 6).
+
+### Dam schedule
+
+Per the plan, generation schedules drive a colored hourly bar on tailwater
+locations. **TVA's lake-info pages are now behind Cloudflare bot
+protection** — direct HTTP fetches return 403, and the data-loading JS
+fails the same way. A scraper Cloud Function would need a headless browser
+(Playwright + Chromium layer, ~200 MB deploy + 2–5 s cold start) which
+isn't worth the complexity for a one-user app.
+
+So Phase 4 ships **manual entry as the primary path**:
+
+- [`features/damSchedule/DamScheduleEditor.tsx`](src/features/damSchedule/DamScheduleEditor.tsx) — tap-to-cycle hourly grid with quick presets (off all day, midday gen, evening gen).
+- [`features/conditions/DamSection.tsx`](src/features/conditions/DamSection.tsx) — colored hourly bar with current-hour ring, "Generation starts at 2 PM" computed from the grid, staleness warning if the schedule is over 36 h old.
+- [`lib/damSchedule/store.ts`](src/lib/damSchedule/store.ts) — Firestore writes/reads keyed `{authority}__{dam-slug}__YYYY-MM-DD` per the plan's data model.
+- [`functions/src/scrapers/tva.ts`](functions/src/scrapers/tva.ts) — scheduled-trigger stub with a documented path to add Playwright later. To enable: `cd functions && npm install playwright-core @sparticuz/chromium`, fill in the scraper, `firebase deploy --only functions`.
 
 ### Journal (Trip + Catch)
 

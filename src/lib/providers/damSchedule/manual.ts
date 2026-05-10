@@ -1,12 +1,33 @@
-import type { DamScheduleReading } from '../types';
+import type { DamScheduleReading, Location } from '../types';
+import {
+  damScheduleKey,
+  emptyHourly,
+  readDamSchedule,
+  todayLocalDate,
+} from '@/lib/damSchedule/store';
 
-/** Manual-entry path: Phase 2 will let dad type in a schedule when no scraper exists. */
-export async function manualFetchSchedule(): Promise<DamScheduleReading> {
+/** Manual-entry path: dad types the schedule when no scraper exists. */
+export async function manualFetchSchedule(
+  location: Location
+): Promise<DamScheduleReading> {
+  const date = todayLocalDate(location.timezone);
+  const key = damScheduleKey({ kind: 'manual' }, date);
+  const docu = await readDamSchedule(key);
+  if (!docu) {
+    return {
+      damName: 'manual',
+      authority: 'manual',
+      date,
+      hourlyUnits: emptyHourly(),
+      source: 'no schedule entered yet',
+    };
+  }
   return {
-    damName: 'manual',
+    damName: docu.damName,
     authority: 'manual',
-    date: new Date().toISOString().slice(0, 10),
-    hourlyUnits: Array.from({ length: 24 }, () => null),
-    source: 'manual entry — not yet provided',
+    date: docu.date,
+    hourlyUnits: docu.hourlyUnits,
+    source: 'manual entry',
+    scrapedAt: docu.updatedAt?.toDate().toISOString(),
   };
 }

@@ -1,11 +1,37 @@
-import type { DamScheduleReading } from '../types';
+import type { DamScheduleReading, Location } from '../types';
+import {
+  damScheduleKey,
+  emptyHourly,
+  readDamSchedule,
+  todayLocalDate,
+} from '@/lib/damSchedule/store';
 
-// TODO: Implement when first USACE-administered water is added. Each Corps
-// district has its own URL pattern; one scraper module per district lives in
-// functions/src/scrapers/.
+// USACE has no scraper yet. Reads any manually-entered schedule from
+// Firestore for the (district, project) key. Implementation pattern: one
+// scraper module per district, write to the same damSchedules collection.
 export async function usaceFetchSchedule(
-  _district: string,
-  _project: string
+  district: string,
+  project: string,
+  location: Location
 ): Promise<DamScheduleReading> {
-  throw new Error('usace dam schedule provider not yet implemented');
+  const date = todayLocalDate(location.timezone);
+  const key = damScheduleKey({ kind: 'usace', district, project }, date);
+  const docu = await readDamSchedule(key);
+  if (!docu) {
+    return {
+      damName: project,
+      authority: 'usace',
+      date,
+      hourlyUnits: emptyHourly(),
+      source: 'no scraper yet — enter manually',
+    };
+  }
+  return {
+    damName: docu.damName,
+    authority: 'usace',
+    date: docu.date,
+    hourlyUnits: docu.hourlyUnits,
+    source: 'manual entry',
+    scrapedAt: docu.updatedAt?.toDate().toISOString(),
+  };
 }
