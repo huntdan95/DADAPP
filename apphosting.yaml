@@ -1,0 +1,44 @@
+# Firebase App Hosting config.
+# Vite + React static SPA; App Hosting will run `npm run build` and serve
+# `dist/` via Cloud Run. Set Firebase env vars in the App Hosting backend
+# config (Firebase Console → App Hosting → Settings → Environment) so they
+# bake into the built bundle. They are NOT secret — Firebase web config
+# values are public by design — but keeping them in the backend config is
+# cleaner than committing them.
+
+runConfig:
+  cpu: 1
+  memoryMiB: 512
+  maxInstances: 1
+  minInstances: 0
+  concurrency: 80
+
+env:
+  - variable: VITE_FIREBASE_API_KEY
+    value: AIzaSyD7Mm1Quh9ekXG8Udm4n9AqXW1mMc8EuRg
+    availability:
+      - BUILD
+  - variable: VITE_FIREBASE_AUTH_DOMAIN
+    value: dadapp-2cef8.firebaseapp.com
+    availability:
+      - BUILD
+  - variable: VITE_FIREBASE_PROJECT_ID
+    value: dadapp-2cef8
+    availability:
+      - BUILD
+  - variable: VITE_FIREBASE_STORAGE_BUCKET
+    value: dadapp-2cef8.firebasestorage.app
+    availability:
+      - BUILD
+  - variable: VITE_FIREBASE_MESSAGING_SENDER_ID
+    value: "842751191582"
+    availability:
+      - BUILD
+  - variable: VITE_FIREBASE_APP_ID
+    value: 1:842751191582:web:cca838f9d1dc4e28ccdc0f
+    availability:
+      - BUILD
+  - variable: VITE_FIREBASE_MEASUREMENT_ID
+    value: G-M5RZCK5ZEJ
+    availability:
+      - BUILD

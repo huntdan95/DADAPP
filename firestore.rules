@@ -1,11 +1,13 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Single-user gate. Replace 'dad@example.com' with the real email
-    // before deploy. Auth approach picked per plan §16: Firebase Auth.
+    // SINGLE-USER GATE.
+    // Currently allows any signed-in Google account because we don't yet
+    // know dad's exact email. After his first sign-in, replace the rule
+    // below with:
+    //   allow read, write: if request.auth.token.email == 'dad@example.com';
     match /{document=**} {
-      allow read, write: if request.auth != null
-        && request.auth.token.email == 'dad@example.com';
+      allow read, write: if request.auth != null;
     }
   }
 }

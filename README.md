@@ -9,13 +9,13 @@ Greenfield build following the plan at
 | Phase | State | Notes |
 |---|---|---|
 | 0 — Foundation | done | Vite + React + TS + Tailwind dark mode + UI primitives |
-| 1 — Single-Location Dashboard | done | Provider pattern wired; live Open-Meteo + USGS data for 4 seed locations |
-| 2 — Multi-Location + Map | not started | Firestore + react-leaflet next |
-| 3 — Journal MVP | not started | |
+| 1 — Single-Location Dashboard | done | Provider pattern wired; live Open-Meteo + USGS data |
+| 2 — Multi-Location + Map | done | localStorage / Firestore auto-pick, react-leaflet, basemap toggle, fishability-colored markers |
+| 3 — Journal MVP | done | Trip + Catch with **trolling support** (depth/speed), photo upload, conditions snapshot per catch, Firebase Auth (Google sign-in) gate |
 | 4 — TVA Dam Integration | not started | Cloud Function scraper + manual fallback |
 | 5 — Hatch Calendar | not started | |
 | 6 — Claude API | not started | |
-| 7 — PWA Polish | not started | |
+| 7 — PWA Polish | not started | Code-split here too — bundle is 970 KB right now |
 
 ## Run locally
 
@@ -24,84 +24,111 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:5173`. No Firebase config required — Phase 1 only
-hits Open-Meteo and USGS, both free + keyless.
+Open `http://localhost:5173`. With Firebase env vars set in `.env.local`,
+the app gates behind a Google sign-in screen and uses Firestore for
+locations + trips. Without those vars, it runs in **local mode**:
+locations live in localStorage and the journal feature is disabled.
 
 ```
-npm run build       # production build
-npm run lint        # tsc -b --noEmit (typecheck only)
+npm run build    # production build
+npm run lint     # tsc -b --noEmit (typecheck only)
 ```
 
-## Architecture (one-paragraph version)
+## Firebase project
+
+Connected to `dadapp-2cef8` via [`.env.local`](.env.local) (gitignored)
+and [`apphosting.yaml`](apphosting.yaml) (committed; values are non-secret).
+
+**Enabled in console:** Authentication (Google provider), Firestore,
+App Hosting.
+
+**Still needed for full feature parity:**
+- **Firebase Storage** — required for catch photos. Without it, catches
+  log fine but photos silently fall through.
+- **Lock down Firestore + Storage rules** — they currently allow any
+  signed-in account because we don't yet know dad's exact email. After
+  the first sign-in, replace `request.auth != null` in
+  [`firestore.rules`](firestore.rules) and [`storage.rules`](storage.rules)
+  with `request.auth.token.email == 'dad@example.com'` and redeploy.
+
+## Architecture
+
+### Provider pattern (data sources)
 
 Each `Location` declares which **data providers** apply to it
 (`weather`, `flow`, `damSchedule`, `tides`, `lakeData`). The
 `<ConditionsCard>` composition renders only the sections whose providers
 exist on the location — there is **no state-specific or water-type
-branching anywhere in the UI**. Adding a new region or water type means:
-extend the provider union in [`src/lib/providers/types.ts`](src/lib/providers/types.ts),
-implement a fetch in the matching subfolder, add one switch case in
-[`src/lib/providers/index.ts`](src/lib/providers/index.ts). Done. See
-§6 + §12 of the plan.
+branching anywhere in the UI**. To add a new region or water type:
+extend the union in [`src/lib/providers/types.ts`](src/lib/providers/types.ts),
+implement a fetch in the matching subfolder, and add one switch case in
+[`src/lib/providers/index.ts`](src/lib/providers/index.ts). Done.
+
+### LocationStore (persistence)
+
+[`src/lib/store/`](src/lib/store/) abstracts persistence behind a single
+interface. Implementations:
+- **`localStorage.ts`** — works without Firebase; pre-seeds with the 4
+  primary spots.
+- **`firestore.ts`** — real-time `onSnapshot` reads/writes; auto-seeds
+  the 4 primary spots on first sign-in if the collection is empty.
+
+Auto-pick happens in [`src/lib/store/index.ts`](src/lib/store/index.ts)
+based on whether `getFirebaseApp()` returns. No code change needed when
+moving from local mode to signed-in.
+
+### Fishability scorer
+
+[`src/lib/fishability.ts`](src/lib/fishability.ts) takes weather + flow +
+dam schedule and returns `good` / `fair` / `poor` / `unknown`. Used to
+color the map markers. Tunable from journal data later (Phase 6).
+
+### Journal (Trip + Catch)
+
+[`src/lib/journal/`](src/lib/journal/) defines the schema and Firestore
+operations. Catch entries auto-snapshot conditions
+([`snapshot.ts`](src/lib/journal/snapshot.ts)) so the original numbers
+survive even if the upstream data sources change.
+
+**Trolling support:** every catch declares a
+`method: 'fly' | 'cast' | 'troll' | 'jig' | 'other'`. When method is
+`troll`, the form unlocks:
+- `trollingDepthFt` (required)
+- `trollingSpeedMph` (optional)
+
+These get stored on the catch document and surface in the trip detail
+timeline. Pattern-insights (Phase 6) will be able to query by method +
+depth + species + conditions.
 
 ## Deviations from the original plan (Phase 1 verification fixes)
 
-The plan's §16 flagged that gauge IDs needed verification. Hitting the
-live USGS API surfaced these issues — corrected in
-[`src/seedLocations.ts`](src/seedLocations.ts):
-
-| Location | Plan's site ID | Issue | Replaced with |
-|---|---|---|---|
-| Caney Fork at Happy Hollow | `03418500` | returns no data (discontinued) | `03424860` (Caney Fork at Stonewall) |
-| South Holston at Webb Bridge | `03488000` | wrong river (N F Holston in VA) | flow provider removed; rely on TVA dam schedule (Phase 4) |
-| Upper Manistee near Sherman | `04124500` | wrong river (East Branch Pine River) | `04124000` (Manistee River near Sherman, MI) |
-| Big Manistee below Tippy | `04125550` | correct ✓ | unchanged |
-
-Note on **TN tailwater water temperature**: no active TN tailwater USGS
-gauge publishes water temperature on the IV API. That signal will come
-from TVA in Phase 4 (the same scraper that produces the generation
-schedule typically also exposes tailwater temp). Until then, Caney Fork's
-"Water" stat displays `—`.
-
-Auth approach: per plan §16#1, going with **Firebase Auth** when Phase 2
-lands. [`firestore.rules`](firestore.rules) is already written assuming
-that — replace `dad@example.com` with the real account email before
-deploying.
-
-## What's already on disk for later phases
-
-- `firebase.json` / `firestore.rules` / `firestore.indexes.json` /
-  `storage.rules` — Phase 2/3/4 ready
-- Stub provider modules under `src/lib/providers/{flow,damSchedule,tides}/`
-  with TODOs and target endpoints — these are Phase 4+ work but the
-  dispatcher already routes to them
-- `.env.local.example` — Firebase vars to fill once the project exists
-
-## Dad's setup checklist (when you're ready)
-
-1. Create the Firebase project at https://console.firebase.google.com
-2. Enable Hosting, Firestore, Storage, Functions, Authentication
-3. Upgrade to **Blaze** plan, set a $5/month budget alert
-4. Create one Auth user with dad's email
-5. Edit [`firestore.rules`](firestore.rules) and
-   [`storage.rules`](storage.rules) — replace `dad@example.com`
-6. Copy `.env.local.example` → `.env.local`, fill in the Firebase web
-   config values
-7. `firebase login` then `firebase deploy --only hosting` to confirm the
-   pipeline
+USGS gauge IDs from the plan needed fixing — see commit history. Summary
+in [`src/seedLocations.ts`](src/seedLocations.ts) inline comments. No TN
+tailwater USGS gauge publishes water temperature; that signal will come
+from TVA in Phase 4.
 
 ## Project layout
 
 ```
 src/
-  components/ui/         # Button, Card, StatBlock — shadcn-style
-  features/conditions/   # WeatherSection, FlowSection, DamSection, etc.
+  components/ui/         # Button, Card, StatBlock, Input, BottomSheet, BottomNav
+  features/
+    auth/                # SignInScreen
+    conditions/          # WeatherSection, FlowSection, DamSection, …
+    locations/           # LocationsList, LocationForm (with map pin drop)
+    map/                 # MapView, MapMarker, basemaps, fishMarker
+    journal/             # Journal, StartTripForm, CatchForm, TripDetail
   lib/
     providers/           # Pluggable data sources — read types.ts first
+    store/               # LocationStore (localStorage + firestore)
+    journal/             # Trip + Catch types, store, conditions snapshot
     solunar.ts           # Sunrise/sunset/moon via suncalc
-    firebase.ts          # Lazy init — does not crash if env unset
+    fishability.ts       # Marker scorer
+    firebase.ts          # Lazy init + Google sign-in helpers
+    useAuth.ts           # Reactive auth-state hook
     utils.ts             # cn(), celsiusToF, formatRelativeTime
-  seedLocations.ts       # Phase 1 hardcoded; Phase 2 moves to Firestore
-  App.tsx                # Renders one ConditionsCard per location
-firestore.rules / storage.rules / firebase.json   # ready for Phase 2+
+  seedLocations.ts       # 4 primary spots, auto-seeded on first run
+  App.tsx                # Auth gate + bottom-tab nav (Conditions/Map/Spots/Trips)
+firestore.rules / storage.rules / firebase.json   # ready to deploy
+apphosting.yaml          # Firebase App Hosting (Cloud Run-backed)
 ```

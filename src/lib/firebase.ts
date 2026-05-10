@@ -1,9 +1,19 @@
 import { initializeApp, getApps, type FirebaseApp } from 'firebase/app';
+import {
+  getAuth,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithPopup,
+  signOut,
+  type Auth,
+  type User,
+} from 'firebase/auth';
+import { getAnalytics, isSupported as analyticsSupported } from 'firebase/analytics';
 
 /**
- * Firebase client init. Phase 1 doesn't actually use Firebase — the dashboard
- * works without these env vars. Phase 2 wires up Firestore for locations
- * and trips. We initialize lazily so missing env vars don't crash dev.
+ * Firebase client init. The app is single-user; Google auth is the gate.
+ * Firestore rules currently allow any signed-in user — once dad signs in
+ * for the first time, lock those rules to his exact email.
  */
 const config = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -12,17 +22,50 @@ const config = {
   storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
-let cached: FirebaseApp | null = null;
+let cachedApp: FirebaseApp | null = null;
 
 export function getFirebaseApp(): FirebaseApp | null {
   if (!config.apiKey || !config.projectId) return null;
-  if (cached) return cached;
+  if (cachedApp) return cachedApp;
   if (getApps().length > 0) {
-    cached = getApps()[0];
-    return cached;
+    cachedApp = getApps()[0];
+  } else {
+    cachedApp = initializeApp(config);
+    // Best-effort analytics init; not all browsers support it (e.g. webviews).
+    analyticsSupported().then((ok) => {
+      if (ok && cachedApp) getAnalytics(cachedApp);
+    });
   }
-  cached = initializeApp(config);
-  return cached;
+  return cachedApp;
+}
+
+export function getFirebaseAuth(): Auth | null {
+  const app = getFirebaseApp();
+  if (!app) return null;
+  return getAuth(app);
+}
+
+export async function signInWithGoogle(): Promise<User> {
+  const auth = getFirebaseAuth();
+  if (!auth) throw new Error('Firebase not configured');
+  const provider = new GoogleAuthProvider();
+  const result = await signInWithPopup(auth, provider);
+  return result.user;
+}
+
+export async function signOutCurrent(): Promise<void> {
+  const auth = getFirebaseAuth();
+  if (auth) await signOut(auth);
+}
+
+export function watchAuth(cb: (user: User | null) => void): () => void {
+  const auth = getFirebaseAuth();
+  if (!auth) {
+    cb(null);
+    return () => {};
+  }
+  return onAuthStateChanged(auth, cb);
 }
