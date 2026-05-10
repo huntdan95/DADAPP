@@ -47,6 +47,7 @@ export const parseJournal = onCall(
     memory: '256MiB',
     timeoutSeconds: 30,
     secrets: [anthropicApiKey],
+    invoker: 'public',
   },
   async (request) => {
     const uid = requireAuth(request.auth?.uid);

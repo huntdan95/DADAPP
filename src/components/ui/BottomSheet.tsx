@@ -1,10 +1,15 @@
 import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 /**
  * Native-feeling bottom sheet. No radix dependency — animates with CSS
  * transitions. Backdrop click + escape close. Body scroll-lock while open.
+ *
+ * Renders through a Portal to document.body so it always overlays the
+ * page regardless of which stacking context (e.g. the Leaflet map) the
+ * caller renders us inside.
  */
 export function BottomSheet({
   open,
@@ -33,10 +38,12 @@ export function BottomSheet({
     };
   }, [open, onClose]);
 
-  return (
+  if (typeof document === 'undefined') return null;
+
+  const tree = (
     <div
       className={cn(
-        'fixed inset-0 z-40 transition-opacity',
+        'fixed inset-0 z-[9999] transition-opacity',
         open ? 'opacity-100' : 'pointer-events-none opacity-0'
       )}
       aria-hidden={!open}
@@ -77,4 +84,6 @@ export function BottomSheet({
       </div>
     </div>
   );
+
+  return createPortal(tree, document.body);
 }

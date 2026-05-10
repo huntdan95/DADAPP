@@ -154,7 +154,10 @@ export function MapView({ locations }: { locations: Location[] }) {
   );
 
   return (
-    <div className="relative flex-1 min-h-[300px] rounded-2xl overflow-hidden border border-border">
+    // Explicit height instead of relying on flex-1 chain. Subtracts a
+    // generous buffer for: header (~57px) + bottom nav (~60px) + iOS
+    // home-indicator safe-area (~34px) + main vertical padding (~32px).
+    <div className="relative w-full h-[calc(100dvh-12rem-env(safe-area-inset-bottom))] min-h-[260px] rounded-2xl overflow-hidden border border-border">
       <MapContainer
         center={center}
         zoom={5}

@@ -205,11 +205,7 @@ export default function App() {
 
         {tab === 'map' && (
           <Suspense fallback={<TabFallback />}>
-            {/* Map needs a flex parent so it can grow into the available space
-                rather than overflowing the viewport. */}
-            <div className="flex-1 flex flex-col min-h-0">
-              <MapView locations={locations} />
-            </div>
+            <MapView locations={locations} />
           </Suspense>
         )}
 

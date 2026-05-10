@@ -83,6 +83,7 @@ export const patterns = onCall(
     memory: '512MiB',
     timeoutSeconds: 60,
     secrets: [anthropicApiKey],
+    invoker: 'public',
   },
   async (request) => {
     const uid = requireAuth(request.auth?.uid);

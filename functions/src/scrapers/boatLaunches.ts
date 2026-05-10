@@ -142,6 +142,7 @@ export const seedBoatLaunchesCallable = onCall(
     region: 'us-central1',
     memory: '512MiB',
     timeoutSeconds: 540,
+    invoker: 'public',
   },
   async (request) => {
     if (!request.auth) {

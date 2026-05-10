@@ -116,6 +116,10 @@ export const briefing = onCall(
     memory: '256MiB',
     timeoutSeconds: 30,
     secrets: [anthropicApiKey],
+    // Firebase auth is checked inside the handler (requireAuth). At the
+    // Cloud Run layer we need allUsers to have run.invoker or the request
+    // never reaches our code.
+    invoker: 'public',
   },
   async (request) => {
     const uid = requireAuth(request.auth?.uid);
