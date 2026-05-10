@@ -8,9 +8,6 @@ import { logger } from 'firebase-functions';
  * layer) which is heavy for a single-user app.
  *
  * Manual entry from the client is the supported path until this is built.
- *
- * Schedule per the plan: hourly during 5–11 PM ET (when TVA posts next-day
- * schedules) plus 6 AM ET (a final morning snapshot).
  */
 export const scrapeTva = onSchedule(
   {
@@ -22,15 +19,5 @@ export const scrapeTva = onSchedule(
   },
   async () => {
     logger.info('scrapeTva tick — stub; manual entry remains primary');
-    // TODO: implement once Playwright + Chromium layer are added.
-    // const dams = ['center-hill', 'south-holston', 'wilbur', 'norris', 'apalachia', 'tims-ford'];
-    // for (const dam of dams) {
-    //   try {
-    //     const schedule = await scrapeDamWithPlaywright(dam);
-    //     await writeSchedule(dam, schedule);
-    //   } catch (e) {
-    //     logger.error('scrape failed', dam, e);
-    //   }
-    // }
   }
 );

@@ -44,8 +44,8 @@ export function SignInScreen() {
       {error && <div className="text-sm text-danger max-w-xs text-center">{error}</div>}
 
       <div className="text-xs text-muted max-w-xs text-center safe-bottom">
-        Single-user app. Once dad signs in for the first time, Firestore
-        rules will be locked to his email.
+        Private group. Locations and dam schedules are shared; trips and
+        catches are kept per user.
       </div>
     </div>
   );

@@ -47,6 +47,8 @@ export interface Trip {
 export interface Catch {
   id: string;
   tripId: string;
+  /** Stamped by the store so collectionGroup queries can scope to owner. */
+  userId?: string;
   locationId: string;
   species: string;
   lengthInches?: number;

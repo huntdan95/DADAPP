@@ -13,6 +13,7 @@ import { ConditionsCard } from '@/features/conditions/ConditionsCard';
 import { MapView } from '@/features/map/MapView';
 import { LocationsList } from '@/features/locations/LocationsList';
 import { Journal } from '@/features/journal/Journal';
+import { BoatLaunchesAdmin } from '@/features/boatLaunches/BoatLaunchesAdmin';
 import { SignInScreen } from '@/features/auth/SignInScreen';
 import { getLocationStore, type LocationStore } from '@/lib/store';
 import type { Location } from '@/lib/providers/types';
@@ -147,7 +148,10 @@ export default function App() {
         {tab === 'map' && <MapView locations={locations} />}
 
         {tab === 'spots' && store && (
-          <LocationsList locations={locations} store={store} />
+          <>
+            <LocationsList locations={locations} store={store} />
+            {auth.kind === 'signed-in' && <BoatLaunchesAdmin />}
+          </>
         )}
 
         {tab === 'trips' && (

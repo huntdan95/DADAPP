@@ -1,13 +1,45 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // SINGLE-USER GATE.
-    // Currently allows any signed-in Google account because we don't yet
-    // know dad's exact email. After his first sign-in, replace the rule
-    // below with:
-    //   allow read, write: if request.auth.token.email == 'dad@example.com';
-    match /{document=**} {
-      allow read, write: if request.auth != null;
+
+    // Future allowlist gate (uncomment + populate when ready). For now any
+    // signed-in Google account works; once you give me dad's + your friends'
+    // emails, replace `signedIn()` below.
+    function signedIn() {
+      return request.auth != null;
+      // return request.auth != null && request.auth.token.email in [
+      //   'dad@example.com',
+      //   'friend1@example.com',
+      //   'friend2@example.com'
+      // ];
+    }
+
+    // Shared collaborative collections — every signed-in user can read+write.
+    match /locations/{loc} {
+      allow read, write: if signedIn();
+    }
+    match /damSchedules/{key} {
+      allow read, write: if signedIn();
+    }
+    match /boatLaunchSets/{state} {
+      // Boat launches are seeded by Cloud Functions but we want clients
+      // to read them. Writes are intended to come from the seeder
+      // (admin SDK, which bypasses these rules). A signed-in client can
+      // also write — fine for now, lock down later if abuse.
+      allow read, write: if signedIn();
+    }
+
+    // Per-user private collections — your trips are yours.
+    match /users/{uid}/{document=**} {
+      allow read, write: if signedIn() && request.auth.uid == uid;
+    }
+
+    // Catches are stored under users/{uid}/trips/{tripId}/catches —
+    // already covered by the rule above for direct access. Allow
+    // collectionGroup queries on catches scoped to the requesting user
+    // via the stamped userId field.
+    match /{path=**}/catches/{catchId} {
+      allow read: if signedIn() && resource.data.userId == request.auth.uid;
     }
   }
 }

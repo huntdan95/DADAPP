@@ -1,8 +1,23 @@
 # Dad's Fishing Co-Pilot
 
-Personal pre-trip / on-the-water / pattern-recognition app for one user.
+Pre-trip / on-the-water / pattern-recognition app for a small group of
+fishing buddies. Originally scoped single-user; expanded to a few close
+friends.
+
 Greenfield build following the plan at
 [`~/.claude/plans/dad-s-fishing-co-pilot-logical-kazoo.md`](../../Users/Danny/.claude/plans/dad-s-fishing-co-pilot-logical-kazoo.md).
+
+## Multi-user model
+
+- **Shared:** locations, dam schedules, boat launches — collaborative
+  spot library; one TVA schedule per dam-day; one OSM dataset for everyone.
+- **Per-user:** trips & catches, photos — your logbook is yours, stored
+  under `users/{uid}/trips/{tripId}/catches/{catchId}` and
+  `users/{uid}/trips/...` in Storage.
+- **Allowlist (planned):** [`firestore.rules`](firestore.rules) and
+  [`storage.rules`](storage.rules) currently allow any signed-in Google
+  account. Both files have a commented `signedIn()` allowlist function
+  ready — drop in the real emails and redeploy.
 
 ## Status
 
@@ -13,7 +28,8 @@ Greenfield build following the plan at
 | 2 — Multi-Location + Map | done | localStorage / Firestore auto-pick, react-leaflet, basemap toggle, fishability-colored markers |
 | 3 — Journal MVP | done | Trip + Catch with **trolling support** (depth/speed), photo upload, conditions snapshot per catch, Firebase Auth (Google sign-in) gate |
 | 4 — Dam Schedule | done (manual-first) | TVA's site is now Cloudflare-bot-protected. Scraper Cloud Function shipped as a stub; manual entry is primary. Tap-to-cycle hourly grid, presets, "next change at X", staleness warnings. |
-| 5 — Hatch Calendar | not started | |
+| 5a — Boat Launches | done | OSM/Overpass-driven for MI, TN, IN, NC, FL, GA, AL — ~7,500 launches. Cloud Function seedBoatLaunches (monthly cron + on-demand callable). Map layer with viewport filtering, zoom-gating, and a "Find nearest" button using geolocation. |
+| 5b — Hatch Calendar | not started | |
 | 6 — Claude API | not started | |
 | 7 — PWA Polish | not started | Code-split here too — bundle is 970 KB right now |
 
@@ -39,17 +55,23 @@ npm run lint     # tsc -b --noEmit (typecheck only)
 Connected to `dadapp-2cef8` via [`.env.local`](.env.local) (gitignored)
 and [`apphosting.yaml`](apphosting.yaml) (committed; values are non-secret).
 
-**Enabled in console:** Authentication (Google provider), Firestore,
+**Enabled in console:** Authentication (Google), Firestore, Storage,
 App Hosting.
 
-**Still needed for full feature parity:**
-- **Firebase Storage** — required for catch photos. Without it, catches
-  log fine but photos silently fall through.
-- **Lock down Firestore + Storage rules** — they currently allow any
-  signed-in account because we don't yet know dad's exact email. After
-  the first sign-in, replace `request.auth != null` in
-  [`firestore.rules`](firestore.rules) and [`storage.rules`](storage.rules)
-  with `request.auth.token.email == 'dad@example.com'` and redeploy.
+**Setup left to do:**
+- **Enable Cloud Functions** in the Firebase console (it requires the
+  Blaze plan, which App Hosting already activated).
+- **Deploy** rules + functions: from the project root run
+  ```
+  firebase deploy --only firestore:rules,storage:rules
+  cd functions && npm install && npm run build && cd ..
+  firebase deploy --only functions
+  ```
+- **Sign in and seed**: open the Spots tab, scroll to "Boat launches",
+  tap "Seed now" to populate ~7,500 launches across the 7 states.
+- **Lock down rules** — once friends' emails are known, swap the
+  commented allowlist in [`firestore.rules`](firestore.rules) +
+  [`storage.rules`](storage.rules) and redeploy.
 
 ## Architecture
 
@@ -82,6 +104,31 @@ moving from local mode to signed-in.
 [`src/lib/fishability.ts`](src/lib/fishability.ts) takes weather + flow +
 dam schedule and returns `good` / `fair` / `poor` / `unknown`. Used to
 color the map markers. Tunable from journal data later (Phase 6).
+
+### Boat launches
+
+Public boat launches / put-ins / take-outs across MI, TN, IN, NC, FL, GA, AL
+sourced from OpenStreetMap via the Overpass API (tag `leisure=slipway`).
+~7,500 records total — small enough to load all at once, big enough to
+need viewport filtering on the map.
+
+- [`functions/src/scrapers/boatLaunches.ts`](functions/src/scrapers/boatLaunches.ts) —
+  Cloud Function. **Scheduled** monthly (06:00 ET on the 1st) and
+  **callable** on demand. Writes one Firestore doc per state at
+  `boatLaunchSets/{state}` with the full launches array (~360 KB max
+  per doc, well under Firestore's 1 MB limit).
+- [`src/features/map/BoatLaunchLayer.tsx`](src/features/map/BoatLaunchLayer.tsx) —
+  Map layer; hides itself below zoom 9 to avoid pin soup; caps at 400
+  visible markers per viewport.
+- [`src/features/boatLaunches/BoatLaunchesAdmin.tsx`](src/features/boatLaunches/BoatLaunchesAdmin.tsx) —
+  Spots-tab card showing per-state counts and a "Seed now" button that
+  calls the Cloud Function (60–90 s end-to-end).
+- "Find nearest" button on the map: uses the device's geolocation, ranks
+  by haversine distance, drops a "you are here" marker, lists the top 5
+  with mileage.
+
+**One-time setup**: after deploying functions, sign in and tap "Seed now"
+on the Spots tab to populate the `boatLaunchSets` collection.
 
 ### Dam schedule
 

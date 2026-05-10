@@ -14,13 +14,18 @@ import {
 } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import imageCompression from 'browser-image-compression';
+import { getAuth } from 'firebase/auth';
 import { getFirebaseApp } from '@/lib/firebase';
 import type { Catch, Trip } from './types';
 
 /**
- * Journal store. Firestore-only — photos require Firebase Storage, so
- * there's no point in a localStorage fallback for trips. The conditions
- * dashboard still works without Firebase; this just disables logging.
+ * Journal store. Trips are scoped per user under
+ * `users/{uid}/trips/{tripId}/catches/{catchId}` — your logbook is yours,
+ * not your friends'. (Locations and damSchedules remain shared
+ * collections — those are collaborative.)
+ *
+ * Firestore-only because photos require Storage. The conditions
+ * dashboard still works without Firebase; only journaling is gated.
  */
 
 function db() {
@@ -35,9 +40,17 @@ function storage() {
   return getStorage(app);
 }
 
-const tripsCol = () => collection(db(), 'trips');
+function uid(): string {
+  const app = getFirebaseApp();
+  if (!app) throw new Error('Firebase is not configured');
+  const u = getAuth(app).currentUser;
+  if (!u) throw new Error('Not signed in');
+  return u.uid;
+}
+
+const tripsCol = () => collection(db(), 'users', uid(), 'trips');
 const catchesCol = (tripId: string) =>
-  collection(db(), 'trips', tripId, 'catches');
+  collection(db(), 'users', uid(), 'trips', tripId, 'catches');
 
 export async function upsertTrip(trip: Trip): Promise<void> {
   await setDoc(doc(tripsCol(), trip.id), trip);
@@ -91,8 +104,13 @@ export function watchTripCatches(
 }
 
 export async function listAllCatches(): Promise<Catch[]> {
+  // collectionGroup picks up catches under any user — but our security rules
+  // gate collectionGroup queries to require where('userId', '==', auth.uid),
+  // so this returns only the current user's catches as long as the
+  // userId field is included. (Catches are written with a userId stamp.)
   const q = query(
     collectionGroup(db(), 'catches'),
+    where('userId', '==', uid()),
     orderBy('time', 'desc'),
     fsLimit(500)
   );
@@ -101,7 +119,9 @@ export async function listAllCatches(): Promise<Catch[]> {
 }
 
 export async function upsertCatch(c: Catch): Promise<void> {
-  await setDoc(doc(catchesCol(c.tripId), c.id), c);
+  // Stamp userId on the doc so collectionGroup queries can filter to
+  // the owner without leaking other users' catches.
+  await setDoc(doc(catchesCol(c.tripId), c.id), { ...c, userId: uid() });
 }
 
 export async function deleteCatch(tripId: string, catchId: string): Promise<void> {
@@ -124,7 +144,7 @@ export async function uploadCatchPhoto(
     fileType: 'image/jpeg',
     useWebWorker: true,
   });
-  const path = `trips/${tripId}/catches/${catchId}.jpg`;
+  const path = `users/${uid()}/trips/${tripId}/catches/${catchId}.jpg`;
   const r = ref(storage(), path);
   await uploadBytes(r, compressed, { contentType: 'image/jpeg' });
   return getDownloadURL(r);
