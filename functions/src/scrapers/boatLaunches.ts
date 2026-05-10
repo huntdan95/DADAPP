@@ -45,11 +45,16 @@ area["ISO3166-2"="US-${state}"][admin_level=4]->.a;
 );
 out center tags;`;
 
-  const body = `data=${encodeURIComponent(query)}`;
-  const res = await fetch(OVERPASS, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body,
+  // Overpass returns HTTP 406 from our previous POST shape — switching to
+  // GET with the query as a URL parameter (and explicit Accept + UA
+  // headers) matches what tested cleanly from curl.
+  const url = `${OVERPASS}?data=${encodeURIComponent(query)}`;
+  const res = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'User-Agent': 'dad-fishing-co-pilot/0.1 (https://github.com/huntdan95/DADAPP)',
+    },
   });
   if (!res.ok) {
     throw new Error(`Overpass HTTP ${res.status} for ${state}`);
