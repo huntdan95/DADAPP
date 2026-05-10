@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { Loader2, Sparkles } from 'lucide-react';
-import { collection, getDocs, getFirestore, limit as fsLimit, orderBy, query, where, collectionGroup } from 'firebase/firestore';
+import { collection, getDocs, getFirestore, limit as fsLimit, orderBy, query, where } from 'firebase/firestore';
 import { CardSection } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import type { Location } from '@/lib/providers/types';
 import { fetchWeather, fetchFlow, fetchDamSchedule } from '@/lib/providers';
 import { activeHatchesForLocation } from '@/lib/hatches/store';
 import type { Catch } from '@/lib/journal/types';
+import type { LogEntry } from '@/lib/log/types';
 import { fetchBriefing } from '@/lib/ai/briefing';
 import { getFirebaseApp, getFirebaseAuth } from '@/lib/firebase';
 import {
@@ -142,22 +143,38 @@ async function fetchRecentCatches(locationId: string): Promise<Catch[]> {
   const auth = getFirebaseAuth();
   if (!app || !auth?.currentUser) return [];
   const db = getFirestore(app);
-  // Per-user scope: users/{uid}/trips/*/catches matched via the userId stamp.
+  // New schema: users/{uid}/logs, kind === 'catch', filtered to this location.
   const q = query(
-    collectionGroup(db, 'catches'),
-    where('userId', '==', auth.currentUser.uid),
+    collection(db, 'users', auth.currentUser.uid, 'logs'),
+    where('kind', '==', 'catch'),
     where('locationId', '==', locationId),
     orderBy('time', 'desc'),
     fsLimit(5)
   );
   try {
     const snap = await getDocs(q);
-    return snap.docs.map((d) => d.data() as Catch);
+    return snap.docs.map((d) => {
+      const e = d.data() as LogEntry;
+      // Shape into the legacy Catch interface the briefing API expects.
+      return {
+        id: e.id,
+        tripId: '',
+        userId: e.userId,
+        locationId: e.locationId ?? '',
+        species: e.species ?? 'unknown',
+        lengthInches: e.lengthInches,
+        method: e.method ?? 'other',
+        flyOrLure: e.flyOrLure ?? '',
+        trollingDepthFt: e.trollingDepthFt,
+        trollingSpeedMph: e.trollingSpeedMph,
+        releasedOrKept: e.releasedOrKept ?? 'released',
+        time: e.time,
+        notes: e.notes,
+        photoUrl: e.photoUrl,
+        conditions: e.conditions,
+      } as Catch;
+    });
   } catch {
-    // Index might not exist yet — silent fallback.
     return [];
   }
 }
-
-// Suppress unused warning for `collection` import (kept for future use).
-void collection;

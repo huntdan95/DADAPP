@@ -31,22 +31,17 @@ const LocationsList = lazy(() =>
     default: m.LocationsList,
   }))
 );
-const BoatLaunchesAdmin = lazy(() =>
-  import('@/features/boatLaunches/BoatLaunchesAdmin').then((m) => ({
-    default: m.BoatLaunchesAdmin,
-  }))
-);
-const Journal = lazy(() =>
-  import('@/features/journal/Journal').then((m) => ({ default: m.Journal }))
+const LogFeed = lazy(() =>
+  import('@/features/log/LogFeed').then((m) => ({ default: m.LogFeed }))
 );
 
-type Tab = 'conditions' | 'map' | 'spots' | 'trips';
+type Tab = 'conditions' | 'map' | 'spots' | 'log';
 
 const TABS = [
   { key: 'conditions' as const, label: 'Conditions', icon: Activity },
   { key: 'map' as const, label: 'Map', icon: MapIcon },
   { key: 'spots' as const, label: 'Spots', icon: ListChecks },
-  { key: 'trips' as const, label: 'Trips', icon: NotebookPen },
+  { key: 'log' as const, label: 'Log', icon: NotebookPen },
 ];
 
 function TabFallback() {
@@ -178,13 +173,12 @@ export default function App() {
         {tab === 'spots' && store && (
           <Suspense fallback={<TabFallback />}>
             <LocationsList locations={locations} store={store} />
-            {auth.kind === 'signed-in' && <BoatLaunchesAdmin />}
           </Suspense>
         )}
 
-        {tab === 'trips' && (
+        {tab === 'log' && (
           <Suspense fallback={<TabFallback />}>
-            <Journal
+            <LogFeed
               locations={locations}
               isFirebaseConfigured={isFirebaseConfigured}
             />

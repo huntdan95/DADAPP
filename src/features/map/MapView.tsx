@@ -12,6 +12,7 @@ import { Anchor, Crosshair, Loader2 } from 'lucide-react';
 import { BASEMAPS, type BasemapKey } from './basemaps';
 import { MapMarker } from './MapMarker';
 import { BoatLaunchLayer } from './BoatLaunchLayer';
+import { BoatLaunchSheet } from './BoatLaunchSheet';
 import type { Location } from '@/lib/providers/types';
 import { ConditionsCard } from '@/features/conditions/ConditionsCard';
 import { BottomSheet } from '@/components/ui/BottomSheet';
@@ -36,6 +37,7 @@ export function MapView({ locations }: { locations: Location[] }) {
   const [recenterTo, setRecenterTo] = useState<
     { lat: number; lng: number; zoom: number } | null
   >(null);
+  const [selectedLaunch, setSelectedLaunch] = useState<BoatLaunch | null>(null);
 
   // Lazy-load boat launches once. ~7K records cached client-side after the
   // first read; subsequent map mounts reuse module-level cache.
@@ -128,6 +130,7 @@ export function MapView({ locations }: { locations: Location[] }) {
           launches={launches}
           visible={showLaunches}
           highlightedIds={highlightedIds}
+          onLaunchClick={setSelectedLaunch}
         />
 
         {nearest && (
@@ -183,6 +186,12 @@ export function MapView({ locations }: { locations: Location[] }) {
       >
         {selected && <ConditionsCard location={selected} />}
       </BottomSheet>
+
+      <BoatLaunchSheet
+        launch={selectedLaunch}
+        userLocation={nearest?.user ?? null}
+        onClose={() => setSelectedLaunch(null)}
+      />
     </div>
   );
 }

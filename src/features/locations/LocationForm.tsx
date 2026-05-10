@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import { Loader2, Wand2 } from 'lucide-react';
 import type {
   DamScheduleProvider,
   FlowProvider,
@@ -11,6 +12,11 @@ import type {
 import { Button } from '@/components/ui/Button';
 import { Field, Input, Select } from '@/components/ui/Input';
 import { BASEMAPS } from '@/features/map/basemaps';
+import {
+  nearestUsgsGauge,
+  reverseGeocode,
+  timezoneForState,
+} from '@/lib/geo/reverseGeocode';
 
 const WATER_TYPES: WaterType[] = [
   'tailwater',
@@ -86,11 +92,61 @@ export function LocationForm({
   );
 
   const [error, setError] = useState<string | null>(null);
+  const [autoFilling, setAutoFilling] = useState(false);
+  const [autoStatus, setAutoStatus] = useState<string | null>(null);
 
   const initialCenter: [number, number] = useMemo(
     () => [initial?.lat ?? 39.5, initial?.lng ?? -85.0],
     [initial?.lat, initial?.lng]
   );
+
+  /**
+   * Auto-fill state, timezone, river, and nearest USGS gauge from the
+   * currently-dropped pin. Tries reverse-geocoding first (cheap), then
+   * NWIS bbox search. Each step is best-effort — failures just leave
+   * fields untouched.
+   */
+  async function autoFillFromPin() {
+    if (lat == null || lng == null) {
+      setAutoStatus('Drop a pin first');
+      return;
+    }
+    setAutoFilling(true);
+    setAutoStatus(null);
+    const parts: string[] = [];
+    try {
+      const geo = await reverseGeocode(lat, lng).catch(() => null);
+      if (geo?.state) {
+        setState(geo.state);
+        setTimezone(timezoneForState(geo.state));
+        parts.push(`state ${geo.state}`);
+      }
+      if (geo?.country) setCountry(geo.country);
+      if (geo?.river && !river) {
+        setRiver(geo.river);
+        parts.push(`river "${geo.river}"`);
+      }
+
+      const gauge = await nearestUsgsGauge(lat, lng).catch(() => null);
+      if (gauge) {
+        setFlowKind('usgs');
+        setFlowSiteId(gauge.siteId);
+        parts.push(
+          `gauge ${gauge.siteId} (${gauge.distanceMiles.toFixed(1)} mi${
+            gauge.hasWaterTemp ? ', water temp ✓' : ''
+          })`
+        );
+      } else {
+        parts.push('no active USGS gauge within ~35 mi');
+      }
+
+      setAutoStatus(parts.length > 0 ? `Filled: ${parts.join(' · ')}` : 'Nothing found');
+    } catch (e) {
+      setAutoStatus(e instanceof Error ? e.message : String(e));
+    } finally {
+      setAutoFilling(false);
+    }
+  }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -193,11 +249,32 @@ export function LocationForm({
             }} />
           </MapContainer>
         </div>
-        <div className="text-xs text-muted mt-1 num">
-          {lat != null && lng != null
-            ? `${lat.toFixed(4)}, ${lng.toFixed(4)}`
-            : 'Tap the map to set a position'}
+        <div className="flex items-center justify-between gap-2 mt-1">
+          <div className="text-xs text-muted num">
+            {lat != null && lng != null
+              ? `${lat.toFixed(4)}, ${lng.toFixed(4)}`
+              : 'Tap the map to set a position'}
+          </div>
+          {lat != null && lng != null && (
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              onClick={autoFillFromPin}
+              disabled={autoFilling}
+            >
+              {autoFilling ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              ) : (
+                <Wand2 className="w-3.5 h-3.5" />
+              )}
+              {autoFilling ? 'Looking up…' : 'Auto-fill from pin'}
+            </Button>
+          )}
         </div>
+        {autoStatus && (
+          <div className="text-[11px] text-accent mt-1">{autoStatus}</div>
+        )}
       </div>
 
       <div>

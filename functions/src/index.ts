@@ -23,3 +23,4 @@ export { briefing } from './claude/briefing';
 export { parseJournal } from './claude/parseJournal';
 export { patterns } from './claude/patterns';
 export { identifySpecies } from './claude/identifySpecies';
+export { analyzePhoto } from './claude/analyzePhoto';

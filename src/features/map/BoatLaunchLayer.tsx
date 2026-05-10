@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Marker, Popup, useMap, useMapEvents } from 'react-leaflet';
+import { Marker, useMap, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import type { BoatLaunch } from '@/lib/boatLaunches/store';
 
@@ -7,15 +7,21 @@ import type { BoatLaunch } from '@/lib/boatLaunches/store';
  * Renders boat launches as small triangle markers, viewport-filtered and
  * zoom-gated to keep the map usable. At zoom < 9 we hide them entirely
  * (would be a soup of pins covering 7 states).
+ *
+ * Click is delegated to the parent — we don't render Leaflet popups
+ * inline because the actions on a launch (notes, Open in Maps) are
+ * richer than a popup can hold.
  */
 export function BoatLaunchLayer({
   launches,
   visible,
   highlightedIds,
+  onLaunchClick,
 }: {
   launches: BoatLaunch[];
   visible: boolean;
   highlightedIds?: Set<string>;
+  onLaunchClick?: (launch: BoatLaunch) => void;
 }) {
   const map = useMap();
   const [bounds, setBounds] = useState<L.LatLngBounds | null>(() => map.getBounds());
@@ -64,16 +70,10 @@ export function BoatLaunchLayer({
           key={l.id}
           position={[l.lat, l.lng]}
           icon={launchIcon(highlightedIds?.has(l.id) ?? false)}
-        >
-          <Popup>
-            <div style={{ fontFamily: 'system-ui', minWidth: 160 }}>
-              <strong>{l.name}</strong>
-              <div style={{ fontSize: 12, color: '#666' }}>
-                {l.state} · boat launch ({l.type})
-              </div>
-            </div>
-          </Popup>
-        </Marker>
+          eventHandlers={
+            onLaunchClick ? { click: () => onLaunchClick(l) } : undefined
+          }
+        />
       ))}
     </>
   );

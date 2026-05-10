@@ -31,15 +31,17 @@ interface PatternsInput {
   history?: Array<{ role: 'user' | 'assistant'; content: string }>;
 }
 
-interface CatchRecord {
-  species: string;
+interface LogRecord {
+  kind: 'catch' | 'hatch' | 'note';
+  species?: string;
   lengthInches?: number;
-  weightOz?: number;
-  method: string;
-  flyOrLure: string;
+  method?: string;
+  flyOrLure?: string;
   trollingDepthFt?: number;
   trollingSpeedMph?: number;
-  releasedOrKept: string;
+  releasedOrKept?: string;
+  hatchName?: string;
+  hatchStage?: string;
   time: string;
   notes?: string;
   conditions?: {
@@ -49,9 +51,14 @@ interface CatchRecord {
     pressureMb?: number;
     pressureTrend?: string;
     moonPhase?: number;
-    damStatus?: string;
+  };
+  flowReading?: {
+    siteName?: string;
+    flowCfs?: number;
+    waterTempF?: number;
   };
   locationId?: string;
+  locationName?: string;
 }
 
 const SYSTEM_PROMPT = `You answer questions about a user's personal fishing log.
@@ -87,15 +94,15 @@ export const patterns = onCall(
 
     await checkAndIncrementUsage(uid, 'patterns');
 
-    const catches = await fetchUserCatches(uid);
-    if (catches.length === 0) {
+    const logs = await fetchUserLogs(uid);
+    if (logs.length === 0) {
       return {
         answer:
-          "I don't have any catches logged yet — start logging a few trips and I'll start spotting patterns.",
+          "I don't have any log entries yet — log a few catches or hatches and I'll start spotting patterns.",
       };
     }
 
-    const catchCorpus = formatCatches(catches);
+    const corpus = formatLogs(logs);
 
     // History is replayed verbatim so multi-turn follow-ups stay coherent.
     const priorTurns = (input.history ?? []).map((m) => ({
@@ -111,7 +118,7 @@ export const patterns = onCall(
         { type: 'text', text: SYSTEM_PROMPT },
         {
           type: 'text',
-          text: `USER'S CATCH HISTORY (${catches.length} catches, newest last):\n\n${catchCorpus}`,
+          text: `USER'S LOG HISTORY (${logs.length} entries, newest last):\n\n${corpus}`,
           cache_control: { type: 'ephemeral' },
         },
       ],
@@ -131,7 +138,7 @@ export const patterns = onCall(
 
     logger.info('patterns answered', {
       uid,
-      catches: catches.length,
+      logs: logs.length,
       input_tokens: response.usage.input_tokens,
       cache_read: response.usage.cache_read_input_tokens,
     });
@@ -140,35 +147,44 @@ export const patterns = onCall(
   }
 );
 
-async function fetchUserCatches(uid: string): Promise<CatchRecord[]> {
-  // Pull all of this user's catches via the per-user subcollection path.
-  // Cap at 1000 — once journals get that large we'll want a smarter
-  // retrieval strategy (relevance ranking + window).
+async function fetchUserLogs(uid: string): Promise<LogRecord[]> {
+  // Read directly from users/{uid}/logs — no collectionGroup needed since
+  // the path is already per-user. Cap at 1000; for power users we'll add
+  // smarter retrieval (relevance ranking + window) later.
   const db = getFirestore();
   const snap = await db
-    .collectionGroup('catches')
-    .where('userId', '==', uid)
+    .collection('users')
+    .doc(uid)
+    .collection('logs')
     .orderBy('time', 'asc')
     .limit(1000)
     .get();
-  return snap.docs.map((d) => d.data() as CatchRecord);
+  return snap.docs.map((d) => d.data() as LogRecord);
 }
 
-function formatCatches(catches: CatchRecord[]): string {
-  return catches
-    .map((c, i) => {
-      const time = c.time?.slice(0, 16).replace('T', ' ') ?? '?';
-      const len = c.lengthInches != null ? `${c.lengthInches}"` : '';
-      const wt = c.weightOz != null ? `${c.weightOz}oz` : '';
-      const troll =
-        c.method === 'troll'
-          ? ` depth=${c.trollingDepthFt ?? '?'}ft speed=${c.trollingSpeedMph ?? '?'}mph`
-          : '';
-      const cond = c.conditions
-        ? ` air=${fmt(c.conditions.airTempF)}°F water=${fmt(c.conditions.waterTempF)}°F flow=${fmt(c.conditions.flowCfs)}cfs press=${fmt(c.conditions.pressureMb)}mb ${c.conditions.pressureTrend ?? ''} moon=${fmt(c.conditions.moonPhase)} dam=${c.conditions.damStatus ?? 'na'}`
+function formatLogs(entries: LogRecord[]): string {
+  return entries
+    .map((e, i) => {
+      const time = e.time?.slice(0, 16).replace('T', ' ') ?? '?';
+      const loc = e.locationName ?? e.locationId ?? '?';
+      const water = e.flowReading?.waterTempF ?? e.conditions?.waterTempF;
+      const flow = e.flowReading?.flowCfs ?? e.conditions?.flowCfs;
+      const cond = e.conditions
+        ? ` air=${fmt(e.conditions.airTempF)}°F water=${fmt(water)}°F flow=${fmt(flow)}cfs press=${fmt(e.conditions.pressureMb)}mb ${e.conditions.pressureTrend ?? ''} moon=${fmt(e.conditions.moonPhase)}`
         : '';
-      const notes = c.notes ? `  // ${c.notes}` : '';
-      return `${i + 1}. ${time} ${c.species} ${len} ${wt} via ${c.method} on "${c.flyOrLure}"${troll} (${c.releasedOrKept}) loc=${c.locationId ?? '?'}${cond}${notes}`;
+
+      if (e.kind === 'catch') {
+        const len = e.lengthInches != null ? `${e.lengthInches}"` : '';
+        const troll =
+          e.method === 'troll'
+            ? ` depth=${e.trollingDepthFt ?? '?'}ft speed=${e.trollingSpeedMph ?? '?'}mph`
+            : '';
+        return `${i + 1}. ${time} CATCH ${e.species ?? '?'} ${len} via ${e.method ?? '?'} on "${e.flyOrLure ?? '?'}"${troll} (${e.releasedOrKept ?? '?'}) @ ${loc}${cond}${e.notes ? `  // ${e.notes}` : ''}`;
+      }
+      if (e.kind === 'hatch') {
+        return `${i + 1}. ${time} HATCH ${e.hatchName ?? '?'}${e.hatchStage ? ` ${e.hatchStage}` : ''} @ ${loc}${cond}${e.notes ? `  // ${e.notes}` : ''}`;
+      }
+      return `${i + 1}. ${time} NOTE @ ${loc}${cond} // ${e.notes ?? ''}`;
     })
     .join('\n');
 }
