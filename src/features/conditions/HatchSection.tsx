@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Bug } from 'lucide-react';
+import { Bug, ChevronRight } from 'lucide-react';
 import { CardSection } from '@/components/ui/Card';
 import type { Location } from '@/lib/providers/types';
 import { activeHatchesForLocation, hexCountdown, type Hatch } from '@/lib/hatches/store';
 import { fetchFlow } from '@/lib/providers';
+import { HatchDetailSheet } from '@/features/hatches/HatchDetailSheet';
 
 /**
  * Surfaces the hatches that are plausibly active right now for this
@@ -15,6 +16,7 @@ import { fetchFlow } from '@/lib/providers';
  */
 export function HatchSection({ location }: { location: Location }) {
   const [waterTempF, setWaterTempF] = useState<number | null>(null);
+  const [selectedHatch, setSelectedHatch] = useState<Hatch | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -63,7 +65,12 @@ export function HatchSection({ location }: { location: Location }) {
       ) : (
         <div className="flex flex-col gap-2">
           {top.map((h) => (
-            <HatchRow key={h.id} hatch={h} waterTempF={waterTempF} />
+            <HatchRow
+              key={h.id}
+              hatch={h}
+              waterTempF={waterTempF}
+              onOpen={() => setSelectedHatch(h)}
+            />
           ))}
           {hatches.length > top.length && (
             <div className="text-xs text-muted">
@@ -72,6 +79,11 @@ export function HatchSection({ location }: { location: Location }) {
           )}
         </div>
       )}
+
+      <HatchDetailSheet
+        hatch={selectedHatch}
+        onClose={() => setSelectedHatch(null)}
+      />
     </CardSection>
   );
 }
@@ -79,9 +91,11 @@ export function HatchSection({ location }: { location: Location }) {
 function HatchRow({
   hatch,
   waterTempF,
+  onOpen,
 }: {
   hatch: Hatch;
   waterTempF: number | null;
+  onOpen: () => void;
 }) {
   const inWindow =
     waterTempF != null &&
@@ -89,11 +103,16 @@ function HatchRow({
     waterTempF <= hatch.waterTempMaxF;
 
   return (
-    <div className="rounded-lg bg-surface-2 border border-border p-2.5">
+    <button
+      type="button"
+      onClick={onOpen}
+      className="text-left rounded-lg bg-surface-2 border border-border p-2.5 hover:border-accent/40 active:scale-[0.99] transition"
+    >
       <div className="flex items-baseline justify-between gap-2">
-        <div className="text-sm font-semibold">
+        <div className="text-sm font-semibold flex items-center gap-1.5">
           {hatch.name}
-          {inWindow && <span className="ml-2 text-[10px] text-accent">IN WINDOW</span>}
+          {inWindow && <span className="text-[10px] text-accent">IN WINDOW</span>}
+          <ChevronRight className="w-3 h-3 text-muted" />
         </div>
         <div className="text-[10px] text-muted num">
           {hatch.waterTempMinF}–{hatch.waterTempMaxF}°F · {hatch.timeOfDay}
@@ -104,7 +123,7 @@ function HatchRow({
       {hatch.notes && (
         <div className="text-[11px] text-muted mt-1">{hatch.notes}</div>
       )}
-    </div>
+    </button>
   );
 }
 

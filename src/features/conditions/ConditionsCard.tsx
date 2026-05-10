@@ -5,6 +5,7 @@ import { FlowSection } from './FlowSection';
 import { DamSection } from './DamSection';
 import { SolunarSection } from './SolunarSection';
 import { HatchSection } from './HatchSection';
+import { TidesSection } from './TidesSection';
 import { BriefingSection } from './BriefingSection';
 import { useAuth } from '@/lib/useAuth';
 
@@ -13,10 +14,29 @@ import { useAuth } from '@/lib/useAuth';
  * whose providers are declared on the location. No state-specific or
  * water-type-specific branching here — that's the entire point.
  */
+/**
+ * Insect-hatch matching is meaningful for freshwater trout / smallmouth
+ * waters. We hide the hatch section at saltwater locations (anglers fish
+ * baitfish patterns and crabs there, not mayflies) and we'd surface a
+ * future "forage" section instead.
+ */
+function showsHatches(type: Location['type']): boolean {
+  return (
+    type === 'tailwater' ||
+    type === 'freestone' ||
+    type === 'lake' ||
+    type === 'pond' ||
+    type === 'reservoir' ||
+    type === 'great_lakes'
+  );
+}
+
 export function ConditionsCard({ location }: { location: Location }) {
   const { dataProviders } = location;
   const auth = useAuth();
   const showBriefing = auth.kind === 'signed-in';
+  const showHatches = showsHatches(location.type);
+
   return (
     <Card>
       <CardHeader>
@@ -33,8 +53,11 @@ export function ConditionsCard({ location }: { location: Location }) {
       {dataProviders.damSchedule && (
         <DamSection provider={dataProviders.damSchedule} location={location} />
       )}
+      {dataProviders.tides && (
+        <TidesSection provider={dataProviders.tides} location={location} />
+      )}
       <SolunarSection location={location} />
-      <HatchSection location={location} />
+      {showHatches && <HatchSection location={location} />}
       {showBriefing && <BriefingSection location={location} />}
     </Card>
   );

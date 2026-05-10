@@ -28,6 +28,9 @@ export interface BoatLaunchSet {
 }
 
 const STATES = ['MI', 'TN', 'IN', 'NC', 'FL', 'GA', 'AL'];
+const CACHE_KEY = 'dad-fishing.boatLaunchesCache.v2';
+/** Cache validity. Boat-launch dataset only changes when someone re-seeds. */
+const CACHE_MAX_AGE_MS = 14 * 24 * 60 * 60 * 1000;       // 14 days
 
 function db() {
   const app = getFirebaseApp();
@@ -35,20 +38,118 @@ function db() {
   return getFirestore(app);
 }
 
-/** Reads all 7 state docs in parallel and flattens. */
-export async function listAllBoatLaunches(): Promise<BoatLaunch[]> {
-  const sets = await Promise.all(
-    STATES.map(async (s) => {
-      const snap = await getDoc(doc(db(), 'boatLaunchSets', s));
-      return snap.exists() ? (snap.data() as BoatLaunchSet) : null;
-    })
-  );
+// ---- caching layer ---------------------------------------------------------
+//
+// First-page-load hits localStorage immediately so the map can render
+// markers without a network round trip. In the background we ask Firestore
+// for just the per-state `fetchedAt` timestamps and only re-download the
+// full launches arrays when something has been re-seeded since our cache.
+
+interface CachePayload {
+  cachedAt: number;
+  /** Map of state → ISO timestamp of the server's fetchedAt at cache time. */
+  versions: Record<string, string>;
+  launches: BoatLaunch[];
+}
+
+let memoryCache: CachePayload | null = null;
+
+function readLocalCache(): CachePayload | null {
+  if (memoryCache) return memoryCache;
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as CachePayload;
+    if (!parsed?.launches || !parsed?.versions) return null;
+    if (Date.now() - parsed.cachedAt > CACHE_MAX_AGE_MS) return null;
+    memoryCache = parsed;
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
+function writeLocalCache(payload: CachePayload) {
+  memoryCache = payload;
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify(payload));
+  } catch {
+    // localStorage can throw on quota — fall back to memory-only cache.
+  }
+}
+
+/** Pulls a state's full launches doc (a single getDoc). */
+async function fetchStateLaunches(state: string): Promise<BoatLaunchSet | null> {
+  const snap = await getDoc(doc(db(), 'boatLaunchSets', state));
+  if (!snap.exists()) return null;
+  return snap.data() as BoatLaunchSet;
+}
+
+function versionKey(set: BoatLaunchSet): string {
+  // toMillis gives a stable integer string across reads of the same value.
+  return set.fetchedAt ? String(set.fetchedAt.toMillis()) : 'unknown';
+}
+
+/**
+ * Loads launches with stale-while-revalidate semantics. `onUpdate` fires
+ * exactly once if a fresh server-side version is detected after the cached
+ * copy was already returned, so the map can update mid-session.
+ */
+export async function loadBoatLaunchesCached(
+  onUpdate?: (fresh: BoatLaunch[]) => void
+): Promise<BoatLaunch[]> {
+  const cache = readLocalCache();
+  if (cache) {
+    // Background revalidation. Don't block the caller.
+    void revalidate(cache, onUpdate);
+    return cache.launches;
+  }
+  return await freshLoad();
+}
+
+async function freshLoad(): Promise<BoatLaunch[]> {
+  const sets = await Promise.all(STATES.map(fetchStateLaunches));
   const all: BoatLaunch[] = [];
-  for (const s of sets) if (s?.launches) all.push(...s.launches);
+  const versions: Record<string, string> = {};
+  sets.forEach((s, i) => {
+    if (s?.launches) all.push(...s.launches);
+    if (s) versions[STATES[i]] = versionKey(s);
+  });
+  writeLocalCache({ cachedAt: Date.now(), versions, launches: all });
   return all;
 }
 
-/** Quick metadata read (state, count, fetchedAt) for the seed UI. */
+async function revalidate(
+  cache: CachePayload,
+  onUpdate?: (fresh: BoatLaunch[]) => void
+): Promise<void> {
+  try {
+    // Read only metadata first — cheap.
+    const meta = await listBoatLaunchSetMeta();
+    const newVersions: Record<string, string> = {};
+    for (const m of meta) {
+      newVersions[m.state] = m.fetchedAt
+        ? String(m.fetchedAt.toMillis())
+        : 'unknown';
+    }
+    // If every state we have cached matches, no work to do.
+    const stale = STATES.some(
+      (st) => (cache.versions[st] ?? '') !== (newVersions[st] ?? '')
+    );
+    if (!stale) return;
+    const fresh = await freshLoad();
+    onUpdate?.(fresh);
+  } catch {
+    // Revalidation is best-effort; cache stays valid.
+  }
+}
+
+/** Reads all 7 state docs in parallel and flattens. Cache-bypassing. */
+export async function listAllBoatLaunches(): Promise<BoatLaunch[]> {
+  return freshLoad();
+}
+
+/** Quick metadata read (state, count, fetchedAt) for cache revalidation. */
 export async function listBoatLaunchSetMeta(): Promise<
   Array<{ state: string; count: number; fetchedAt: Timestamp | null }>
 > {
@@ -63,6 +164,16 @@ export async function listBoatLaunchSetMeta(): Promise<
   });
 }
 
+/** Clears the cache (used after a successful client-triggered re-seed). */
+export function invalidateBoatLaunchCache(): void {
+  memoryCache = null;
+  try {
+    localStorage.removeItem(CACHE_KEY);
+  } catch {
+    // ignore
+  }
+}
+
 /** Triggers the Cloud Function to (re)seed all 7 states from Overpass. */
 export async function callSeedBoatLaunches(): Promise<{
   results: Array<{ state: string; count: number }>;
@@ -75,6 +186,7 @@ export async function callSeedBoatLaunches(): Promise<{
     'seedBoatLaunchesCallable'
   );
   const res = await fn({});
+  invalidateBoatLaunchCache();
   return res.data;
 }
 

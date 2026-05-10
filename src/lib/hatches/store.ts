@@ -16,6 +16,10 @@ export interface Hatch {
   stages: string[];
   flies: string[];
   notes: string;
+  /** Short search-friendly common name used to build YouTube / image links. */
+  searchTerm?: string;
+  /** Wikipedia article slug if available, null otherwise. */
+  wikipediaSlug?: string | null;
 }
 
 const ALL: Hatch[] = hatchesData as Hatch[];

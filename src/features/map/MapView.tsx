@@ -20,7 +20,7 @@ import {
   type BoatLaunch,
   callSeedBoatLaunches,
   distanceMiles,
-  listAllBoatLaunches,
+  loadBoatLaunchesCached,
 } from '@/lib/boatLaunches/store';
 import { cn } from '@/lib/utils';
 import { friendlyError } from '@/lib/errors';
@@ -61,11 +61,15 @@ export function MapView({ locations }: { locations: Location[] }) {
     );
   }, []);
 
-  // Lazy-load boat launches once. ~7K records cached client-side after the
-  // first read; subsequent map mounts reuse module-level cache.
+  // Stale-while-revalidate load. localStorage cache fires synchronously
+  // (or near-so) on second+ visits, and the background revalidation only
+  // refetches when the server-side seed has been updated.
   const reloadLaunches = useCallback(async () => {
     try {
-      const list = await listAllBoatLaunches();
+      const list = await loadBoatLaunchesCached((fresh) => {
+        // Fresh data arrived from the background revalidation pass.
+        setLaunches(fresh);
+      });
       setLaunches(list);
       setLaunchesLoaded(true);
       return list.length;
