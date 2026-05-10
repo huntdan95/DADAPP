@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
-import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, useMap, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { Loader2, Wand2 } from 'lucide-react';
+import { Crosshair, Loader2, Wand2 } from 'lucide-react';
 import type {
   DamScheduleProvider,
   FlowProvider,
@@ -94,6 +94,35 @@ export function LocationForm({
   const [error, setError] = useState<string | null>(null);
   const [autoFilling, setAutoFilling] = useState(false);
   const [autoStatus, setAutoStatus] = useState<string | null>(null);
+  const [locating, setLocating] = useState(false);
+  /** Externally-driven map recenter target (incremented after a "use my location" tap). */
+  const [recenterKey, setRecenterKey] = useState(0);
+  const [recenterTarget, setRecenterTarget] = useState<{ lat: number; lng: number; zoom: number } | null>(null);
+
+  async function useMyLocation() {
+    if (!('geolocation' in navigator)) {
+      setError('Geolocation not available on this device');
+      return;
+    }
+    setLocating(true);
+    setError(null);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const la = pos.coords.latitude;
+        const ln = pos.coords.longitude;
+        setLat(la);
+        setLng(ln);
+        setRecenterTarget({ lat: la, lng: ln, zoom: 14 });
+        setRecenterKey((k) => k + 1);
+        setLocating(false);
+      },
+      (err) => {
+        setLocating(false);
+        setError(`Couldn't get location: ${err.message}`);
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 }
+    );
+  }
 
   const initialCenter: [number, number] = useMemo(
     () => [initial?.lat ?? 39.5, initial?.lng ?? -85.0],
@@ -232,8 +261,24 @@ export function LocationForm({
       </div>
 
       <div>
-        <div className="text-xs uppercase tracking-wider text-muted mb-1">
-          Drop pin
+        <div className="flex items-center justify-between mb-1">
+          <div className="text-xs uppercase tracking-wider text-muted">
+            Drop pin
+          </div>
+          <Button
+            type="button"
+            variant="secondary"
+            size="sm"
+            onClick={useMyLocation}
+            disabled={locating}
+          >
+            {locating ? (
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+            ) : (
+              <Crosshair className="w-3.5 h-3.5" />
+            )}
+            {locating ? 'Locating…' : 'Use my location'}
+          </Button>
         </div>
         <div className="h-56 rounded-xl overflow-hidden border border-border">
           <MapContainer
@@ -247,6 +292,7 @@ export function LocationForm({
               setLat(la);
               setLng(ln);
             }} />
+            <RecenterOnTarget target={recenterTarget} key={recenterKey} />
           </MapContainer>
         </div>
         <div className="flex items-center justify-between gap-2 mt-1">
@@ -359,6 +405,18 @@ function PinPicker({
   useEffect(() => {}, [lat, lng]);
   if (lat == null || lng == null) return null;
   return <Marker position={[lat, lng]} icon={dropIcon} />;
+}
+
+function RecenterOnTarget({
+  target,
+}: {
+  target: { lat: number; lng: number; zoom: number } | null;
+}) {
+  const map = useMap();
+  useEffect(() => {
+    if (target) map.setView([target.lat, target.lng], target.zoom);
+  }, [target, map]);
+  return null;
 }
 
 function makeFlowProvider(kind: FlowKind, value: string): FlowProvider | null {

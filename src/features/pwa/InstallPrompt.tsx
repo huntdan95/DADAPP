@@ -58,9 +58,9 @@ export function InstallPrompt() {
   return (
     <div
       className={cn(
-        'fixed bottom-20 inset-x-3 z-30 max-w-md mx-auto',
+        'fixed bottom-24 inset-x-3 z-40 max-w-md mx-auto',
         'bg-surface border border-accent/40 rounded-2xl shadow-lg p-3',
-        'flex items-start gap-3 safe-bottom'
+        'flex items-start gap-3'
       )}
       role="dialog"
       aria-label="Install app"

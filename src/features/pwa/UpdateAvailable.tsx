@@ -22,7 +22,7 @@ export function UpdateAvailable() {
 
   return (
     <div
-      className="fixed bottom-20 inset-x-3 z-30 max-w-md mx-auto bg-surface border border-info/40 rounded-2xl shadow-lg p-3 flex items-center gap-3 safe-bottom"
+      className="fixed bottom-24 inset-x-3 z-40 max-w-md mx-auto bg-surface border border-info/40 rounded-2xl shadow-lg p-3 flex items-center gap-3"
       role="status"
     >
       <RefreshCw className="w-4 h-4 text-info" />

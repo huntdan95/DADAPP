@@ -18,7 +18,7 @@ export function BottomNav<TKey extends string>({
 }) {
   return (
     <nav
-      className="fixed bottom-0 inset-x-0 z-30 bg-bg/95 backdrop-blur border-t border-border safe-bottom"
+      className="shrink-0 z-30 bg-bg/95 backdrop-blur border-t border-border safe-bottom"
       role="navigation"
     >
       <div className="max-w-2xl mx-auto grid grid-cols-3">

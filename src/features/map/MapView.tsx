@@ -106,7 +106,7 @@ export function MapView({ locations }: { locations: Location[] }) {
   );
 
   return (
-    <div className="relative h-[calc(100vh-9rem)] rounded-2xl overflow-hidden border border-border">
+    <div className="relative flex-1 min-h-[300px] rounded-2xl overflow-hidden border border-border">
       <MapContainer
         center={center}
         zoom={5}

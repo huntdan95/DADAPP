@@ -111,8 +111,8 @@ export default function App() {
   const isFirebaseConfigured = auth.kind === 'signed-in';
 
   return (
-    <div className="min-h-full safe-top">
-      <header className="sticky top-0 z-10 backdrop-blur bg-bg/80 border-b border-border safe-top">
+    <div className="flex flex-col h-[100dvh]">
+      <header className="shrink-0 backdrop-blur bg-bg/80 border-b border-border safe-top">
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
           <div>
             <h1 className="text-base font-semibold">Dad's Fishing Co-Pilot</h1>
@@ -147,7 +147,7 @@ export default function App() {
         </div>
       </header>
 
-      <main className="max-w-2xl mx-auto px-4 py-4 pb-24 flex flex-col gap-4">
+      <main className="flex-1 overflow-y-auto w-full max-w-2xl mx-auto px-4 py-4 flex flex-col gap-4 min-h-0">
         {tab === 'conditions' && (
           <>
             {locations.map((loc) => (
@@ -166,7 +166,11 @@ export default function App() {
 
         {tab === 'map' && (
           <Suspense fallback={<TabFallback />}>
-            <MapView locations={locations} />
+            {/* Map needs a flex parent so it can grow into the available space
+                rather than overflowing the viewport. */}
+            <div className="flex-1 flex flex-col min-h-0">
+              <MapView locations={locations} />
+            </div>
           </Suspense>
         )}
 
@@ -193,3 +197,8 @@ export default function App() {
     </div>
   );
 }
+
+// Note: BottomNav remains visually positioned at the bottom via its own
+// styles, but the outer flex column now reserves space for it so content
+// no longer disappears under the nav (the iOS safe-area home-indicator
+// case in particular).
