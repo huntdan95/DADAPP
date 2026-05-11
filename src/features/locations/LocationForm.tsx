@@ -538,17 +538,22 @@ export function LocationForm({
         );
     }
 
+    // Build the Location with conditional spreads instead of `field
+    // ?? undefined` so we never send a literal `undefined` to
+    // Firestore. (Even with `ignoreUndefinedProperties: true` set,
+    // omitting from the object up front is cleaner and avoids the
+    // surprise on any client that doesn't have the flag.)
     const loc: Location = {
       id: initial?.id ?? slugify(name),
       name: name.trim(),
-      river: river.trim() || undefined,
       state: state.trim().toUpperCase() || 'XX',
       country: country.trim().toUpperCase() || 'US',
-      ...(county ? { county } : {}),
       type,
       lat,
       lng,
       timezone,
+      ...(river.trim() ? { river: river.trim() } : {}),
+      ...(county ? { county } : {}),
       dataProviders: {
         weather: { kind: 'open-meteo' },
         ...(flow ? { flow } : {}),

@@ -47,6 +47,14 @@ export function getFirebaseApp(): FirebaseApp | null {
         localCache: persistentLocalCache({
           tabManager: persistentMultipleTabManager(),
         }),
+        // Without this, any setDoc / addDoc call with a value of
+        // `undefined` anywhere in the payload throws
+        // "Unsupported field value: undefined" — and the throw
+        // propagates as a generic save failure. We have several
+        // optional fields on Location/LogEntry that are typed
+        // `T | undefined`; with this flag set, Firestore drops
+        // them instead of rejecting the whole write.
+        ignoreUndefinedProperties: true,
       });
     } catch {
       // Already initialized (HMR re-run, multiple init paths) — ignore.

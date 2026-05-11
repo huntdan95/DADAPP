@@ -176,28 +176,25 @@ export function QuickLog({
         });
         const ctx = await resolveConditionsContext();
         const { gps, matchedLoc, snap } = ctx;
-        // Sticky defaults — pre-fill from the most recent catch at this
-        // spot (or globally) so an offline log doesn't start blank.
-        const sticky = await fetchLastCatch(matchedLoc?.id).catch(() => null);
-        setLastCatch(sticky);
+        // Photo present — leave species/lure/method blank so the
+        // user fills them fresh (or fills them when they reconnect
+        // and the AI runs). Don't apply sticky-from-last-catch:
+        // a Crawler-Harness-and-Channel-Cat default on a Brown
+        // Trout photo is worse than empty fields.
+        setLastCatch(null);
         setKind('catch');                                  // best guess; user can change
-        setDraft(
-          applyStickyDefaults(
-            {
-              id: logId,
-              kind: 'catch',
-              time: new Date().toISOString(),
-              gps: gps ?? undefined,
-              locationId: matchedLoc?.id,
-              locationName: matchedLoc?.name,
-              photoQueued: true,
-              // photoUrl + photoPath get filled in by the drain worker.
-              conditions: snap.conditions,
-              flowReading: snap.flowReading,
-            },
-            sticky
-          )
-        );
+        setDraft({
+          id: logId,
+          kind: 'catch',
+          time: new Date().toISOString(),
+          gps: gps ?? undefined,
+          locationId: matchedLoc?.id,
+          locationName: matchedLoc?.name,
+          photoQueued: true,
+          // photoUrl + photoPath get filled in by the drain worker.
+          conditions: snap.conditions,
+          flowReading: snap.flowReading,
+        });
         setPhase('preview');
         return;
       }
@@ -220,30 +217,27 @@ export function QuickLog({
       ]);
 
       const { gps, matchedLoc, snap } = ctx;
-      const sticky = await fetchLastCatch(matchedLoc?.id).catch(() => null);
-      setLastCatch(sticky);
+      // No sticky-from-last-catch on photo logs — see the note on
+      // `applyStickyDefaults`. AI fills species/length; user fills
+      // the lure they actually used.
+      setLastCatch(null);
 
       // Default to 'catch' — most photos are. AI may correct this to
       // hatch / note when it returns; user can also change manually.
       setKind('catch');
 
-      setDraft(
-        applyStickyDefaults(
-          {
-            id: logId,
-            kind: 'catch',
-            time: new Date().toISOString(),
-            gps: gps ?? undefined,
-            locationId: matchedLoc?.id,
-            locationName: matchedLoc?.name,
-            photoUrl: url,
-            photoPath: path,
-            conditions: snap.conditions,
-            flowReading: snap.flowReading,
-          },
-          sticky
-        )
-      );
+      setDraft({
+        id: logId,
+        kind: 'catch',
+        time: new Date().toISOString(),
+        gps: gps ?? undefined,
+        locationId: matchedLoc?.id,
+        locationName: matchedLoc?.name,
+        photoUrl: url,
+        photoPath: path,
+        conditions: snap.conditions,
+        flowReading: snap.flowReading,
+      });
 
       // Show the preview screen NOW — user can start editing while
       // Claude vision runs.
@@ -334,31 +328,15 @@ export function QuickLog({
     }
   }
 
-  /**
-   * If the draft is a catch and the corresponding fields are empty,
-   * fill them from the most recent catch. AI vision (when it runs)
-   * still overrides these via the late-arriving setDraft patches.
-   * Hatch/note entries are passed through untouched.
-   */
-  function applyStickyDefaults(
-    base: Partial<LogEntry>,
-    last: LogEntry | null
-  ): Partial<LogEntry> {
-    if (!last || base.kind !== 'catch') return base;
-    return {
-      ...base,
-      species: base.species ?? last.species,
-      method: base.method ?? last.method,
-      flyOrLure: base.flyOrLure ?? last.flyOrLure,
-      releasedOrKept: base.releasedOrKept ?? last.releasedOrKept,
-      trollingDepthFt:
-        base.trollingDepthFt ??
-        (last.method === 'troll' ? last.trollingDepthFt : undefined),
-      trollingSpeedMph:
-        base.trollingSpeedMph ??
-        (last.method === 'troll' ? last.trollingSpeedMph : undefined),
-    };
-  }
+  // (Removed `applyStickyDefaults` — used to pre-fill species /
+  // method / flyOrLure from the previous catch at the same spot.
+  // The pre-fill silently raced the Claude-vision callback: AI's
+  // species detection was dropped because `prev.species` was
+  // already set to the previous catch's value. Result: brown
+  // trout photo → "Channel Cat", Crawler Harness from the prior
+  // walleye log. Photo paths now start with empty species/lure
+  // fields and AI fills them in. Note-only paths default to
+  // 'note' kind, where these fields don't apply.)
 
   function update<K extends keyof LogEntry>(key: K, value: LogEntry[K] | undefined) {
     setDraft((d) => ({ ...d, [key]: value }));
