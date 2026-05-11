@@ -72,9 +72,9 @@ export async function estimateWaterTemp(
   lat: number,
   lng: number
 ): Promise<EstimatorOutput> {
-  let dailyMeansF: number[];
+  let airResult: AirTempResult;
   try {
-    dailyMeansF = await fetchRecentDailyMeansF(lat, lng);
+    airResult = await fetchRecentDailyMeansF(lat, lng);
   } catch (e) {
     return {
       surfaceTempF: null,
@@ -85,6 +85,7 @@ export async function estimateWaterTemp(
       calibrated: false,
     };
   }
+  const { dailyMeansF, elevationM } = airResult;
   if (dailyMeansF.length < 7) {
     return {
       surfaceTempF: null,
@@ -107,7 +108,8 @@ export async function estimateWaterTemp(
   const doy = dayOfYear(now);
   const seasonalOffset = seasonalOffsetF(doy);
   const latCorrection = latitudeCorrectionF(lat, doy);
-  const raw = ewma + seasonalOffset + latCorrection;
+  const elevationCorrection = elevationCorrectionF(elevationM, doy);
+  const raw = ewma + seasonalOffset + latCorrection + elevationCorrection;
   const modeled = clamp(raw, 33, 90);
 
   // ----- Calibrate against same-waterbody gauge ----------------------------
@@ -120,7 +122,18 @@ export async function estimateWaterTemp(
   ).catch(() => null);
 
   const surfaceTempF = calibration?.surfaceTempF ?? modeled;
-  const notesBase = 'Modeled from 14-day air temp + seasonal offset.';
+  // Build a notes string that explains the model's adjustments — the
+  // user should be able to read the breakdown and understand why the
+  // estimate is what it is.
+  const elevationFt = elevationM != null ? Math.round(elevationM * 3.281) : null;
+  const modelBits: string[] = ['14-day air temp + seasonal offset'];
+  if (Math.abs(elevationCorrection) >= 1) {
+    modelBits.push(
+      `elevation correction ${elevationCorrection.toFixed(1)}°F` +
+        (elevationFt ? ` (${elevationFt.toLocaleString()} ft)` : '')
+    );
+  }
+  const notesBase = `Modeled: ${modelBits.join(' + ')}.`;
   let notes: string;
   let siteName: string;
 
@@ -136,8 +149,8 @@ export async function estimateWaterTemp(
     // reachable. Be explicit so the user knows we didn't silently use
     // a cross-water gauge.
     notes =
-      `${notesBase} No USGS water-temp gauge on ${spotWaterbody.name} within 50 mi; ` +
-      'model is uncalibrated for this waterbody.';
+      `${notesBase} No live USGS water-temp gauge on ${spotWaterbody.name} within 50 mi — ` +
+      'pure-model estimate (calibration anchor unavailable).';
     siteName = 'Estimated · air-temp model';
   } else {
     // Spot is not in our waterbody registry, so we have no way to
@@ -304,10 +317,17 @@ async function calibrateAgainstSameWaterbodyGauge(
 
 // ---- Open-Meteo + math helpers (unchanged from the prior estimator) ------
 
+interface AirTempResult {
+  dailyMeansF: number[];
+  /** Elevation in meters, from Open-Meteo's response. ~0 over the
+   *  ocean, ~3000 m in the Uintas. Used by the elevation correction. */
+  elevationM: number | null;
+}
+
 async function fetchRecentDailyMeansF(
   lat: number,
   lng: number
-): Promise<number[]> {
+): Promise<AirTempResult> {
   const params = new URLSearchParams({
     latitude: lat.toFixed(4),
     longitude: lng.toFixed(4),
@@ -321,10 +341,13 @@ async function fetchRecentDailyMeansF(
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const json = (await res.json()) as {
     hourly?: { time: string[]; temperature_2m: number[] };
+    elevation?: number;
   };
   const time = json.hourly?.time ?? [];
   const temps = json.hourly?.temperature_2m ?? [];
-  if (time.length === 0 || time.length !== temps.length) return [];
+  if (time.length === 0 || time.length !== temps.length) {
+    return { dailyMeansF: [], elevationM: json.elevation ?? null };
+  }
 
   const byDay = new Map<string, { sum: number; n: number }>();
   for (let i = 0; i < time.length; i++) {
@@ -336,10 +359,54 @@ async function fetchRecentDailyMeansF(
     entry.n += 1;
     byDay.set(day, entry);
   }
-  return Array.from(byDay.entries())
-    .filter(([, v]) => v.n > 0)
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([, v]) => v.sum / v.n);
+  return {
+    dailyMeansF: Array.from(byDay.entries())
+      .filter(([, v]) => v.n > 0)
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([, v]) => v.sum / v.n),
+    elevationM: json.elevation ?? null,
+  };
+}
+
+/**
+ * Elevation + snowmelt correction. Mountain streams run substantially
+ * colder than the air-temp model predicts for two compounding reasons:
+ *
+ *   1. Lapse rate — air cools ~3.5°F per 1000 ft of elevation. Water,
+ *      mostly fed by groundwater at +/- the local ground temp, lags.
+ *      Net: water is ~1.5°F colder per 1000 ft above ~4000 ft.
+ *
+ *   2. Snowmelt — April through July, high-elevation streams in the
+ *      Rockies / Sierra / Cascades / Wasatch run near-freezing at the
+ *      headwaters from melting snowpack regardless of air temp. We
+ *      add an extra -3°F to -6°F during these months above 6000 ft.
+ *
+ * The Weber River near Oakley (~6500 ft, May) is the canonical
+ * miss-case: pure air-temp model says 47°F, but actual gauge readings
+ * elsewhere on the river show 43°F. This correction closes that gap.
+ */
+function elevationCorrectionF(elevationM: number | null, doy: number): number {
+  if (elevationM == null) return 0;
+  const elevationFt = elevationM * 3.281;
+  if (elevationFt < 4000) return 0;
+
+  // Base lapse correction — gentle linear discount above 4000 ft.
+  const lapse = -1.5 * ((elevationFt - 4000) / 1000);
+
+  // Snowmelt overlay — April (DOY ~90) through July (DOY ~210), above
+  // 6000 ft. Strongest in May-June at the peak of melt.
+  let snowmelt = 0;
+  if (elevationFt >= 6000 && doy >= 90 && doy <= 210) {
+    // Bell curve centered on DOY 145 (May 25), peak -5°F.
+    const peakDoy = 145;
+    const sigma = 35;
+    const intensity = Math.exp(-Math.pow(doy - peakDoy, 2) / (2 * sigma * sigma));
+    // Stronger the higher you are: scale 0 at 6000 ft → -5 at 9000+ ft.
+    const elevationScale = Math.min(1, (elevationFt - 6000) / 3000);
+    snowmelt = -5 * intensity * elevationScale;
+  }
+
+  return lapse + snowmelt;
 }
 
 function seasonalOffsetF(doy: number): number {

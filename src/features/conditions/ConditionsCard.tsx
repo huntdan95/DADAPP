@@ -6,6 +6,7 @@ import { LakeSection } from './LakeSection';
 import { DamSection } from './DamSection';
 import { SolunarSection } from './SolunarSection';
 import { HatchSection } from './HatchSection';
+import { FlyBoxSection } from './FlyBoxSection';
 import { SpeciesSection } from './SpeciesSection';
 import { TidesSection } from './TidesSection';
 import { TidesSetupPrompt } from './TidesSetupPrompt';
@@ -80,6 +81,11 @@ export function ConditionsCard({ location }: { location: Location }) {
       <SolunarSection location={location} />
       {showHatches && <HatchSection location={location} />}
       {showSpecies && <SpeciesSection location={location} />}
+      {/* Local fly box — non-hatch patterns (streamers, eggs, mysis,
+          scud, sowbug, San Juan worm, terrestrials). Always renders
+          for river-type spots; hides itself when the state has no
+          matching entries (e.g. saltwater pins). */}
+      <FlyBoxSection location={location} />
       {showBriefing && <BriefingSection location={location} />}
     </Card>
   );

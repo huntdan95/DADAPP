@@ -11,6 +11,7 @@ import {
 import type { Location } from '../providers/types';
 import type { LocationStore } from './types';
 import { getFirebaseApp, getFirebaseAuth } from '../firebase';
+import { inferStateFromLatLng } from '../geo/inferState';
 
 /**
  * Firestore-backed LocationStore.
@@ -49,30 +50,74 @@ export function makeFirestoreLocationStore(): LocationStore {
   return {
     async list() {
       const snap = await getDocs(userCol());
-      return snap.docs.map((d) => d.data() as Location);
+      return snap.docs.map((d) => normalizeOnRead(d.data() as Location));
     },
     async get(id) {
       const snap = await getDoc(doc(userCol(), id));
-      return snap.exists() ? (snap.data() as Location) : null;
+      return snap.exists() ? normalizeOnRead(snap.data() as Location) : null;
     },
     async upsert(loc) {
+      // State auto-fill: if the spot was saved with no state (Nominatim
+      // was slow / offline at add-time, the user dismissed the form
+      // before auto-detect finished, etc.) infer one from lat/lng. The
+      // inference checks the waterbody registry first, then falls back
+      // to state bounding boxes — accurate enough that no US pin
+      // should land in the picker's "—" group anymore.
+      let normalized = loc;
+      if (!loc.state || loc.state.trim() === '') {
+        const inferred = inferStateFromLatLng(loc.lat, loc.lng);
+        if (inferred) {
+          normalized = { ...loc, state: inferred };
+        }
+      } else if (loc.state.length > 2) {
+        // Defensively normalize a long-form state name ("Utah") to USPS
+        // ("UT") — happens when Nominatim returned a name our map
+        // didn't have, or when the value came from a non-standard
+        // source.
+        const inferred = inferStateFromLatLng(loc.lat, loc.lng);
+        if (inferred) {
+          normalized = { ...loc, state: inferred };
+        }
+      }
       // Defensive strip of undefined values before the setDoc.
       // We ALSO pass `ignoreUndefinedProperties: true` to
       // initializeFirestore, but that flag only protects clients
       // running the latest bundle — older cached PWA bundles still
       // throw "Unsupported field value: undefined" without this
       // explicit strip. Belt + suspenders.
-      await setDoc(doc(userCol(), loc.id), stripUndefinedDeep(loc) as Location);
+      await setDoc(
+        doc(userCol(), normalized.id),
+        stripUndefinedDeep(normalized) as Location
+      );
     },
     async remove(id) {
       await deleteDoc(doc(userCol(), id));
     },
     subscribe(cb) {
       return onSnapshot(userCol(), (snap) => {
-        cb(snap.docs.map((d) => d.data() as Location));
+        cb(snap.docs.map((d) => normalizeOnRead(d.data() as Location)));
       });
     },
   };
+}
+
+/**
+ * Read-time normalization. Catches legacy docs that were saved before
+ * the state-inference helper existed (state field empty / mis-cased).
+ * Pure function — doesn't mutate Firestore; just gives the UI a clean
+ * Location object to display. Next time the user edits the spot, the
+ * upsert path persists the fix.
+ */
+function normalizeOnRead(loc: Location): Location {
+  if (!loc) return loc;
+  const trimmed = loc.state?.trim() ?? '';
+  if (!trimmed || trimmed.length > 2) {
+    const inferred = inferStateFromLatLng(loc.lat, loc.lng);
+    if (inferred && inferred !== trimmed) {
+      return { ...loc, state: inferred };
+    }
+  }
+  return loc;
 }
 
 /**

@@ -86,18 +86,35 @@ export const UT_WATERBODIES: Waterbody[] = [
   {
     id: 'ut-weber-river',
     name: 'Weber River',
+    aliases: ['Upper Weber', 'Weber'],
     states: ['UT'],
-    type: 'tailwater',
-    bbox: [40.85, -111.65, 41.20, -111.20],
-    centroid: { lat: 41.00, lng: -111.45 },
+    type: 'freestone',                        // wild-trout above Echo; tailwater segments below
+    // Headwaters in the Uintas (Mirror Lake area) down to Echo Reservoir.
+    // Previous bbox started at 40.85 N which missed the Oakley / Kamas /
+    // Smith & Morehouse stretch — the prime upper-river trout water.
+    bbox: [40.65, -111.40, 41.20, -110.85],
+    centroid: { lat: 40.92, lng: -111.20 },
     dataProviders: {
       weather: { kind: 'open-meteo' },
       flow: { kind: 'usgs', siteId: '10128500' },
     },
     species: ['Brown Trout', 'Cutthroat Trout', 'Rainbow Trout', 'Mountain Whitefish'],
-    hatchTags: ['pmd', 'caddis', 'bwo', 'midge'],
+    hatchTags: [
+      'pmd',
+      'pale-evening-dun',
+      'caddis-grannom',
+      'hydropsyche-caddis',
+      'mothers-day-caddis',
+      'bwo-spring',
+      'little-yellow-stone',
+      'salmonfly',
+      'golden-stone',
+      'midges',
+      'scud',
+      'sowbug',
+    ],
     accessNotes:
-      'Echo Reservoir → Great Salt Lake. Wild brown trout fishery. Backcountry feel above Coalville.',
+      'Uintas headwaters → Mirror Lake → Kamas → Oakley → Coalville → Echo Reservoir → Ogden. Upper river: snowmelt-fed freestone with wild cutts + browns. Best after runoff (mid-June+).',
   },
   {
     id: 'ut-logan-river',
