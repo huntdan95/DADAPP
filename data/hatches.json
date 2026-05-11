@@ -1240,7 +1240,10 @@
     "flies": [
       "Size 10-12 elk-hair spruce moth (tan)",
       "Size 12 CDC spruce moth",
-      "Size 10 stimulator (tan)"
+      "Size 10 stimulator (tan)",
+      "Size 10 Madame X (tan)",
+      "Size 12 Goddard caddis (tan, riding low)",
+      "Size 12 spruce moth pupa (subsurface)"
     ],
     "searchTerm": "spruce moth Choristoneura occidentalis",
     "wikipediaSlug": "Choristoneura_occidentalis",
@@ -1356,7 +1359,10 @@
     "flies": [
       "Size 16 Pink Albert parachute",
       "Size 16 Pink Albert cripple",
-      "Size 16 pink rusty spinner"
+      "Size 16 pink rusty spinner",
+      "Size 16 Pink Albert female (yellow body)",
+      "Size 16 Pink Albert CDC dun",
+      "Size 14 pheasant-tail nymph (rusty)"
     ],
     "searchTerm": "pink albert Epeorus albertae mayfly",
     "wikipediaSlug": "Epeorus",
@@ -1474,7 +1480,11 @@
     "flies": [
       "Size 16-20 Mysis shrimp (clear/white)",
       "Size 18 Mysis (epoxy back)",
-      "Size 16 white scud (Mysis impression)"
+      "Size 16 white scud (Mysis impression)",
+      "Size 16 Mercer's Mysis",
+      "Size 18 UV Mysis (epoxy back)",
+      "Size 16 olive scud (alt color)",
+      "Size 18 disco midge (white) — bottom-drift cousin"
     ],
     "searchTerm": "mysis shrimp fly pattern tailwater",
     "wikipediaSlug": "Mysis",
@@ -1561,7 +1571,10 @@
     "flies": [
       "Size 14-16 grey sowbug (flat back)",
       "Size 16 cress bug (olive-grey)",
-      "Size 14 ribbed sowbug (UV)"
+      "Size 14 ribbed sowbug (UV)",
+      "Size 14-16 olive sowbug (Czech-style)",
+      "Size 16 ribbed cress bug (UV pearl)",
+      "Size 14 pink Mop fly (sowbug attractor)"
     ],
     "searchTerm": "sowbug cress bug fly pattern tailwater",
     "wikipediaSlug": "Asellidae",
@@ -1757,7 +1770,10 @@
     "flies": [
       "Size 16-20 Tiny Black Stonefly adult (Stimulator-style)",
       "Size 16-20 Tiny Black Stonefly nymph (Pat's rubber-legs)",
-      "Size 16-20 dark stone nymph"
+      "Size 16-20 dark stone nymph",
+      "Size 16-18 Pat's rubber-legs (black)",
+      "Size 18 winter black stone nymph",
+      "Size 18 small black Stimulator"
     ],
     "searchTerm": "Allocapnia granulata stonefly fly fishing",
     "wikipediaSlug": null,
@@ -1794,7 +1810,10 @@
     "flies": [
       "Size 10-14 Early Black Stonefly adult (Stimulator-style)",
       "Size 10-14 Early Black Stonefly nymph (Pat's rubber-legs)",
-      "Size 10-14 dark stone nymph"
+      "Size 10-14 dark stone nymph",
+      "Size 12-14 Pat's rubber-legs (black)",
+      "Size 14 black foam stone (low rider)",
+      "Size 12 Bullethead Black Stone (early spring)"
     ],
     "searchTerm": "Taeniopteryx nivalis stonefly fly fishing",
     "wikipediaSlug": null,
@@ -1831,7 +1850,10 @@
     "flies": [
       "Size 12-14 Early Brown Stonefly adult (Stimulator-style)",
       "Size 12-14 Early Brown Stonefly nymph (Pat's rubber-legs)",
-      "Size 12-14 dark stone nymph"
+      "Size 12-14 dark stone nymph",
+      "Size 12-14 Pat's rubber-legs (brown)",
+      "Size 14 brown Stimulator",
+      "Size 14 Bullethead Brown Stone"
     ],
     "searchTerm": "Brachyptera fasciata stonefly fly fishing",
     "wikipediaSlug": null,
@@ -2028,7 +2050,10 @@
     "flies": [
       "Size 8-14 Medium Brown Stonefly adult (Stimulator-style)",
       "Size 8-14 Medium Brown Stonefly nymph (Pat's rubber-legs)",
-      "Size 8-14 dark stone nymph"
+      "Size 8-14 dark stone nymph",
+      "Size 8-12 Pat's rubber-legs (brown)",
+      "Size 10 brown Bullethead Stone",
+      "Size 10 brown Madame X"
     ],
     "searchTerm": "Perlodidae isogenus stonefly fly fishing",
     "wikipediaSlug": null,
@@ -2106,7 +2131,10 @@
     "flies": [
       "Size 2-8 Giant Stonefly adult (Stimulator-style)",
       "Size 2-8 Giant Stonefly nymph (Pat's rubber-legs)",
-      "Size 2-8 dark stone nymph"
+      "Size 2-8 dark stone nymph",
+      "Size 4-6 Sofa Pillow (orange / brown)",
+      "Size 6 Rogue stone",
+      "Size 6 Norm Wood's salmonfly (Eastern)"
     ],
     "searchTerm": "Pteronarcys dorsata stonefly fly fishing",
     "wikipediaSlug": null,
@@ -2305,7 +2333,11 @@
     ],
     "flies": [
       "Size 8-12 green worm (chenille)",
-      "Size 10 inchworm"
+      "Size 10 inchworm",
+      "Size 10-12 green inchworm (chenille)",
+      "Size 10 foam green caterpillar",
+      "Size 12 deer-hair caterpillar (chartreuse)",
+      "Size 12 green Mop fly"
     ],
     "searchTerm": "Lepidoptera sp. terrestrial fly fishing",
     "wikipediaSlug": null,
@@ -2583,7 +2615,10 @@
     "flies": [
       "Size 12-14 foam beetle",
       "Size 12 Dave's beetle",
-      "Size 14 peacock beetle"
+      "Size 14 peacock beetle",
+      "Size 12 Japanese beetle (iridescent foam)",
+      "Size 14 Dave's beetle (peacock)",
+      "Size 14 deer-hair beetle (low-riding)"
     ],
     "searchTerm": "Coleoptera terrestrial fly fishing",
     "wikipediaSlug": null,
@@ -2784,7 +2819,10 @@
     "flies": [
       "Size 6-8 Big Golden Stonefly adult (Stimulator-style)",
       "Size 6-8 Big Golden Stonefly nymph (Pat's rubber-legs)",
-      "Size 6-8 dark stone nymph"
+      "Size 6-8 dark stone nymph",
+      "Size 6-8 Golden Stone Madame X",
+      "Size 8 Yellow Stimulator",
+      "Size 6 Pat's rubber-legs (golden)"
     ],
     "searchTerm": "Paragentina media stonefly fly fishing",
     "wikipediaSlug": null,
@@ -2942,7 +2980,10 @@
     ],
     "flies": [
       "Size 10-12 foam cricket",
-      "Size 10 Dave's cricket"
+      "Size 10 Dave's cricket",
+      "Size 10 foam cricket (black)",
+      "Size 10 deer-hair cricket",
+      "Size 10 Letort cricket"
     ],
     "searchTerm": "Orthoptera sp. terrestrial fly fishing",
     "wikipediaSlug": null,
@@ -2978,7 +3019,11 @@
     "flies": [
       "Size 6-12 hopper",
       "Size 8 Dave's hopper",
-      "Size 10 Chubby Chernobyl"
+      "Size 10 Chubby Chernobyl",
+      "Size 8 Project Hopper",
+      "Size 10 Chubby Chernobyl (tan)",
+      "Size 10 Morrish Hopper",
+      "Size 8 Whit's Hopper"
     ],
     "searchTerm": "Orthoptera sp. terrestrial fly fishing",
     "wikipediaSlug": null,
@@ -3253,7 +3298,10 @@
     "flies": [
       "Size 16-18 Early Black Stonefly adult (Stimulator-style)",
       "Size 16-18 Early Black Stonefly nymph (Pat's rubber-legs)",
-      "Size 16-18 dark stone nymph"
+      "Size 16-18 dark stone nymph",
+      "Size 16-18 Pat's rubber-legs (black)",
+      "Size 18 black foam stone",
+      "Size 18 black soft-hackle (wet)"
     ],
     "searchTerm": "Capniidae stonefly fly fishing",
     "wikipediaSlug": null,
@@ -3370,7 +3418,10 @@
     "flies": [
       "Size 4-8 Giant Black Stonefly adult (Stimulator-style)",
       "Size 4-8 Giant Black Stonefly nymph (Pat's rubber-legs)",
-      "Size 4-8 dark stone nymph"
+      "Size 4-8 dark stone nymph",
+      "Size 4-6 Sofa Pillow (black/orange)",
+      "Size 6 black Stimulator",
+      "Size 6 Eastern Salmonfly (Pteronarcys dorsata adult)"
     ],
     "searchTerm": "Pteronarcys dorsata stonefly fly fishing",
     "wikipediaSlug": null,
@@ -3444,7 +3495,11 @@
     "flies": [
       "Size 4-8 foam cicada (black/orange)",
       "Size 6 Chubby Chernobyl (cicada colors)",
-      "Size 4 Project Hopper (cicada)"
+      "Size 4 Project Hopper (cicada)",
+      "Size 6 Chubby Chernobyl (cicada colors: black body, orange post)",
+      "Size 4 Project Cicada (foam)",
+      "Size 8 deer-hair cicada",
+      "Size 6 BIG black ant (cicada substitute)"
     ],
     "searchTerm": "Magicicada spp. terrestrial fly fishing",
     "wikipediaSlug": null,
@@ -3481,7 +3536,9 @@
     "flies": [
       "Size 12-14 green inchworm (chenille)",
       "Size 12 foam inchworm",
-      "Size 14 green Mop fly"
+      "Size 14 green Mop fly",
+      "Size 12 deer-hair inchworm",
+      "Size 12 foam green worm"
     ],
     "searchTerm": "Lepidoptera larvae terrestrial fly fishing",
     "wikipediaSlug": null,
