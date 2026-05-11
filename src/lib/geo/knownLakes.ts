@@ -41,17 +41,21 @@ export interface KnownLake {
 
 const KNOWN_LAKES: KnownLake[] = [
   // ---- Great Lakes & connected waters --------------------------------
-  // Lake St. Clair has no dedicated NDBC buoy. The closest open-water
-  // station reporting surface temp is 45005 (West Lake Erie). St. Clair
-  // and Erie are part of the same Detroit-River → Lake-Erie water system,
-  // so surface temp tracks closely. Far better than a tributary gauge.
+  // Lake St. Clair: CO-OPS station 9034052 (St. Clair Shores) is a
+  // shore-attached sensor IN the lake — proper Lake-St.-Clair water
+  // temp, not an Erie proxy. NDBC 45005 (West Erie) remains as an
+  // alternative for open-lake reference.
   {
     name: 'Lake St. Clair',
     bbox: [42.30, -83.00, 42.70, -82.35],
     stations: [
       {
+        provider: { kind: 'noaa-coops', stationId: '9034052' },
+        label: 'CO-OPS 9034052 — St. Clair Shores (in-lake sensor)',
+      },
+      {
         provider: { kind: 'noaa-buoy', stationId: '45005' },
-        label: 'NDBC 45005 — West Lake Erie (closest open-lake buoy)',
+        label: 'NDBC 45005 — West Lake Erie (open-water reference)',
       },
       {
         provider: { kind: 'noaa-buoy', stationId: '45149' },
@@ -64,6 +68,10 @@ const KNOWN_LAKES: KnownLake[] = [
     bbox: [41.40, -83.50, 42.90, -78.80],
     stations: [
       {
+        provider: { kind: 'noaa-coops', stationId: '9063079' },
+        label: 'CO-OPS 9063079 — Marblehead OH (shoreline)',
+      },
+      {
         provider: { kind: 'noaa-buoy', stationId: '45005' },
         label: 'NDBC 45005 — West Lake Erie',
       },
@@ -72,8 +80,8 @@ const KNOWN_LAKES: KnownLake[] = [
         label: 'NDBC 45142 — South Erie',
       },
       {
-        provider: { kind: 'noaa-buoy', stationId: '45132' },
-        label: 'NDBC 45132 — Port Stanley',
+        provider: { kind: 'noaa-coops', stationId: '9063020' },
+        label: 'CO-OPS 9063020 — Buffalo NY (shoreline)',
       },
     ],
   },
@@ -81,6 +89,10 @@ const KNOWN_LAKES: KnownLake[] = [
     name: 'Lake Huron',
     bbox: [43.00, -84.60, 46.30, -79.60],
     stations: [
+      {
+        provider: { kind: 'noaa-coops', stationId: '9075014' },
+        label: 'CO-OPS 9075014 — Harbor Beach MI (shoreline)',
+      },
       {
         provider: { kind: 'noaa-buoy', stationId: '45008' },
         label: 'NDBC 45008 — South Lake Huron',
@@ -99,6 +111,14 @@ const KNOWN_LAKES: KnownLake[] = [
     name: 'Lake Michigan',
     bbox: [41.60, -88.00, 46.10, -85.00],
     stations: [
+      {
+        provider: { kind: 'noaa-coops', stationId: '9087023' },
+        label: 'CO-OPS 9087023 — Ludington MI (shoreline)',
+      },
+      {
+        provider: { kind: 'noaa-coops', stationId: '9087044' },
+        label: 'CO-OPS 9087044 — Calumet Harbor IL (shoreline)',
+      },
       {
         provider: { kind: 'noaa-buoy', stationId: '45007' },
         label: 'NDBC 45007 — South Lake Michigan',
@@ -131,6 +151,10 @@ const KNOWN_LAKES: KnownLake[] = [
     name: 'Lake Ontario',
     bbox: [43.20, -79.90, 44.20, -76.00],
     stations: [
+      {
+        provider: { kind: 'noaa-coops', stationId: '9052058' },
+        label: 'CO-OPS 9052058 — Rochester NY (shoreline)',
+      },
       {
         provider: { kind: 'noaa-buoy', stationId: '45012' },
         label: 'NDBC 45012 — Lake Ontario',

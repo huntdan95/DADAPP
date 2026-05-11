@@ -28,8 +28,27 @@ export type DamScheduleProvider =
 export type TidesProvider = { kind: 'noaa'; stationId: string };
 
 export type LakeDataProvider =
+  /** USGS NWIS lake / reservoir gauge (water temp, elevation). */
   | { kind: 'usgs-lake'; siteId: string }
-  | { kind: 'noaa-buoy'; stationId: string };
+  /** NDBC realtime2 buoy or C-MAN station (temp, waves, wind). */
+  | { kind: 'noaa-buoy'; stationId: string }
+  /**
+   * NOAA CO-OPS water-temperature station — shoreline / harbor
+   * sensors on the Great Lakes and tidal coast. Same agency as the
+   * tide-station network; same `stationId` numbering (7-digit).
+   * Distinct from buoys because they're shore-attached and almost
+   * always publish water temp + air temp without waves.
+   */
+  | { kind: 'noaa-coops'; stationId: string }
+  /**
+   * Air-temperature-driven thermal-mass model. Used as a graceful
+   * fallback when no real-time water sensor exists within reach.
+   * Reads recent air temp + cloud cover from Open-Meteo and runs
+   * an exponentially-weighted-average model with seasonal offset.
+   * The UI labels the resulting temp as "estimated" so it's never
+   * confused with a measured reading.
+   */
+  | { kind: 'estimated' };
 
 export interface DataProviders {
   weather: WeatherProvider;
@@ -136,12 +155,21 @@ export interface LakeReading {
    */
   elevationFt?: number | null;
   /**
-   * Authority label for the data attribution in the UI: 'NDBC' for
-   * buoys, 'USGS' for lake gauges.
+   * Authority label for the data attribution in the UI:
+   *   'NDBC'      → buoy / C-MAN reading
+   *   'USGS'      → lake / reservoir gauge
+   *   'CO-OPS'    → NOAA shoreline / harbor sensor
+   *   'estimated' → derived from weather model (not a measurement)
    */
-  authority: 'NDBC' | 'USGS';
+  authority: 'NDBC' | 'USGS' | 'CO-OPS' | 'estimated';
   /** Optional free-text note (e.g., "no recent observation"). */
   notes?: string;
+  /**
+   * True when `surfaceTempF` is a model output rather than a real
+   * sensor reading. Drives the "Estimated" badge in LakeSection so
+   * the user can tell at a glance.
+   */
+  isEstimated?: boolean;
 }
 
 export interface SolunarReading {

@@ -17,9 +17,11 @@ import { MapSearch } from '@/features/map/MapSearch';
 import { friendlyError } from '@/lib/errors';
 import {
   nearestUsgsGauges,
+  nearestUsgsLakeSites,
   reverseGeocode,
   timezoneForState,
   type NearbyGauge,
+  type NearbyLakeSite,
 } from '@/lib/geo/reverseGeocode';
 import {
   nearestTideStations,
@@ -167,23 +169,27 @@ export function LocationForm({
 
   /**
    * Lake-data provider state. Mirrors flow / tides:
-   *   - `lakeKind` ('' | 'noaa-buoy' | 'usgs-lake')
+   *   - `lakeKind` ('' | 'noaa-buoy' | 'usgs-lake' | 'noaa-coops' | 'estimated')
    *   - `lakeId`   (station id / site id depending on kind)
    *   - `lakeOptions` list of nearby NDBC buoys to pick from
    *
    * Distinct from `flow` because many lakes have a USGS gauge for
    * elevation+temp but no discharge — that doesn't fit FlowProvider.
    */
-  const [lakeKind, setLakeKind] = useState<'' | 'noaa-buoy' | 'usgs-lake'>(
-    (initialProviders?.lakeData?.kind ?? '') as '' | 'noaa-buoy' | 'usgs-lake'
+  const [lakeKind, setLakeKind] = useState<'' | 'noaa-buoy' | 'usgs-lake' | 'noaa-coops' | 'estimated'>(
+    (initialProviders?.lakeData?.kind ?? '') as '' | 'noaa-buoy' | 'usgs-lake' | 'noaa-coops' | 'estimated'
   );
   const [lakeId, setLakeId] = useState(
     initialProviders?.lakeData?.kind === 'noaa-buoy'
       ? initialProviders.lakeData.stationId
       : initialProviders?.lakeData?.kind === 'usgs-lake'
       ? initialProviders.lakeData.siteId
+      : initialProviders?.lakeData?.kind === 'noaa-coops'
+      ? initialProviders.lakeData.stationId
       : ''
   );
+  /** Nearby USGS lake-type sites (siteType=LK + param 00010). */
+  const [usgsLakeOptions, setUsgsLakeOptions] = useState<NearbyLakeSite[]>([]);
   const [lakeOptions, setLakeOptions] = useState<NearbyNdbcStation[]>([]);
   /**
    * Curated lake hit (Lake St. Clair / Lake Erie / TVA reservoirs /
@@ -251,7 +257,7 @@ export function LocationForm({
       setAutoStatus(null);
       const parts: string[] = [];
       try {
-        const [geo, gauges, tides, buoys] = await Promise.all([
+        const [geo, gauges, tides, buoys, lakeSites] = await Promise.all([
           reverseGeocode(lat, lng).catch(() => null),
           nearestUsgsGauges(lat, lng, 3).catch(() => [] as NearbyGauge[]),
           nearestTideStations(lat, lng, 3, 50).catch(
@@ -263,6 +269,14 @@ export function LocationForm({
           // still a meaningful signal even at that range.
           nearestNdbcStations(lat, lng, 3, 60).catch(
             () => [] as NearbyNdbcStation[]
+          ),
+          // USGS lake-type sites (siteType=LK + parameter 00010).
+          // Distinct query from `nearestUsgsGauges` (which targets
+          // stream gauges with discharge) — catches reservoir / lake
+          // sensors that don't publish flow. Bigger search radius
+          // (0.75°) because lake sites are sparser than stream gauges.
+          nearestUsgsLakeSites(lat, lng, 3, 0.75).catch(
+            () => [] as NearbyLakeSite[]
           ),
         ]);
         if (cancelled) return;
@@ -378,53 +392,65 @@ export function LocationForm({
         }
 
         // Lake-data auto-pick. Priority for stillwater types:
-        //   1. Curated known-lake hit (Lake St. Clair, Lake Erie,
-        //      Lake Cumberland, etc.) — always wins. Hand-picked
-        //      station appropriate for that water body.
-        //   2. Nearby NDBC buoy (within 60 mi).
-        //   3. USGS lake gauge whose name contains "Lake" /
-        //      "Reservoir" / "Pond" — never a river/creek tributary.
-        //      A "Clinton River at Mt. Clemens" gauge is NOT a Lake
-        //      St. Clair data source even if it's the closest one.
-        //   4. Nothing — leave unset. The form shows a clear
-        //      "no lake data source nearby" message; surface temp
-        //      will be inferred from weather forecast only.
-        //
-        // For non-stillwater spots we still surface buoys as a
-        // manual-pick option but never auto-bind one. A coastal-NC
-        // trout stream shouldn't get a Lake-Erie buoy stamped on it
-        // just because the buoy fell inside the 60-mi search radius.
+        //   1. Curated known-lake hit (Lake St. Clair → CO-OPS
+        //      9034052 St. Clair Shores; Great Lakes → shoreline
+        //      CO-OPS stations and offshore NDBC buoys; major TN/KY
+        //      reservoirs → published USGS lake gauges). Always wins.
+        //   2. USGS lake-type site (siteType=LK + temp 00010) within
+        //      ~50 mi — catches inland reservoirs the curated list
+        //      doesn't know about (Lake Erie / KY / TN dam-lake
+        //      monitoring).
+        //   3. NDBC buoy within 60 mi.
+        //   4. USGS gauge whose NAME contains "Lake" / "Reservoir" —
+        //      never a tributary river/creek.
+        //   5. Estimated — air-temp-driven model. Last resort but
+        //      always available. Better than nothing for the many
+        //      MI / IN inland lakes with no real-time sensor at all.
         const lakeHit = lookupKnownLake(lat, lng);
         setKnownLake(lakeHit);
-
-        if (buoys.length > 0) {
-          setLakeOptions(buoys);
-        } else {
-          setLakeOptions([]);
-        }
+        setLakeOptions(buoys);
+        setUsgsLakeOptions(lakeSites);
 
         if (stillwater || effectiveType === 'saltwater') {
           let lakeBound = false;
+
           // Tier 1: curated known-lake hit.
           if (lakeHit && !lakeKind) {
-            setLakeKind(lakeHit.primary.provider.kind);
+            const primary = lakeHit.primary.provider;
+            setLakeKind(primary.kind);
             const id =
-              lakeHit.primary.provider.kind === 'noaa-buoy'
-                ? lakeHit.primary.provider.stationId
-                : lakeHit.primary.provider.siteId;
+              primary.kind === 'noaa-buoy'
+                ? primary.stationId
+                : primary.kind === 'noaa-coops'
+                ? primary.stationId
+                : primary.kind === 'usgs-lake'
+                ? primary.siteId
+                : '';
             setLakeId(id);
             parts.push(`${lakeHit.lake.name} → ${id}`);
             lakeBound = true;
           }
-          // Tier 2: nearest NDBC buoy.
+
+          // Tier 2: USGS lake-type sensor (proper in-lake gauge).
+          if (!lakeBound && !lakeKind && lakeSites.length > 0) {
+            const top = lakeSites[0];
+            setLakeKind('usgs-lake');
+            setLakeId(top.siteId);
+            parts.push(`USGS-lake ${top.siteId}`);
+            lakeBound = true;
+          }
+
+          // Tier 3: nearest NDBC buoy.
           if (!lakeBound && !lakeKind && buoys.length > 0) {
             setLakeKind('noaa-buoy');
             setLakeId(buoys[0].stationId);
             parts.push(`NDBC ${buoys[0].stationId}`);
             lakeBound = true;
           }
-          // Tier 3: USGS gauge whose NAME identifies it as a lake /
-          // reservoir / pond gauge — refuses river/creek tributaries.
+
+          // Tier 4: USGS stream gauge whose NAME identifies it as a
+          // lake / reservoir / pond gauge — refuses river / creek
+          // tributaries.
           if (!lakeBound && !lakeKind && stillwater && gauges.length > 0) {
             const lakeNamed = gauges.find((g) =>
               /\b(lake|reservoir|res\.|pond|impoundment)\b/i.test(g.name)
@@ -436,9 +462,17 @@ export function LocationForm({
               lakeBound = true;
             }
           }
-          // Tier 4: nothing. The "no source nearby" hint in the form
-          // surfaces this state; user can manually enter a station
-          // ID, or rely on weather-forecast surface temp.
+
+          // Tier 5: estimated water temp from air-temp model. Always
+          // applicable for stillwater; we'd rather show a flagged
+          // estimate than nothing. Saltwater spots skip this — the
+          // tide-based model doesn't apply.
+          if (!lakeBound && !lakeKind && stillwater) {
+            setLakeKind('estimated');
+            setLakeId('');
+            parts.push('Estimated (air-temp model)');
+            lakeBound = true;
+          }
         }
 
         setAutoStatus(parts.length > 0 ? parts.join(' · ') : null);
@@ -778,6 +812,10 @@ export function LocationForm({
                       ? 'NDBC buoy — surface temp, waves, wind.'
                       : lakeKind === 'usgs-lake'
                       ? 'USGS lake gauge — temp + elevation.'
+                      : lakeKind === 'noaa-coops'
+                      ? 'NOAA CO-OPS shoreline sensor — in-lake water temp.'
+                      : lakeKind === 'estimated'
+                      ? 'Modeled from recent air temp — no live sensor.'
                       : isStillwater
                       ? 'Surface temp + (buoy) waves / (gauge) elevation.'
                       : undefined
@@ -787,22 +825,28 @@ export function LocationForm({
                     value={lakeKind}
                     onChange={(e) =>
                       setLakeKind(
-                        e.target.value as '' | 'noaa-buoy' | 'usgs-lake'
+                        e.target.value as '' | 'noaa-buoy' | 'usgs-lake' | 'noaa-coops' | 'estimated'
                       )
                     }
                   >
                     <option value="">none</option>
+                    <option value="noaa-coops">NOAA CO-OPS (shoreline)</option>
                     <option value="noaa-buoy">NOAA NDBC buoy</option>
                     <option value="usgs-lake">USGS lake gauge</option>
+                    <option value="estimated">Estimated (air-temp model)</option>
                   </Select>
                 </Field>
-                {lakeKind && (
+                {lakeKind && lakeKind !== 'estimated' && (
                   <Field label="Station / site ID">
                     <Input
                       value={lakeId}
                       onChange={(e) => setLakeId(e.target.value)}
                       placeholder={
-                        lakeKind === 'noaa-buoy' ? '45007' : '03413000'
+                        lakeKind === 'noaa-buoy'
+                          ? '45007'
+                          : lakeKind === 'noaa-coops'
+                          ? '9034052'
+                          : '03413000'
                       }
                     />
                   </Field>
@@ -823,7 +867,11 @@ export function LocationForm({
                         const id =
                           s.provider.kind === 'noaa-buoy'
                             ? s.provider.stationId
-                            : s.provider.siteId;
+                            : s.provider.kind === 'noaa-coops'
+                            ? s.provider.stationId
+                            : s.provider.kind === 'usgs-lake'
+                            ? s.provider.siteId
+                            : '';
                         const selected =
                           lakeKind === s.provider.kind && lakeId === id;
                         return (
@@ -848,6 +896,47 @@ export function LocationForm({
                         );
                       }
                     )}
+                  </div>
+                </div>
+              )}
+              {/* Nearby USGS lake-type sites (siteType=LK + water
+                  temp). These are gauges INSIDE lakes/reservoirs —
+                  distinct from the river-gauge "nearby gauges" list
+                  under Flow source. Show whenever found, regardless
+                  of curated-lake match (the curated entry might
+                  prefer CO-OPS or NDBC and the user might still want
+                  a closer USGS option). */}
+              {usgsLakeOptions.length > 0 && (
+                <div className="mt-2">
+                  <div className="text-[11px] uppercase tracking-wider text-muted mb-1">
+                    Nearby USGS lake gauges — pick one
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    {usgsLakeOptions.map((s) => {
+                      const selected =
+                        lakeKind === 'usgs-lake' && lakeId === s.siteId;
+                      return (
+                        <button
+                          key={s.siteId}
+                          type="button"
+                          onClick={() => {
+                            setLakeKind('usgs-lake');
+                            setLakeId(s.siteId);
+                          }}
+                          className={
+                            'text-left px-3 py-2 rounded-lg border text-xs transition ' +
+                            (selected
+                              ? 'bg-accent/15 border-accent text-text'
+                              : 'bg-surface-2 border-border text-muted hover:border-accent/40')
+                          }
+                        >
+                          <div className="font-medium text-text">{s.name}</div>
+                          <div className="num">
+                            {s.siteId} · {s.distanceMiles.toFixed(1)} mi
+                          </div>
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -888,22 +977,17 @@ export function LocationForm({
                   </div>
                 </div>
               )}
-              {/* "No nearby lake-friendly data source" — for unknown
-                  lakes with no buoy in range. We deliberately do NOT
-                  fall back to tributary river gauges here; a Clinton
-                  River reading is not a Lake St. Clair signal. The
-                  user can still enter a station ID manually above. */}
-              {isStillwater &&
-                !knownLake &&
-                lakeOptions.length === 0 &&
-                !lakeKind && (
-                  <div className="mt-2 text-[11px] text-muted leading-snug">
-                    No NDBC buoy or curated lake station within range.
-                    Surface temp will fall back to the weather forecast.
-                    Add a station ID above if you know one publishes
-                    data for this lake.
-                  </div>
-                )}
+              {/* When the spot is stillwater and we're falling back
+                  to the estimator (no live sensor in range), show a
+                  clear note. The estimator IS auto-selected; this is
+                  just user-visible context. */}
+              {isStillwater && lakeKind === 'estimated' && (
+                <div className="mt-2 text-[11px] text-muted leading-snug">
+                  No NDBC buoy, CO-OPS sensor, or USGS lake gauge
+                  within range. Surface temp will be estimated from
+                  recent air temperature (±3°F vs. measured gauges).
+                </div>
+              )}
             </div>
           ) : null;
 
@@ -1031,13 +1115,15 @@ function makeFlowProvider(kind: FlowKind, value: string): FlowProvider | null {
 }
 
 function makeLakeProvider(
-  kind: '' | 'noaa-buoy' | 'usgs-lake',
+  kind: '' | 'noaa-buoy' | 'usgs-lake' | 'noaa-coops' | 'estimated',
   id: string
 ): LakeDataProvider | null {
   if (!kind) return null;
+  if (kind === 'estimated') return { kind: 'estimated' };
   if (!id) return null;
   if (kind === 'noaa-buoy') return { kind: 'noaa-buoy', stationId: id };
   if (kind === 'usgs-lake') return { kind: 'usgs-lake', siteId: id };
+  if (kind === 'noaa-coops') return { kind: 'noaa-coops', stationId: id };
   return null;
 }
 

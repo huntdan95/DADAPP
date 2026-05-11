@@ -31,6 +31,8 @@ import { autoFetchSchedule } from './damSchedule/auto';
 import { noaaFetchTides } from './tides/noaa';
 import { ndbcFetchLake } from './lakeData/ndbc';
 import { usgsLakeFetch } from './lakeData/usgsLake';
+import { coopsFetchLake } from './lakeData/coops';
+import { estimatedFetchLake } from './lakeData/estimated';
 
 export function fetchWeather(
   provider: WeatherProvider,
@@ -79,13 +81,19 @@ export function fetchTides(provider: TidesProvider): Promise<TidesReading> {
 }
 
 export function fetchLakeData(
-  provider: LakeDataProvider
+  provider: LakeDataProvider,
+  location: Location
 ): Promise<LakeReading> {
   switch (provider.kind) {
     case 'usgs-lake':
       return usgsLakeFetch(provider.siteId);
     case 'noaa-buoy':
       return ndbcFetchLake(provider.stationId);
+    case 'noaa-coops':
+      return coopsFetchLake(provider.stationId);
+    case 'estimated':
+      // The model needs lat/lng to fetch local air temp history.
+      return estimatedFetchLake({ lat: location.lat, lng: location.lng });
   }
 }
 

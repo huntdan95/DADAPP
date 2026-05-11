@@ -62,7 +62,7 @@ export function ConditionsCard({ location }: { location: Location }) {
       <WeatherSection provider={dataProviders.weather} location={location} />
       {dataProviders.flow && <FlowSection provider={dataProviders.flow} />}
       {dataProviders.lakeData && (
-        <LakeSection provider={dataProviders.lakeData} />
+        <LakeSection provider={dataProviders.lakeData} location={location} />
       )}
       {dataProviders.damSchedule && (
         <DamSection provider={dataProviders.damSchedule} location={location} />

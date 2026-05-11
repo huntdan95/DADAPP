@@ -1,8 +1,8 @@
-import { Waves } from 'lucide-react';
+import { Sparkles, Waves } from 'lucide-react';
 import { CardSection } from '@/components/ui/Card';
 import { StatBlock } from '@/components/ui/StatBlock';
 import { fetchLakeData } from '@/lib/providers';
-import type { LakeDataProvider } from '@/lib/providers/types';
+import type { LakeDataProvider, Location } from '@/lib/providers/types';
 import { formatRelativeTime } from '@/lib/utils';
 import { useAsync } from './useAsync';
 import { SectionStatus } from './SectionStatus';
@@ -21,10 +21,16 @@ import { SectionStatus } from './SectionStatus';
  * for largemouth, cold enough for trout, etc.) mirrors the trout
  * hint on FlowSection but uses lake-water thresholds.
  */
-export function LakeSection({ provider }: { provider: LakeDataProvider }) {
+export function LakeSection({
+  provider,
+  location,
+}: {
+  provider: LakeDataProvider;
+  location: Location;
+}) {
   const { state } = useAsync(
-    () => fetchLakeData(provider),
-    [provider.kind, providerKey(provider)]
+    () => fetchLakeData(provider, location),
+    [provider.kind, providerKey(provider), location.id]
   );
 
   return (
@@ -77,6 +83,12 @@ export function LakeSection({ provider }: { provider: LakeDataProvider }) {
 
           return (
             <div className="w-full flex flex-col gap-3">
+              {data.isEstimated && (
+                <div className="flex items-center gap-1.5 text-[11px] text-warn bg-warn/10 border border-warn/30 rounded-md px-2 py-1 self-start">
+                  <Sparkles className="w-3 h-3 flex-none" />
+                  Estimated from air-temp model — no live sensor nearby.
+                </div>
+              )}
               <div className="grid grid-cols-3 gap-4">
                 {display.map((c, i) => (
                   <StatBlock
@@ -117,6 +129,10 @@ function providerKey(p: LakeDataProvider): string {
       return p.siteId;
     case 'noaa-buoy':
       return p.stationId;
+    case 'noaa-coops':
+      return p.stationId;
+    case 'estimated':
+      return 'estimated';
   }
 }
 

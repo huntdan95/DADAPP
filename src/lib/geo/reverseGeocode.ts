@@ -330,6 +330,63 @@ export async function nearestUsgsGauges(
   return enriched.slice(0, limit);
 }
 
+export interface NearbyLakeSite {
+  siteId: string;
+  name: string;
+  lat: number;
+  lng: number;
+  distanceMiles: number;
+}
+
+/**
+ * Find the N closest USGS lake / reservoir gauges to a pin. Filters
+ * the NWIS site search to `siteType=LK` (lake site) AND parameter
+ * `00010` (water temperature). This is the right query for "find a
+ * USGS sensor IN a lake" as opposed to `nearestUsgsGauges` which
+ * targets stream gauges (sites with discharge).
+ *
+ * Result includes only sites that are currently active and publishing
+ * temperature on the IV (instantaneous values) feed. Falls back to
+ * empty array if nothing is in range — the caller should treat that
+ * as a signal to use the estimator.
+ */
+export async function nearestUsgsLakeSites(
+  lat: number,
+  lng: number,
+  limit = 3,
+  searchDegrees = 0.75
+): Promise<NearbyLakeSite[]> {
+  // Bbox in W,S,E,N order per NWIS spec.
+  const w = (lng - searchDegrees).toFixed(4);
+  const s = (lat - searchDegrees).toFixed(4);
+  const e = (lng + searchDegrees).toFixed(4);
+  const n = (lat + searchDegrees).toFixed(4);
+
+  const url =
+    `https://waterservices.usgs.gov/nwis/site/?format=rdb` +
+    `&bBox=${w},${s},${e},${n}` +
+    `&siteStatus=active&siteType=LK&parameterCd=00010&hasDataTypeCd=iv`;
+
+  const res = await fetch(url);
+  if (!res.ok) {
+    if (res.status === 404) return [];
+    throw new Error(`USGS lake-site search HTTP ${res.status}`);
+  }
+  const text = await res.text();
+  const sites = parseUsgsRdb(text);
+  if (sites.length === 0) return [];
+
+  const enriched = sites.map((site) => ({
+    siteId: site.siteId,
+    name: site.name,
+    lat: site.lat,
+    lng: site.lng,
+    distanceMiles: distMiles({ lat, lng }, { lat: site.lat, lng: site.lng }),
+  }));
+  enriched.sort((a, b) => a.distanceMiles - b.distanceMiles);
+  return enriched.slice(0, limit);
+}
+
 /**
  * Find the closest active USGS gauge to a pin via NWIS site search.
  * Filters to currently-active sites publishing flow (00060). Returns
