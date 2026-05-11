@@ -147,9 +147,13 @@ export function filterStockingForLocation(
   location: Location,
   maxMiles = 25
 ): StockingEvent[] {
-  const locRiver = (location.river ?? '').toLowerCase().trim();
+  // Tokenize the spot's identifying fields once. Token-based match
+  // handles the "Big Manistee" vs "Manistee River" prefix mismatch
+  // problem that substring matching couldn't — both reduce to the
+  // same meaningful token set ('manistee'), so they cross-match.
+  const riverTokens = meaningfulTokens(location.river ?? '');
+  const nameTokens = meaningfulTokens(location.name ?? '');
   const locCounty = (location.county ?? '').toLowerCase().trim();
-  const locName = (location.name ?? '').toLowerCase().trim();
 
   return events.filter((ev) => {
     // Tier 1: locationId match (or mismatch).
@@ -165,33 +169,68 @@ export function filterStockingForLocation(
       return miles <= maxMiles;
     }
 
-    // Tiers 3 + 4: name-substring match against the event's
-    // locationName. Auto-scraped events from state DNRs typically
-    // have a locationName like "Caney Fork at Stonewall (DeKalb Co.)"
-    // — that contains both the river name and the county.
-    const evName = (ev.locationName ?? '').toLowerCase();
-
-    // River match. Require 4+ chars so "Pine" doesn't match every
-    // "Pine Creek" in the state but "Manistee" / "Caney Fork" do.
-    if (locRiver.length >= 4 && evName.includes(locRiver)) return true;
-
-    // County match — same minimum length.
-    if (locCounty.length >= 4 && evName.includes(locCounty)) return true;
-
-    // Spot-name fallback: if the spot's own name has a distinctive
-    // waterbody prefix (e.g. "Lake Cumberland at Wolf Creek") that
-    // didn't get split out into the river field, try matching that
-    // too. Strict 6+ chars to avoid noisy matches.
-    if (locName.length >= 6) {
-      const first = locName.split(/[\s,()]+at\s+|[\s,()]+/)[0];
-      if (first.length >= 6 && evName.includes(first)) return true;
+    // Tier 3: river-token overlap. Tokenize the event's locationName
+    // and check whether any meaningful token from the spot's river
+    // field appears. "Big Manistee" → ['manistee']; event 'Manistee
+    // River (Manistee Co.)' → tokens include 'manistee' → match.
+    const evTokens = new Set(meaningfulTokens(ev.locationName ?? ''));
+    if (riverTokens.length > 0 && riverTokens.some((t) => evTokens.has(t))) {
+      return true;
     }
 
-    // No match at any tier → exclude. The event is still in the
-    // database and surfaces in System Health; just not on this
-    // specific spot's banner.
+    // Tier 4: county substring match. Counties are typically one
+    // word so substring is fine; 4-char minimum keeps it specific.
+    if (
+      locCounty.length >= 4 &&
+      (ev.locationName ?? '').toLowerCase().includes(locCounty)
+    ) {
+      return true;
+    }
+
+    // Tier 5: spot-name token overlap — for spots where the river
+    // field is empty but the spot's name itself contains the
+    // waterbody (e.g. 'Lake Cumberland at Wolf Creek' → 'cumberland'
+    // matches a Cumberland River event).
+    if (nameTokens.length > 0 && nameTokens.some((t) => evTokens.has(t))) {
+      return true;
+    }
+
+    // No match at any tier → exclude. Event still exists in
+    // Firestore and surfaces in System Health.
     return false;
   });
+}
+
+/**
+ * Lowercase + tokenize a waterbody or spot name into meaningful
+ * tokens for cross-matching. Strips common noise words (big /
+ * little / upper / lower / river / creek / etc.) and short tokens
+ * (<3 chars) that would match too eagerly.
+ *
+ * Examples:
+ *   "Big Manistee River"  → ['manistee']
+ *   "Upper Au Sable"      → ['sable']     ('au' is 2 chars, filtered)
+ *   "Caney Fork"          → ['caney']     ('fork' filtered)
+ *   "Lake Cumberland"     → ['cumberland']
+ *   "Pine Creek (Smith)"  → ['pine', 'smith']
+ *
+ * So "Big Manistee" and "Manistee River" both produce ['manistee']
+ * and cross-match correctly.
+ */
+function meaningfulTokens(s: string): string[] {
+  const SKIP = new Set([
+    'the', 'and', 'at', 'of', 'in', 'on', 'by',
+    'river', 'creek', 'stream', 'brook', 'run', 'fork', 'branch',
+    'lake', 'pond', 'reservoir', 'res', 'bay', 'cove',
+    'big', 'little', 'upper', 'lower', 'middle', 'main',
+    'north', 'south', 'east', 'west',
+    'co', 'county', 'state', 'park', 'access',
+  ]);
+  return s
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .split(/\s+/)
+    .filter((t) => t.length >= 3 && !SKIP.has(t));
 }
 
 function haversineMiles(
