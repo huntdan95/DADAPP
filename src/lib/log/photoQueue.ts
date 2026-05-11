@@ -53,10 +53,12 @@ export async function enqueuePhoto(logId: string, file: File): Promise<void> {
   const uid = currentUid();
   if (!uid) throw new Error('Not signed in');
 
+  // Match the live-upload resize (1280px / Q0.9) so the offline path
+  // produces the same token cost when the queue flushes.
   const compressed = await imageCompression(file, {
-    maxWidthOrHeight: 2048,
-    maxSizeMB: 1,
-    initialQuality: 0.85,
+    maxWidthOrHeight: 1280,
+    maxSizeMB: 0.6,
+    initialQuality: 0.9,
     fileType: 'image/jpeg',
     useWebWorker: true,
   });

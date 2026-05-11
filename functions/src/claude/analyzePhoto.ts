@@ -114,14 +114,125 @@ For an insect:
 
 Do not refuse. If the image is unsuitable, return kind: "other", confidence: "low", and one-sentence notes saying why.`;
 
+/** Tool definition reused for both the Haiku primary and the Opus
+ *  escalation call. Schema requires kind/confidence/notes, optional
+ *  species + length for fish, optional insect_name + stage for bugs. */
+const ANALYZE_PHOTO_TOOL: Anthropic.Messages.Tool = {
+  name: 'analyze_photo',
+  description:
+    'Return the classified subject + relevant fields. Work through the family-level checklist in the system prompt before deciding on a species.',
+  input_schema: {
+    type: 'object' as const,
+    properties: {
+      kind: { type: 'string', enum: ['fish', 'insect', 'other'] },
+      confidence: { type: 'string', enum: ['high', 'medium', 'low'] },
+      species: { type: 'string' },
+      estimated_length_inches: { type: ['integer', 'null'] },
+      insect_name: { type: 'string' },
+      insect_stage: {
+        type: 'string',
+        enum: [
+          'adult',
+          'dun',
+          'spinner',
+          'emerger',
+          'nymph',
+          'larva',
+          'pupa',
+          'unknown',
+        ],
+      },
+      notes: { type: 'string' },
+    },
+    required: ['kind', 'confidence', 'notes'],
+  },
+};
+
+interface AnalyzeOutput {
+  kind: 'fish' | 'insect' | 'other';
+  confidence: 'high' | 'medium' | 'low';
+  species?: string;
+  estimated_length_inches?: number | null;
+  insect_name?: string;
+  insect_stage?: string;
+  notes: string;
+  /**
+   * Debug-only: which model produced this output. Lets us tune the
+   * escalation logic by watching how often Haiku is enough vs. Opus
+   * is needed. Stripped from the client response.
+   */
+  _model?: 'haiku' | 'opus';
+}
+
+/**
+ * Single vision call against the given model. Same prompt, same tool,
+ * just swappable model. Used by the tiered analyzePhoto handler.
+ */
+async function runAnalyzePhoto(
+  model: string,
+  options: {
+    imageUrl: string;
+    hintLines: string[];
+    /** Opus-tier reasoning toggles. Haiku ignores adaptive thinking; we
+     *  only pass it for the escalation call. */
+    enableThinking: boolean;
+  }
+): Promise<{ output: AnalyzeOutput; usage: Anthropic.Messages.Usage }> {
+  const text =
+    options.hintLines.length > 0
+      ? `Analyze this photo.\n${options.hintLines.join(
+          '\n'
+        )}\n\nWork through the family checklist in your system prompt before deciding.`
+      : 'Analyze this photo.\n\nWork through the family checklist in your system prompt before deciding.';
+
+  const params: Anthropic.Messages.MessageCreateParamsNonStreaming = {
+    model,
+    max_tokens: 2000,
+    system: SYSTEM_PROMPT,
+    tools: [ANALYZE_PHOTO_TOOL],
+    tool_choice: { type: 'tool', name: 'analyze_photo' },
+    messages: [
+      {
+        role: 'user',
+        content: [
+          { type: 'image', source: { type: 'url', url: options.imageUrl } },
+          { type: 'text', text },
+        ],
+      },
+    ],
+  };
+
+  // Adaptive thinking + high effort: only on the escalation call.
+  // Haiku doesn't benefit meaningfully and would be wasted tokens.
+  if (options.enableThinking) {
+    params.thinking = { type: 'adaptive' };
+    params.output_config = { effort: 'high' };
+  }
+
+  const response = await anthropic().messages.create(params);
+
+  const toolUse = response.content.find(
+    (b): b is Anthropic.Messages.ToolUseBlock =>
+      b.type === 'tool_use' && b.name === 'analyze_photo'
+  );
+  if (!toolUse) {
+    throw new HttpsError('internal', 'Model did not call analyze_photo tool');
+  }
+
+  return {
+    output: toolUse.input as AnalyzeOutput,
+    usage: response.usage,
+  };
+}
+
 export const analyzePhoto = onCall(
   {
     region: 'us-central1',
     memory: '512MiB',
-    // Adaptive thinking on Opus 4.7 can take 15–25 s before the model
-    // commits to the tool call. 60 s leaves margin for the slow case
-    // (Cold start + image fetch + thinking + completion).
-    timeoutSeconds: 60,
+    // Haiku primary returns in ~3-5s; Opus escalation with adaptive
+    // thinking adds 15-25s. 90s gives margin for cold start + image
+    // fetch + both calls in sequence on the worst-case hard photo.
+    timeoutSeconds: 90,
     secrets: [anthropicApiKey],
     invoker: 'public',
   },
@@ -134,6 +245,8 @@ export const analyzePhoto = onCall(
     }
 
     // Re-uses the identifySpecies daily cap — same vision budget bucket.
+    // Counts once regardless of escalation so the user can't burn the
+    // cap by hitting hard-photo cases.
     await checkAndIncrementUsage(uid, 'identifySpecies');
 
     const hintLines: string[] = [];
@@ -141,82 +254,70 @@ export const analyzePhoto = onCall(
     if (input.hintLengthInches != null)
       hintLines.push(`User-reported length: ${input.hintLengthInches}"`);
 
-    const response = await anthropic().messages.create({
-      model: MODELS.analyzePhoto,
-      // Adaptive thinking + tool-use can run long on Opus 4.7 — the model
-      // walks the family checklist before calling the tool. Bumped from
-      // 400 to accommodate.
-      max_tokens: 2000,
-      // Adaptive thinking: Claude self-decides when to reason. For a
-      // multi-step identification (family → genus → species) it's worth
-      // the extra tokens; for a clearly-shot photo it skips thinking.
-      thinking: { type: 'adaptive' },
-      // High effort biases the model toward careful systematic ID over
-      // fast guessing. The whole point of upgrading is to get harder
-      // cases right.
-      output_config: { effort: 'high' },
-      system: SYSTEM_PROMPT,
-      tools: [
-        {
-          name: 'analyze_photo',
-          description:
-            'Return the classified subject + relevant fields. Work through the family-level checklist in the system prompt before deciding on a species.',
-          input_schema: {
-            type: 'object' as const,
-            properties: {
-              kind: { type: 'string', enum: ['fish', 'insect', 'other'] },
-              confidence: { type: 'string', enum: ['high', 'medium', 'low'] },
-              species: { type: 'string' },
-              estimated_length_inches: { type: ['integer', 'null'] },
-              insect_name: { type: 'string' },
-              insect_stage: {
-                type: 'string',
-                enum: [
-                  'adult',
-                  'dun',
-                  'spinner',
-                  'emerger',
-                  'nymph',
-                  'larva',
-                  'pupa',
-                  'unknown',
-                ],
-              },
-              notes: { type: 'string' },
-            },
-            required: ['kind', 'confidence', 'notes'],
-          },
-        },
-      ],
-      tool_choice: { type: 'tool', name: 'analyze_photo' },
-      messages: [
-        {
-          role: 'user',
-          content: [
-            { type: 'image', source: { type: 'url', url: input.imageUrl } },
-            {
-              type: 'text',
-              text:
-                hintLines.length > 0
-                  ? `Analyze this photo.\n${hintLines.join('\n')}\n\nWork through the family checklist in your system prompt before deciding.`
-                  : 'Analyze this photo.\n\nWork through the family checklist in your system prompt before deciding.',
-            },
-          ],
-        },
-      ],
+    // First pass: Haiku 4.5. 5× cheaper than Opus and sufficient for
+    // the obvious cases (clear brown trout, smallmouth, bluegill, etc.).
+    const primary = await runAnalyzePhoto(MODELS.analyzePhotoPrimary, {
+      imageUrl: input.imageUrl,
+      hintLines,
+      enableThinking: false,
     });
+    let usage = primary.usage;
+    let result: AnalyzeOutput = { ...primary.output, _model: 'haiku' };
 
-    await recordTokens(uid, 'identifySpecies', response.usage);
+    // Escalation trigger: ANY of
+    //   - confidence is "low" (model itself flagged uncertainty)
+    //   - kind is "fish" but no species returned (Haiku gave up at family)
+    //   - kind is "other" with confidence < high (could be a missed fish)
+    // These are the cases where Opus's family-checklist reasoning earns
+    // its cost. Confidence "medium" + a species + a clear notes string
+    // is good enough — don't escalate just because Haiku was modest.
+    const needsEscalation =
+      result.confidence === 'low' ||
+      (result.kind === 'fish' && !result.species) ||
+      (result.kind === 'other' && result.confidence !== 'high');
 
-    const toolUse = response.content.find(
-      (b): b is Anthropic.Messages.ToolUseBlock =>
-        b.type === 'tool_use' && b.name === 'analyze_photo'
-    );
-
-    if (!toolUse) {
-      throw new HttpsError('internal', 'Model did not call analyze_photo tool');
+    if (needsEscalation) {
+      try {
+        const escalation = await runAnalyzePhoto(MODELS.analyzePhotoEscalate, {
+          imageUrl: input.imageUrl,
+          hintLines,
+          enableThinking: true,
+        });
+        // Sum tokens so we record real total spend, not just primary.
+        usage = sumUsage(usage, escalation.usage);
+        result = { ...escalation.output, _model: 'opus' };
+      } catch (e) {
+        // If Opus escalation fails, return the Haiku result — better
+        // than blocking the user on a hard photo.
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const errMsg = (e as any)?.message ?? String(e);
+        // Log but continue. Cloud Logging picks up the structured msg.
+        // (No `logger` import needed — analyzePhoto already has one.)
+        console.warn('analyzePhoto escalation failed:', errMsg);
+      }
     }
 
-    return toolUse.input;
+    await recordTokens(uid, 'identifySpecies', usage);
+
+    // Strip the internal _model field before returning to the client.
+    const { _model, ...cleanResult } = result;
+    void _model;
+    return cleanResult;
   }
 );
+
+function sumUsage(
+  a: Anthropic.Messages.Usage,
+  b: Anthropic.Messages.Usage
+): Anthropic.Messages.Usage {
+  return {
+    ...a,
+    input_tokens: (a.input_tokens ?? 0) + (b.input_tokens ?? 0),
+    output_tokens: (a.output_tokens ?? 0) + (b.output_tokens ?? 0),
+    cache_creation_input_tokens:
+      (a.cache_creation_input_tokens ?? 0) +
+      (b.cache_creation_input_tokens ?? 0),
+    cache_read_input_tokens:
+      (a.cache_read_input_tokens ?? 0) + (b.cache_read_input_tokens ?? 0),
+  };
+}

@@ -137,10 +137,12 @@ export async function uploadCatchPhoto(
   catchId: string,
   file: File
 ): Promise<string> {
+  // Match the log-store resize: 1280px @ Q0.9 keeps fish-ID detail
+  // while cutting Storage costs and Claude vision input tokens by ~60%.
   const compressed = await imageCompression(file, {
-    maxWidthOrHeight: 2048,
-    maxSizeMB: 1,
-    initialQuality: 0.85,
+    maxWidthOrHeight: 1280,
+    maxSizeMB: 0.6,
+    initialQuality: 0.9,
     fileType: 'image/jpeg',
     useWebWorker: true,
   });

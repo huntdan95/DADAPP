@@ -35,14 +35,20 @@ export const MODELS = {
   // benefits from the stronger model and these calls are gated to
   // ~5/day per user.
   patterns: 'claude-sonnet-4-6',
-  // Vision identification — bumped to Opus 4.7 after a channel-catfish was
-  // misidentified as a smallmouth bass on Sonnet 4.6. Opus is markedly
-  // stronger at fine-grained visual differentiation; combined with
-  // adaptive thinking and a feature-checklist prompt it should rarely
-  // confuse families. The legacy `identifySpecies` key still points to
-  // Sonnet for any older code paths; new vision calls use `analyzePhoto`.
+  // Vision identification — tiered approach. analyzePhoto first runs
+  // Haiku 4.5 (5× cheaper than Opus); if Haiku returns confidence
+  // "low" (ambiguous angle, family-level uncertainty), the same Cloud
+  // Function re-runs the same prompt against Opus 4.7 + adaptive
+  // thinking + high effort. The user-facing daily cap counts the
+  // whole call once regardless of escalation.
+  //
+  // For ~80% of clearly-shot photos Haiku is sufficient (brown trout
+  // vs rainbow vs bluegill is unambiguous), so most calls land at
+  // ~$0.005 instead of ~$0.10. Hard cases still get the Opus
+  // treatment that fixed the catfish-as-bass misidentification.
   identifySpecies: 'claude-sonnet-4-6',
-  analyzePhoto: 'claude-opus-4-7',
+  analyzePhotoPrimary: 'claude-haiku-4-5',
+  analyzePhotoEscalate: 'claude-opus-4-7',
   // Stocking-event extractor. Haiku 4.5 — parsing structured records
   // from a PDF or web page is exactly Haiku's wheelhouse, and the
   // weekly cron hits ~15 states which adds up fast at Sonnet rates.
@@ -81,9 +87,25 @@ function todayUtc(): string {
 }
 
 /**
+ * Per-user minimum interval between AI calls — guardrail against
+ * the "30 debug clicks in a row" scenario that burned $50 in a
+ * morning. 4 seconds is invisible during real use (you can't fill
+ * a journal entry that fast) but blocks rapid-fire taps.
+ *
+ * Stored as a tiny Firestore doc per user keyed by feature so it's
+ * shared across devices. Cheaper than a Redis instance, accurate
+ * enough for the use case.
+ */
+const COOLDOWN_MS = 4_000;
+
+/**
  * Enforces the per-user daily call cap for a given feature. Atomically
  * increments the call count via Firestore transaction so concurrent calls
  * don't slip past the cap. Throws an HttpsError when the cap is exceeded.
+ *
+ * Also enforces a 4-second cooldown between AI calls across all
+ * features. Same idea — the user is one person clicking buttons,
+ * so we shouldn't be servicing >0.25 QPS of AI work.
  */
 export async function checkAndIncrementUsage(
   uid: string,
@@ -91,8 +113,23 @@ export async function checkAndIncrementUsage(
 ): Promise<void> {
   const cap = DAILY_CAPS[feature];
   const docRef = db().doc(`aiUsage/${uid}/days/${todayUtc()}`);
+  const cooldownRef = db().doc(`aiUsage/${uid}/cooldown/latest`);
 
   await db().runTransaction(async (tx) => {
+    // Cooldown: read most-recent call time across all features and
+    // refuse if it was less than COOLDOWN_MS ago. Reads first to
+    // satisfy Firestore's read-before-write transaction rule.
+    const cooldownSnap = await tx.get(cooldownRef);
+    const lastMs = (cooldownSnap.data()?.atMs as number | undefined) ?? 0;
+    const sinceLast = Date.now() - lastMs;
+    if (lastMs > 0 && sinceLast < COOLDOWN_MS) {
+      const waitSec = Math.ceil((COOLDOWN_MS - sinceLast) / 1000);
+      throw new HttpsError(
+        'resource-exhausted',
+        `Slow down — wait ${waitSec}s before another AI call.`
+      );
+    }
+
     const snap = await tx.get(docRef);
     const current = (snap.data()?.[feature]?.calls as number | undefined) ?? 0;
     if (current >= cap) {
@@ -101,6 +138,9 @@ export async function checkAndIncrementUsage(
         `Daily ${feature} cap reached (${cap}). Try again tomorrow.`
       );
     }
+
+    // Stamp the cooldown for the NEXT call.
+    tx.set(cooldownRef, { atMs: Date.now(), feature }, { merge: true });
     tx.set(
       docRef,
       {

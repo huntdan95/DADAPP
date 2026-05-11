@@ -164,10 +164,16 @@ export async function uploadLogPhoto(
   logId: string,
   file: File
 ): Promise<{ url: string; path: string }> {
+  // 1280px max — plenty of resolution for fish ID + journal display
+  // (the catch-detail view caps at ~600px wide on phones anyway).
+  // Cuts Claude vision input tokens by ~60% vs the prior 2048px,
+  // since image tokens scale with area. Quality bumped to 0.9 so
+  // small markings (brown trout halos, smallmouth jaw bars) stay
+  // crisp even at the smaller resolution.
   const compressed = await imageCompression(file, {
-    maxWidthOrHeight: 2048,
-    maxSizeMB: 1,
-    initialQuality: 0.85,
+    maxWidthOrHeight: 1280,
+    maxSizeMB: 0.6,
+    initialQuality: 0.9,
     fileType: 'image/jpeg',
     useWebWorker: true,
   });
