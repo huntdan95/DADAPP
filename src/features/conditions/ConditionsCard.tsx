@@ -60,7 +60,9 @@ export function ConditionsCard({ location }: { location: Location }) {
       <StockingBanner location={location} />
 
       <WeatherSection provider={dataProviders.weather} location={location} />
-      {dataProviders.flow && <FlowSection provider={dataProviders.flow} />}
+      {dataProviders.flow && (
+        <FlowSection provider={dataProviders.flow} location={location} />
+      )}
       {dataProviders.lakeData && (
         <LakeSection provider={dataProviders.lakeData} location={location} />
       )}

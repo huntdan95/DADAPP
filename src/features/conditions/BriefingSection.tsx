@@ -18,6 +18,7 @@ import {
   fetchDamSchedule,
   fetchLakeData,
 } from '@/lib/providers';
+import { estimateWaterTemp } from '@/lib/providers/waterTemp/estimator';
 import { activeHatchesForLocation } from '@/lib/hatches/store';
 import {
   fetchBriefing,
@@ -107,10 +108,47 @@ export function BriefingSection({ location }: { location: Location }) {
           ? 'partial'
           : 'heavy';
 
-      const hatches = activeHatchesForLocation(
-        location,
-        flow?.waterTempF ?? lakeReading?.surfaceTempF ?? null
-      );
+      // Estimator fallback for the water temp the briefing sees.
+      // Mirrors the FlowSection display logic: if neither the flow
+      // gauge nor the lake-data provider produced a temp, fall back
+      // to the air-temp model (same-waterbody calibrated when
+      // possible). Without this the briefing would say "water temp
+      // unknown" while the conditions card right above it shows an
+      // estimate — they'd visibly disagree.
+      let effectiveWaterTempF: number | null =
+        flow?.waterTempF ?? lakeReading?.surfaceTempF ?? null;
+      let waterTempIsEstimated = lakeReading?.isEstimated ?? false;
+      if (effectiveWaterTempF == null) {
+        const est = await estimateWaterTemp(location.lat, location.lng).catch(
+          () => null
+        );
+        if (est?.surfaceTempF != null) {
+          effectiveWaterTempF = est.surfaceTempF;
+          waterTempIsEstimated = true;
+        }
+      }
+
+      const hatches = activeHatchesForLocation(location, effectiveWaterTempF);
+
+      // If we substituted the estimator's temp because the gauge had
+      // none, surface it into the briefing payload too — otherwise
+      // Claude would say "water temp unknown" while the card above it
+      // shows the estimate. Pass it through `lakeReading` (which
+      // already carries the `isEstimated` flag and prints with an
+      // "estimated" badge in the server prompt) rather than spoofing
+      // the gauge field.
+      const lakeReadingForBriefing =
+        flow?.waterTempF == null && waterTempIsEstimated && effectiveWaterTempF != null
+          ? {
+              siteName: 'Estimated · air-temp model',
+              observedAt: new Date().toISOString(),
+              surfaceTempF: effectiveWaterTempF,
+              waveHeightFt: null,
+              windMph: null,
+              authority: 'estimated' as const,
+              isEstimated: true,
+            }
+          : lakeReading;
 
       const stockings = await fetchRecentStockingNearLocation(
         location,
@@ -125,7 +163,7 @@ export function BriefingSection({ location }: { location: Location }) {
         location,
         weather,
         flow: flow ?? undefined,
-        lakeReading: lakeReading ?? undefined,
+        lakeReading: lakeReadingForBriefing ?? undefined,
         damSchedule: damSchedule ?? undefined,
         damCurrentStatus,
         damNextChange: null,
