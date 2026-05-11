@@ -1104,8 +1104,11 @@ export const MI_WATERBODIES: Waterbody[] = [
     aliases: ['Hardy Pond', 'Hardy Reservoir'],
     states: ['MI'],
     type: 'reservoir',
-    bbox: [43.40, -85.78, 43.52, -85.60],
-    centroid: { lat: 43.46, lng: -85.69 },
+    // Impoundment north of Hardy Dam (~43.46, -85.69). Tightened
+    // so it doesn't overlap with Croton Pond (a small pond just
+    // below Hardy Dam) or the Muskegon River tailwater far below.
+    bbox: [43.47, -85.85, 43.56, -85.65],
+    centroid: { lat: 43.51, lng: -85.74 },
     surfaceAreaAcres: 4_000,
     dataProviders: {
       weather: { kind: 'open-meteo' },
@@ -1128,8 +1131,11 @@ export const MI_WATERBODIES: Waterbody[] = [
     name: 'Croton Pond',
     states: ['MI'],
     type: 'reservoir',
-    bbox: [43.41, -85.70, 43.45, -85.66],
-    centroid: { lat: 43.43, lng: -85.68 },
+    // Small impoundment between Hardy Dam (~43.46, -85.69, upstream)
+    // and Croton Dam (~43.43, -85.68, downstream). North edge below
+    // Hardy Pond's south edge so the two are disjoint.
+    bbox: [43.43, -85.70, 43.47, -85.66],
+    centroid: { lat: 43.45, lng: -85.68 },
     surfaceAreaAcres: 1_240,
     dataProviders: {
       weather: { kind: 'open-meteo' },
@@ -1152,8 +1158,12 @@ export const MI_WATERBODIES: Waterbody[] = [
     aliases: ['Tippy Pond'],
     states: ['MI'],
     type: 'reservoir',
-    bbox: [44.23, -85.85, 44.30, -85.72],
-    centroid: { lat: 44.26, lng: -85.78 },
+    // Impoundment above Tippy Dam (~44.24, -85.92). Pond extends
+    // upstream (east + northeast). Bbox west edge at the dam line
+    // so the Lower Manistee tailwater (which heads west toward
+    // Lake Michigan) is strictly disjoint.
+    bbox: [44.24, -85.85, 44.32, -85.65],
+    centroid: { lat: 44.28, lng: -85.75 },
     surfaceAreaAcres: 1_300,
     dataProviders: {
       weather: { kind: 'open-meteo' },
@@ -1176,8 +1186,11 @@ export const MI_WATERBODIES: Waterbody[] = [
     aliases: ['Hodenpyl Pond'],
     states: ['MI'],
     type: 'reservoir',
-    bbox: [44.35, -85.78, 44.42, -85.65],
-    centroid: { lat: 44.38, lng: -85.72 },
+    // Pond is upstream (north / east) of Hodenpyl Dam (~44.39,
+    // -85.71). Bbox north edge above the dam so it doesn't overlap
+    // with the tailwater entry to the south.
+    bbox: [44.40, -85.78, 44.46, -85.65],
+    centroid: { lat: 44.43, lng: -85.72 },
     surfaceAreaAcres: 1_460,
     dataProviders: {
       weather: { kind: 'open-meteo' },
@@ -1199,8 +1212,13 @@ export const MI_WATERBODIES: Waterbody[] = [
     name: 'Mio Pond',
     states: ['MI'],
     type: 'reservoir',
-    bbox: [44.65, -84.15, 44.70, -84.05],
-    centroid: { lat: 44.67, lng: -84.10 },
+    // Pond extends NW from Mio Dam (~44.66, -84.13). The tailwater
+    // below the dam flows east-southeast — covered by the separate
+    // Au Sable Trophy Water entry. Bboxes are now disjoint at the
+    // dam line (~-84.13) so a pin "below the dam" never resolves
+    // to the pond.
+    bbox: [44.66, -84.20, 44.72, -84.13],
+    centroid: { lat: 44.69, lng: -84.17 },
     surfaceAreaAcres: 1_000,
     dataProviders: {
       weather: { kind: 'open-meteo' },
@@ -1222,8 +1240,11 @@ export const MI_WATERBODIES: Waterbody[] = [
     aliases: ['Foote Pond'],
     states: ['MI'],
     type: 'reservoir',
-    bbox: [44.40, -83.55, 44.45, -83.45],
-    centroid: { lat: 44.42, lng: -83.50 },
+    // Pond is upstream of Foote Dam (~44.40, -83.55). Bbox west of
+    // the dam line so the Lower Au Sable tailwater to the east
+    // (toward Oscoda + Lake Huron) is disjoint.
+    bbox: [44.39, -83.70, 44.45, -83.55],
+    centroid: { lat: 44.42, lng: -83.62 },
     surfaceAreaAcres: 1_900,
     dataProviders: {
       weather: { kind: 'open-meteo' },
@@ -1250,9 +1271,10 @@ export const MI_WATERBODIES: Waterbody[] = [
     aliases: ['Manistee River', 'Lower Manistee', 'Big Manistee'],
     states: ['MI'],
     type: 'tailwater',
-    // Tippy Dam → Lake Michigan. Long thin bbox follows river.
-    bbox: [44.10, -86.40, 44.30, -85.65],
-    centroid: { lat: 44.24, lng: -85.99 },
+    // Tippy Dam (~44.24, -85.92) → Lake Michigan. East edge at the
+    // dam line keeps this disjoint from Tippy Pond upstream.
+    bbox: [44.10, -86.40, 44.30, -85.92],
+    centroid: { lat: 44.20, lng: -86.15 },
     dataProviders: {
       weather: { kind: 'open-meteo' },
       flow: { kind: 'usgs', siteId: '04125550' },
@@ -1369,11 +1391,11 @@ export const MI_WATERBODIES: Waterbody[] = [
     aliases: ['Manistee Hodenpyl', 'Manistee between dams'],
     states: ['MI'],
     type: 'tailwater',
-    // Between Hodenpyl Dam (~44.39, -85.71) and Tippy Pond
-    // (~44.30, -85.85). Short 6-mi stretch of trout water before
-    // the river fills Tippy Pond.
-    bbox: [44.28, -85.85, 44.40, -85.65],
-    centroid: { lat: 44.34, lng: -85.75 },
+    // Between Hodenpyl Dam (~44.39, -85.71) and Tippy Pond.
+    // North edge at the dam line so this is disjoint from
+    // Hodenpyl Pond above.
+    bbox: [44.30, -85.78, 44.39, -85.65],
+    centroid: { lat: 44.35, lng: -85.72 },
     dataProviders: {
       weather: { kind: 'open-meteo' },
       flow: { kind: 'usgs', siteId: '04124500' },
@@ -1387,41 +1409,22 @@ export const MI_WATERBODIES: Waterbody[] = [
     accessNotes:
       'Trout-only stretch between Hodenpyl and Tippy. Less pressure than the upper / lower sections. Float Hodenpyl Powerhouse → Red Bridge.',
   },
-  {
-    id: 'mi-muskegon-hardy-tailwater',
-    name: 'Muskegon River below Hardy Dam',
-    aliases: ['Muskegon between dams', 'Hardy-to-Croton'],
-    states: ['MI'],
-    type: 'tailwater',
-    // Hardy Dam (~43.46, -85.69) → Croton Pond (~43.43, -85.68).
-    // Very short connecting stretch — Croton Pond starts just
-    // downstream of Hardy. Most users fishing 'below Hardy' are
-    // actually on Croton Pond itself, but the river-only section
-    // between the dams is its own thing.
-    bbox: [43.43, -85.78, 43.48, -85.65],
-    centroid: { lat: 43.45, lng: -85.71 },
-    dataProviders: {
-      weather: { kind: 'open-meteo' },
-      flow: { kind: 'usgs', siteId: '04121970' },
-      // Hardy Dam (Consumers Energy). The Croton gauge downstream
-      // captures both Hardy + Croton outflows — use it for the
-      // generation inference.
-      damSchedule: { kind: 'auto', flowSiteId: '04121970' },
-    },
-    species: ['Smallmouth Bass', 'Walleye', 'Northern Pike', 'Brown Trout'],
-    accessNotes:
-      'Short tailwater stretch above Croton Pond. Most fishing happens in Croton Pond itself; the river segment holds smallmouth + occasional brown trout.',
-  },
+  // (Removed mi-muskegon-hardy-tailwater — the supposed "river"
+  // section between Hardy Dam + Croton Dam is actually Croton Pond,
+  // not a free-flowing tailwater. Croton Pond entry covers that
+  // water; the genuine tailwater starts below Croton Dam.)
   {
     id: 'mi-au-sable-mio-tailwater',
     name: 'Au Sable below Mio Dam (Trophy Water)',
     aliases: ['Au Sable Trophy Water', 'AuSable Trophy', 'Mio Tailwater'],
     states: ['MI'],
     type: 'tailwater',
-    // Mio Dam → McKinley Bridge → Alcona Pond.
-    // Famous trophy-brown stretch managed under special regs.
-    bbox: [44.55, -84.15, 44.70, -83.90],
-    centroid: { lat: 44.63, lng: -84.05 },
+    // Mio Dam (~44.66, -84.13) → McKinley Bridge → Alcona Pond.
+    // West edge starts at the dam line (-84.13) so this bbox is
+    // strictly disjoint from Mio Pond above. Famous trophy-brown
+    // stretch managed under special regs.
+    bbox: [44.55, -84.13, 44.70, -83.92],
+    centroid: { lat: 44.63, lng: -84.02 },
     dataProviders: {
       weather: { kind: 'open-meteo' },
       flow: { kind: 'usgs', siteId: '04136500' },
@@ -1496,8 +1499,11 @@ export const MI_WATERBODIES: Waterbody[] = [
     aliases: ['Muskegon River', 'Muskegon'],
     states: ['MI'],
     type: 'tailwater',
-    bbox: [43.20, -86.30, 43.50, -85.55],
-    centroid: { lat: 43.32, lng: -85.92 },
+    // Below Croton Dam (~43.43, -85.68) → Muskegon Lake → Lake
+    // Michigan. East edge at the dam line keeps this disjoint
+    // from Croton Pond + Hardy Pond impoundments upstream.
+    bbox: [43.20, -86.30, 43.50, -85.68],
+    centroid: { lat: 43.32, lng: -86.00 },
     dataProviders: {
       weather: { kind: 'open-meteo' },
       flow: { kind: 'usgs', siteId: '04121970' },
