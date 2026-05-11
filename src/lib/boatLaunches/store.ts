@@ -41,7 +41,11 @@ export interface BoatLaunchSet {
   fetchedAt: Timestamp | null;
 }
 
-const STATES = ['MI', 'TN', 'IN', 'NC', 'FL', 'GA', 'AL', 'KY'];
+const STATES = [
+  'MI', 'TN', 'IN', 'NC', 'FL', 'GA', 'AL', 'KY',
+  'MS', 'AR', 'OK', 'IL', 'PA',
+  'MT', 'ID', 'UT', 'CO',
+];
 const CACHE_KEY = 'dad-fishing.boatLaunchesCache.v2';
 /** Cache validity. Boat-launch dataset only changes when someone re-seeds. */
 const CACHE_MAX_AGE_MS = 14 * 24 * 60 * 60 * 1000;       // 14 days

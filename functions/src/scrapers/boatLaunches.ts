@@ -47,7 +47,14 @@ interface BoatLaunchSet {
   fetchedAt: FirebaseFirestore.Timestamp;
 }
 
-const STATES = ['MI', 'TN', 'IN', 'NC', 'FL', 'GA', 'AL', 'KY'];
+const STATES = [
+  // Southeast / Mid-South
+  'MI', 'TN', 'IN', 'NC', 'FL', 'GA', 'AL', 'KY',
+  // Mississippi drainage + Midwest expansion
+  'MS', 'AR', 'OK', 'IL', 'PA',
+  // Rocky Mountain West
+  'MT', 'ID', 'UT', 'CO',
+];
 
 const OVERPASS = 'https://overpass-api.de/api/interpreter';
 
@@ -82,7 +89,7 @@ async function fetchStateLaunches(state: string): Promise<BoatLaunch[]> {
   const nameRegex =
     'boat launch|boat ramp|canoe (launch|access|landing)|kayak (launch|access|landing)|river access|fishing access|public access|put.?in|take.?out|landing$|bridge (access|crossing)|.+ landing|.+ bridge$|.+ ford$|.+ mill$|.+ park access| access$| crossing$';
 
-  const query = `[out:json][timeout:160];
+  const query = `[out:json][timeout:240];
 area["ISO3166-2"="US-${state}"][admin_level=4]->.a;
 (
   node["leisure"="slipway"](area.a);
@@ -295,41 +302,49 @@ function dedupeNearby(list: BoatLaunch[]): BoatLaunch[] {
 async function seedAll(): Promise<{ state: string; count: number }[]> {
   const db = getFirestore();
 
-  // Run all states in parallel. Overpass-api.de tolerates a small
-  // number of concurrent queries from one IP; with only 7 states this
-  // is well inside their fair-use envelope. Sequential with delays
-  // was costing us 9+ minutes (near the function timeout) once the
-  // query expanded; parallel finishes in ~120-180 s end-to-end.
-  const settled = await Promise.allSettled(
-    STATES.map(async (state) => {
-      logger.info('fetching launches', { state });
-      const launches = await fetchStateLaunches(state);
-      return { state, launches };
-    })
-  );
-
+  // Chunk the work into batches of 4 so Overpass-api.de's fair-use
+  // limits don't rate-limit / 429 us. Fully parallel for 17 states
+  // would burn through the fair-use envelope; sequential is too slow.
+  // 4 concurrent ≈ 17 / 4 = 5 batches × ~120 s = ~10 min end-to-end.
+  const CONCURRENCY = 4;
   const results: { state: string; count: number }[] = [];
-  for (let i = 0; i < settled.length; i++) {
-    const state = STATES[i];
-    const s = settled[i];
-    if (s.status === 'rejected') {
-      logger.error('seed failed', { state, error: String(s.reason) });
-      results.push({ state, count: -1 });
-      continue;
+
+  for (let i = 0; i < STATES.length; i += CONCURRENCY) {
+    const batch = STATES.slice(i, i + CONCURRENCY);
+    const settled = await Promise.allSettled(
+      batch.map(async (state) => {
+        logger.info('fetching launches', { state });
+        const launches = await fetchStateLaunches(state);
+        return { state, launches };
+      })
+    );
+
+    // Persist each state immediately so a downstream failure doesn't
+    // wipe earlier wins.
+    for (let j = 0; j < settled.length; j++) {
+      const state = batch[j];
+      const s = settled[j];
+      if (s.status === 'rejected') {
+        logger.error('seed failed', { state, error: String(s.reason) });
+        results.push({ state, count: -1 });
+        continue;
+      }
+      const { launches } = s.value;
+      const set: Omit<BoatLaunchSet, 'fetchedAt'> = {
+        state,
+        launches,
+        count: launches.length,
+        source: 'osm',
+      };
+      await db.collection('boatLaunchSets').doc(state).set({
+        ...set,
+        fetchedAt: FieldValue.serverTimestamp(),
+      });
+      results.push({ state, count: launches.length });
+      logger.info('seeded launches', { state, count: launches.length });
     }
-    const { launches } = s.value;
-    const set: Omit<BoatLaunchSet, 'fetchedAt'> = {
-      state,
-      launches,
-      count: launches.length,
-      source: 'osm',
-    };
-    await db.collection('boatLaunchSets').doc(state).set({
-      ...set,
-      fetchedAt: FieldValue.serverTimestamp(),
-    });
-    results.push({ state, count: launches.length });
   }
+
   return results;
 }
 
@@ -339,8 +354,8 @@ export const seedBoatLaunches = onSchedule(
     schedule: '0 6 1 * *',          // 06:00 on the 1st of each month
     timeZone: 'America/New_York',
     region: 'us-central1',
-    memory: '512MiB',
-    timeoutSeconds: 540,
+    memory: '1GiB',                  // 17 states × parsed JSON, comfortably under cap
+    timeoutSeconds: 540,             // max for scheduled functions
   },
   async () => {
     const results = await seedAll();
@@ -356,8 +371,8 @@ export const seedBoatLaunches = onSchedule(
 export const seedBoatLaunchesCallable = onCall(
   {
     region: 'us-central1',
-    memory: '512MiB',
-    timeoutSeconds: 540,
+    memory: '1GiB',
+    timeoutSeconds: 1800,            // 30 min — 17 states with rate limits
     invoker: 'public',
   },
   async (request) => {

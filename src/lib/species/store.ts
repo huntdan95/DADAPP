@@ -255,6 +255,15 @@ const COMMONALITY: Record<string, number> = {
   goldfish: 5,                   // Feral aquarium escapee
   'atlantic-sturgeon': 5,        // Federally endangered — bycatch only
   'gulf-sturgeon': 5,            // Federally threatened — bycatch only
+
+  // ---- Fourth expansion: Rocky Mountain West ----
+  'cutthroat-trout': 1,          // The signature Western native
+  'mountain-whitefish': 1,       // Year-round, present in most trout rivers
+  'kokanee-salmon': 2,           // Major reservoir target
+  'bull-trout': 4,               // Strict regs limit casual targeting
+  'arctic-grayling': 5,          // Rare; declining outside a few MT drainages
+  'golden-trout': 5,             // High-alpine, hike-in only
+  'white-sturgeon': 5,           // ID Snake — trophy, C&R only
 };
 
 /**

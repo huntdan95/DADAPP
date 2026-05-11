@@ -18,7 +18,16 @@
       "NC",
       "GA",
       "AL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -68,7 +77,16 @@
       "GA",
       "AL",
       "FL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -108,7 +126,16 @@
       "GA",
       "AL",
       "FL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -272,7 +299,16 @@
       "GA",
       "AL",
       "NC",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -315,7 +351,16 @@
       "TN",
       "IN",
       "AL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -352,7 +397,16 @@
       "NC",
       "GA",
       "AL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -397,7 +451,16 @@
       "NC",
       "GA",
       "AL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -436,7 +499,16 @@
       "TN",
       "AL",
       "GA",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -471,7 +543,12 @@
       "IN",
       "TN",
       "NC",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -513,7 +590,16 @@
     ],
     "states": [
       "MI",
-      "IN"
+      "IN",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -551,7 +637,12 @@
       "TN",
       "NC",
       "GA",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -587,7 +678,16 @@
       "IN",
       "TN",
       "NC",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -620,7 +720,11 @@
     "states": [
       "MI",
       "IN",
-      "TN"
+      "TN",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -665,7 +769,11 @@
       "great_lakes"
     ],
     "states": [
-      "MI"
+      "MI",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -713,7 +821,16 @@
       "TN",
       "NC",
       "GA",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -758,7 +875,16 @@
       "TN",
       "NC",
       "GA",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -794,7 +920,16 @@
       "TN",
       "NC",
       "GA",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -828,7 +963,9 @@
     ],
     "states": [
       "MI",
-      "IN"
+      "IN",
+      "PA",
+      "ID"
     ],
     "seasons": [
       {
@@ -876,7 +1013,9 @@
     ],
     "states": [
       "MI",
-      "IN"
+      "IN",
+      "PA",
+      "ID"
     ],
     "seasons": [
       {
@@ -918,7 +1057,9 @@
     ],
     "states": [
       "MI",
-      "IN"
+      "IN",
+      "PA",
+      "ID"
     ],
     "seasons": [
       {
@@ -988,7 +1129,8 @@
       "tailwater"
     ],
     "states": [
-      "MI"
+      "MI",
+      "PA"
     ],
     "seasons": [
       {
@@ -1020,7 +1162,10 @@
     ],
     "states": [
       "MI",
-      "IN"
+      "IN",
+      "PA",
+      "ID",
+      "UT"
     ],
     "seasons": [
       {
@@ -1056,7 +1201,8 @@
       "great_lakes"
     ],
     "states": [
-      "MI"
+      "MI",
+      "PA"
     ],
     "seasons": [
       {
@@ -1089,7 +1235,12 @@
     "states": [
       "MI",
       "IN",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -1158,7 +1309,16 @@
       "GA",
       "AL",
       "FL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -1206,7 +1366,16 @@
       "GA",
       "AL",
       "FL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -1244,7 +1413,12 @@
       "NC",
       "GA",
       "AL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -1279,7 +1453,12 @@
       "NC",
       "GA",
       "AL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -1317,7 +1496,16 @@
       "GA",
       "AL",
       "FL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -1356,7 +1544,12 @@
       "NC",
       "GA",
       "AL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -1395,7 +1588,16 @@
       "GA",
       "AL",
       "FL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -1441,7 +1643,12 @@
       "GA",
       "AL",
       "FL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -1479,7 +1686,16 @@
       "GA",
       "AL",
       "FL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -1521,7 +1737,16 @@
       "AL",
       "GA",
       "FL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -1574,7 +1799,12 @@
       "GA",
       "AL",
       "FL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -1607,7 +1837,12 @@
       "TN",
       "AL",
       "FL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -1646,7 +1881,12 @@
       "GA",
       "AL",
       "FL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -1775,7 +2015,8 @@
       "FL",
       "GA",
       "AL",
-      "NC"
+      "NC",
+      "MS"
     ],
     "seasons": [
       {
@@ -1856,7 +2097,8 @@
       "FL",
       "GA",
       "AL",
-      "NC"
+      "NC",
+      "MS"
     ],
     "seasons": [
       {
@@ -1889,7 +2131,8 @@
       "FL",
       "GA",
       "AL",
-      "NC"
+      "NC",
+      "MS"
     ],
     "seasons": [
       {
@@ -1998,7 +2241,8 @@
       "FL",
       "GA",
       "AL",
-      "NC"
+      "NC",
+      "MS"
     ],
     "seasons": [
       {
@@ -2030,7 +2274,8 @@
       "FL",
       "GA",
       "AL",
-      "NC"
+      "NC",
+      "MS"
     ],
     "seasons": [
       {
@@ -2063,7 +2308,8 @@
       "FL",
       "GA",
       "AL",
-      "NC"
+      "NC",
+      "MS"
     ],
     "seasons": [
       {
@@ -2094,7 +2340,8 @@
     "states": [
       "FL",
       "GA",
-      "AL"
+      "AL",
+      "MS"
     ],
     "seasons": [
       {
@@ -2134,7 +2381,8 @@
       "FL",
       "GA",
       "AL",
-      "NC"
+      "NC",
+      "MS"
     ],
     "seasons": [
       {
@@ -2167,7 +2415,8 @@
       "FL",
       "GA",
       "AL",
-      "NC"
+      "NC",
+      "MS"
     ],
     "seasons": [
       {
@@ -2200,7 +2449,8 @@
       "FL",
       "GA",
       "AL",
-      "NC"
+      "NC",
+      "MS"
     ],
     "seasons": [
       {
@@ -2233,7 +2483,8 @@
       "FL",
       "GA",
       "AL",
-      "NC"
+      "NC",
+      "MS"
     ],
     "seasons": [
       {
@@ -2266,7 +2517,8 @@
       "FL",
       "GA",
       "AL",
-      "NC"
+      "NC",
+      "MS"
     ],
     "seasons": [
       {
@@ -2299,7 +2551,8 @@
       "FL",
       "GA",
       "AL",
-      "NC"
+      "NC",
+      "MS"
     ],
     "seasons": [
       {
@@ -2339,7 +2592,8 @@
     "states": [
       "FL",
       "GA",
-      "NC"
+      "NC",
+      "MS"
     ],
     "seasons": [
       {
@@ -2412,7 +2666,8 @@
       "FL",
       "GA",
       "AL",
-      "NC"
+      "NC",
+      "MS"
     ],
     "seasons": [
       {
@@ -2444,7 +2699,8 @@
     "states": [
       "NC",
       "GA",
-      "FL"
+      "FL",
+      "MS"
     ],
     "seasons": [
       {
@@ -2476,7 +2732,8 @@
       "NC",
       "GA",
       "FL",
-      "AL"
+      "AL",
+      "MS"
     ],
     "seasons": [
       {
@@ -2506,7 +2763,8 @@
       "saltwater"
     ],
     "states": [
-      "FL"
+      "FL",
+      "MS"
     ],
     "seasons": [
       {
@@ -2566,7 +2824,8 @@
     ],
     "states": [
       "FL",
-      "AL"
+      "AL",
+      "MS"
     ],
     "seasons": [
       {
@@ -2598,7 +2857,8 @@
       "FL",
       "AL",
       "GA",
-      "NC"
+      "NC",
+      "MS"
     ],
     "seasons": [
       {
@@ -2629,7 +2889,8 @@
     ],
     "states": [
       "FL",
-      "AL"
+      "AL",
+      "MS"
     ],
     "seasons": [
       {
@@ -2661,7 +2922,8 @@
     "states": [
       "FL",
       "AL",
-      "NC"
+      "NC",
+      "MS"
     ],
     "seasons": [
       {
@@ -2692,7 +2954,8 @@
     "states": [
       "FL",
       "AL",
-      "GA"
+      "GA",
+      "MS"
     ],
     "seasons": [
       {
@@ -2751,7 +3014,8 @@
     ],
     "states": [
       "FL",
-      "NC"
+      "NC",
+      "MS"
     ],
     "seasons": [
       {
@@ -2782,7 +3046,8 @@
     ],
     "states": [
       "FL",
-      "NC"
+      "NC",
+      "MS"
     ],
     "seasons": [
       {
@@ -2813,7 +3078,8 @@
     ],
     "states": [
       "FL",
-      "NC"
+      "NC",
+      "MS"
     ],
     "seasons": [
       {
@@ -2850,7 +3116,8 @@
     ],
     "states": [
       "FL",
-      "NC"
+      "NC",
+      "MS"
     ],
     "seasons": [
       {
@@ -2909,7 +3176,8 @@
       "saltwater"
     ],
     "states": [
-      "NC"
+      "NC",
+      "OK"
     ],
     "seasons": [
       {
@@ -3014,7 +3282,12 @@
       "TN",
       "AL",
       "IN",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -3088,7 +3361,12 @@
       "GA",
       "NC",
       "TN",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -3131,7 +3409,16 @@
       "MI",
       "IN",
       "NC",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -3178,7 +3465,16 @@
       "GA",
       "AL",
       "FL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -3213,7 +3509,12 @@
       "NC",
       "GA",
       "AL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -3259,7 +3560,12 @@
       "GA",
       "AL",
       "FL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -3292,7 +3598,12 @@
     "states": [
       "FL",
       "GA",
-      "AL"
+      "AL",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -3334,7 +3645,12 @@
       "FL",
       "GA",
       "NC",
-      "AL"
+      "AL",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -3372,7 +3688,12 @@
       "AL",
       "FL",
       "TN",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -3418,7 +3739,12 @@
       "AL",
       "GA",
       "NC",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -3453,7 +3779,12 @@
       "FL",
       "GA",
       "AL",
-      "TN"
+      "TN",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -3489,7 +3820,16 @@
       "IN",
       "NC",
       "GA",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -3526,7 +3866,16 @@
       "TN",
       "AL",
       "GA",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -3561,7 +3910,12 @@
       "GA",
       "AL",
       "FL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -3597,7 +3951,12 @@
       "TN",
       "IN",
       "AL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -3631,7 +3990,12 @@
       "TN",
       "IN",
       "AL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -3665,7 +4029,12 @@
       "TN",
       "NC",
       "IN",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -3706,7 +4075,12 @@
       "GA",
       "AL",
       "MI",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -3741,7 +4115,12 @@
       "NC",
       "GA",
       "AL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -3776,7 +4155,12 @@
       "GA",
       "TN",
       "IN",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -3840,7 +4224,12 @@
       "TN",
       "IN",
       "AL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -3873,7 +4262,12 @@
       "GA",
       "FL",
       "TN",
-      "AL"
+      "AL",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -3913,7 +4307,12 @@
     "states": [
       "NC",
       "GA",
-      "FL"
+      "FL",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -3947,7 +4346,12 @@
       "GA",
       "AL",
       "FL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -4013,7 +4417,12 @@
       "TN",
       "IN",
       "AL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -4047,7 +4456,16 @@
     "states": [
       "TN",
       "IN",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -4086,7 +4504,12 @@
       "freestone"
     ],
     "states": [
-      "MI"
+      "MI",
+      "PA",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -4127,7 +4550,8 @@
       "FL",
       "GA",
       "AL",
-      "NC"
+      "NC",
+      "MS"
     ],
     "seasons": [
       {
@@ -4160,7 +4584,8 @@
       "FL",
       "AL",
       "NC",
-      "GA"
+      "GA",
+      "MS"
     ],
     "seasons": [
       {
@@ -4192,7 +4617,8 @@
       "FL",
       "GA",
       "AL",
-      "NC"
+      "NC",
+      "MS"
     ],
     "seasons": [
       {
@@ -4233,7 +4659,8 @@
       "FL",
       "GA",
       "AL",
-      "NC"
+      "NC",
+      "MS"
     ],
     "seasons": [
       {
@@ -4323,7 +4750,8 @@
       "FL",
       "GA",
       "NC",
-      "AL"
+      "AL",
+      "MS"
     ],
     "seasons": [
       {
@@ -4384,7 +4812,8 @@
       "FL",
       "GA",
       "AL",
-      "NC"
+      "NC",
+      "MS"
     ],
     "seasons": [
       {
@@ -5048,7 +5477,8 @@
       "NC",
       "FL",
       "GA",
-      "AL"
+      "AL",
+      "MS"
     ],
     "seasons": [
       {
@@ -5110,7 +5540,8 @@
     "states": [
       "FL",
       "AL",
-      "GA"
+      "GA",
+      "MS"
     ],
     "seasons": [
       {
@@ -5140,7 +5571,8 @@
     ],
     "states": [
       "FL",
-      "AL"
+      "AL",
+      "MS"
     ],
     "seasons": [
       {
@@ -5201,7 +5633,8 @@
       "FL",
       "GA",
       "AL",
-      "NC"
+      "NC",
+      "MS"
     ],
     "seasons": [
       {
@@ -5368,7 +5801,8 @@
       "FL",
       "GA",
       "AL",
-      "NC"
+      "NC",
+      "MS"
     ],
     "seasons": [
       {
@@ -5587,7 +6021,12 @@
       "GA",
       "TN",
       "AL",
-      "FL"
+      "FL",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -5631,7 +6070,16 @@
       "IN",
       "TN",
       "NC",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -5662,7 +6110,11 @@
       "lake"
     ],
     "states": [
-      "MI"
+      "MI",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -5696,7 +6148,16 @@
       "IN",
       "TN",
       "NC",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -5730,7 +6191,12 @@
       "IN",
       "TN",
       "AL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -5768,7 +6234,12 @@
       "GA",
       "NC",
       "FL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -5803,7 +6274,12 @@
       "GA",
       "NC",
       "FL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -5873,7 +6349,12 @@
       "GA",
       "FL",
       "NC",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -5915,7 +6396,12 @@
       "IN",
       "TN",
       "AL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -5948,7 +6434,12 @@
       "IN",
       "TN",
       "AL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -5981,7 +6472,12 @@
       "IN",
       "TN",
       "AL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -6010,7 +6506,12 @@
       "freestone"
     ],
     "states": [
-      "IN"
+      "IN",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -6102,7 +6603,12 @@
     "states": [
       "TN",
       "AL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -6134,7 +6640,12 @@
     "states": [
       "NC",
       "GA",
-      "FL"
+      "FL",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA"
     ],
     "seasons": [
       {
@@ -6237,7 +6748,16 @@
       "MI",
       "TN",
       "NC",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -6334,7 +6854,16 @@
       "GA",
       "AL",
       "FL",
-      "KY"
+      "KY",
+      "MS",
+      "AR",
+      "OK",
+      "IL",
+      "PA",
+      "MT",
+      "ID",
+      "UT",
+      "CO"
     ],
     "seasons": [
       {
@@ -6355,5 +6884,258 @@
       }
     ],
     "notes": "Feral aquarium escapees. Most often caught in city ponds and urban water features. Some grow to 14+ in."
+  },
+  {
+    "id": "cutthroat-trout",
+    "name": "Cutthroat trout",
+    "scientific": "Oncorhynchus clarkii (multiple subspecies)",
+    "waterTypes": [
+      "freestone",
+      "tailwater",
+      "lake"
+    ],
+    "states": [
+      "MT",
+      "ID",
+      "UT",
+      "CO"
+    ],
+    "seasons": [
+      {
+        "startMonth": 4,
+        "endMonth": 10,
+        "label": "Spring through fall in mountain streams + high lakes"
+      }
+    ],
+    "tactics": [
+      {
+        "method": "fly",
+        "lures": [
+          "Royal Wulff or PMD dry",
+          "Parachute Adams (size 14-18)",
+          "Hopper-dropper August-September",
+          "Stonefly nymph in heavy runs"
+        ],
+        "notes": "Cutthroat are aggressive but spook easily in clear water — long leaders, light tippet."
+      },
+      {
+        "method": "cast",
+        "lures": [
+          "Small inline spinner (Panther Martin)",
+          "1/16 oz hair jig"
+        ],
+        "notes": "Where regs allow — many cutthroat waters are fly-only."
+      }
+    ],
+    "notes": "Native trout of the Western US. Multiple subspecies (Yellowstone, Westslope, Bonneville, Snake River fine-spotted, Colorado River, Rio Grande, Greenback) — local angler shorthand is just 'cutts'. Distinctive red/orange slash under the jaw."
+  },
+  {
+    "id": "bull-trout",
+    "name": "Bull trout",
+    "scientific": "Salvelinus confluentus",
+    "waterTypes": [
+      "freestone",
+      "lake"
+    ],
+    "states": [
+      "MT",
+      "ID"
+    ],
+    "seasons": [
+      {
+        "startMonth": 5,
+        "endMonth": 10,
+        "label": "Open season varies — most water is catch-and-release-only"
+      }
+    ],
+    "tactics": [
+      {
+        "method": "cast",
+        "lures": [
+          "Large streamer",
+          "5-7 in jointed jerkbait (Rapala X-Rap)",
+          "Small spoon"
+        ],
+        "notes": "Apex char of the Northwest — hit big prey. Where legal, target deep pools and confluences."
+      }
+    ],
+    "notes": "Federally threatened in much of its range. Catch-and-release only on most waters; some MT / ID flows have very limited harvest seasons. Verify regs before keeping any. Large, white-spotted on dark olive body."
+  },
+  {
+    "id": "mountain-whitefish",
+    "name": "Mountain whitefish",
+    "scientific": "Prosopium williamsoni",
+    "waterTypes": [
+      "freestone",
+      "tailwater"
+    ],
+    "states": [
+      "MT",
+      "ID",
+      "UT",
+      "CO"
+    ],
+    "seasons": [
+      {
+        "startMonth": 1,
+        "endMonth": 12,
+        "label": "Year-round; fattest in winter when trout slow down"
+      }
+    ],
+    "tactics": [
+      {
+        "method": "fly",
+        "lures": [
+          "Small bead-head pheasant tail nymph (size 16-18)",
+          "Zebra midge",
+          "San Juan worm"
+        ],
+        "notes": "Deep dead-drifts with weight. They sit on the bottom in slower runs."
+      },
+      {
+        "method": "cast",
+        "lures": [
+          "Worm + split shot",
+          "Tiny inline spinner"
+        ],
+        "notes": "Winter is whitefish season — when the trout are sluggish, the whities keep eating."
+      }
+    ],
+    "notes": "Native to most Western trout rivers. Often dismissed as 'trash fish' but actually a great winter target — strong fight on light tackle, smoke beautifully."
+  },
+  {
+    "id": "arctic-grayling",
+    "name": "Arctic grayling",
+    "scientific": "Thymallus arcticus",
+    "waterTypes": [
+      "freestone",
+      "lake"
+    ],
+    "states": [
+      "MT"
+    ],
+    "seasons": [
+      {
+        "startMonth": 5,
+        "endMonth": 9,
+        "label": "Open water in mountain streams + glacial lakes"
+      }
+    ],
+    "tactics": [
+      {
+        "method": "fly",
+        "lures": [
+          "Royal Wulff or Stimulator dry",
+          "Parachute Adams (size 16-20)",
+          "Small attractor dries — grayling rise eagerly"
+        ],
+        "notes": "Sail-finned upper Missouri / Madison drainage relicts and high-alpine lakes."
+      }
+    ],
+    "notes": "Iconic spotted dorsal that flares like a sail. Big Hole, Madison headwaters, and high-elevation MT lakes are the strongholds — declining elsewhere."
+  },
+  {
+    "id": "kokanee-salmon",
+    "name": "Kokanee salmon",
+    "scientific": "Oncorhynchus nerka (landlocked)",
+    "waterTypes": [
+      "lake",
+      "reservoir"
+    ],
+    "states": [
+      "MT",
+      "ID",
+      "UT",
+      "CO"
+    ],
+    "seasons": [
+      {
+        "startMonth": 5,
+        "endMonth": 9,
+        "label": "Open-water trolling; spawning runs Aug-Oct"
+      }
+    ],
+    "tactics": [
+      {
+        "method": "troll",
+        "lures": [
+          "Dodger + Wedding Ring with corn",
+          "Small pink/orange hoochie",
+          "Apex lure 4 in"
+        ],
+        "notes": "Troll 1.0-1.4 mph at 40-80 ft from spring into summer; deeper as the thermocline drops."
+      },
+      {
+        "method": "jig",
+        "lures": [
+          "1/8 oz pink/glow jig + corn",
+          "Buckshot spoon"
+        ],
+        "notes": "Snag schools on a fish finder; drop and vertically jig."
+      }
+    ],
+    "notes": "Landlocked sockeye. Major Western reservoir target — Flathead, Pend Oreille, Granby, Strawberry, Tahoe. Their flesh is the deepest orange in freshwater; excellent smoked."
+  },
+  {
+    "id": "golden-trout",
+    "name": "Golden trout",
+    "scientific": "Oncorhynchus aguabonita",
+    "waterTypes": [
+      "freestone",
+      "lake"
+    ],
+    "states": [
+      "MT",
+      "UT",
+      "CO"
+    ],
+    "seasons": [
+      {
+        "startMonth": 7,
+        "endMonth": 9,
+        "label": "High-elevation lakes ice-free only July-September"
+      }
+    ],
+    "tactics": [
+      {
+        "method": "fly",
+        "lures": [
+          "Small attractor dry (Royal Wulff size 16)",
+          "Foam beetle",
+          "Tiny callibaetis or midge emerger"
+        ],
+        "notes": "Backpacker fish — most populations require a hike to 10,000+ ft."
+      }
+    ],
+    "notes": "CA native, transplanted to alpine lakes across the Rocky Mountain West. Vivid orange-and-gold flanks with parr marks. A true high-country quarry."
+  },
+  {
+    "id": "white-sturgeon",
+    "name": "White sturgeon",
+    "scientific": "Acipenser transmontanus",
+    "waterTypes": [
+      "freestone"
+    ],
+    "states": [
+      "ID"
+    ],
+    "seasons": [
+      {
+        "startMonth": 1,
+        "endMonth": 12,
+        "label": "Year-round catch-and-release in ID Snake River"
+      }
+    ],
+    "tactics": [
+      {
+        "method": "cast",
+        "lures": [
+          "Whole sucker on heavy circle hook",
+          "Cut shad with heavy lead"
+        ],
+        "notes": "Heavy gear (150+ lb braid). Anchor in deep holes — Hells Canyon, C.J. Strike pool."
+      }
+    ],
+    "notes": "Pacific cousin of the lake sturgeon; can exceed 10 ft and 500 lb. ID Snake River population is the most accessible — strict catch-and-release, barbless hooks, no removing from the water."
   }
 ]

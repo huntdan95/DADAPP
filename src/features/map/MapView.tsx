@@ -285,8 +285,10 @@ export function MapView({ locations }: { locations: Location[] }) {
             Boat launches not loaded yet
           </div>
           <div className="text-xs text-muted mt-0.5 mb-2">
-            One-time setup pulls launches across MI, TN, KY, IN, NC, FL,
-            GA, AL from OpenStreetMap. Takes 1-2 minutes.
+            One-time setup pulls launches across 17 states (MI, TN, KY,
+            IN, NC, FL, GA, AL, MS, AR, OK, IL, PA, MT, ID, UT, CO) from
+            OpenStreetMap. Takes ~10 minutes — chunked so we don't get
+            rate-limited.
           </div>
           <button
             type="button"
