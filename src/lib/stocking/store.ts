@@ -69,6 +69,39 @@ export function watchRecentStockingByState(
   });
 }
 
+/**
+ * Wider live subscription covering BOTH past + future events in a
+ * single window. The conditions banner uses this so it can show
+ * upcoming stockings (if any in the next 90 days) and fall back to
+ * historical events when nothing is scheduled.
+ *
+ * Single subscription is cheaper than two — same composite index
+ * (state + date) handles it.
+ */
+export function watchStockingWindowByState(
+  state: string,
+  cb: (events: StockingEvent[]) => void,
+  opts: { daysBack?: number; daysForward?: number } = {}
+): () => void {
+  const daysBack = opts.daysBack ?? 365;       // a year of history
+  const daysForward = opts.daysForward ?? 90;  // upcoming season
+  const startMs = Date.now() - daysBack * 86_400_000;
+  const endMs = Date.now() + daysForward * 86_400_000;
+  const startDate = new Date(startMs).toISOString().slice(0, 10);
+  const endDate = new Date(endMs).toISOString().slice(0, 10);
+  const q = query(
+    collection(db(), colName),
+    where('state', '==', state.toUpperCase()),
+    where('date', '>=', startDate),
+    where('date', '<=', endDate),
+    orderBy('date', 'desc'),
+    fsLimit(300)
+  );
+  return onSnapshot(q, (snap) => {
+    cb(snap.docs.map((d) => d.data() as StockingEvent));
+  });
+}
+
 /** One-shot read of recent events near a location. */
 export async function fetchRecentStockingNearLocation(
   location: Location,
