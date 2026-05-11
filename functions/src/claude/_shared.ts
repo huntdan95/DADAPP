@@ -24,8 +24,16 @@ export function anthropic(): Anthropic {
 }
 
 export const MODELS = {
-  briefing: 'claude-sonnet-4-6',
+  // Briefings on Haiku 4.5 — the 3-sentence structured output is well
+  // within Haiku's capabilities given the rich context we provide,
+  // and Haiku is ~3× cheaper than Sonnet ($1/$5 vs $3/$15 per M).
+  // Combined with dropping the web_search tool entirely, this brings
+  // per-briefing cost from ~$0.02 down to ~$0.003.
+  briefing: 'claude-haiku-4-5',
   parseJournal: 'claude-haiku-4-5',
+  // Patterns Q&A keeps Sonnet — the reasoning over journal data
+  // benefits from the stronger model and these calls are gated to
+  // ~5/day per user.
   patterns: 'claude-sonnet-4-6',
   // Vision identification — bumped to Opus 4.7 after a channel-catfish was
   // misidentified as a smallmouth bass on Sonnet 4.6. Opus is markedly
@@ -35,23 +43,31 @@ export const MODELS = {
   // Sonnet for any older code paths; new vision calls use `analyzePhoto`.
   identifySpecies: 'claude-sonnet-4-6',
   analyzePhoto: 'claude-opus-4-7',
+  // Stocking-event extractor. Haiku 4.5 — parsing structured records
+  // from a PDF or web page is exactly Haiku's wheelhouse, and the
+  // weekly cron hits ~15 states which adds up fast at Sonnet rates.
+  stockingExtract: 'claude-haiku-4-5',
 } as const;
 
 /**
- * Daily caps per user. Total daily budget back-of-envelope:
- *   briefings × locations:   5 × ~$0.005 = $0.025
- *   parseJournal:           20 × ~$0.001 = $0.020
- *   patterns:               10 × ~$0.012 = $0.120
- *   identifySpecies:        10 × ~$0.006 = $0.060
- *   per-user ceiling per day:               ~$0.23
- * With ~6 users × 30 days  =  ~$41/month worst-case. Realistic usage will
- * be far lower; tune these once we have real data.
+ * Daily caps per user. Tight budgets after a $50/day cost incident.
+ *
+ *   briefings (Haiku, no web_search):  5 × ~$0.003 = $0.015
+ *   parseJournal (Haiku):              15 × ~$0.001 = $0.015
+ *   patterns (Sonnet):                  5 × ~$0.012 = $0.060
+ *   identifySpecies (Opus vision):      5 × ~$0.06  = $0.300
+ *
+ *   per-user worst case:                            ~$0.39 / day
+ *   6 users × 30 days =                             ~$70 / month
+ *
+ * Stocking AI extraction runs once a week via cron, not per-user.
+ * That's a separate ~$0.75/week bucket on top.
  */
 export const DAILY_CAPS = {
   briefing: 5,
-  parseJournal: 20,
-  patterns: 10,
-  identifySpecies: 10,
+  parseJournal: 15,
+  patterns: 5,
+  identifySpecies: 5,
 } as const;
 
 export type AiFeature = keyof typeof DAILY_CAPS;

@@ -95,20 +95,12 @@ export function StockingBanner({ location }: { location: Location }) {
       // Hits every state DNR scraper in one call. Live writes flow into
       // the same stockingEvents collection so this banner picks them up
       // automatically via the existing subscription.
+      //
+      // The manual trigger NEVER calls Claude — only free CSV/HTML
+      // scrapers run. States without a live scraper (most of them
+      // currently) backfill once a week via the Monday cron. Keeps
+      // this button safe to tap.
       const res = await triggerStockingScrape();
-
-      // Surface AI-credit-balance failures front-and-center. When the
-      // Anthropic key is out of credit every state's AI fallback errors,
-      // and the user just sees "all zeros" with no explanation. A clear
-      // error chip is way more useful.
-      const creditsLow = (res.diagnostics ?? []).some(
-        (d) => d.status === 'ai_credits_low'
-      );
-      if (creditsLow) {
-        setScrapeError(
-          'Anthropic credit balance is too low — top up at console.anthropic.com to re-enable AI-extracted stocking.'
-        );
-      }
 
       // Build a human summary: "TWRA 12, MI 8, GA 0 (err)…" so users
       // can SEE which scrapers actually returned data and which are

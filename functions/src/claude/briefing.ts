@@ -154,10 +154,6 @@ REQUIRED OUTPUT FORMAT:
 
 The first token is consumed by the UI to pick a card tint, so it MUST be on its own first word, followed by a period, then a space.
 
-WEB SEARCH: You have a web_search tool. Use it ONCE per briefing, only when the spot is a named, well-known fishery (Caney Fork, South Holston, Big Manistee, Lake St. Clair, Center Hill, etc.). Search for angler reports / hatch reports / fishing report posts from the last 2 weeks at THAT spot. If the search returns useful local intel — a specific fly working, a hatch coming off, depth that produced kings — weave it into sentence 2 or 3 as a concrete recommendation. If the search returns nothing useful, just write from the data provided. Never mention that the search failed.
-
-Do NOT search for: generic weather, generic fishing tips, or anything you can already answer from the data below.
-
 FISHING HEURISTICS:
 
 Pressure:
@@ -251,7 +247,10 @@ export const briefing = onCall(
 
     const response = await anthropic().messages.create({
       model: MODELS.briefing,
-      max_tokens: 1200,
+      // 3 sentences fit in ~150 output tokens; 400 is plenty of margin.
+      // Down from 1200, which was reserving budget for web_search-augmented
+      // briefings that the prompt no longer enables.
+      max_tokens: 400,
       system: [
         {
           type: 'text',
@@ -259,7 +258,10 @@ export const briefing = onCall(
           cache_control: { type: 'ephemeral' },
         },
       ],
-      tools: [{ type: 'web_search_20260209', name: 'web_search' }],
+      // No web_search tool — we provide enough structured context that
+      // the model never needed it for the 3-sentence read, and each
+      // web_search invocation added ~$0.01-$0.05 to the call. The
+      // model still cites where appropriate from the structured inputs.
       messages: [{ role: 'user', content: userMessage }],
     });
 

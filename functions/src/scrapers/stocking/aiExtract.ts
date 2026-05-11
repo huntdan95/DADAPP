@@ -1,6 +1,6 @@
 import type Anthropic from '@anthropic-ai/sdk';
 import { logger } from 'firebase-functions';
-import { anthropic } from '../../claude/_shared';
+import { anthropic, MODELS } from '../../claude/_shared';
 import type { StockingScrapeRecord, StockingSource } from './types';
 
 /**
@@ -126,16 +126,27 @@ export async function aiExtractStocking(
           .map((w) => `  - ${w}`)
           .join('\n')
       : '';
-  const userMessage =
-    `Find fish stocking events in ${stateName(input.state)} (${input.state}) ` +
-    `from the last ${lookbackDays} days. ` +
-    `Today is ${new Date().toISOString().slice(0, 10)}. ` +
-    `Search the ${stateName(input.state)} DNR fish stocking database first ` +
-    `(usually at the state DNR website's fishing or hatchery section), ` +
-    `then cross-check with any recent fishing reports. ` +
-    `Each returned event MUST name a specific water body — reject 'statewide' / ` +
-    `'multiple waters' / 'various' summaries.` +
-    focusList;
+  // When a PDF is attached, tell Claude to read it directly — no
+  // web search, no guessing. Otherwise instruct it to use web_search
+  // sparingly (1-2 queries) to keep cost bounded.
+  const userMessage = input.directPdfUrl
+    ? `Extract fish stocking events from the attached PDF (${stateName(
+        input.state
+      )} weekly stocking report). Today is ${new Date()
+        .toISOString()
+        .slice(0, 10)}. Return events from the last ${lookbackDays} days. ` +
+      `Each returned event MUST name a specific water body — reject 'statewide' / ` +
+      `'multiple waters' / 'various' summaries.` +
+      focusList
+    : `Find fish stocking events in ${stateName(input.state)} (${input.state}) ` +
+      `from the last ${lookbackDays} days. ` +
+      `Today is ${new Date().toISOString().slice(0, 10)}. ` +
+      `Use AT MOST 2 web searches focused on the ${stateName(
+        input.state
+      )} DNR fish stocking database. ` +
+      `Each returned event MUST name a specific water body — reject 'statewide' / ` +
+      `'multiple waters' / 'various' summaries.` +
+      focusList;
 
   // Build the user message content. Default: text-only with
   // web_search tool. When a PDF URL is supplied, fetch the bytes
@@ -177,16 +188,26 @@ export async function aiExtractStocking(
       : userMessage,
   });
 
+  // Token-spend discipline:
+  //   - Haiku 4.5 instead of Sonnet 4.6 → 3× cheaper input + output
+  //     ($1/$5 vs $3/$15 per M). Parsing structured records from a
+  //     PDF or DNR page is well within Haiku's range.
+  //   - max_tokens: 2000 (was 4000). A 200-event JSON list comfortably
+  //     fits in 2K output. Capping bounds the worst-case cost per call.
+  //   - Web search ONLY when no PDF is attached. When a PDF is provided
+  //     Claude has the source-of-truth document in-context — letting
+  //     it also web_search wastes tokens reading SEO pages.
+  const tools: Anthropic.Messages.ToolUnion[] | undefined = input.directPdfUrl
+    ? undefined
+    : [{ type: 'web_search_20260209', name: 'web_search' }];
+
   let response: Anthropic.Messages.Message;
   try {
     response = await anthropic().messages.create({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 4000,
+      model: MODELS.stockingExtract,
+      max_tokens: 2000,
       system: SYSTEM_PROMPT,
-      // Web search stays available as a backup. When a PDF is
-      // attached Claude usually reads it directly without needing
-      // to search.
-      tools: [{ type: 'web_search_20260209', name: 'web_search' }],
+      ...(tools ? { tools } : {}),
       messages: [{ role: 'user', content: userContent }],
     });
   } catch (e) {

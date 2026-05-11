@@ -378,6 +378,11 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
               </Button>
             )}
           </div>
+          <div className="mt-2 text-[10px] text-muted leading-snug">
+            Free CSV/HTML pulls only — AI extraction runs weekly via
+            the Monday cron (TN, MI, GA work today; other states fill
+            in once a week). Tapping this never spends Claude credits.
+          </div>
           {stockingDiagnostics && showDiagnostics && (
             <DiagnosticsPanel diagnostics={stockingDiagnostics} />
           )}

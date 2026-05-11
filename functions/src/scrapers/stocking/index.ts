@@ -125,10 +125,26 @@ interface ScraperResult {
   error?: string;
 }
 
-async function runAll(): Promise<{
+/**
+ * Run options for the orchestrator.
+ *
+ * `allowAi` defaults TRUE so the weekly cron continues to fall back
+ * on Claude for states with no working HTML/CSV scraper. The manual
+ * callable (`triggerStockingScrape`) passes `false` — manual refreshes
+ * should only hit the free live scrapers, never burn Claude tokens.
+ * Per-click cost reasoning: 15 states × ~$0.10/state via Sonnet+
+ * web_search = $1.50/click. A handful of debug clicks can easily run
+ * $50 in API spend before you notice.
+ */
+interface RunAllOptions {
+  allowAi?: boolean;
+}
+
+async function runAll(opts: RunAllOptions = {}): Promise<{
   results: ScraperResult[];
   diagnostics: StockingScrapeDiagnostic[];
 }> {
+  const allowAi = opts.allowAi !== false; // default true
   const db = getFirestore();
   const results: ScraperResult[] = [];
   const diagnostics: StockingScrapeDiagnostic[] = [];
@@ -197,7 +213,12 @@ async function runAll(): Promise<{
     // checking Firestore for recent events FROM THIS SAME SOURCE
     // before spending tokens. If we have fresh data (<7 days old)
     // we skip Claude entirely and rely on the existing records.
-    if (records.length === 0) {
+    //
+    // Manual triggers pass `allowAi: false` so a "Refresh" button
+    // tap can never burn tokens. The weekly cron is the only place
+    // AI fallback runs in production. If you really want AI on
+    // demand, run the cron manually via Cloud Console.
+    if (records.length === 0 && allowAi) {
       const state = SOURCE_TO_STATE[source];
       if (state) {
         const recentCount = await countRecentEventsForSource(source, 7);
@@ -452,6 +473,9 @@ async function countRecentEventsForSource(
  * for the angling weekend. Each state DNR refreshes on different days,
  * so we eat a few stale records from each — that's fine for the
  * intended use ("did Caney get hit this week?").
+ *
+ * Allows AI fallback (default). Approx weekly spend: 15 states × ~$0.05
+ * each via Haiku w/ web_search = ~$0.75/week.
  */
 export const scrapeStocking = onSchedule(
   {
@@ -465,7 +489,7 @@ export const scrapeStocking = onSchedule(
     secrets: [anthropicApiKey],
   },
   async () => {
-    const { results, diagnostics } = await runAll();
+    const { results, diagnostics } = await runAll({ allowAi: true });
     logger.info('stocking.scrape.summary', { results, diagnostics });
   }
 );
@@ -473,7 +497,16 @@ export const scrapeStocking = onSchedule(
 /**
  * Callable — manual trigger so a user can poke a refresh from the
  * client (admin-style page or "refresh" button) and see results.
- * Same orchestration logic; just returns a JSON summary.
+ *
+ * COST SAFETY: This callable explicitly disables AI fallback. Manual
+ * clicks ONLY run the free CSV/HTML scrapers — TWRA, MI DNR, etc.
+ * If the live scraper returns 0 records, we surface that as a
+ * `parse_failed` / `fetch_failed` diagnostic instead of paying Claude.
+ *
+ * AI extraction is reserved for the once-weekly cron. If you really
+ * want to force an AI pull on demand, do it via the Cloud Console
+ * "Run now" on the `scrapeStocking` schedule — never wire that into
+ * a button users can hammer.
  */
 export const triggerStockingScrape = onCall(
   {
@@ -481,13 +514,13 @@ export const triggerStockingScrape = onCall(
     memory: '512MiB',
     timeoutSeconds: 540,
     invoker: 'public',
-    secrets: [anthropicApiKey],
+    // No anthropic key — this path never calls Claude.
   },
   async (request) => {
     if (!request.auth) {
       throw new HttpsError('unauthenticated', 'Must be signed in');
     }
-    const { results, diagnostics } = await runAll();
+    const { results, diagnostics } = await runAll({ allowAi: false });
     return {
       results,
       diagnostics,
