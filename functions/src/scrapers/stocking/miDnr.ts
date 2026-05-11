@@ -1,135 +1,169 @@
-import * as cheerio from 'cheerio';
 import { logger } from 'firebase-functions';
 import { fetchHtml } from './fetch';
 import type { StockingScrapeRecord } from './types';
 
 /**
- * Michigan DNR stocking scraper.
+ * Michigan DNR stocking scraper — CSV mode.
  *
- * Source: https://www2.dnr.state.mi.us/fishstock/
+ * Source: https://michigandnr.com/publications/PDFS/Fishing/FishStocking/FishStockingData.csv
  *
- * The MI portal lets you query stocking records by year. The simplest
- * route is the year-summary report — POST-equivalent URL parameters
- * that produce an HTML table of every stocking event for a given year
- * (or year + species). We pull the current year unfiltered, parse the
- * resulting table, and convert.
+ * MI DNR publishes the full historical + recent stocking database as
+ * a single CSV file. Way more reliable than scraping the ASP.NET-
+ * gated portal at https://www2.dnr.state.mi.us/fishstock/, which
+ * requires POST + ViewState to return results.
  *
- * Columns observed: Date stocked | Species | Strain | County | Site
- * (waterbody) | Number | Avg length (in) | Stocking method.
+ * CSV columns (header row):
+ *   County_Name, Water_Body_Name, sitename, Town, Range, Section,
+ *   Species, Marking_Group, Stocking_Date, Number_Fish_Stocked,
+ *   Average_Length_Inches, Operation
  *
- * Tolerance: the page layout has changed over the years; we identify
- * the data table by a header row containing "Date" + "Species" in
- * adjacent cells, then map subsequent rows by column index.
+ * Sample row (Tippy Dam Manistee River, the user's reference):
+ *   Manistee,Manistee River,TIPPY DAM,22N,13W,31,Brown trout         ,none,03/26/2026,23200,7.03,State Plant
  *
- * Locations: MI doesn't publish lat/lng with stocking data. We rely on
- * the location/state filter in the client banner ("within 25 mi of
- * this spot") — when lat/lng is missing the banner falls back to
- * locationName match against the spot. The friendly site name is
- * still useful in the briefing context even without coordinates.
+ * Records older than the lookback window are dropped so we don't
+ * stuff the Firestore collection with years of irrelevant history.
+ * The orchestrator's 400-day prune handles anything that slips
+ * through.
  */
 
-const YEAR = new Date().getFullYear();
-const URL = `https://www2.dnr.state.mi.us/fishstock/Default.aspx?yr=${YEAR}`;
+const CSV_URL =
+  'https://michigandnr.com/publications/PDFS/Fishing/FishStocking/FishStockingData.csv';
+
+/** Drop CSV rows whose stocking date is older than this many days. */
+const INGEST_LOOKBACK_DAYS = 180;
 
 export async function scrape(): Promise<StockingScrapeRecord[]> {
-  let html: string;
+  let text: string;
   try {
-    html = await fetchHtml(URL, { timeoutMs: 30_000 });
+    text = await fetchHtml(CSV_URL, { timeoutMs: 60_000 });
   } catch (e) {
-    logger.error('miDnr.fetch.failed', { error: String(e), url: URL });
+    logger.error('miDnr.csv.fetch.failed', { url: CSV_URL, error: String(e) });
     return [];
   }
-  const $ = cheerio.load(html);
 
-  const records: StockingScrapeRecord[] = [];
-
-  // Find the table with headers that look like a stocking-records table.
-  let columnMap: Record<string, number> | null = null;
-
-  $('table').each((_, tbl) => {
-    const headerCells = $(tbl)
-      .find('tr')
-      .first()
-      .find('th, td')
-      .map((_i, c) => $(c).text().trim().toLowerCase())
-      .get();
-    if (headerCells.length < 3) return;
-    // We need at minimum: date, species, site. Be flexible about names.
-    const candidateMap: Record<string, number> = {};
-    headerCells.forEach((cell, idx) => {
-      if (/date/.test(cell) && candidateMap.date == null) candidateMap.date = idx;
-      if (/species/.test(cell) && candidateMap.species == null) candidateMap.species = idx;
-      if (/^site$|water|location/.test(cell) && candidateMap.site == null)
-        candidateMap.site = idx;
-      if (/county/.test(cell) && candidateMap.county == null) candidateMap.county = idx;
-      if (/(number|count|fish)/.test(cell) && candidateMap.count == null)
-        candidateMap.count = idx;
-      if (/(length|size|avg)/.test(cell) && candidateMap.size == null)
-        candidateMap.size = idx;
-    });
-    if (
-      candidateMap.date != null &&
-      candidateMap.species != null &&
-      candidateMap.site != null
-    ) {
-      columnMap = candidateMap;
-      // Parse all rows of this table.
-      $(tbl)
-        .find('tr')
-        .each((i, tr) => {
-          if (i === 0) return;          // header
-          const cells = $(tr)
-            .find('td')
-            .map((_j, td) => $(td).text().trim())
-            .get();
-          if (cells.length < 3) return;
-          const dateRaw = cells[candidateMap.date];
-          const isoDate = parseDate(dateRaw);
-          if (!isoDate) return;
-          const speciesRaw = cells[candidateMap.species] ?? '';
-          const site = cells[candidateMap.site] ?? '';
-          const county =
-            candidateMap.county != null ? cells[candidateMap.county] : '';
-          const countRaw =
-            candidateMap.count != null ? cells[candidateMap.count] : '';
-          const sizeRaw =
-            candidateMap.size != null ? cells[candidateMap.size] : '';
-
-          if (!site) return;
-
-          records.push({
-            date: isoDate,
-            locationName: county ? `${site} (${county} Co.)` : site,
-            state: 'MI',
-            species: normalizeSpecies(speciesRaw),
-            count: parseCount(countRaw),
-            size: parseSize(sizeRaw),
-            notes: 'MI DNR stocking database',
-          });
-        });
-    }
-  });
-
-  logger.info('miDnr.scrape', {
-    count: records.length,
-    matchedColumns: columnMap ?? 'none',
+  const records = parseCsv(text);
+  logger.info('miDnr.csv.parsed', {
+    totalRecords: records.length,
   });
   return records;
 }
 
-function parseDate(raw: string): string | null {
-  // MI publishes as M/D/YYYY or YYYY-MM-DD. Handle both.
-  const a = raw.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
-  if (a) {
-    const [, y, m, d] = a;
-    return `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
+/**
+ * Parses the MI DNR CSV. Handles:
+ *   - Trailing spaces on species names (CSV exports them padded)
+ *   - Mixed 2-digit / 4-digit year formats in the date column
+ *   - Empty sitename / township columns
+ *   - Records older than INGEST_LOOKBACK_DAYS (dropped)
+ */
+export function parseCsv(text: string): StockingScrapeRecord[] {
+  const lines = text.split(/\r?\n/);
+  if (lines.length < 2) return [];
+  // Validate header — fail fast if the format changes.
+  const header = lines[0].toLowerCase();
+  if (
+    !header.includes('county') ||
+    !header.includes('water') ||
+    !header.includes('species') ||
+    !header.includes('date')
+  ) {
+    logger.warn('miDnr.csv.unexpected_header', {
+      header: lines[0].slice(0, 240),
+    });
+    return [];
   }
-  const b = raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})$/);
-  if (b) {
-    const [, mo, d, yRaw] = b;
+
+  const cutoffMs =
+    Date.now() - INGEST_LOOKBACK_DAYS * 24 * 60 * 60 * 1000;
+
+  const out: StockingScrapeRecord[] = [];
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i];
+    if (!line.trim()) continue;
+    const cells = splitCsvLine(line);
+    // Need at least the 9 named-by-header columns we care about.
+    if (cells.length < 12) continue;
+
+    const county = cells[0].trim();
+    const water = cells[1].trim();
+    const siteName = cells[2].trim();
+    // cells[3..5] = Town / Range / Section (geographic legal-survey
+    // descriptors — useful context, not for matching).
+    const speciesRaw = cells[6].trim();
+    const dateRaw = cells[8].trim();
+    const countRaw = cells[9].trim();
+    const lengthRaw = cells[10].trim();
+
+    if (!water || !speciesRaw || !dateRaw) continue;
+
+    const date = parseDate(dateRaw);
+    if (!date) continue;
+
+    const ts = new Date(date + 'T12:00:00Z').getTime();
+    if (Number.isFinite(ts) && ts < cutoffMs) continue;
+
+    const count = parseCount(countRaw);
+    const size = parseSize(lengthRaw);
+    const species = normalizeSpecies(speciesRaw);
+
+    // Build locationName so the spot-match filter has multiple
+    // hooks to land on. Format: "Manistee River · TIPPY DAM (Manistee Co.)"
+    const locationName = buildLocationName(water, siteName, county);
+
+    out.push({
+      date,
+      locationName,
+      state: 'MI',
+      species,
+      count,
+      size,
+      notes: 'MI DNR FishStockingData CSV',
+    });
+  }
+  return out;
+}
+
+/**
+ * Splits a CSV line, respecting double-quoted fields that contain
+ * commas. The MI DNR CSV almost never quotes (no commas in the data),
+ * but this handles future format changes defensively.
+ */
+function splitCsvLine(line: string): string[] {
+  const out: string[] = [];
+  let current = '';
+  let inQuotes = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (ch === '"') {
+      // Handle "" inside a quoted field (escaped quote).
+      if (inQuotes && line[i + 1] === '"') {
+        current += '"';
+        i++;
+        continue;
+      }
+      inQuotes = !inQuotes;
+      continue;
+    }
+    if (ch === ',' && !inQuotes) {
+      out.push(current);
+      current = '';
+      continue;
+    }
+    current += ch;
+  }
+  out.push(current);
+  return out;
+}
+
+function parseDate(raw: string): string | null {
+  // MM/DD/YYYY or MM/DD/YY
+  const m = raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2}|\d{4})$/);
+  if (m) {
+    const [, mo, d, yRaw] = m;
     const y = yRaw.length === 2 ? `20${yRaw}` : yRaw;
     return `${y}-${mo.padStart(2, '0')}-${d.padStart(2, '0')}`;
   }
+  // YYYY-MM-DD (just in case)
+  if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return raw;
   return null;
 }
 
@@ -143,9 +177,19 @@ function parseCount(raw: string): number | undefined {
 function parseSize(raw: string): string | undefined {
   const t = raw.trim();
   if (!t || t === '-' || /^n\/?a$/i.test(t)) return undefined;
-  // Convert "5.4" → "5.4 in" if it's just a number.
   if (/^\d+(\.\d+)?$/.test(t)) return `${t} in`;
   return t;
+}
+
+function buildLocationName(
+  water: string,
+  siteName: string,
+  county: string
+): string {
+  const parts: string[] = [water];
+  if (siteName) parts.push(siteName);
+  if (county) parts.push(`(${county} Co.)`);
+  return parts.join(' · ');
 }
 
 function normalizeSpecies(raw: string): string {
@@ -164,10 +208,11 @@ function normalizeSpecies(raw: string): string {
   if (t.includes('muskellunge') || t.includes('muskie')) return 'Muskellunge';
   if (t.includes('northern pike')) return 'Northern pike';
   if (t.includes('lake sturgeon')) return 'Lake sturgeon';
-  // Title-case fallback for anything not in the lookup table.
+  if (t.includes('smallmouth')) return 'Smallmouth bass';
+  if (t.includes('largemouth')) return 'Largemouth bass';
   return raw
     .trim()
     .split(/\s+/)
-    .map((w) => w[0].toUpperCase() + w.slice(1).toLowerCase())
+    .map((w) => (w[0] ? w[0].toUpperCase() + w.slice(1).toLowerCase() : ''))
     .join(' ');
 }
