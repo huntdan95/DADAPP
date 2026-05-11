@@ -80,7 +80,14 @@ const STATE_TZ: Record<string, string> = {
 export interface ReverseGeocodeResult {
   state?: string;          // USPS 2-letter
   country?: string;        // ISO-3166 alpha-2
+  county?: string;         // e.g. "Crawford County" → we strip " County"
   river?: string;
+  /** Lake / pond / reservoir name if the pin sits on a still water. */
+  water?: string;
+  /** Nearest named landmark/road for name suggestions. */
+  nearestRoad?: string;
+  /** Town / city, for name fallback ("Pinkerton in Franklin"). */
+  town?: string;
   display?: string;        // human-readable place name
 }
 
@@ -112,19 +119,45 @@ export async function reverseGeocode(
     address?: {
       state?: string;
       country_code?: string;
+      county?: string;
       river?: string;
       stream?: string;
       water?: string;
+      body_of_water?: string;
+      road?: string;
+      pedestrian?: string;
+      cycleway?: string;
+      bridge?: string;
+      town?: string;
+      city?: string;
+      village?: string;
+      hamlet?: string;
+      suburb?: string;
     };
     display_name?: string;
   };
 
   const addr = json.address ?? {};
   const state = addr.state ? STATE_NAME_TO_USPS[addr.state] : undefined;
+  // Nominatim returns "Crawford County" — strip the suffix so the
+  // friendly chip reads "Crawford Co".
+  const countyRaw = addr.county;
+  const county = countyRaw
+    ? countyRaw.replace(/\s+County$/i, '')
+    : undefined;
+  const river = addr.river ?? addr.stream ?? undefined;
+  const water = addr.body_of_water ?? addr.water ?? undefined;
+  const nearestRoad = addr.road ?? addr.bridge ?? addr.pedestrian ?? addr.cycleway;
+  const town =
+    addr.town ?? addr.city ?? addr.village ?? addr.hamlet ?? addr.suburb;
   return {
     state,
     country: addr.country_code?.toUpperCase(),
-    river: addr.river ?? addr.stream ?? addr.water ?? undefined,
+    county,
+    river,
+    water,
+    nearestRoad,
+    town,
     display: json.display_name,
   };
 }

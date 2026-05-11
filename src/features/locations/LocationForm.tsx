@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { MapContainer, TileLayer, Marker, useMap, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { Crosshair, Loader2, Wand2 } from 'lucide-react';
+import { Crosshair, Loader2 } from 'lucide-react';
 import type {
   DamScheduleProvider,
   FlowProvider,
@@ -34,15 +34,6 @@ const WATER_TYPES: WaterType[] = [
   'saltwater',
 ];
 
-const COMMON_TIMEZONES = [
-  'America/New_York',
-  'America/Chicago',
-  'America/Denver',
-  'America/Los_Angeles',
-  'America/Anchorage',
-  'America/Phoenix',
-];
-
 type FlowKind = '' | 'usgs' | 'env-canada' | 'uk-ea';
 type DamKind = '' | 'tva' | 'usace' | 'consumers-energy' | 'manual' | 'auto';
 
@@ -66,12 +57,22 @@ export function LocationForm({
   const [river, setRiver] = useState(initial?.river ?? '');
   const [state, setState] = useState(initial?.state ?? '');
   const [country, setCountry] = useState(initial?.country ?? 'US');
+  /**
+   * Hidden auto-detected fields. Saved on the Location for analytics
+   * + stocking proximity matching but not shown in the form — derived
+   * from the pin via reverse geocoding.
+   */
+  const [county, setCounty] = useState<string | undefined>(initial?.county);
   const [type, setType] = useState<WaterType>(initial?.type ?? 'tailwater');
+  /** True if the user has manually changed the water type — locks our auto-detection. */
+  const [typeUserSet, setTypeUserSet] = useState<boolean>(initial != null);
   const [timezone, setTimezone] = useState(
     initial?.timezone ?? 'America/New_York'
   );
   const [lat, setLat] = useState<number | null>(initial?.lat ?? null);
   const [lng, setLng] = useState<number | null>(initial?.lng ?? null);
+  /** Suggested spot name from reverse-geocode (river + nearest landmark). */
+  const [nameSuggestion, setNameSuggestion] = useState<string | null>(null);
 
   const [flowKind, setFlowKind] = useState<FlowKind>(
     (initial?.dataProviders.flow?.kind ?? '') as FlowKind
@@ -147,83 +148,107 @@ export function LocationForm({
   );
 
   /**
-   * Auto-fill state, timezone, river, and nearest USGS gauge from the
-   * currently-dropped pin. Tries reverse-geocoding first (cheap), then
-   * NWIS bbox search. Each step is best-effort — failures just leave
-   * fields untouched.
+   * Silent auto-detect on every pin change. Fires reverse-geocode +
+   * USGS-nearest-gauge + NOAA-nearest-tide in parallel, then folds
+   * results into the form state without user interaction. The user
+   * sees a compact "Auto-detected" summary line; nothing else moves.
+   *
+   * Debounced 400 ms so dragging the map and dropping in a different
+   * spot doesn't fire three fetches.
    */
-  async function autoFillFromPin() {
+  useEffect(() => {
     if (lat == null || lng == null) {
-      setAutoStatus('Drop a pin first');
+      setAutoStatus(null);
       return;
     }
-    setAutoFilling(true);
-    setAutoStatus(null);
-    const parts: string[] = [];
-    try {
-      const geo = await reverseGeocode(lat, lng).catch(() => null);
-      if (geo?.state) {
-        setState(geo.state);
-        setTimezone(timezoneForState(geo.state));
-        parts.push(`state ${geo.state}`);
-      }
-      if (geo?.country) setCountry(geo.country);
-      if (geo?.river && !river) {
-        setRiver(geo.river);
-        parts.push(`river "${geo.river}"`);
-      }
+    let cancelled = false;
+    const t = setTimeout(async () => {
+      setAutoFilling(true);
+      setAutoStatus(null);
+      const parts: string[] = [];
+      try {
+        const [geo, gauges, tides] = await Promise.all([
+          reverseGeocode(lat, lng).catch(() => null),
+          nearestUsgsGauges(lat, lng, 3).catch(() => [] as NearbyGauge[]),
+          nearestTideStations(lat, lng, 3, 50).catch(
+            () => [] as NearbyTideStation[]
+          ),
+        ]);
+        if (cancelled) return;
 
-      // Pull top 3 USGS candidates so the user can override the auto-pick
-      // (closest gauge isn't always on the right river — e.g. a forebay
-      // gauge sometimes ranks before the downstream tailwater gauge).
-      const gauges = await nearestUsgsGauges(lat, lng, 3).catch(() => [] as NearbyGauge[]);
-      if (gauges.length > 0) {
-        // Prefer the closest gauge that publishes water temp; otherwise
-        // fall through to the absolute closest.
-        const pick = gauges.find((g) => g.hasWaterTemp) ?? gauges[0];
-        setFlowOptions(gauges);
-        setFlowKind('usgs');
-        setFlowSiteId(pick.siteId);
-        parts.push(
-          `gauge ${pick.siteId} (${pick.distanceMiles.toFixed(1)} mi${
-            pick.hasWaterTemp ? ', water temp ✓' : ''
-          })${gauges.length > 1 ? ` (+${gauges.length - 1} alternatives)` : ''}`
-        );
-        if (type === 'tailwater' && (damKind === '' || damKind === 'manual')) {
-          setDamKind('auto');
-          parts.push('dam status: auto from gauge');
+        if (geo?.state) {
+          setState(geo.state);
+          setTimezone(timezoneForState(geo.state));
+          parts.push(geo.state);
         }
-      } else {
-        parts.push('no active USGS gauge within ~35 mi');
-      }
+        if (geo?.country) setCountry(geo.country);
+        if (geo?.county) {
+          setCounty(geo.county);
+          parts.push(`${geo.county} Co`);
+        }
+        if (geo?.river && !river) setRiver(geo.river);
 
-      // Tide stations: ALWAYS check, regardless of the type field. Many
-      // backwaters, marshes, and brackish creeks (Homosassa, Mosquito
-      // Lagoon, low-country GA, etc) are tide-driven even when the user
-      // didn't pick "saltwater" as the type. We cap the search at 50 mi
-      // so inland pins return zero stations and we stay quiet there.
-      const tides = await nearestTideStations(lat, lng, 3, 50).catch(
-        () => [] as NearbyTideStation[]
-      );
-      if (tides.length > 0) {
-        setTideOptions(tides);
-        // Auto-pick the closest station so saving without further
-        // interaction still wires up a tide provider.
-        if (!tideStationId) setTideStationId(tides[0].stationId);
-        parts.push(
-          `tide station ${tides[0].stationId} (${tides[0].distanceMiles.toFixed(1)} mi)`
-        );
-      } else if (type === 'saltwater') {
-        parts.push('no NOAA tide station within 50 mi');
-      }
+        // Heuristic water-type detection. Only override if the user
+        // hasn't manually chosen a type yet (typeUserSet stays false
+        // until they touch the Type dropdown).
+        if (!typeUserSet) {
+          const inferred = inferWaterType({
+            river: geo?.river,
+            water: geo?.water,
+            tideStationDistanceMiles: tides[0]?.distanceMiles ?? null,
+            lat,
+            lng,
+          });
+          if (inferred) setType(inferred);
+        }
 
-      setAutoStatus(parts.length > 0 ? `Filled: ${parts.join(' · ')}` : 'Nothing found');
-    } catch (e) {
-      setAutoStatus(friendlyError(e));
-    } finally {
-      setAutoFilling(false);
-    }
-  }
+        // Name suggestion — only set if the user hasn't typed yet.
+        if (!name && (geo?.river || geo?.water)) {
+          const water = geo?.river ?? geo?.water ?? 'River';
+          const landmark =
+            geo?.nearestRoad ??
+            geo?.town ??
+            null;
+          setNameSuggestion(
+            landmark ? `${water} at ${landmark}` : water
+          );
+        }
+
+        if (gauges.length > 0) {
+          const pick = gauges.find((g) => g.hasWaterTemp) ?? gauges[0];
+          setFlowOptions(gauges);
+          if (!flowKind) {
+            setFlowKind('usgs');
+            setFlowSiteId(pick.siteId);
+          }
+          parts.push(`USGS ${pick.siteId}`);
+          if (
+            (type === 'tailwater' || (!typeUserSet && geo?.river)) &&
+            (damKind === '' || damKind === 'manual')
+          ) {
+            setDamKind('auto');
+          }
+        }
+
+        if (tides.length > 0) {
+          setTideOptions(tides);
+          if (!tideStationId) setTideStationId(tides[0].stationId);
+          parts.push(`NOAA ${tides[0].stationId}`);
+        }
+
+        setAutoStatus(parts.length > 0 ? parts.join(' · ') : null);
+      } catch (e) {
+        if (!cancelled) setAutoStatus(friendlyError(e));
+      } finally {
+        if (!cancelled) setAutoFilling(false);
+      }
+    }, 400);
+    return () => {
+      cancelled = true;
+      clearTimeout(t);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lat, lng]);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -251,6 +276,7 @@ export function LocationForm({
       river: river.trim() || undefined,
       state: state.trim().toUpperCase() || 'XX',
       country: country.trim().toUpperCase() || 'US',
+      ...(county ? { county } : {}),
       type,
       lat,
       lng,
@@ -267,12 +293,31 @@ export function LocationForm({
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <Field label="Name">
-        <Input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="e.g. Caney Fork at Happy Hollow"
-        />
+      <Field
+        label="Name"
+        hint={
+          nameSuggestion && !name
+            ? `Suggested: ${nameSuggestion} — tap to use`
+            : undefined
+        }
+      >
+        <div className="flex gap-2">
+          <Input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder={nameSuggestion ?? 'e.g. Caney Fork at Happy Hollow'}
+          />
+          {nameSuggestion && !name && (
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              onClick={() => setName(nameSuggestion)}
+            >
+              Use
+            </Button>
+          )}
+        </div>
       </Field>
 
       <div className="grid grid-cols-2 gap-3">
@@ -284,33 +329,16 @@ export function LocationForm({
           />
         </Field>
         <Field label="Type">
-          <Select value={type} onChange={(e) => setType(e.target.value as WaterType)}>
+          <Select
+            value={type}
+            onChange={(e) => {
+              setType(e.target.value as WaterType);
+              setTypeUserSet(true);
+            }}
+          >
             {WATER_TYPES.map((t) => (
               <option key={t} value={t}>
                 {t}
-              </option>
-            ))}
-          </Select>
-        </Field>
-      </div>
-
-      <div className="grid grid-cols-3 gap-3">
-        <Field label="State">
-          <Input
-            value={state}
-            onChange={(e) => setState(e.target.value)}
-            maxLength={2}
-            placeholder="TN"
-          />
-        </Field>
-        <Field label="Country">
-          <Input value={country} onChange={(e) => setCountry(e.target.value)} />
-        </Field>
-        <Field label="Timezone">
-          <Select value={timezone} onChange={(e) => setTimezone(e.target.value)}>
-            {COMMON_TIMEZONES.map((tz) => (
-              <option key={tz} value={tz}>
-                {tz.split('/')[1]}
               </option>
             ))}
           </Select>
@@ -352,31 +380,38 @@ export function LocationForm({
             <RecenterOnTarget target={recenterTarget} key={recenterKey} />
           </MapContainer>
         </div>
-        <div className="flex items-center justify-between gap-2 mt-1">
+        <div className="flex items-center justify-between gap-2 mt-1 min-h-[18px]">
           <div className="text-xs text-muted num">
             {lat != null && lng != null
               ? `${lat.toFixed(4)}, ${lng.toFixed(4)}`
               : 'Tap the map to set a position'}
           </div>
-          {lat != null && lng != null && (
-            <Button
-              type="button"
-              variant="secondary"
-              size="sm"
-              onClick={autoFillFromPin}
-              disabled={autoFilling}
-            >
-              {autoFilling ? (
-                <Loader2 className="w-3.5 h-3.5 animate-spin" />
-              ) : (
-                <Wand2 className="w-3.5 h-3.5" />
-              )}
-              {autoFilling ? 'Looking up…' : 'Auto-fill from pin'}
-            </Button>
+          {autoFilling && lat != null && (
+            <div className="flex items-center gap-1 text-[11px] text-muted">
+              <Loader2 className="w-3 h-3 animate-spin" />
+              <span>Auto-detecting…</span>
+            </div>
           )}
         </div>
         {autoStatus && (
-          <div className="text-[11px] text-accent mt-1">{autoStatus}</div>
+          <div className="mt-1.5 flex flex-wrap gap-1.5">
+            {autoStatus.split(' · ').map((chip, i) => (
+              <span
+                key={i}
+                className="inline-flex items-center px-2 py-0.5 rounded-full bg-accent/10 border border-accent/30 text-[10px] text-accent num"
+              >
+                {chip}
+              </span>
+            ))}
+            {timezone && (
+              <span
+                className="inline-flex items-center px-2 py-0.5 rounded-full bg-surface-2 border border-border text-[10px] text-muted"
+                title="Timezone auto-derived from state"
+              >
+                {timezone.split('/')[1].replace(/_/g, ' ')}
+              </span>
+            )}
+          </div>
         )}
       </div>
 
@@ -592,6 +627,64 @@ function makeDamProvider(
   if (kind === 'auto' && flowSiteId)
     return { kind: 'auto', flowSiteId };
   return null;
+}
+
+/**
+ * Best-effort water-type guess from reverse-geocode + tide-station
+ * proximity. Returns null when nothing's confidently inferable — the
+ * caller leaves the user's existing pick (or the default) alone.
+ *
+ * Priorities:
+ *   1. Saltwater wins if a NOAA tide station is within 5 mi — that
+ *      proximity is the strongest signal for "this is brackish or
+ *      open coastal water".
+ *   2. Lake/reservoir/pond name patterns from Nominatim's water field.
+ *   3. River/stream presence → freestone (most rivers; user can
+ *      change to tailwater if there's a known dam upstream).
+ *   4. Great Lakes bounding box fallback for stretches of MI/IN/OH/PA/NY
+ *      Great Lakes shoreline that Nominatim doesn't label as saltwater.
+ */
+function inferWaterType(args: {
+  river?: string;
+  water?: string;
+  tideStationDistanceMiles: number | null;
+  lat: number;
+  lng: number;
+}): WaterType | null {
+  const { river, water, tideStationDistanceMiles, lat, lng } = args;
+  if (tideStationDistanceMiles != null && tideStationDistanceMiles < 5) {
+    return 'saltwater';
+  }
+  if (water) {
+    const n = water.toLowerCase();
+    if (/reservoir|impoundment/.test(n)) return 'reservoir';
+    if (/pond/.test(n)) return 'pond';
+    if (/great lake|lake michigan|lake huron|lake superior|lake erie|lake ontario/.test(n)) {
+      return 'great_lakes';
+    }
+    if (/lake/.test(n)) return 'lake';
+  }
+  // Crude Great-Lakes bbox check — covers shoreline waters that just
+  // say "Lake Michigan" or aren't tagged at all.
+  if (isInGreatLakesBbox(lat, lng)) return 'great_lakes';
+  if (river) return 'freestone';
+  return null;
+}
+
+function isInGreatLakesBbox(lat: number, lng: number): boolean {
+  // Rough union of the five Great Lakes — generous enough to cover
+  // shoreline pins. Inland of these still returns false.
+  // Lake Superior: 46.5-49.0 N, -92.5 to -84.3 W
+  if (lat >= 46.5 && lat <= 49 && lng >= -92.5 && lng <= -84.3) return true;
+  // Lake Michigan: 41.6-46.1 N, -88.0 to -85.0 W
+  if (lat >= 41.6 && lat <= 46.1 && lng >= -88 && lng <= -85) return true;
+  // Lake Huron: 43.0-46.3 N, -84.6 to -79.6 W
+  if (lat >= 43 && lat <= 46.3 && lng >= -84.6 && lng <= -79.6) return true;
+  // Lake Erie: 41.4-42.9 N, -83.5 to -78.8 W
+  if (lat >= 41.4 && lat <= 42.9 && lng >= -83.5 && lng <= -78.8) return true;
+  // Lake Ontario: 43.2-44.2 N, -79.9 to -76.0 W
+  if (lat >= 43.2 && lat <= 44.2 && lng >= -79.9 && lng <= -76) return true;
+  return false;
 }
 
 function slugify(s: string): string {

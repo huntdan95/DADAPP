@@ -53,6 +53,12 @@ export interface Location {
   name: string;
   state: string;
   country: string;
+  /**
+   * US county name (without " County" suffix). Auto-detected on pin
+   * drop in the location form; useful for stocking-match filters and
+   * regional analytics. Not shown as an input.
+   */
+  county?: string;
   river?: string;
   type: WaterType;
   lat: number;
