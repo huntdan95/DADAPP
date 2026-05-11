@@ -192,20 +192,80 @@ export function invalidateBoatLaunchCache(): void {
   }
 }
 
-/** Triggers the Cloud Function to (re)seed all 7 states from Overpass. */
-export async function callSeedBoatLaunches(): Promise<{
-  results: Array<{ state: string; count: number }>;
-}> {
+/**
+ * Triggers the Cloud Function to (re)seed all 17 states from
+ * OpenStreetMap. The work is too long to fit in one httpsCallable
+ * default timeout (~70 s) — even with the function timeout bumped,
+ * the client gives up before the server finishes. So we chunk the
+ * states client-side: each callable invocation handles ~5 states
+ * (under 5 min wall-clock), and we fire several in sequence,
+ * aggregating results.
+ *
+ * Callers can pass an `onProgress` callback to drive a progress UI
+ * (e.g. "Chunk 2 of 4 done").
+ */
+const SEED_CHUNK_SIZE = 5;
+const ALL_STATES = STATES;
+
+export interface SeedProgress {
+  chunkIndex: number;        // 1-based — for "Chunk 2 of 4" messaging
+  totalChunks: number;
+  states: string[];          // states scraped in this chunk
+  results: Array<{ state: string; count: number }>;  // chunk results
+  cumulativeResults: Array<{ state: string; count: number }>;
+}
+
+export async function callSeedBoatLaunches(
+  onProgress?: (p: SeedProgress) => void
+): Promise<{ results: Array<{ state: string; count: number }> }> {
   const app = getFirebaseApp();
   if (!app) throw new Error('Firebase not configured');
   const functions = getFunctions(app, 'us-central1');
-  const fn = httpsCallable<unknown, { results: Array<{ state: string; count: number }> }>(
-    functions,
-    'seedBoatLaunchesCallable'
-  );
-  const res = await fn({});
+
+  // Per-call timeout bumped to the function's max (9 min) so even a
+  // slow chunk doesn't trip the client's default 70 s timeout.
+  const fn = httpsCallable<
+    { states: string[] },
+    { results: Array<{ state: string; count: number }> }
+  >(functions, 'seedBoatLaunchesCallable', { timeout: 540_000 });
+
+  const chunks: string[][] = [];
+  for (let i = 0; i < ALL_STATES.length; i += SEED_CHUNK_SIZE) {
+    chunks.push(ALL_STATES.slice(i, i + SEED_CHUNK_SIZE));
+  }
+
+  const allResults: Array<{ state: string; count: number }> = [];
+  for (let i = 0; i < chunks.length; i++) {
+    const states = chunks[i];
+    try {
+      const res = await fn({ states });
+      allResults.push(...res.data.results);
+      onProgress?.({
+        chunkIndex: i + 1,
+        totalChunks: chunks.length,
+        states,
+        results: res.data.results,
+        cumulativeResults: [...allResults],
+      });
+    } catch (e) {
+      // Mark each state in the failing chunk as -1 so the user can
+      // see which ones didn't scrape. Continue with the next chunk
+      // rather than aborting the entire refresh.
+      const failed = states.map((state) => ({ state, count: -1 }));
+      allResults.push(...failed);
+      console.warn('seed chunk failed', { states, error: String(e) });
+      onProgress?.({
+        chunkIndex: i + 1,
+        totalChunks: chunks.length,
+        states,
+        results: failed,
+        cumulativeResults: [...allResults],
+      });
+    }
+  }
+
   invalidateBoatLaunchCache();
-  return res.data;
+  return { results: allResults };
 }
 
 /** Great-circle distance in km using the haversine formula. */

@@ -299,18 +299,21 @@ function dedupeNearby(list: BoatLaunch[]): BoatLaunch[] {
   return out;
 }
 
-async function seedAll(): Promise<{ state: string; count: number }[]> {
+async function seedAll(
+  targetStates: string[] = STATES
+): Promise<{ state: string; count: number }[]> {
   const db = getFirestore();
 
   // Chunk the work into batches of 4 so Overpass-api.de's fair-use
-  // limits don't rate-limit / 429 us. Fully parallel for 17 states
-  // would burn through the fair-use envelope; sequential is too slow.
-  // 4 concurrent ≈ 17 / 4 = 5 batches × ~120 s = ~10 min end-to-end.
+  // limits don't rate-limit / 429 us. The client may also call us
+  // with a smaller state list (e.g. 5 states per chunk) — in that
+  // case this loop runs through fewer iterations and finishes fast,
+  // which is the whole point of letting the client chunk.
   const CONCURRENCY = 4;
   const results: { state: string; count: number }[] = [];
 
-  for (let i = 0; i < STATES.length; i += CONCURRENCY) {
-    const batch = STATES.slice(i, i + CONCURRENCY);
+  for (let i = 0; i < targetStates.length; i += CONCURRENCY) {
+    const batch = targetStates.slice(i, i + CONCURRENCY);
     const settled = await Promise.allSettled(
       batch.map(async (state) => {
         logger.info('fetching launches', { state });
@@ -372,14 +375,36 @@ export const seedBoatLaunchesCallable = onCall(
   {
     region: 'us-central1',
     memory: '1GiB',
-    timeoutSeconds: 1800,            // 30 min — 17 states with rate limits
+    // 540 s is plenty for a single client-driven chunk of 4-5 states.
+    // The client fires this several times in sequence to cover all
+    // 17 states — see callSeedBoatLaunches() on the client.
+    timeoutSeconds: 540,
     invoker: 'public',
   },
   async (request) => {
     if (!request.auth) {
       throw new HttpsError('unauthenticated', 'Must be signed in');
     }
-    const results = await seedAll();
+    // Optional `states` array: when provided, scrape only those.
+    // Validates against the canonical STATES list so a typo doesn't
+    // wedge us into an unknown state. Empty / missing → all 17.
+    const requested = (request.data as { states?: unknown })?.states;
+    let targetStates: string[];
+    if (Array.isArray(requested) && requested.length > 0) {
+      const filter = new Set(STATES);
+      targetStates = (requested as unknown[]).filter(
+        (s): s is string => typeof s === 'string' && filter.has(s)
+      );
+      if (targetStates.length === 0) {
+        throw new HttpsError(
+          'invalid-argument',
+          'No recognized states in `states` parameter'
+        );
+      }
+    } else {
+      targetStates = STATES;
+    }
+    const results = await seedAll(targetStates);
     return { results };
   }
 );

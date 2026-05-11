@@ -118,20 +118,33 @@ export function MapView({ locations }: { locations: Location[] }) {
   );
 
   /**
-   * One-tap "load boat launches" for the empty-state. Calls the Cloud
-   * Function that scrapes OpenStreetMap (~10 min for all 17 states).
-   * On success we re-fetch from Firestore and the map populates;
-   * the per-state result summary is shown inline so the user can see
-   * which states succeeded and which returned 0 or errored.
+   * One-tap "load boat launches" for the empty-state. The scrape is
+   * chunked client-side — we fire the callable 4 times in sequence,
+   * each handling ~5 states. Per-chunk progress flows into the
+   * legend's status line so the user sees what's happening instead
+   * of staring at a spinner.
    */
   async function loadLaunches() {
     setSeeding(true);
     setSeedError(null);
     setSeedSummary(null);
     try {
-      const res = await callSeedBoatLaunches();
-      // Build "MI 3.2k · TN 1.8k · KY 12 (failed)" — hides successful
-      // mid-tier counts so the line stays scannable.
+      const res = await callSeedBoatLaunches((p) => {
+        // Live update during the run.
+        const so_far = p.cumulativeResults
+          .map((r) =>
+            r.count < 0
+              ? `${r.state} failed`
+              : `${r.state} ${formatCount(r.count)}`
+          )
+          .join(' · ');
+        setSeedSummary(
+          `Chunk ${p.chunkIndex}/${p.totalChunks}: ${so_far}`
+        );
+        // Pull fresh data from Firestore between chunks so the map
+        // markers populate progressively rather than all-or-nothing.
+        reloadLaunches().catch(() => undefined);
+      });
       const summary = res.results
         .map((r) =>
           r.count < 0
