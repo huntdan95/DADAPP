@@ -15,8 +15,8 @@ export default defineConfig({
         'pwa-icon.svg',
       ],
       manifest: {
-        name: "Dad's Fishing Co-Pilot",
-        short_name: 'Fishing',
+        name: "Fishing Dad's Co-Pilot",
+        short_name: 'Fishing Dad',
         description:
           'Pre-trip conditions, on-the-water logging, and pattern recognition for the spots you actually fish.',
         theme_color: '#0a0e0a',

@@ -1,4 +1,4 @@
-# Dad's Fishing Co-Pilot
+# Fishing Dad's Co-Pilot
 
 Pre-trip / on-the-water / pattern-recognition app for a small group of
 fishing buddies. Originally scoped single-user; expanded to a few close

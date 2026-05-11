@@ -24,7 +24,7 @@ export function SignInScreen() {
     <div className="min-h-screen flex flex-col items-center justify-center px-6 gap-6 bg-bg text-text">
       <div className="text-center max-w-sm flex flex-col items-center gap-2">
         <div className="text-5xl mb-2">🎣</div>
-        <h1 className="text-2xl font-semibold">Dad's Fishing Co-Pilot</h1>
+        <h1 className="text-2xl font-semibold">Fishing Dad's Co-Pilot</h1>
         <p className="text-sm text-muted">
           Pre-trip conditions, on-the-water logging, and pattern recognition
           for the spots you actually fish.

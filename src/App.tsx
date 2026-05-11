@@ -140,7 +140,7 @@ export default function App() {
       <header className="shrink-0 backdrop-blur bg-bg/80 border-b border-border safe-top">
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
           <div>
-            <h1 className="text-base font-semibold">Dad's Fishing Co-Pilot</h1>
+            <h1 className="text-base font-semibold">Fishing Dad's Co-Pilot</h1>
             <p className="text-xs text-muted">
               {locations.length} location{locations.length === 1 ? '' : 's'}
               {auth.kind === 'signed-in' && auth.user.email && ` · ${auth.user.email}`}
