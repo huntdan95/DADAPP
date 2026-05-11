@@ -9,15 +9,6 @@ import {
   Minus,
   TrendingDown,
 } from 'lucide-react';
-import {
-  collection,
-  getDocs,
-  getFirestore,
-  limit as fsLimit,
-  orderBy,
-  query,
-  where,
-} from 'firebase/firestore';
 import { CardSection } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import type { Location } from '@/lib/providers/types';
@@ -28,8 +19,6 @@ import {
   fetchLakeData,
 } from '@/lib/providers';
 import { activeHatchesForLocation } from '@/lib/hatches/store';
-import type { Catch } from '@/lib/journal/types';
-import type { LogEntry } from '@/lib/log/types';
 import {
   fetchBriefing,
   invalidateBriefingCache,
@@ -38,7 +27,6 @@ import {
   type BriefingResponse,
 } from '@/lib/ai/briefing';
 import { friendlyError } from '@/lib/errors';
-import { getFirebaseApp, getFirebaseAuth } from '@/lib/firebase';
 import {
   damScheduleKey,
   readDamSchedule,
@@ -124,14 +112,15 @@ export function BriefingSection({ location }: { location: Location }) {
         flow?.waterTempF ?? lakeReading?.surfaceTempF ?? null
       );
 
-      const recentCatches = await fetchRecentCatches(location.id);
-
       const stockings = await fetchRecentStockingNearLocation(
         location,
         30
       ).catch(() => []);
       const relevantStockings = filterStockingForLocation(stockings, location, 25);
 
+      // No `recentCatches` here on purpose — briefings are now shared
+      // across users via a Firestore cache keyed by waterbody + date.
+      // For per-user pattern advice tap "Patterns" instead.
       const res = await fetchBriefing({
         location,
         weather,
@@ -141,7 +130,6 @@ export function BriefingSection({ location }: { location: Location }) {
         damCurrentStatus,
         damNextChange: null,
         activeHatches: hatches,
-        recentCatches,
         recentStockings: relevantStockings.map((s) => ({
           date: s.date,
           species: s.species,
@@ -263,7 +251,11 @@ function BriefingCard({
           {loading ? 'Asking…' : 'Refresh'}
         </button>
         {fromCache && (
-          <span className="text-[10px] text-muted">Today's briefing (cached)</span>
+          <span className="text-[10px] text-muted">
+            {response.fromSharedCache
+              ? "Today's briefing (shared with the group — no tokens spent)"
+              : "Today's briefing (cached)"}
+          </span>
         )}
       </div>
     </div>
@@ -407,41 +399,7 @@ function currentHourIn(timezone: string): number {
   return parseInt(part, 10);
 }
 
-async function fetchRecentCatches(locationId: string): Promise<Catch[]> {
-  const app = getFirebaseApp();
-  const auth = getFirebaseAuth();
-  if (!app || !auth?.currentUser) return [];
-  const db = getFirestore(app);
-  const q = query(
-    collection(db, 'users', auth.currentUser.uid, 'logs'),
-    where('kind', '==', 'catch'),
-    where('locationId', '==', locationId),
-    orderBy('time', 'desc'),
-    fsLimit(5)
-  );
-  try {
-    const snap = await getDocs(q);
-    return snap.docs.map((d) => {
-      const e = d.data() as LogEntry;
-      return {
-        id: e.id,
-        tripId: '',
-        userId: e.userId,
-        locationId: e.locationId ?? '',
-        species: e.species ?? 'unknown',
-        lengthInches: e.lengthInches,
-        method: e.method ?? 'other',
-        flyOrLure: e.flyOrLure ?? '',
-        trollingDepthFt: e.trollingDepthFt,
-        trollingSpeedMph: e.trollingSpeedMph,
-        releasedOrKept: e.releasedOrKept ?? 'released',
-        time: e.time,
-        notes: e.notes,
-        photoUrl: e.photoUrl,
-        conditions: e.conditions,
-      } as Catch;
-    });
-  } catch {
-    return [];
-  }
-}
+// `fetchRecentCatches` removed: per-user recent-catches no longer feed
+// into the briefing now that briefings are shared across users. For
+// personal pattern advice, tap "Patterns" — it queries the user's own
+// journal directly.

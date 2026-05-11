@@ -42,6 +42,16 @@ service cloud.firestore {
       allow read, write: if signedIn();
     }
 
+    match /briefings/{cacheKey} {
+      // Shared "How's the bite?" cache. Any signed-in user can read so
+      // the group amortizes the cost of generating each briefing. Writes
+      // are server-only (the briefing Cloud Function uses the admin SDK
+      // which bypasses rules) — clients should NEVER write directly,
+      // since the contents have to come from a real Claude call.
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
     // Per-user private collections — your trips are yours.
     match /users/{uid}/{document=**} {
       allow read, write: if signedIn() && request.auth.uid == uid;

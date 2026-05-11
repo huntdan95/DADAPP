@@ -1,6 +1,7 @@
 import type Anthropic from '@anthropic-ai/sdk';
 import { onCall, HttpsError } from 'firebase-functions/v2/https';
 import { logger } from 'firebase-functions';
+import { FieldValue, getFirestore } from 'firebase-admin/firestore';
 import {
   anthropic,
   anthropicApiKey,
@@ -81,14 +82,12 @@ interface BriefingInput {
     timeOfDay: string;
     flies: string;
   }>;
-  recentCatches: Array<{
-    species: string;
-    lengthInches?: number;
-    method: string;
-    fly: string;
-    daysAgo: number;
-    notes?: string;
-  }>;
+  /**
+   * INTENTIONALLY ABSENT: per-user `recentCatches`. Briefings are now
+   * shared across users via the `briefings/{cacheKey}` Firestore cache,
+   * so the inputs must be deterministic given a spot + date. Personal
+   * pattern analysis lives in the patterns Q&A feature instead.
+   */
   recentStockings?: Array<{
     daysAgo: number;
     species: string;
@@ -213,11 +212,6 @@ Run barriers (salmon / steelhead rivers):
     * March-May: spring steelhead run.
   - Do NOT recommend salmon / steelhead on a section above the barrier — they cannot physically reach it. If the spot is upstream of the barrier, default to resident trout / smallmouth tactics instead.
 
-Last-5 pattern recognition:
-  - Recent catches all on one fly/method → lean that way unless conditions clearly differ.
-  - Recent catches all at one time of day → repeat the window.
-  - Skunked recently → change something concrete (depth, fly size, micro-location).
-
 CONSTRAINTS:
   - Exactly 3 sentences. One per line. The very first word is always the bite-quality token.
   - No bullet points, no markdown, no headers, no emoji.
@@ -235,10 +229,48 @@ export const briefing = onCall(
   },
   async (request) => {
     const uid = requireAuth(request.auth?.uid);
-    const input = request.data as BriefingInput;
+    const input = request.data as BriefingInput & {
+      /** Stable shareable cache key the client computed from waterbody
+       *  id or rounded GPS + date. When present, we check the shared
+       *  Firestore cache before spending tokens. */
+      sharedCacheKey?: string;
+    };
 
     if (!input?.locationName) {
       throw new HttpsError('invalid-argument', 'locationName required');
+    }
+
+    // Shared-cache short-circuit: another user may have generated this
+    // exact spot+date briefing already. Daily cap is NOT incremented
+    // on a cache hit since we didn't spend any tokens.
+    const db = getFirestore();
+    if (input.sharedCacheKey) {
+      try {
+        const cacheRef = db.collection('briefings').doc(input.sharedCacheKey);
+        const cached = await cacheRef.get();
+        const data = cached.data();
+        if (cached.exists && data?.briefing && data?.expiresAtMs > Date.now()) {
+          logger.info('briefing cache hit', {
+            uid,
+            cacheKey: input.sharedCacheKey,
+            ageHours: Math.round(
+              (Date.now() - (data.createdAtMs ?? 0)) / 3600_000
+            ),
+          });
+          return {
+            briefing: data.briefing,
+            biteQuality: data.biteQuality ?? null,
+            citations: data.citations ?? [],
+            fromSharedCache: true,
+          };
+        }
+      } catch (e) {
+        // Cache read failure is not fatal — fall through to generation.
+        logger.warn('briefing cache read failed', {
+          uid,
+          error: String(e),
+        });
+      }
     }
 
     await checkAndIncrementUsage(uid, 'briefing');
@@ -309,12 +341,42 @@ export const briefing = onCall(
       input_tokens: response.usage.input_tokens,
       output_tokens: response.usage.output_tokens,
       cache_read: response.usage.cache_read_input_tokens,
+      sharedCacheKey: input.sharedCacheKey,
     });
+
+    // Persist to the shared cache so the next user viewing this spot
+    // today gets it for free. TTL ~6 hours so big intraday weather
+    // shifts (front coming through) trigger a fresh read.
+    if (input.sharedCacheKey) {
+      try {
+        const TTL_MS = 6 * 60 * 60 * 1000;
+        await db
+          .collection('briefings')
+          .doc(input.sharedCacheKey)
+          .set({
+            briefing: cleanText,
+            biteQuality,
+            citations,
+            createdAtMs: Date.now(),
+            expiresAtMs: Date.now() + TTL_MS,
+            updatedAt: FieldValue.serverTimestamp(),
+            generatedByUid: uid,
+            location: input.locationName,
+          });
+      } catch (e) {
+        logger.warn('briefing cache write failed', {
+          uid,
+          cacheKey: input.sharedCacheKey,
+          error: String(e),
+        });
+      }
+    }
 
     return {
       briefing: cleanText,
       biteQuality,
       citations,
+      fromSharedCache: false,
     };
   }
 );
@@ -465,21 +527,6 @@ function formatInputs(i: BriefingInput): string {
         `  ${td.species}: ${td.depthRangeFt[0]}-${td.depthRangeFt[1]} ft${therm}`
       );
     }
-  }
-
-  if (i.recentCatches.length > 0) {
-    lines.push('');
-    lines.push('LAST 5 CATCHES HERE:');
-    for (const c of i.recentCatches) {
-      const len = c.lengthInches != null ? `, ${c.lengthInches}"` : '';
-      lines.push(
-        `  ${c.daysAgo}d ago — ${c.species}${len} on ${c.fly} (${c.method})` +
-          (c.notes ? `; notes: ${c.notes}` : '')
-      );
-    }
-  } else {
-    lines.push('');
-    lines.push('No recent catches logged at this spot.');
   }
 
   if (i.recentStockings && i.recentStockings.length > 0) {

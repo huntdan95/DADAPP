@@ -1,3 +1,4 @@
+import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import { callable } from './client';
 import type {
   Location,
@@ -6,12 +7,12 @@ import type {
   DamScheduleReading,
   LakeReading,
 } from '@/lib/providers/types';
-import type { Catch } from '@/lib/journal/types';
 import type { Hatch } from '@/lib/hatches/store';
 import { weatherCodeSummary } from './weatherCode';
 import { computeSolunar } from '@/lib/solunar';
 import { lookupWaterbody } from '@/lib/waterbodies/registry';
 import { estimateTrollingDepth } from '@/lib/trolling/depthEstimator';
+import { getFirebaseApp } from '@/lib/firebase';
 
 export type BiteQuality = 'prime' | 'good' | 'fair' | 'tough';
 
@@ -24,6 +25,9 @@ export interface BriefingResponse {
   biteQuality: BiteQuality | null;
   /** Web-search source citations (when Claude used the tool). */
   citations?: Array<{ url: string; title: string }>;
+  /** True when the server hit a shared cache instead of spending tokens.
+   * Lets the UI show a "cached" hint and lets us measure savings. */
+  fromSharedCache?: boolean;
 }
 
 const _call = callable<BriefingInput, BriefingResponse>('briefing');
@@ -70,14 +74,11 @@ interface BriefingInput {
     timeOfDay: string;
     flies: string;
   }>;
-  recentCatches: Array<{
-    species: string;
-    lengthInches?: number;
-    method: string;
-    fly: string;
-    daysAgo: number;
-    notes?: string;
-  }>;
+  /** Shared-cache key — when present, server checks Firestore before
+   *  spending tokens. Computed from waterbody id (when available) or
+   *  rounded GPS, plus the date in the spot's local TZ. Multiple users
+   *  on the same waterbody on the same day get the same briefing. */
+  sharedCacheKey?: string;
   recentStockings?: Array<{
     daysAgo: number;
     species: string;
@@ -112,10 +113,41 @@ interface CacheEntry {
   cachedAt: number;
 }
 
-/** v2 key — v1 cached only the prose string. v2 caches the full
- * structured response (biteQuality, citations). */
+/**
+ * Local cache key — instant first-paint of "today's briefing here"
+ * without a Firestore round-trip. v3 bumped because the response now
+ * includes `fromSharedCache` and the briefing no longer factors in
+ * per-user catch context, so older cached values would mislead.
+ */
 function cacheKey(locationId: string, dateYMD: string): string {
-  return `dad-fishing.briefing.v2.${locationId}.${dateYMD}`;
+  return `dad-fishing.briefing.v3.${locationId}.${dateYMD}`;
+}
+
+/**
+ * Shared cache key — stable across users so anyone viewing the same
+ * waterbody (or the same rounded ~1 km gps cell) on the same date
+ * shares one Claude-generated briefing.
+ *
+ * Strategy:
+ *   - Waterbody match → `wb-${waterbodyId}-${dateYMD}` (most precise)
+ *   - No match        → `gps-${roundedLat}-${roundedLng}-${dateYMD}`
+ *
+ * 0.01° rounding ≈ 1 km — close enough that any two pins inside the
+ * same fishing hole hash to the same key, far enough apart that two
+ * actually-different waters don't collide.
+ *
+ * Date is in the spot's local timezone so a pin in MI and a pin in
+ * MT don't accidentally share a briefing across day boundaries.
+ */
+export function sharedBriefingCacheKey(location: Location): string {
+  const date = todayYMD(location.timezone);
+  const wb = lookupWaterbody(location.lat, location.lng);
+  if (wb) {
+    return `wb-${wb.waterbody.id}-${date}`;
+  }
+  const lat = Math.round(location.lat * 100) / 100;
+  const lng = Math.round(location.lng * 100) / 100;
+  return `gps-${lat.toFixed(2)}-${lng.toFixed(2)}-${date}`;
 }
 
 function todayYMD(timezone: string): string {
@@ -166,6 +198,17 @@ export function invalidateBriefingCache(location: Location): void {
  * result for the rest of the day at this spot. Pass `force: true`
  * to bypass the cache (used by the "Ask again" button).
  *
+ * Three-tier cache strategy:
+ *   1. localStorage (per-device, per-day) — instant first paint
+ *   2. Firestore briefings/{sharedKey} (shared across users) — single
+ *      round-trip, no Claude call
+ *   3. Cloud Function → Claude API (only if both caches miss)
+ *
+ * The shared cache means multiple users viewing the same waterbody
+ * on the same day pay for the briefing once. A user clicking "Refresh"
+ * forces a regeneration that re-populates the shared cache for the
+ * whole group.
+ *
  * Enrichment besides the basics:
  *   - Curated waterbody species + access notes (when the pin matches
  *     a registered body — Lake St. Clair, Caney Fork, etc.)
@@ -185,7 +228,6 @@ export async function fetchBriefing(args: {
   damNextChange?: string | null;
   damCurrentStatus?: string;
   activeHatches: Hatch[];
-  recentCatches: Catch[];
   recentStockings?: Array<{
     date: string;
     species: string;
@@ -195,12 +237,47 @@ export async function fetchBriefing(args: {
   }>;
   force?: boolean;
 }): Promise<BriefingResponse> {
-  const { location, weather, flow, damSchedule, activeHatches, recentCatches } =
-    args;
+  const { location, weather, flow, damSchedule, activeHatches } = args;
 
   if (!args.force) {
+    // Tier 1: localStorage — instant first paint, per-device.
     const cached = readCachedBriefing(location);
     if (cached) return cached;
+
+    // Tier 2: Firestore shared cache — one round-trip, no Claude.
+    // Group members already viewed this spot today? We piggyback for free.
+    try {
+      const app = getFirebaseApp();
+      if (app) {
+        const db = getFirestore(app);
+        const cacheRef = doc(db, 'briefings', sharedBriefingCacheKey(location));
+        const snap = await getDoc(cacheRef);
+        if (snap.exists()) {
+          const data = snap.data() as {
+            briefing?: string;
+            biteQuality?: BiteQuality | null;
+            citations?: Array<{ url: string; title: string }>;
+            expiresAtMs?: number;
+          };
+          if (
+            data.briefing &&
+            data.expiresAtMs &&
+            data.expiresAtMs > Date.now()
+          ) {
+            const response: BriefingResponse = {
+              briefing: data.briefing,
+              biteQuality: data.biteQuality ?? null,
+              citations: data.citations ?? [],
+              fromSharedCache: true,
+            };
+            writeCachedBriefing(location, response);
+            return response;
+          }
+        }
+      }
+    } catch {
+      // Cache lookup failure is not fatal — proceed to generation.
+    }
   }
 
   const now = Date.now();
@@ -314,17 +391,7 @@ export async function fetchBriefing(args: {
       timeOfDay: h.timeOfDay,
       flies: h.flies.join(', '),
     })),
-    recentCatches: recentCatches.slice(0, 5).map((c) => ({
-      species: c.species,
-      lengthInches: c.lengthInches,
-      method: c.method,
-      fly: c.flyOrLure,
-      daysAgo: Math.max(
-        0,
-        Math.round((now - new Date(c.time).getTime()) / (24 * 3600 * 1000))
-      ),
-      notes: c.notes,
-    })),
+    sharedCacheKey: sharedBriefingCacheKey(location),
     recentStockings: (args.recentStockings ?? []).slice(0, 5).map((s) => ({
       daysAgo: Math.max(
         0,
