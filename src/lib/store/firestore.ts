@@ -10,13 +10,18 @@ import {
 } from 'firebase/firestore';
 import type { Location } from '../providers/types';
 import type { LocationStore } from './types';
-import { getFirebaseApp } from '../firebase';
+import { getFirebaseApp, getFirebaseAuth } from '../firebase';
 
 /**
- * Firestore-backed LocationStore. Activates automatically when Firebase env
- * vars are present (see store/index.ts). Each mutation writes a single doc
- * keyed by `id`; subscribe uses onSnapshot so the map and list update
- * without a refetch.
+ * Firestore-backed LocationStore.
+ *
+ * Path: `users/{uid}/locations/{locationId}`. Each Google account
+ * owns its own spots — multiple users on the same Firestore database
+ * never see each other's data. Rules at `users/{uid}/{document=**}`
+ * enforce read/write only when `request.auth.uid == uid`.
+ *
+ * Legacy `locations/{id}` (pre-Apr 2026) is kept readable for the
+ * one-shot migration in `legacyMigration.ts`; new writes go here.
  */
 export function makeFirestoreLocationStore(): LocationStore {
   const app = getFirebaseApp();
@@ -26,25 +31,38 @@ export function makeFirestoreLocationStore(): LocationStore {
     );
   }
   const db = getFirestore(app);
-  const col = () => collection(db, 'locations');
+
+  /**
+   * Resolve the per-user collection. Throws if the caller invokes
+   * the store while signed out — callers gate on `auth.kind` so this
+   * should not be reachable in practice, but the explicit error is
+   * better than a confusing `users//locations` path.
+   */
+  function userCol() {
+    const uid = getFirebaseAuth()?.currentUser?.uid;
+    if (!uid) {
+      throw new Error('Locations require a signed-in user');
+    }
+    return collection(db, 'users', uid, 'locations');
+  }
 
   return {
     async list() {
-      const snap = await getDocs(col());
+      const snap = await getDocs(userCol());
       return snap.docs.map((d) => d.data() as Location);
     },
     async get(id) {
-      const snap = await getDoc(doc(col(), id));
+      const snap = await getDoc(doc(userCol(), id));
       return snap.exists() ? (snap.data() as Location) : null;
     },
     async upsert(loc) {
-      await setDoc(doc(col(), loc.id), loc);
+      await setDoc(doc(userCol(), loc.id), loc);
     },
     async remove(id) {
-      await deleteDoc(doc(col(), id));
+      await deleteDoc(doc(userCol(), id));
     },
     subscribe(cb) {
-      return onSnapshot(col(), (snap) => {
+      return onSnapshot(userCol(), (snap) => {
         cb(snap.docs.map((d) => d.data() as Location));
       });
     },

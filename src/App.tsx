@@ -20,6 +20,7 @@ import { BottomSheet } from '@/components/ui/BottomSheet';
 import { InstallPrompt } from '@/features/pwa/InstallPrompt';
 import { UpdateAvailable } from '@/features/pwa/UpdateAvailable';
 import { getLocationStore, type LocationStore } from '@/lib/store';
+import { migrateLegacyLocationsIfNeeded } from '@/lib/store/legacyMigration';
 import type { Location } from '@/lib/providers/types';
 import { useAuth } from '@/lib/useAuth';
 import { signOutCurrent } from '@/lib/firebase';
@@ -89,11 +90,18 @@ export default function App() {
     }
   }, [auth.kind]);
 
-  // First-load seed: when a freshly-signed-in account has zero locations,
-  // populate Firestore with the four primary spots so dad doesn't start
-  // staring at an empty list. Local-storage mode is already pre-seeded.
+  // First-load bootstrap. Order matters:
+  //   1. Legacy migration — copy pre-per-user `locations/*` docs into
+  //      the signed-in user's `users/{uid}/locations` subcollection.
+  //      No-ops on subsequent loads (localStorage flag) and for
+  //      brand-new users with no legacy data.
+  //   2. Seed fallback — if AFTER the migration pass the user still
+  //      has zero spots, drop in the curated seed list.
+  // Tracking these as separate booleans so we don't seed on top of a
+  // legitimate empty intermediate state during the migration.
   const [seeded, setSeeded] = useState(false);
   const [hasFirstSnapshot, setHasFirstSnapshot] = useState(false);
+  const [migrationDone, setMigrationDone] = useState(false);
 
   useEffect(() => {
     if (!store) return;
@@ -103,18 +111,52 @@ export default function App() {
     });
   }, [store]);
 
+  // Reset bootstrap flags whenever auth identity changes — a fresh
+  // sign-in (or sign-out + different account) must redo the
+  // migration / seed dance for the new uid.
+  useEffect(() => {
+    setSeeded(false);
+    setMigrationDone(false);
+    setHasFirstSnapshot(false);
+  }, [auth.kind === 'signed-in' ? auth.user.uid : null]);
+
+  // Step 1: legacy migration.
+  useEffect(() => {
+    if (auth.kind !== 'signed-in' || !store || migrationDone) return;
+    let cancelled = false;
+    migrateLegacyLocationsIfNeeded()
+      .catch(() => undefined)
+      .finally(() => {
+        if (!cancelled) setMigrationDone(true);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [auth.kind, store, migrationDone]);
+
+  // Step 2: seed fallback. Only runs after migration has settled —
+  // otherwise a momentary empty-snapshot during migration would
+  // double-seed and the user would end up with both sets of docs.
   useEffect(() => {
     if (
       auth.kind === 'signed-in' &&
       store &&
       hasFirstSnapshot &&
+      migrationDone &&
       !seeded &&
       locations.length === 0
     ) {
       setSeeded(true);
       Promise.all(seedLocations.map((l) => store.upsert(l))).catch(console.error);
     }
-  }, [auth.kind, store, hasFirstSnapshot, seeded, locations.length]);
+  }, [
+    auth.kind,
+    store,
+    hasFirstSnapshot,
+    migrationDone,
+    seeded,
+    locations.length,
+  ]);
 
   // Silent background prefetch of conditions for every saved spot when
   // we're on a fast / Wi-Fi connection. Pre-warms the service-worker

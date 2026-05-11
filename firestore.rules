@@ -14,10 +14,17 @@ service cloud.firestore {
       // ];
     }
 
-    // Shared collaborative collections — every signed-in user can read+write.
+    // Legacy shared `locations` collection (pre-May 2026). New writes
+    // go to `users/{uid}/locations/{id}` — see the per-user block
+    // below. Reads stay open so the one-shot client-side migration
+    // (lib/store/legacyMigration.ts) can copy existing docs into the
+    // signed-in user's subcollection. Writes are blocked so nothing
+    // accidentally lands here again.
     match /locations/{loc} {
-      allow read, write: if signedIn();
+      allow read: if signedIn();
+      allow write: if false;
     }
+    // Shared collaborative collections — every signed-in user can read+write.
     match /damSchedules/{key} {
       allow read, write: if signedIn();
     }
