@@ -1,7 +1,9 @@
-import { Trash2 } from 'lucide-react';
+import { useState } from 'react';
+import { Ruler, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { deleteLogEntry } from '@/lib/log/store';
 import type { LogEntry } from '@/lib/log/types';
+import { LengthTapTool } from './LengthTapTool';
 
 export function LogEntryDetail({
   entry,
@@ -10,6 +12,10 @@ export function LogEntryDetail({
   entry: LogEntry;
   onClose: () => void;
 }) {
+  const [refineOpen, setRefineOpen] = useState(false);
+  const [localLength, setLocalLength] = useState<number | null>(
+    entry.lengthInches ?? null
+  );
   const time = new Date(entry.time);
   const timeLabel = new Intl.DateTimeFormat('en-US', {
     weekday: 'long',
@@ -33,10 +39,21 @@ export function LogEntryDetail({
 
       {entry.kind === 'catch' && (
         <div>
-          <div className="text-lg font-semibold">
-            {entry.species ?? 'Unknown species'}
-            {entry.lengthInches != null && (
-              <span className="text-muted font-normal num"> · {entry.lengthInches}"</span>
+          <div className="text-lg font-semibold flex items-baseline gap-2">
+            <span>{entry.species ?? 'Unknown species'}</span>
+            {localLength != null && (
+              <span className="text-muted font-normal num"> · {localLength}"</span>
+            )}
+            {entry.photoUrl && (
+              <button
+                type="button"
+                onClick={() => setRefineOpen(true)}
+                className="ml-auto inline-flex items-center gap-1 text-xs text-info hover:text-accent transition"
+                aria-label="Refine length from photo"
+              >
+                <Ruler className="w-3 h-3" />
+                {localLength != null ? 'Refine length' : 'Measure from photo'}
+              </button>
             )}
           </div>
           <div className="text-sm text-muted">
@@ -51,6 +68,16 @@ export function LogEntryDetail({
           </div>
         </div>
       )}
+
+      <LengthTapTool
+        open={refineOpen}
+        entry={entry}
+        onClose={() => setRefineOpen(false)}
+        onSaved={(len) => {
+          setLocalLength(len);
+          setRefineOpen(false);
+        }}
+      />
 
       {entry.kind === 'hatch' && (
         <div>
