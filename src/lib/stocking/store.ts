@@ -121,26 +121,42 @@ export async function fetchRecentStockingNearLocation(
 }
 
 /**
- * Filters a state-wide event list down to ones that *probably apply* to
- * this location:
- *   - direct locationId match → always include
- *   - GPS coords present → include if within `maxMiles`
- *   - GPS coords missing AND no locationId → include (state-wide
- *     bulletin — better to show than hide; many auto-scrapers don't
- *     publish lat/lng, and a "stocked somewhere in your state this
- *     week" signal is still useful)
- *   - GPS coords present and outside the radius → exclude
- *   - Location bound to a *different* spot id → exclude
+ * Filters a state-wide event list down to events that *actually apply*
+ * to this specific spot, using a tiered match.
+ *
+ * Match tiers (any match → include, falls through in order):
+ *   1. locationId exact match (manual report bound to this spot)
+ *   2. GPS proximity (within `maxMiles`)
+ *   3. River / body-of-water substring match against the event's
+ *      locationName — e.g. spot.river='Caney Fork' matches event
+ *      'Caney Fork at Center Hill Dam (DeKalb Co.)'.
+ *   4. County substring match against the event's locationName
+ *      parenthetical — e.g. spot.county='DeKalb' matches the same
+ *      event even if the river name didn't.
+ *
+ * Auto-scraped events without GPS used to fall into a state-wide
+ * fallback (every event on every spot in the state) — that meant a
+ * Hiwassee stocking showed on every TN spot. The tiered match here
+ * keeps signal-to-noise high while still catching DNR reports that
+ * mention the spot's water by name.
+ *
+ * Locations bound to a *different* spot id are always excluded.
  */
 export function filterStockingForLocation(
   events: StockingEvent[],
   location: Location,
   maxMiles = 25
 ): StockingEvent[] {
+  const locRiver = (location.river ?? '').toLowerCase().trim();
+  const locCounty = (location.county ?? '').toLowerCase().trim();
+  const locName = (location.name ?? '').toLowerCase().trim();
+
   return events.filter((ev) => {
-    // Bound to a specific other spot? Exclude.
+    // Tier 1: locationId match (or mismatch).
     if (ev.locationId && ev.locationId !== location.id) return false;
     if (ev.locationId && ev.locationId === location.id) return true;
+
+    // Tier 2: GPS proximity.
     if (ev.lat != null && ev.lng != null) {
       const miles = haversineMiles(
         { lat: location.lat, lng: location.lng },
@@ -148,9 +164,33 @@ export function filterStockingForLocation(
       );
       return miles <= maxMiles;
     }
-    // No coords, no locationId, but the state-wide subscription already
-    // confirmed this event is in `location.state`. Surface it.
-    return true;
+
+    // Tiers 3 + 4: name-substring match against the event's
+    // locationName. Auto-scraped events from state DNRs typically
+    // have a locationName like "Caney Fork at Stonewall (DeKalb Co.)"
+    // — that contains both the river name and the county.
+    const evName = (ev.locationName ?? '').toLowerCase();
+
+    // River match. Require 4+ chars so "Pine" doesn't match every
+    // "Pine Creek" in the state but "Manistee" / "Caney Fork" do.
+    if (locRiver.length >= 4 && evName.includes(locRiver)) return true;
+
+    // County match — same minimum length.
+    if (locCounty.length >= 4 && evName.includes(locCounty)) return true;
+
+    // Spot-name fallback: if the spot's own name has a distinctive
+    // waterbody prefix (e.g. "Lake Cumberland at Wolf Creek") that
+    // didn't get split out into the river field, try matching that
+    // too. Strict 6+ chars to avoid noisy matches.
+    if (locName.length >= 6) {
+      const first = locName.split(/[\s,()]+at\s+|[\s,()]+/)[0];
+      if (first.length >= 6 && evName.includes(first)) return true;
+    }
+
+    // No match at any tier → exclude. The event is still in the
+    // database and surfaces in System Health; just not on this
+    // specific spot's banner.
+    return false;
   });
 }
 
