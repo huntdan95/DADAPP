@@ -220,6 +220,41 @@ const COMMONALITY: Record<string, number> = {
   swordfish: 5,
   'golden-tilefish': 5,
   'blueline-tilefish': 5,
+
+  // ---- Third expansion wave: cover-completeness species ----
+
+  // Tier 2 commons
+  'redbreast-sunfish': 2,
+  'black-sea-bass': 2,
+  'blueback-herring': 2,
+  'sunshine-bass': 2,
+
+  // Tier 3 regional / less-targeted
+  cisco: 3,
+  'round-whitefish': 3,
+  'white-sucker': 3,
+  'longnose-sucker': 3,
+  'shorthead-redhorse': 3,
+  quillback: 3,
+  'grass-carp': 3,
+  'black-buffalo': 3,
+
+  // Tier 4 niche / requires specialty gear / regulatory hurdles
+  paddlefish: 4,                 // Snagging-only, season-gated
+  'shovelnose-sturgeon': 4,
+  'bighead-carp': 4,             // Filter-feeder, snag/bow only
+  'silver-carp': 4,              // Same — leaper, not a rod target
+
+  // Tier 5 bait / forage / parasitic / off-target
+  'gizzard-shad': 5,             // Bait fish; mostly cast-netted
+  'threadfin-shad': 5,           // Bait fish
+  alewife: 5,                    // Bait fish
+  'mottled-sculpin': 5,          // Forage; mostly imitated by streamers
+  'round-goby': 5,               // Invasive nuisance; bass bycatch
+  'sea-lamprey': 5,              // Parasitic invasive — never a sport target
+  goldfish: 5,                   // Feral aquarium escapee
+  'atlantic-sturgeon': 5,        // Federally endangered — bycatch only
+  'gulf-sturgeon': 5,            // Federally threatened — bycatch only
 };
 
 /**

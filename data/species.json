@@ -92,7 +92,7 @@
     "name": "Walleye",
     "scientific": "Sander vitreus",
     "waterTypes": ["lake", "reservoir", "great_lakes", "freestone", "tailwater"],
-    "states": ["MI", "TN", "IN"],
+    "states": ["MI", "TN", "IN", "GA", "AL", "NC"],
     "seasons": [
       { "startMonth": 3, "endMonth": 11, "label": "Spring runs through ice-up" }
     ],
@@ -150,7 +150,7 @@
     "name": "Yellow perch",
     "scientific": "Perca flavescens",
     "waterTypes": ["lake", "pond", "great_lakes", "reservoir"],
-    "states": ["MI", "IN", "NC"],
+    "states": ["MI", "IN", "NC", "TN", "AL", "GA"],
     "seasons": [
       { "startMonth": 1, "endMonth": 12, "label": "Year-round, peak winter through ice" }
     ],
@@ -193,7 +193,7 @@
     "name": "Muskellunge (musky)",
     "scientific": "Esox masquinongy",
     "waterTypes": ["lake", "reservoir", "freestone"],
-    "states": ["MI", "IN", "TN", "NC"],
+    "states": ["MI", "IN", "TN", "NC", "GA"],
     "seasons": [
       { "startMonth": 6, "endMonth": 11, "label": "Best in summer–fall; cold-front-driven" }
     ],
@@ -221,7 +221,7 @@
     "name": "Lake trout",
     "scientific": "Salvelinus namaycush",
     "waterTypes": ["lake", "great_lakes"],
-    "states": ["MI"],
+    "states": ["MI", "IN", "TN"],
     "seasons": [
       { "startMonth": 1, "endMonth": 5, "label": "Cold water near surface" },
       { "startMonth": 10, "endMonth": 12, "label": "Fall — shallow again" }
@@ -370,7 +370,7 @@
     "name": "Lake whitefish",
     "scientific": "Coregonus clupeaformis",
     "waterTypes": ["great_lakes", "lake"],
-    "states": ["MI"],
+    "states": ["MI", "IN"],
     "seasons": [
       { "startMonth": 1, "endMonth": 4, "label": "Ice fishing peak" },
       { "startMonth": 10, "endMonth": 12, "label": "Late fall shallow spawn" }
@@ -556,7 +556,7 @@
     "name": "Striped bass (freshwater)",
     "scientific": "Morone saxatilis",
     "waterTypes": ["lake", "reservoir", "tailwater", "freestone"],
-    "states": ["TN", "NC", "AL", "GA"],
+    "states": ["TN", "NC", "AL", "GA", "FL"],
     "seasons": [
       { "startMonth": 4, "endMonth": 6, "label": "Spawning runs up tributaries" },
       { "startMonth": 10, "endMonth": 12, "label": "Fall surface feeds" }
@@ -1300,7 +1300,7 @@
     "name": "Chain pickerel",
     "scientific": "Esox niger",
     "waterTypes": ["lake", "pond", "freestone"],
-    "states": ["MI", "IN", "NC", "GA", "AL", "FL"],
+    "states": ["MI", "IN", "NC", "GA", "AL", "FL", "TN"],
     "seasons": [{ "startMonth": 10, "endMonth": 4, "label": "Cold-water aggressive — fall through spring" }],
     "tactics": [
       { "method": "cast", "lures": ["Inline spinnerbait", "Mepps Black Fury", "Soft jerkbait", "Rapala X-Rap"], "notes": "Weed edges and grass points — fast retrieve. Steel leader." },
@@ -1325,7 +1325,7 @@
     "name": "Redfin pickerel",
     "scientific": "Esox americanus americanus",
     "waterTypes": ["freestone", "pond"],
-    "states": ["NC", "FL", "GA", "AL"],
+    "states": ["NC", "FL", "GA", "AL", "TN"],
     "seasons": [{ "startMonth": 3, "endMonth": 11, "label": "Warm months in blackwater" }],
     "tactics": [
       { "method": "cast", "lures": ["Beetle Spin", "Small minnow plug", "Inline spinner"], "notes": "Tannin streams and blackwater swamps; sight-cast along edges." }
@@ -1474,7 +1474,7 @@
     "name": "American shad",
     "scientific": "Alosa sapidissima",
     "waterTypes": ["freestone"],
-    "states": ["NC", "GA", "FL"],
+    "states": ["NC", "GA", "FL", "TN", "AL"],
     "seasons": [{ "startMonth": 2, "endMonth": 5, "label": "Spring spawning run on Atlantic-coast rivers" }],
     "tactics": [
       { "method": "cast", "lures": ["Shad dart (chartreuse / pink)", "Small spoon", "Crappie jig"], "notes": "Tandem rig of two shad darts — bounce through current seams below shoals." },
@@ -1918,7 +1918,7 @@
     "name": "Atlantic bonito",
     "scientific": "Sarda sarda",
     "waterTypes": ["saltwater"],
-    "states": ["NC", "FL"],
+    "states": ["NC", "FL", "GA", "AL"],
     "seasons": [{ "startMonth": 4, "endMonth": 6, "label": "Spring run along Atlantic coast" }],
     "tactics": [
       { "method": "cast", "lures": ["Hopkins spoon", "Epoxy jig (Hogy)", "Diamond jig"], "notes": "Cast through diving birds on bait blitzes." }
@@ -2096,5 +2096,367 @@
       { "method": "troll", "lures": ["Black bart skirted lure", "Deep-line ballyhoo at first light", "Naked horse ballyhoo on circle"], "notes": "Predawn troll along the canyons. 80+ lb tackle." }
     ],
     "notes": "Cousin of yellowfin — runs deeper, fights harder. NC canyon edges in summer; FL Gulf Stream year-round."
+  },
+
+  {
+    "id": "cisco",
+    "name": "Cisco (lake herring)",
+    "scientific": "Coregonus artedi",
+    "waterTypes": ["great_lakes", "lake"],
+    "states": ["MI"],
+    "seasons": [
+      { "startMonth": 11, "endMonth": 3, "label": "Late fall + through-the-ice peak Nov–Mar" }
+    ],
+    "tactics": [
+      { "method": "jig", "lures": ["Tiny ice jig + waxworm", "Swedish Pimple + minnow head", "Drop-shot small finesse worm"], "notes": "Vertical fish over deep mid-lake basins 30–80 ft. Light line; soft mouths." }
+    ],
+    "notes": "Schools heavily over deep cold water. Excellent smoked. MI inland lakes + Great Lakes."
+  },
+  {
+    "id": "round-whitefish",
+    "name": "Round whitefish",
+    "scientific": "Prosopium cylindraceum",
+    "waterTypes": ["great_lakes", "lake"],
+    "states": ["MI"],
+    "seasons": [
+      { "startMonth": 11, "endMonth": 3, "label": "Late fall + ice" }
+    ],
+    "tactics": [
+      { "method": "jig", "lures": ["Small jigging spoon + waxworm", "Glow teardrop jig"], "notes": "Ice fish 40–80 ft over hard bottom near Lake Michigan / Superior." }
+    ],
+    "notes": "Smaller, paler cousin of lake whitefish. Northern MI ice + early-spring shorelines."
+  },
+  {
+    "id": "redbreast-sunfish",
+    "name": "Redbreast sunfish",
+    "scientific": "Lepomis auritus",
+    "waterTypes": ["freestone", "lake", "pond"],
+    "states": ["NC", "GA", "TN", "AL", "FL"],
+    "seasons": [
+      { "startMonth": 4, "endMonth": 9, "label": "Spawn beds visible May–July" }
+    ],
+    "tactics": [
+      { "method": "cast", "lures": ["Live cricket on float", "Garden worm on small hook", "Beetle Spin"], "notes": "Sandy / gravel shorelines and slow stream margins." },
+      { "method": "fly", "lures": ["Small popper", "Foam beetle", "Wooly worm"], "notes": "Sight-fish bedding pairs." }
+    ],
+    "notes": "AKA 'robin' — orange-bellied, long pointed ear flap. SE coastal-plain streams and slow rivers."
+  },
+  {
+    "id": "white-sucker",
+    "name": "White sucker",
+    "scientific": "Catostomus commersonii",
+    "waterTypes": ["freestone", "lake"],
+    "states": ["MI", "IN", "TN", "NC"],
+    "seasons": [
+      { "startMonth": 3, "endMonth": 5, "label": "Spring spawning run into tributaries" }
+    ],
+    "tactics": [
+      { "method": "cast", "lures": ["Worm on small hook + split shot", "Bread or corn on bottom"], "notes": "Spring spawners stack up below riffles." }
+    ],
+    "notes": "Most-common North American sucker. Spring spawn is the bite — runs by mid-April in MI."
+  },
+  {
+    "id": "longnose-sucker",
+    "name": "Longnose sucker",
+    "scientific": "Catostomus catostomus",
+    "waterTypes": ["freestone", "great_lakes", "lake"],
+    "states": ["MI"],
+    "seasons": [
+      { "startMonth": 4, "endMonth": 6, "label": "Spring spawn — Great Lakes tributaries" }
+    ],
+    "tactics": [
+      { "method": "cast", "lures": ["Worm on bottom rig", "Salmon eggs", "Small jig + grub"], "notes": "Tributary mouths in early spring." }
+    ],
+    "notes": "Larger northern sucker. Common spring bycatch on Great Lakes steelhead rivers."
+  },
+  {
+    "id": "shorthead-redhorse",
+    "name": "Shorthead redhorse",
+    "scientific": "Moxostoma macrolepidotum",
+    "waterTypes": ["freestone"],
+    "states": ["MI", "IN", "TN", "NC"],
+    "seasons": [
+      { "startMonth": 4, "endMonth": 5, "label": "Spring spawning run" }
+    ],
+    "tactics": [
+      { "method": "cast", "lures": ["Garden worm on small hook"], "notes": "Riffle tails on spring runs — light tackle." }
+    ],
+    "notes": "Brick-red tail, blunt head. Common spring spawn-run sucker — strong light-tackle fight."
+  },
+  {
+    "id": "quillback",
+    "name": "Quillback",
+    "scientific": "Carpiodes cyprinus",
+    "waterTypes": ["freestone", "lake", "reservoir"],
+    "states": ["MI", "IN", "TN", "AL"],
+    "seasons": [
+      { "startMonth": 4, "endMonth": 10, "label": "Open water" }
+    ],
+    "tactics": [
+      { "method": "cast", "lures": ["Corn on hair rig", "Doughball on bottom rig"], "notes": "Slow current and lake shallows; targets the same setups as carp." }
+    ],
+    "notes": "Carpsucker with a tall sail-like dorsal. Common bycatch when targeting carp."
+  },
+
+  {
+    "id": "gizzard-shad",
+    "name": "Gizzard shad",
+    "scientific": "Dorosoma cepedianum",
+    "waterTypes": ["lake", "reservoir", "freestone"],
+    "states": ["MI", "IN", "TN", "AL", "GA", "NC", "FL"],
+    "seasons": [
+      { "startMonth": 1, "endMonth": 12, "label": "Year-round; spring spawn snaggable" }
+    ],
+    "tactics": [
+      { "method": "other", "lures": ["Cast net", "Snagging treble during spawn"], "notes": "Primary use is live or cut bait for bass / stripers / blue cats." }
+    ],
+    "notes": "The backbone of the forage base in southern reservoirs. Rarely a rod-and-reel target."
+  },
+  {
+    "id": "threadfin-shad",
+    "name": "Threadfin shad",
+    "scientific": "Dorosoma petenense",
+    "waterTypes": ["lake", "reservoir"],
+    "states": ["TN", "AL", "GA", "NC", "FL"],
+    "seasons": [
+      { "startMonth": 1, "endMonth": 12, "label": "Year-round; cold-stress die-offs in winter" }
+    ],
+    "tactics": [
+      { "method": "other", "lures": ["Cast net for bait"], "notes": "Live-bait the shad on a balloon for striper / hybrid striper." }
+    ],
+    "notes": "Smaller and more cold-sensitive than gizzard shad. Stocked widely in southern reservoirs as striper forage."
+  },
+  {
+    "id": "alewife",
+    "name": "Alewife",
+    "scientific": "Alosa pseudoharengus",
+    "waterTypes": ["great_lakes", "saltwater", "freestone"],
+    "states": ["MI", "NC", "GA"],
+    "seasons": [
+      { "startMonth": 4, "endMonth": 6, "label": "Spring spawning run" }
+    ],
+    "tactics": [
+      { "method": "other", "lures": ["Dip net at night during run", "Sabiki rig"], "notes": "Mostly netted; rarely a rod target." }
+    ],
+    "notes": "Primary forage for Great Lakes salmon. Native population still runs Atlantic-coast rivers."
+  },
+
+  {
+    "id": "grass-carp",
+    "name": "Grass carp",
+    "scientific": "Ctenopharyngodon idella",
+    "waterTypes": ["pond", "lake", "reservoir", "freestone"],
+    "states": ["IN", "TN", "AL", "GA", "FL", "NC"],
+    "seasons": [
+      { "startMonth": 4, "endMonth": 10, "label": "Warm-water months; surface feeding" }
+    ],
+    "tactics": [
+      { "method": "fly", "lures": ["Cherry-stem fly", "Foam grass-blade fly"], "notes": "Stealth approach; cast tight to grazing mouth — they're skittish." },
+      { "method": "cast", "lures": ["Hair-rigged corn", "Cut grass on hook", "Sweet bread crust"], "notes": "Bait carp gear: heavy line for the long fight." }
+    ],
+    "notes": "Asian vegetarian stocked for vegetation control. Sterile (triploid) versions stocked in most states. 30+ lb common."
+  },
+  {
+    "id": "bighead-carp",
+    "name": "Bighead carp",
+    "scientific": "Hypophthalmichthys nobilis",
+    "waterTypes": ["freestone", "reservoir"],
+    "states": ["IN", "TN", "AL"],
+    "seasons": [
+      { "startMonth": 4, "endMonth": 9, "label": "Warm-water months" }
+    ],
+    "tactics": [
+      { "method": "other", "lures": ["Bowfishing", "Snagging with weighted treble"], "notes": "Filter-feeder — won't take a hook. Bow + snag rig." }
+    ],
+    "notes": "Asian invasive — large heads, big bodies (40+ lb). Ohio + Mississippi + TN River systems."
+  },
+  {
+    "id": "silver-carp",
+    "name": "Silver carp",
+    "scientific": "Hypophthalmichthys molitrix",
+    "waterTypes": ["freestone", "reservoir"],
+    "states": ["IN", "TN", "AL"],
+    "seasons": [
+      { "startMonth": 4, "endMonth": 9, "label": "Warm months — jumping at boat noise" }
+    ],
+    "tactics": [
+      { "method": "other", "lures": ["Bowfishing", "Snagging treble"], "notes": "Outboard noise triggers a school-wide leap; dodge or shoot." }
+    ],
+    "notes": "The famous 'jumping carp' of the Illinois + Mississippi + TN systems. Filter-feeder; not a rod target."
+  },
+
+  {
+    "id": "paddlefish",
+    "name": "Paddlefish (spoonbill)",
+    "scientific": "Polyodon spathula",
+    "waterTypes": ["freestone", "reservoir"],
+    "states": ["IN", "TN", "AL"],
+    "seasons": [
+      { "startMonth": 3, "endMonth": 5, "label": "Spring snagging season (check state regs each year)" }
+    ],
+    "tactics": [
+      { "method": "other", "lures": ["Heavy weighted treble hook on stout rod", "8-oz weight on snag rig"], "notes": "Sweep the rod hard; only legal during state-set snagging seasons." }
+    ],
+    "notes": "Primitive plankton-filterer with a paddle-shaped snout. Snagging only — TN, Cumberland, Ohio River systems. Excellent table."
+  },
+  {
+    "id": "shovelnose-sturgeon",
+    "name": "Shovelnose sturgeon",
+    "scientific": "Scaphirhynchus platorynchus",
+    "waterTypes": ["freestone"],
+    "states": ["IN"],
+    "seasons": [
+      { "startMonth": 4, "endMonth": 10, "label": "Warm-water months in big-river current" }
+    ],
+    "tactics": [
+      { "method": "cast", "lures": ["Nightcrawler gob on bottom rig", "Cut shad chunk"], "notes": "Anchor in moderate current over sand/gravel bars." }
+    ],
+    "notes": "Smaller cousin of lake sturgeon — legally kept in IN (verify size + season). Ohio + Wabash rivers."
+  },
+  {
+    "id": "atlantic-sturgeon",
+    "name": "Atlantic sturgeon",
+    "scientific": "Acipenser oxyrinchus",
+    "waterTypes": ["freestone", "saltwater"],
+    "states": ["NC", "GA"],
+    "seasons": [
+      { "startMonth": 1, "endMonth": 12, "label": "Year-round — FEDERALLY ENDANGERED, immediate release required" }
+    ],
+    "tactics": [
+      { "method": "other", "lures": ["N/A — protected. Cannot target. If accidentally hooked, release in water without lifting."], "notes": "Federally endangered. Catch is a violation if intentionally targeted." }
+    ],
+    "notes": "Cape Fear + Roanoke + Altamaha river systems. Bycatch only — federal law requires immediate release."
+  },
+  {
+    "id": "gulf-sturgeon",
+    "name": "Gulf sturgeon",
+    "scientific": "Acipenser oxyrinchus desotoi",
+    "waterTypes": ["freestone", "saltwater"],
+    "states": ["AL", "FL"],
+    "seasons": [
+      { "startMonth": 1, "endMonth": 12, "label": "Year-round — FEDERALLY THREATENED, no targeting" }
+    ],
+    "tactics": [
+      { "method": "other", "lures": ["N/A — protected. Cannot target. If accidentally hooked, release in water immediately."], "notes": "Federally threatened. Suwannee + Apalachicola + Mobile systems." }
+    ],
+    "notes": "Mostly bycatch. The Suwannee River population is famous for its spectacular leaps in spring."
+  },
+
+  {
+    "id": "black-buffalo",
+    "name": "Black buffalo",
+    "scientific": "Ictiobus niger",
+    "waterTypes": ["freestone", "reservoir"],
+    "states": ["TN", "AL"],
+    "seasons": [
+      { "startMonth": 4, "endMonth": 10, "label": "Warm-water months" }
+    ],
+    "tactics": [
+      { "method": "cast", "lures": ["Hair rig + sweetcorn", "Worms on bottom"], "notes": "Same gear as smallmouth + bigmouth buffalo." }
+    ],
+    "notes": "Darker, stockier than smallmouth or bigmouth buffalo. TN River chain + lower Mississippi."
+  },
+
+  {
+    "id": "blueback-herring",
+    "name": "Blueback herring",
+    "scientific": "Alosa aestivalis",
+    "waterTypes": ["freestone", "saltwater"],
+    "states": ["NC", "GA", "FL"],
+    "seasons": [
+      { "startMonth": 3, "endMonth": 5, "label": "Spring spawning run" }
+    ],
+    "tactics": [
+      { "method": "cast", "lures": ["Tiny shad dart", "Sabiki rig"], "notes": "Concurrent with American + hickory shad runs." }
+    ],
+    "notes": "Atlantic river herring — spring-run cousin of American shad. Important bait + small light-tackle target."
+  },
+
+  {
+    "id": "black-sea-bass",
+    "name": "Black sea bass",
+    "scientific": "Centropristis striata",
+    "waterTypes": ["saltwater"],
+    "states": ["NC", "GA", "FL"],
+    "seasons": [
+      { "startMonth": 5, "endMonth": 12, "label": "Federal Atlantic season — usually May–Dec" }
+    ],
+    "tactics": [
+      { "method": "cast", "lures": ["Cut squid on bottom rig", "Live shrimp on knocker rig", "Small bucktail + Gulp swimming mullet"], "notes": "Anchor over reef / wreck in 40–250 ft." }
+    ],
+    "notes": "NC + Atlantic mainstay. Aggressive on the drop — limits possible on a good ledge. Big males turn iridescent blue."
+  },
+
+  {
+    "id": "sunshine-bass",
+    "name": "Sunshine bass",
+    "scientific": "Morone saxatilis × M. chrysops (FL hybrid)",
+    "waterTypes": ["lake", "reservoir", "freestone"],
+    "states": ["FL", "GA", "AL"],
+    "seasons": [
+      { "startMonth": 3, "endMonth": 6, "label": "Spring spawn-run schooling" },
+      { "startMonth": 10, "endMonth": 12, "label": "Fall surface feeds" }
+    ],
+    "tactics": [
+      { "method": "cast", "lures": ["Bomber Long-A", "Bucktail jig", "Topwater pencil"], "notes": "Schools push shad to surface — run-and-gun." }
+    ],
+    "notes": "FL's reciprocal hybrid (striped female × white male — the opposite cross from regular wiper). FL reservoirs stock heavily."
+  },
+
+  {
+    "id": "mottled-sculpin",
+    "name": "Mottled sculpin",
+    "scientific": "Cottus bairdii",
+    "waterTypes": ["freestone"],
+    "states": ["MI", "TN", "NC"],
+    "seasons": [
+      { "startMonth": 1, "endMonth": 12, "label": "Year-round; mostly forage" }
+    ],
+    "tactics": [
+      { "method": "fly", "lures": ["Tiny stonefly / sculpin nymph (size 14–18)"], "notes": "Mostly imitated, not targeted." }
+    ],
+    "notes": "Small forage fish of cold streams. Sculpin streamer patterns (Zoo Cougar, Sex Dungeon) are tied in their image to fool big trout."
+  },
+  {
+    "id": "round-goby",
+    "name": "Round goby",
+    "scientific": "Neogobius melanostomus",
+    "waterTypes": ["great_lakes", "lake", "freestone"],
+    "states": ["MI", "IN"],
+    "seasons": [
+      { "startMonth": 1, "endMonth": 12, "label": "Year-round invasive resident" }
+    ],
+    "tactics": [
+      { "method": "cast", "lures": ["Tiny jig + minnow", "Drop-shot with finesse worm"], "notes": "Lake Erie + Lake Michigan rocky shorelines — bycatch when smallmouth fishing." }
+    ],
+    "notes": "Invasive Great Lakes nuisance. Eats native fish eggs but is now the major forage that grew the smallmouth average size. Kill rather than release."
+  },
+  {
+    "id": "sea-lamprey",
+    "name": "Sea lamprey",
+    "scientific": "Petromyzon marinus",
+    "waterTypes": ["great_lakes", "freestone"],
+    "states": ["MI"],
+    "seasons": [
+      { "startMonth": 4, "endMonth": 6, "label": "Spring spawning run in Great Lakes tributaries" }
+    ],
+    "tactics": [
+      { "method": "other", "lures": ["Snagging during the spawn run"], "notes": "Parasitic — kill rather than release. Targeted only by control programs and the occasional curious angler." }
+    ],
+    "notes": "Invasive parasite of Great Lakes trout + salmon. Sea Lamprey Control Program traps run in spring."
+  },
+  {
+    "id": "goldfish",
+    "name": "Goldfish (feral)",
+    "scientific": "Carassius auratus",
+    "waterTypes": ["pond", "lake"],
+    "states": ["MI", "IN", "TN", "NC", "GA", "AL", "FL"],
+    "seasons": [
+      { "startMonth": 4, "endMonth": 10, "label": "Warm-water months" }
+    ],
+    "tactics": [
+      { "method": "cast", "lures": ["Bread ball on small hook", "Sweet corn", "Tiny dough bait"], "notes": "Urban ponds + city parks — released aquarium pets that established." }
+    ],
+    "notes": "Feral aquarium escapees. Most often caught in city ponds and urban water features. Some grow to 14+ in."
   }
 ]
