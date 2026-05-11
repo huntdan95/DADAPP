@@ -1332,6 +1332,87 @@ export const MI_WATERBODIES: Waterbody[] = [
       "Burton's Landing → Wakeley Bridge = flies-only catch-and-release Holy Water. South Branch the most famous Hex hatch in MI. Trico mornings in August. Isolated from salmon-run waters by the Mio + Alcona + Loud + Five Channels + Cooke + Foote dam chain.",
   },
   {
+    id: 'mi-au-sable-middle-chain',
+    name: 'Au Sable Middle Chain (Alcona → Cooke)',
+    aliases: ['Au Sable Middle', 'AuSable Alcona', 'AuSable Loud', 'AuSable Cooke'],
+    states: ['MI'],
+    type: 'tailwater',
+    // Alcona Dam (~44.66, -83.93) → Loud Dam → Five Channels Dam →
+    // Cooke Dam (~44.42, -83.62). Series of small impoundments +
+    // tailwater stretches. Each pool fishes for warm-water bass +
+    // panfish; the short tailwater stretches between dams hold
+    // brown + rainbow trout when generation is on.
+    bbox: [44.40, -83.92, 44.55, -83.55],
+    centroid: { lat: 44.48, lng: -83.75 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      flow: { kind: 'usgs', siteId: '04137005' },
+      // Consumers Energy operates Alcona / Loud / Five Channels /
+      // Cooke. No scheduled feed available; auto-infer from gauge.
+      damSchedule: { kind: 'auto', flowSiteId: '04137005' },
+    },
+    species: [
+      'Smallmouth Bass',
+      'Largemouth Bass',
+      'Walleye',
+      'Northern Pike',
+      'Yellow Perch',
+      'Brown Trout',
+      'Rainbow Trout',
+    ],
+    accessNotes:
+      'Series of small Consumers Energy impoundments. Bass + pike in the pools; short cold-water trout stretches in the tailwaters between dams (most productive right after generation stops).',
+  },
+  {
+    id: 'mi-manistee-hodenpyl-tailwater',
+    name: 'Manistee River below Hodenpyl Dam',
+    aliases: ['Manistee Hodenpyl', 'Manistee between dams'],
+    states: ['MI'],
+    type: 'tailwater',
+    // Between Hodenpyl Dam (~44.39, -85.71) and Tippy Pond
+    // (~44.30, -85.85). Short 6-mi stretch of trout water before
+    // the river fills Tippy Pond.
+    bbox: [44.28, -85.85, 44.40, -85.65],
+    centroid: { lat: 44.34, lng: -85.75 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      flow: { kind: 'usgs', siteId: '04124500' },
+      // Hodenpyl Dam (Consumers Energy) — auto-infer from the upper
+      // Manistee gauge (which captures the dam outflow before it
+      // enters Tippy Pond).
+      damSchedule: { kind: 'auto', flowSiteId: '04124500' },
+    },
+    species: ['Brown Trout', 'Rainbow Trout', 'Brook Trout', 'Smallmouth Bass'],
+    hatchTags: ['hex', 'sulfur', 'caddis', 'bwo', 'isonychia'],
+    accessNotes:
+      'Trout-only stretch between Hodenpyl and Tippy. Less pressure than the upper / lower sections. Float Hodenpyl Powerhouse → Red Bridge.',
+  },
+  {
+    id: 'mi-muskegon-hardy-tailwater',
+    name: 'Muskegon River below Hardy Dam',
+    aliases: ['Muskegon between dams', 'Hardy-to-Croton'],
+    states: ['MI'],
+    type: 'tailwater',
+    // Hardy Dam (~43.46, -85.69) → Croton Pond (~43.43, -85.68).
+    // Very short connecting stretch — Croton Pond starts just
+    // downstream of Hardy. Most users fishing 'below Hardy' are
+    // actually on Croton Pond itself, but the river-only section
+    // between the dams is its own thing.
+    bbox: [43.43, -85.78, 43.48, -85.65],
+    centroid: { lat: 43.45, lng: -85.71 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      flow: { kind: 'usgs', siteId: '04121970' },
+      // Hardy Dam (Consumers Energy). The Croton gauge downstream
+      // captures both Hardy + Croton outflows — use it for the
+      // generation inference.
+      damSchedule: { kind: 'auto', flowSiteId: '04121970' },
+    },
+    species: ['Smallmouth Bass', 'Walleye', 'Northern Pike', 'Brown Trout'],
+    accessNotes:
+      'Short tailwater stretch above Croton Pond. Most fishing happens in Croton Pond itself; the river segment holds smallmouth + occasional brown trout.',
+  },
+  {
     id: 'mi-au-sable-mio-tailwater',
     name: 'Au Sable below Mio Dam (Trophy Water)',
     aliases: ['Au Sable Trophy Water', 'AuSable Trophy', 'Mio Tailwater'],

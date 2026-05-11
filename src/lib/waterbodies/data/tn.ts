@@ -136,6 +136,197 @@ export const TN_WATERBODIES: Waterbody[] = [
       'Apalachia Powerhouse → Reliance, TN. Caddis hatch May-June is legendary. Big water — Spring Creek + tributary mouths produce the biggest browns.',
   },
   {
+    id: 'tn-holston-cherokee-tailwater',
+    name: 'Holston River (below Cherokee Dam)',
+    aliases: ['Cherokee Tailwater'],
+    states: ['TN'],
+    type: 'tailwater',
+    // Cherokee Dam at ~36.06, -83.49 → confluence with French Broad
+    // at Knoxville. ~50 mi of striper / sauger / walleye water.
+    bbox: [35.95, -83.85, 36.10, -83.45],
+    centroid: { lat: 36.03, lng: -83.62 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      flow: { kind: 'usgs', siteId: '03467500' },
+      // TVA dam; scraper is stubbed (Cloudflare-blocked). Use auto-
+      // from-gauge for reliable generation status.
+      damSchedule: { kind: 'auto', flowSiteId: '03467500' },
+    },
+    species: [
+      'Striped Bass',
+      'Walleye',
+      'Sauger',
+      'Smallmouth Bass',
+      'White Bass',
+      'Catfish',
+    ],
+    accessNotes:
+      'Tailwater of Cherokee Lake. Striper fishery world-class — heavy generation pulls them upstream at the dam. Walleye + sauger run from Cherokee Lake in winter.',
+  },
+  {
+    id: 'tn-holston-boone-tailwater',
+    name: 'Holston River (below Boone Dam)',
+    aliases: ['Boone Tailwater'],
+    states: ['TN'],
+    type: 'tailwater',
+    bbox: [36.40, -82.45, 36.55, -82.20],
+    centroid: { lat: 36.46, lng: -82.32 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      flow: { kind: 'usgs', siteId: '03467609' },
+      damSchedule: { kind: 'auto', flowSiteId: '03467609' },
+    },
+    species: ['Rainbow Trout', 'Brown Trout', 'Smallmouth Bass', 'Walleye'],
+    hatchTags: ['sulfur', 'midge', 'caddis'],
+    accessNotes:
+      'TVA stocks trout below Boone Dam. Short cold-water section before the river warms downstream toward Cherokee Lake.',
+  },
+  {
+    id: 'tn-french-broad-douglas-tailwater',
+    name: 'French Broad River (below Douglas Dam)',
+    aliases: ['Douglas Tailwater'],
+    states: ['TN'],
+    type: 'tailwater',
+    // Douglas Dam → confluence with Holston at Knoxville
+    bbox: [35.92, -83.55, 36.10, -83.20],
+    centroid: { lat: 36.00, lng: -83.37 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      flow: { kind: 'usgs', siteId: '03455500' },
+      damSchedule: { kind: 'auto', flowSiteId: '03455500' },
+    },
+    species: [
+      'Striped Bass',
+      'Sauger',
+      'Walleye',
+      'Smallmouth Bass',
+      'White Bass',
+      'Catfish',
+    ],
+    accessNotes:
+      'Below Douglas Dam. Major striper fishery in summer (live shad on downriggers). Sauger run winters when current pulls them up to the dam.',
+  },
+  {
+    id: 'tn-cumberland-old-hickory-tailwater',
+    name: 'Cumberland River (below Old Hickory Dam)',
+    aliases: ['Old Hickory Tailwater'],
+    states: ['TN'],
+    type: 'tailwater',
+    bbox: [36.20, -86.85, 36.35, -86.40],
+    centroid: { lat: 36.27, lng: -86.65 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      flow: { kind: 'usgs', siteId: '03433500' },
+      // Old Hickory is USACE. Auto-infer from downstream gauge.
+      damSchedule: { kind: 'auto', flowSiteId: '03433500' },
+    },
+    species: [
+      'Striped Bass',
+      'Sauger',
+      'Largemouth Bass',
+      'Smallmouth Bass',
+      'Catfish',
+      'Crappie',
+    ],
+    accessNotes:
+      'USACE Cumberland River tailwater. Striper fishery in spring. Sauger + walleye run in winter; catfish year-round in the heavy current.',
+  },
+  {
+    id: 'tn-cumberland-cordell-hull-tailwater',
+    name: 'Cumberland River (below Cordell Hull Dam)',
+    aliases: ['Cordell Hull Tailwater'],
+    states: ['TN'],
+    type: 'tailwater',
+    bbox: [36.30, -85.95, 36.42, -85.55],
+    centroid: { lat: 36.35, lng: -85.75 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      flow: { kind: 'usgs', siteId: '03430500' },
+      damSchedule: { kind: 'auto', flowSiteId: '03430500' },
+    },
+    species: [
+      'Smallmouth Bass',
+      'Sauger',
+      'Walleye',
+      'Striped Bass',
+      'Catfish',
+    ],
+    accessNotes:
+      'USACE Cumberland River impoundment. Strong sauger run when generation pulls fish up to the dam in winter. Smallmouth on the rocky banks.',
+  },
+  {
+    id: 'tn-cumberland-cheatham-tailwater',
+    name: 'Cumberland River (below Cheatham Dam)',
+    aliases: ['Cheatham Tailwater'],
+    states: ['TN'],
+    type: 'tailwater',
+    bbox: [36.20, -87.55, 36.42, -87.30],
+    centroid: { lat: 36.30, lng: -87.42 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      flow: { kind: 'usgs', siteId: '03434500' },
+      damSchedule: { kind: 'auto', flowSiteId: '03434500' },
+    },
+    species: [
+      'Striped Bass',
+      'Catfish',
+      'Sauger',
+      'Largemouth Bass',
+      'Crappie',
+    ],
+    accessNotes:
+      'USACE Cumberland River tailwater west of Nashville. Trophy blue catfish + striper fishery in heavy current below the dam.',
+  },
+  {
+    id: 'tn-tennessee-pickwick-tailwater',
+    name: 'Tennessee River (below Pickwick Dam)',
+    aliases: ['Pickwick Tailwater'],
+    states: ['TN', 'AL', 'MS'],
+    type: 'tailwater',
+    bbox: [34.95, -88.40, 35.10, -88.10],
+    centroid: { lat: 35.02, lng: -88.25 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      flow: { kind: 'usgs', siteId: '03592718' },
+      damSchedule: { kind: 'auto', flowSiteId: '03592718' },
+    },
+    species: [
+      'Smallmouth Bass',
+      'Sauger',
+      'Striped Bass',
+      'White Bass',
+      'Largemouth Bass',
+      'Catfish',
+    ],
+    accessNotes:
+      'World-class smallmouth tailwater. Sauger + striper run in heavy generation. Most productive on falling water after a heavy generation pulse.',
+  },
+  {
+    id: 'tn-tennessee-wilson-tailwater',
+    name: 'Tennessee River (below Wilson Dam)',
+    aliases: ['Wilson Tailwater'],
+    states: ['AL', 'TN'],
+    type: 'tailwater',
+    // Wilson Dam is just over the AL border but draws TN anglers.
+    bbox: [34.78, -87.70, 34.85, -87.50],
+    centroid: { lat: 34.81, lng: -87.60 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      flow: { kind: 'usgs', siteId: '03589500' },
+      damSchedule: { kind: 'auto', flowSiteId: '03589500' },
+    },
+    species: [
+      'Smallmouth Bass',
+      'Striped Bass',
+      'Sauger',
+      'White Bass',
+      'Largemouth Bass',
+      'Catfish',
+    ],
+    accessNotes:
+      'TVA Wilson Dam (AL/TN border). Iconic smallmouth tailwater — Bill Dance + early B.A.S.S. tournament water. Strong current; jig + shad imitation.',
+  },
+  {
     id: 'tn-tellico-river',
     name: 'Tellico River',
     states: ['TN'],
