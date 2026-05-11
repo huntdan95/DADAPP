@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Fish, Plus } from 'lucide-react';
+import { Fish, Loader2, Plus, RefreshCcw } from 'lucide-react';
 import type { Location } from '@/lib/providers/types';
 import {
   filterStockingForLocation,
@@ -8,6 +8,8 @@ import {
 import type { StockingEvent } from '@/lib/stocking/types';
 import { BottomSheet } from '@/components/ui/BottomSheet';
 import { StockingForm } from '@/features/stocking/StockingForm';
+import { triggerStockingScrape } from '@/lib/stocking/trigger';
+import { friendlyError } from '@/lib/errors';
 
 /**
  * Compact stocking banner for the Conditions card. Subscribes to recent
@@ -21,12 +23,29 @@ import { StockingForm } from '@/features/stocking/StockingForm';
 export function StockingBanner({ location }: { location: Location }) {
   const [events, setEvents] = useState<StockingEvent[]>([]);
   const [formOpen, setFormOpen] = useState(false);
+  const [scraping, setScraping] = useState(false);
+  const [scrapeError, setScrapeError] = useState<string | null>(null);
 
   useEffect(() => {
     return watchRecentStockingByState(location.state, setEvents, 30);
   }, [location.state]);
 
   const nearby = filterStockingForLocation(events, location, 25);
+
+  async function refreshFromDnrs() {
+    setScraping(true);
+    setScrapeError(null);
+    try {
+      // Hits every state DNR scraper in one call. Live writes flow into
+      // the same stockingEvents collection so this banner picks them up
+      // automatically via the existing subscription.
+      await triggerStockingScrape();
+    } catch (e) {
+      setScrapeError(friendlyError(e));
+    } finally {
+      setScraping(false);
+    }
+  }
 
   return (
     <>
@@ -76,7 +95,7 @@ export function StockingBanner({ location }: { location: Location }) {
       {/* "Got stocking intel? Add it" subtle prompt when no recent events.
           Hidden if the spot already has a banner above. */}
       {nearby.length === 0 && (
-        <div className="px-4 mb-3 -mt-2">
+        <div className="px-4 mb-3 -mt-2 flex items-center gap-3">
           <button
             type="button"
             onClick={() => setFormOpen(true)}
@@ -85,6 +104,22 @@ export function StockingBanner({ location }: { location: Location }) {
             <Fish className="w-3 h-3" />
             Add stocking report
           </button>
+          <button
+            type="button"
+            onClick={refreshFromDnrs}
+            disabled={scraping}
+            className="text-[11px] text-muted hover:text-text inline-flex items-center gap-1 disabled:opacity-50"
+          >
+            {scraping ? (
+              <Loader2 className="w-3 h-3 animate-spin" />
+            ) : (
+              <RefreshCcw className="w-3 h-3" />
+            )}
+            {scraping ? 'Pulling DNRs…' : 'Refresh from DNRs'}
+          </button>
+          {scrapeError && (
+            <span className="text-[10px] text-danger">{scrapeError}</span>
+          )}
         </div>
       )}
 
