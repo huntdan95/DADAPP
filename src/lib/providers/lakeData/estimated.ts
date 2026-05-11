@@ -1,6 +1,10 @@
 import type { LakeReading } from '../types';
-import { nearestUsgsLakeSites } from '@/lib/geo/reverseGeocode';
+import {
+  nearestUsgsGauges,
+  nearestUsgsLakeSites,
+} from '@/lib/geo/reverseGeocode';
 import { usgsLakeFetch } from './usgsLake';
+import { usgsFetchFlow } from '../flow/usgs';
 
 /**
  * Estimated lake surface temperature derived from recent air
@@ -177,23 +181,17 @@ async function calibrateAgainstGauge(
   distanceMiles: number;
   gaugeF: number;
 } | null> {
-  // Search up to ~0.75° (~52 mi) for a USGS lake-type gauge that
-  // publishes water temp. Cheap NWIS site-search; one HTTP call.
-  const sites = await nearestUsgsLakeSites(lat, lng, 5, 0.75).catch(
+  // Stage 1: try USGS lake-type gauges (siteType=LK + temp 00010).
+  // These are the cleanest signal — sensors deployed inside lakes /
+  // reservoirs.
+  const lakeSites = await nearestUsgsLakeSites(lat, lng, 5, 0.75).catch(
     () => []
   );
-  if (sites.length === 0) return null;
-
-  // Try each candidate in distance order until one returns a
-  // valid water temp. Most spots only need the first.
-  for (const site of sites) {
+  for (const site of lakeSites) {
     if (site.distanceMiles > 50) break;
     const reading = await usgsLakeFetch(site.siteId).catch(() => null);
     if (!reading || reading.surfaceTempF == null) continue;
-    // Sanity: ignore wildly out-of-range readings (sensor errors).
     if (reading.surfaceTempF < 30 || reading.surfaceTempF > 95) continue;
-
-    // Linear distance taper: weight = 1 at 0 mi, 0 at 50 mi.
     const weight = Math.max(0, 1 - site.distanceMiles / 50);
     const blended = modeled * (1 - weight) + reading.surfaceTempF * weight;
     return {
@@ -201,6 +199,34 @@ async function calibrateAgainstGauge(
       siteId: site.siteId,
       distanceMiles: site.distanceMiles,
       gaugeF: reading.surfaceTempF,
+    };
+  }
+
+  // Stage 2: fall through to USGS stream gauges that publish water
+  // temp (parameter 00010). River temps are a strong proxy for
+  // nearby still water — both are responding to the same air-temp
+  // history. Drives accurate estimates for inland lakes that
+  // happen to be near a USGS-monitored river.
+  const streamGauges = await nearestUsgsGauges(lat, lng, 5, 0.6).catch(
+    () => []
+  );
+  const withTemp = streamGauges.filter((g) => g.hasWaterTemp);
+  for (const gauge of withTemp) {
+    if (gauge.distanceMiles > 50) break;
+    const reading = await usgsFetchFlow(gauge.siteId).catch(() => null);
+    if (!reading || reading.waterTempF == null) continue;
+    if (reading.waterTempF < 30 || reading.waterTempF > 95) continue;
+    // Slightly lower weight than lake gauges since river temp can
+    // diverge from lake surface temp by a few degrees (rivers cool
+    // faster overnight). Same distance taper.
+    const baseWeight = Math.max(0, 1 - gauge.distanceMiles / 50);
+    const weight = baseWeight * 0.85;
+    const blended = modeled * (1 - weight) + reading.waterTempF * weight;
+    return {
+      surfaceTempF: blended,
+      siteId: gauge.siteId,
+      distanceMiles: gauge.distanceMiles,
+      gaugeF: reading.waterTempF,
     };
   }
   return null;
