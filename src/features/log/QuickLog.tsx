@@ -3,7 +3,6 @@ import {
   Camera,
   CloudOff,
   Crosshair,
-  Image as ImageIcon,
   Loader2,
   MapPin,
   Sparkles,
@@ -97,20 +96,32 @@ export function QuickLog({
    */
   const [lastCatch, setLastCatch] = useState<LogEntry | null>(null);
   /**
-   * True while Claude vision is running in the background after the
-   * preview screen has already shown. Drives the "AI is still
-   * thinking — fields will update" banner.
+   * True while Claude vision is running. The AI run is now OPT-IN —
+   * the user explicitly taps "Identify with Claude" from the preview
+   * screen if they don't know the species themselves. Previously we
+   * auto-ran it; that was confusing because Claude's result would
+   * silently overwrite the user's own typing, and burned an API call
+   * even when the user already knew what they caught.
    */
   const [aiAnalysisPending, setAiAnalysisPending] = useState(false);
+  /**
+   * Holds the photo's uploaded url + path so the opt-in AI button can
+   * call `analyzePhoto` later in the flow without re-uploading.
+   */
+  const [photoMeta, setPhotoMeta] = useState<{
+    url: string;
+    path: string;
+  } | null>(null);
 
-  const cameraRef = useRef<HTMLInputElement>(null);
-  const libraryRef = useRef<HTMLInputElement>(null);
-
-  function pickFromCamera() {
-    cameraRef.current?.click();
-  }
-  function pickFromLibrary() {
-    libraryRef.current?.click();
+  /**
+   * Single file input — the OS picker on iOS / Android already shows
+   * Camera / Photo Library / Files options when triggered. Two
+   * separate inputs (one with `capture="environment"`, one without)
+   * was redundant and confusing.
+   */
+  const photoRef = useRef<HTMLInputElement>(null);
+  function pickPhoto() {
+    photoRef.current?.click();
   }
 
   /**
@@ -217,13 +228,12 @@ export function QuickLog({
       ]);
 
       const { gps, matchedLoc, snap } = ctx;
-      // No sticky-from-last-catch on photo logs — see the note on
-      // `applyStickyDefaults`. AI fills species/length; user fills
-      // the lure they actually used.
+      // No sticky-from-last-catch on photo logs — too often wrong.
       setLastCatch(null);
 
-      // Default to 'catch' — most photos are. AI may correct this to
-      // hatch / note when it returns; user can also change manually.
+      // Default to 'catch' — most photos are. User can flip to hatch
+      // / note manually or by tapping "Identify with Claude" which
+      // re-decides based on what's in the photo.
       setKind('catch');
 
       setDraft({
@@ -239,59 +249,78 @@ export function QuickLog({
         flowReading: snap.flowReading,
       });
 
-      // Show the preview screen NOW — user can start editing while
-      // Claude vision runs.
-      setAiAnalysisPending(true);
-      setPhase('preview');
+      // Save the photo url + path so the opt-in "Identify with
+      // Claude" button can call `analyzePhoto` later without
+      // re-uploading.
+      setPhotoMeta({ url, path });
 
-      // Background AI analysis. When it returns, patch the draft with
-      // species / length / hatch fields. If the user has already
-      // edited those fields by the time AI returns, we skip them so
-      // we don't clobber their typing.
-      analyzePhoto({
-        imageUrl: url,
-        hintLocation: matchedLoc?.name,
-      })
-        .then((analysis) => {
-          if (!analysis) return;
-          const inferredKind: LogKind =
-            analysis.kind === 'insect'
-              ? 'hatch'
-              : analysis.kind === 'fish'
-              ? 'catch'
-              : 'note';
-          setKind((prev) => prev /* don't override if user picked already */);
-          // Only override the AI fields, never user-editable text the
-          // user might have already typed.
-          setDraft((prev) => {
-            const next: Partial<LogEntry> = { ...prev };
-            if (inferredKind === 'catch' && analysis.kind === 'fish') {
-              if (!prev.species) next.species = analysis.species;
-              if (!prev.speciesConfidence)
-                next.speciesConfidence = analysis.confidence;
-              if (prev.lengthInches == null && analysis.estimated_length_inches != null) {
-                next.lengthInches = analysis.estimated_length_inches;
-              }
-            }
-            if (inferredKind === 'hatch' && analysis.kind === 'insect') {
-              if (!prev.hatchName) next.hatchName = analysis.insect_name;
-              if (!prev.hatchStage) next.hatchStage = analysis.insect_stage;
-              setKind('hatch');
-            }
-            if (!prev.notes && analysis.notes) next.notes = analysis.notes;
-            return next;
-          });
-        })
-        .catch((e) => {
-          // Don't block the user — they can still save without AI.
-          console.warn('analyzePhoto failed', e);
-        })
-        .finally(() => {
-          setAiAnalysisPending(false);
-        });
+      // AI is OPT-IN now. Show the preview screen immediately with
+      // empty species/lure/length — the user fills them in (or taps
+      // the AI button if they don't know what they caught).
+      setPhase('preview');
     } catch (e) {
       setError(friendlyError(e));
       setPhase('pick');
+    }
+  }
+
+  /**
+   * Opt-in Claude vision analysis. Triggered from a button on the
+   * preview screen rather than auto-running.
+   *
+   * Behavior:
+   *   - If a field is already typed by the user, leave it alone.
+   *   - Otherwise, fill species / length / hatch fields from AI.
+   *   - If the photo turns out to be an insect, flip kind → 'hatch'.
+   */
+  async function runAiAnalysis() {
+    if (!photoMeta) return;
+    setAiAnalysisPending(true);
+    setError(null);
+    try {
+      const matchedLoc = locations.find(
+        (l) => l.id === draft.locationId
+      ) ?? null;
+      const analysis = await analyzePhoto({
+        imageUrl: photoMeta.url,
+        hintLocation: matchedLoc?.name,
+      });
+      if (!analysis) return;
+      const inferredKind: LogKind =
+        analysis.kind === 'insect'
+          ? 'hatch'
+          : analysis.kind === 'fish'
+          ? 'catch'
+          : 'note';
+      setDraft((prev) => {
+        const next: Partial<LogEntry> = { ...prev };
+        if (inferredKind === 'catch' && analysis.kind === 'fish') {
+          if (!prev.species) next.species = analysis.species;
+          if (!prev.speciesConfidence)
+            next.speciesConfidence = analysis.confidence;
+          if (
+            prev.lengthInches == null &&
+            analysis.estimated_length_inches != null
+          ) {
+            next.lengthInches = analysis.estimated_length_inches;
+          }
+        }
+        if (inferredKind === 'hatch' && analysis.kind === 'insect') {
+          if (!prev.hatchName) next.hatchName = analysis.insect_name;
+          if (!prev.hatchStage) next.hatchStage = analysis.insect_stage;
+        }
+        if (!prev.notes && analysis.notes) next.notes = analysis.notes;
+        return next;
+      });
+      if (inferredKind === 'hatch') {
+        setKind('hatch');
+      } else if (inferredKind === 'note') {
+        setKind('note');
+      }
+    } catch (e) {
+      setError(friendlyError(e));
+    } finally {
+      setAiAnalysisPending(false);
     }
   }
 
@@ -374,19 +403,11 @@ export function QuickLog({
   if (phase === 'pick') {
     return (
       <div className="flex flex-col gap-3">
+        {/* Single file input — the OS picker on iOS / Android
+            shows Camera + Photo Library + Files options natively,
+            so the previous two-button split was redundant. */}
         <input
-          ref={cameraRef}
-          type="file"
-          accept="image/*"
-          capture="environment"
-          className="hidden"
-          onChange={(e) => {
-            const f = e.target.files?.[0];
-            if (f) startWithPhoto(f);
-          }}
-        />
-        <input
-          ref={libraryRef}
+          ref={photoRef}
           type="file"
           accept="image/*"
           className="hidden"
@@ -445,24 +466,14 @@ export function QuickLog({
         </div>
 
         <BigChoice
-          label="Take a photo"
+          label="Add a photo"
           hint={
             online
-              ? 'Claude will figure out fish or hatch and snap conditions.'
-              : 'Photo stashed for upload — fish ID happens when you reconnect.'
+              ? "Snap a new shot or pick one from your library. You enter the species — or tap 'Identify with Claude' on the next screen if you're not sure."
+              : 'Photo stashed for upload — Claude AI ID available once you reconnect.'
           }
           icon={Camera}
-          onClick={pickFromCamera}
-        />
-        <BigChoice
-          label="Choose from library"
-          hint={
-            online
-              ? 'Same as above, but pick an existing photo.'
-              : 'Photo stashed for upload — fish ID happens when you reconnect.'
-          }
-          icon={ImageIcon}
-          onClick={pickFromLibrary}
+          onClick={pickPhoto}
         />
         <BigChoice
           label="Note only"
@@ -511,13 +522,27 @@ export function QuickLog({
         />
       )}
 
+      {/* Opt-in AI identify button. Only shown when a photo is
+          attached AND the user hasn't already typed a species (or a
+          hatch name). Once they type their own, the row hides — we
+          assume they know what they caught. */}
+      {photoMeta && !aiAnalysisPending && !draft.species && !draft.hatchName && (
+        <button
+          type="button"
+          onClick={runAiAnalysis}
+          className="rounded-lg bg-info/10 border border-info/40 px-3 py-2 text-xs flex items-center gap-2 hover:bg-info/15 active:scale-[0.99] transition text-left"
+        >
+          <Sparkles className="w-3.5 h-3.5 text-info flex-none" />
+          <span className="flex-1">
+            <b>Not sure what this is?</b> Tap to identify the species
+            (or insect) with Claude.
+          </span>
+        </button>
+      )}
       {aiAnalysisPending && (
         <div className="rounded-lg bg-info/10 border border-info/40 px-3 py-2 text-xs flex items-center gap-2">
           <Loader2 className="w-3.5 h-3.5 animate-spin text-info" />
-          <span>
-            Claude is still analyzing the photo — species + length will
-            update when it lands. You can keep editing and save anytime.
-          </span>
+          <span>Claude is analyzing the photo…</span>
         </div>
       )}
 

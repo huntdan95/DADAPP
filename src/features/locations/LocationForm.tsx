@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { MapContainer, TileLayer, Marker, useMap, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, useMap, useMapEvents, ZoomControl } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { Crosshair, Loader2 } from 'lucide-react';
@@ -720,8 +720,13 @@ export function LocationForm({
             center={initialCenter}
             zoom={initial ? 11 : 4}
             scrollWheelZoom
+            // Default +/- buttons sit top-left where the search bar
+            // is. Disable default and re-add at bottom-right so the
+            // search input has the full top edge.
+            zoomControl={false}
             className="h-full w-full"
           >
+            <ZoomControl position="bottomright" />
             <TileLayer url={BASEMAPS.osm.url} attribution={BASEMAPS.osm.attribution} />
             <PinPicker lat={lat} lng={lng} onSet={(la, ln) => {
               setLat(la);
