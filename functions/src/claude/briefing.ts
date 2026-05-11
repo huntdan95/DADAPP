@@ -11,19 +11,23 @@ import {
 } from './_shared';
 
 /**
- * Daily 3-sentence pre-trip briefing for a location.
+ * Daily pre-trip briefing for a location. Returns:
+ *   - briefing (3 sentences of prose, leading with a parseable
+ *     bite-quality keyword)
+ *   - biteQuality (server-parsed from the leading keyword)
+ *   - citations (from web_search blocks if Claude used the tool)
  *
- * Caching strategy: the system prompt bakes in a ~1.5K-token fishing
+ * Caching strategy: the system prompt bakes in a ~2 KB fishing
  * playbook (pressure heuristics, hatch behavior, dam-generation rules,
- * trolling notes) that is identical for every user, every location, every
- * day. The dynamic inputs (current conditions, last-5 catches) live in
- * the user message AFTER the cache breakpoint, so subsequent same-day
- * calls hit cache at ~0.1× cost and ~0 latency on the prefix.
+ * trolling notes) that is identical for every user, every location,
+ * every day. Dynamic inputs (conditions, last-5 catches, waterbody
+ * curated species) live in the user message AFTER the cache breakpoint,
+ * so same-day repeats hit cache at ~0.1× cost and ~0 latency on prefix.
  */
 
 interface BriefingInput {
   locationName: string;
-  waterType: string;             // 'tailwater' | 'freestone' | 'lake' | ...
+  waterType: string;
   river?: string;
   state: string;
   currentConditions: {
@@ -31,15 +35,45 @@ interface BriefingInput {
     waterTempF?: number;
     flowCfs?: number;
     pressureMb: number;
-    pressureTrend: string;       // 'falling-fast' | ...
+    pressureTrend: string;
     windMph?: number;
+    windDirection?: string;             // 'NW', 'S', etc.
     cloudCoverPct?: number;
-    weatherSummary: string;      // e.g. "Partly cloudy"
+    weatherSummary: string;
+    /**
+     * Surface temp from a lake-data provider (CO-OPS / NDBC / USGS-
+     * lake / estimator). When the flow provider didn't yield a water
+     * temp but the lake-data did, this fills the gap.
+     */
+    lakeSurfaceTempF?: number;
+    waveHeightFt?: number;
+    lakeSurfaceTempIsEstimated?: boolean;
   };
+  /**
+   * Today's daily-summary numbers from the weather provider.
+   * High / low and sunset for window-planning.
+   */
+  daily?: {
+    tempMaxF?: number;
+    tempMinF?: number;
+    sunriseLocal?: string;            // 'h:mm a' in the spot's TZ
+    sunsetLocal?: string;
+  };
+  /**
+   * Compact peek at the next 6 hours so Claude can call out incoming
+   * rain or a wind shift. Empty array if the provider didn't return
+   * an hourly series.
+   */
+  nextSixHours?: Array<{
+    hourLabel: string;                // '3 PM'
+    tempF: number;
+    precipProbPct: number | null;
+    cloudCoverPct: number | null;
+  }>;
   dam?: {
     name: string;
-    nextChange: string | null;   // human-readable e.g. "Generation starts at 2 PM"
-    currentStatus: string;       // 'no_generation' | 'partial' | 'heavy' | 'unknown'
+    nextChange: string | null;
+    currentStatus: string;
   };
   activeHatches: Array<{
     name: string;
@@ -62,70 +96,125 @@ interface BriefingInput {
     size?: string;
     locationName: string;
   }>;
+  /**
+   * Curated waterbody match from the spot registry. Gives Claude
+   * the canonical name, target species list, and access tips so
+   * it doesn't have to infer them from the lat/lng. Optional —
+   * unknown waters skip it.
+   */
+  waterbody?: {
+    name: string;
+    species: string[];
+    accessNotes?: string;
+  };
+  /**
+   * Solunar window data. Major periods bracket lunar transits;
+   * the moon-phase fraction (0-1) is included so Claude can flag
+   * a new moon as a stronger window.
+   */
+  solunar?: {
+    moonPhaseLabel: string;            // 'New moon', 'Waxing crescent', etc.
+    moonIlluminationPct: number;
+    majorWindowsLocal: string[];       // ['12:18-1:18 PM', '12:36-1:36 AM']
+    minorWindowsLocal: string[];       // ['5:42-6:12 AM', '6:30-7:00 PM']
+  };
+  /**
+   * Trolling depth estimates for actively-feeding species at this
+   * spot today, from the spot's seasonal/thermal model. Only
+   * populated for Great Lakes / deep-lake spots with relevant
+   * species. Lets Claude lead with a concrete "troll at 60-90 ft
+   * for kings" recommendation instead of generic advice.
+   */
+  trollingDepths?: Array<{
+    species: string;
+    depthRangeFt: [number, number];
+    thermoclineFt: number | null;
+    rationale: string;
+  }>;
 }
 
-const SYSTEM_PROMPT = `You are a fishing co-pilot. Write a SHORT, USEFUL pre-trip briefing — exactly 3 sentences. No greetings, no sign-off, no preamble.
+const SYSTEM_PROMPT = `You are a fishing co-pilot. Write a SHORT, USEFUL pre-trip briefing — exactly 3 sentences, each on a separate line. No greetings, no sign-off, no preamble.
 
 VOICE: Direct, knowledgeable, friend-with-thirty-years-on-the-water. No fluff. No hedging. State what to do.
 
-STRUCTURE:
-  Sentence 1: One-line read on conditions ("What today looks like").
-  Sentence 2: What's most likely to work and when.
-  Sentence 3: A concrete tactical recommendation (fly/lure/depth/window).
+REQUIRED OUTPUT FORMAT:
+  Line 1: One of these exact tokens (UPPERCASE, with the period), then a single space, then sentence 1 — the read on conditions:
+     PRIME.       (falling pressure window + temps in zone + favorable factors aligned)
+     GOOD.        (solid conditions, will produce with effort)
+     FAIR.        (workable but mixed signals — pick the right window)
+     TOUGH.       (high-pressure stale, too hot/cold, or unfavorable timing)
+  Line 2: What's most likely to work and when (window of the day).
+  Line 3: One concrete tactical recommendation (fly / lure / depth / window).
 
-WEB SEARCH: You have a web_search tool. Use it ONCE per briefing, and only when the user's spot is a named, well-known fishery (e.g. Caney Fork below Center Hill, South Holston, Big Manistee below Tippy). Search for recent angler reports / hatch reports / fishing report posts from the last 2 weeks at that specific spot. If the search returns useful local intel (a specific fly working, a hatch coming off, a flow change anglers are reacting to), weave it into the second or third sentence as a concrete recommendation. If the search returns nothing useful, just write the briefing from the data provided — do not mention that the search failed.
+The first token is consumed by the UI to pick a card tint, so it MUST be on its own first word, followed by a period, then a space.
 
-Do NOT search for: generic weather, generic fishing tips, anything you can already answer from the structured data provided below.
+WEB SEARCH: You have a web_search tool. Use it ONCE per briefing, only when the spot is a named, well-known fishery (Caney Fork, South Holston, Big Manistee, Lake St. Clair, Center Hill, etc.). Search for angler reports / hatch reports / fishing report posts from the last 2 weeks at THAT spot. If the search returns useful local intel — a specific fly working, a hatch coming off, depth that produced kings — weave it into sentence 2 or 3 as a concrete recommendation. If the search returns nothing useful, just write from the data provided. Never mention that the search failed.
+
+Do NOT search for: generic weather, generic fishing tips, or anything you can already answer from the data below.
 
 FISHING HEURISTICS:
 
 Pressure:
-  - Steady high pressure (>1020 mb): tough; midday slow; dawn/dusk best.
-  - Falling pressure (>3 mb / 6h): elite window before the front; trout feed aggressively.
-  - Already crashed (<1005 mb): fish are sulking; try big streamers slow, or wait.
-  - Rising after a front: bite recovers gradually over 24-48h.
+  - Steady high (>1020 mb): tough; midday slow; dawn/dusk best.
+  - Falling >3 mb / 6h: elite window before the front; aggressive feed.
+  - Crashed (<1005 mb): fish sulking; big slow streamers, or wait.
+  - Rising post-front: bite recovers over 24-48h.
 
 Water temperature (trout):
-  - <38°F: fish lethargic; midges on flat water; dead-drift slow.
-  - 38-50°F: nymphing is king; small dark patterns; few risers.
-  - 50-65°F: prime; dry-dropper and emergers; whole-day potential.
-  - 65-70°F: warm; fish early/late; avoid playing fish hard.
-  - >70°F: do not target trout — lethal stress zone.
+  - <38°F: lethargic; midges, slow dead-drift.
+  - 38-50°F: nymphing; small dark patterns; few risers.
+  - 50-65°F: prime; dry-dropper / emergers; all-day potential.
+  - 65-70°F: warm; fish dawn/dusk; release fast.
+  - >70°F: do not target trout — stress-lethal.
 
-Dam generation (tailwaters):
-  - No generation: wadeable, predictable; smaller flies in slow seams.
-  - 1 unit / partial: transitional; bite often turns on as water comes up; nymph deeper.
-  - 2+ units / heavy: float-only; streamer game; tight to banks.
-  - The first hour AFTER generation stops is often the best window of the day.
+Water temperature (warmwater / stillwater):
+  - <50°F: finesse; jigs slow along the bottom.
+  - 50-60°F: pre-spawn cool; bass staging on transitions.
+  - 60-72°F: prime; full water column in play.
+  - 72-80°F: dawn/dusk topwater best; deep cover midday.
+  - >80°F: deep + slow; shaded structure.
+
+Dam generation:
+  - No gen: wadeable; smaller flies in slow seams.
+  - 1 unit: transitional; bite often turns on as water rises; nymph deeper.
+  - 2+ units: float-only streamer game; tight to banks.
+  - First hour AFTER generation stops = often the best window.
+
+Solunar:
+  - Major periods (lunar transit) are the strongest 2-hour windows of the day. Mention if one overlaps a feeding-favorable time of day (dawn, dusk, post-thermal turnover).
+  - New moon / full moon = stronger periods. Quarter moons = weaker but still real.
 
 Hatches & timing:
-  - Match the hatch when one is on. Otherwise default search patterns: terrestrials June-September, BWO emergers on overcast cool days year-round.
-  - Sulfurs (50-62°F water, evenings) drive South Holston / Caney Fork from May.
-  - Hex (June 15-30, Manistee, after dark): plan around it; size 6 dries, no leader finesse.
-  - Trico mornings July-September: 22s on 7x; rise reading is everything.
+  - Match the hatch when one is on.
+  - Sulfurs (50-62°F water, evenings) drive Southern tailwaters May onward.
+  - Hex (June 15-30, MI, after dark): plan around it; size 6 dries.
+  - Tricos July-September mornings: 22s on 7x.
 
-Trolling (lakes / Great Lakes / large rivers):
+Trolling (Great Lakes / deep lakes):
+  - If a trolling-depth estimate is provided for a target species, use those exact numbers in the briefing. Don't reinvent.
   - Surface temps drive depth: cold = shallow, warm = downriggers.
   - Stinger spoons in chrome/orange when sun is bright; glow/UV at dawn.
-  - Speed: walleye 1.2-1.8 mph, trout 2.0-2.8 mph, kings 2.4-3.2 mph.
+  - Speed: walleye 1.2-1.8 mph, lake trout 1.8-2.4, kings 2.4-3.2.
 
-Recent stocking:
-  - If a stocking happened in the last 3 days, lead with it as the headline opportunity. Stocked fish are dumb and hungry — small spinners, salmon eggs, Powerbait, or a size 12 nymph dropped past them.
-  - Day 1-2 after stocking is peak; by day 7-10 the truck-chasers thin them out and they wise up.
-  - If multiple species stocked, mention the headline (largest count or trophy size).
-  - If stocking is older than 14 days, don't mention it unless other intel is empty.
+Stocking:
+  - Stocking <3d ago = lead with it. Small spinners, salmon eggs, Powerbait, size 12 nymph.
+  - Day 1-2 peak; by day 7-10 the truck-chasers have thinned them.
+  - >14d ago — skip unless other intel is empty.
+
+Waterbody-curated species:
+  - When a curated species list is provided for the spot, recommend ONE of those species, not generic "fish." A Lake St. Clair pin should mention smallmouth/muskie/walleye, not generic "bass."
 
 Last-5 pattern recognition:
-  - If recent catches all came on one fly or one method, lean that way unless conditions clearly differ.
-  - If recent catches all came at one time of day, repeat the window.
-  - If skunked recently, change something concrete (depth, fly size, or location within the spot).
+  - Recent catches all on one fly/method → lean that way unless conditions clearly differ.
+  - Recent catches all at one time of day → repeat the window.
+  - Skunked recently → change something concrete (depth, fly size, micro-location).
 
 CONSTRAINTS:
-  - Exactly 3 sentences.
-  - No bullet points, no markdown, no headers.
+  - Exactly 3 sentences. One per line. The very first word is always the bite-quality token.
+  - No bullet points, no markdown, no headers, no emoji.
   - No "weather is..." narration — go straight to the implication.
-  - Reference at most ONE concrete fly/lure recommendation per briefing.
-  - If data is genuinely empty (no hatches, no catches, no dam), say so briefly but still finish in 3 sentences.`;
+  - At most ONE concrete fly/lure recommendation per briefing.
+  - If data is genuinely empty, say so briefly but still finish in 3 sentences.`;
 
 export const briefing = onCall(
   {
@@ -133,9 +222,6 @@ export const briefing = onCall(
     memory: '256MiB',
     timeoutSeconds: 30,
     secrets: [anthropicApiKey],
-    // Firebase auth is checked inside the handler (requireAuth). At the
-    // Cloud Run layer we need allUsers to have run.invoker or the request
-    // never reaches our code.
     invoker: 'public',
   },
   async (request) => {
@@ -152,9 +238,6 @@ export const briefing = onCall(
 
     const response = await anthropic().messages.create({
       model: MODELS.briefing,
-      // Search results land in the message stream as web-search blocks
-      // which can push the model past 300 output tokens before it gets
-      // to the actual prose. Bump the ceiling.
       max_tokens: 1200,
       system: [
         {
@@ -163,70 +246,206 @@ export const briefing = onCall(
           cache_control: { type: 'ephemeral' },
         },
       ],
-      // Server-side web search. Free + integrated; Anthropic runs the
-      // query, returns sources, and Claude weaves the findings into the
-      // briefing if useful.
       tools: [{ type: 'web_search_20260209', name: 'web_search' }],
       messages: [{ role: 'user', content: userMessage }],
     });
 
     await recordTokens(uid, 'briefing', response.usage);
 
-    const text = response.content
-      .filter((b): b is Anthropic.Messages.TextBlock => b.type === 'text')
-      .map((b) => b.text)
-      .join('\n')
-      .trim();
+    // Pull text blocks (the prose) and any citations attached to them.
+    const textBlocks = response.content.filter(
+      (b): b is Anthropic.Messages.TextBlock => b.type === 'text'
+    );
+    const rawText = textBlocks.map((b) => b.text).join('\n').trim();
+
+    const citations: Array<{ url: string; title: string }> = [];
+    for (const block of textBlocks) {
+      // The Anthropic SDK types `citations` as `unknown[] | null` because
+      // their shape varies by tool. We accept any object with url+title.
+      const cites = (block as unknown as { citations?: unknown[] | null })
+        .citations;
+      if (!cites || !Array.isArray(cites)) continue;
+      for (const c of cites) {
+        if (!c || typeof c !== 'object') continue;
+        const obj = c as Record<string, unknown>;
+        const url = typeof obj.url === 'string' ? obj.url : null;
+        if (!url) continue;
+        const title = typeof obj.title === 'string' ? obj.title : url;
+        // Dedupe — Claude often cites the same source per sentence.
+        if (!citations.find((x) => x.url === url)) {
+          citations.push({ url, title });
+        }
+      }
+    }
+
+    // Extract the bite-quality token from the leading word of line 1.
+    const biteQuality = extractBiteQuality(rawText);
+    // Strip the leading token from the briefing text — the UI renders
+    // the badge separately, no need to repeat it in prose.
+    const cleanText = biteQuality
+      ? rawText.replace(/^(PRIME|GOOD|FAIR|TOUGH)\.\s+/, '')
+      : rawText;
 
     logger.info('briefing generated', {
       uid,
       location: input.locationName,
+      bite: biteQuality,
+      citations: citations.length,
       input_tokens: response.usage.input_tokens,
       output_tokens: response.usage.output_tokens,
       cache_read: response.usage.cache_read_input_tokens,
     });
 
-    return { briefing: text };
+    return {
+      briefing: cleanText,
+      biteQuality,
+      citations,
+    };
   }
 );
+
+function extractBiteQuality(text: string):
+  | 'prime'
+  | 'good'
+  | 'fair'
+  | 'tough'
+  | null {
+  const m = text.match(/^(PRIME|GOOD|FAIR|TOUGH)\./);
+  if (!m) return null;
+  return m[1].toLowerCase() as 'prime' | 'good' | 'fair' | 'tough';
+}
 
 function formatInputs(i: BriefingInput): string {
   const lines: string[] = [];
   lines.push(`Location: ${i.locationName}`);
   if (i.river) lines.push(`River: ${i.river}`);
   lines.push(`Type: ${i.waterType}  State: ${i.state}`);
+
+  if (i.waterbody) {
+    lines.push('');
+    lines.push(`WATERBODY (curated): ${i.waterbody.name}`);
+    if (i.waterbody.species.length > 0) {
+      lines.push(`  Target species here: ${i.waterbody.species.join(', ')}`);
+    }
+    if (i.waterbody.accessNotes) {
+      lines.push(`  Access note: ${i.waterbody.accessNotes}`);
+    }
+  }
+
   lines.push('');
   lines.push('CURRENT CONDITIONS:');
-  lines.push(`  Air: ${Math.round(i.currentConditions.airTempF)}°F, ${i.currentConditions.weatherSummary}`);
-  if (i.currentConditions.waterTempF != null)
-    lines.push(`  Water: ${Math.round(i.currentConditions.waterTempF)}°F`);
-  if (i.currentConditions.flowCfs != null)
+  lines.push(
+    `  Air: ${Math.round(i.currentConditions.airTempF)}°F, ${
+      i.currentConditions.weatherSummary
+    }`
+  );
+  if (i.currentConditions.waterTempF != null) {
+    lines.push(`  River water: ${Math.round(i.currentConditions.waterTempF)}°F`);
+  }
+  if (i.currentConditions.lakeSurfaceTempF != null) {
+    const estTag = i.currentConditions.lakeSurfaceTempIsEstimated
+      ? ' (estimated from air-temp model)'
+      : '';
+    lines.push(
+      `  Lake surface: ${Math.round(
+        i.currentConditions.lakeSurfaceTempF
+      )}°F${estTag}`
+    );
+  }
+  if (i.currentConditions.flowCfs != null) {
     lines.push(`  Flow: ${Math.round(i.currentConditions.flowCfs)} cfs`);
-  lines.push(`  Pressure: ${Math.round(i.currentConditions.pressureMb)} mb, ${i.currentConditions.pressureTrend}`);
-  if (i.currentConditions.windMph != null)
-    lines.push(`  Wind: ${Math.round(i.currentConditions.windMph)} mph`);
-  if (i.currentConditions.cloudCoverPct != null)
+  }
+  lines.push(
+    `  Pressure: ${Math.round(i.currentConditions.pressureMb)} mb, ${
+      i.currentConditions.pressureTrend
+    }`
+  );
+  if (i.currentConditions.windMph != null) {
+    const dir = i.currentConditions.windDirection
+      ? ` ${i.currentConditions.windDirection}`
+      : '';
+    lines.push(`  Wind: ${Math.round(i.currentConditions.windMph)} mph${dir}`);
+  }
+  if (i.currentConditions.cloudCoverPct != null) {
     lines.push(`  Cloud cover: ${Math.round(i.currentConditions.cloudCoverPct)}%`);
-  lines.push('');
+  }
+  if (i.currentConditions.waveHeightFt != null) {
+    lines.push(`  Waves: ${i.currentConditions.waveHeightFt.toFixed(1)} ft`);
+  }
+
+  if (i.daily) {
+    const bits: string[] = [];
+    if (i.daily.tempMaxF != null && i.daily.tempMinF != null) {
+      bits.push(
+        `${Math.round(i.daily.tempMinF)}°F → ${Math.round(i.daily.tempMaxF)}°F`
+      );
+    }
+    if (i.daily.sunriseLocal) bits.push(`sunrise ${i.daily.sunriseLocal}`);
+    if (i.daily.sunsetLocal) bits.push(`sunset ${i.daily.sunsetLocal}`);
+    if (bits.length > 0) {
+      lines.push(`  Today: ${bits.join(' · ')}`);
+    }
+  }
+
+  if (i.nextSixHours && i.nextSixHours.length > 0) {
+    const compact = i.nextSixHours
+      .map(
+        (h) =>
+          `${h.hourLabel} ${Math.round(h.tempF)}°` +
+          (h.precipProbPct != null && h.precipProbPct >= 20
+            ? ` ${h.precipProbPct}%rain`
+            : '')
+      )
+      .join(', ');
+    lines.push(`  Next 6h: ${compact}`);
+  }
+
+  if (i.solunar) {
+    lines.push('');
+    lines.push('SOLUNAR:');
+    lines.push(
+      `  Moon: ${i.solunar.moonPhaseLabel} (${i.solunar.moonIlluminationPct}% illuminated)`
+    );
+    if (i.solunar.majorWindowsLocal.length > 0) {
+      lines.push(`  Major windows: ${i.solunar.majorWindowsLocal.join(', ')}`);
+    }
+    if (i.solunar.minorWindowsLocal.length > 0) {
+      lines.push(`  Minor windows: ${i.solunar.minorWindowsLocal.join(', ')}`);
+    }
+  }
 
   if (i.dam) {
-    lines.push('DAM:');
-    lines.push(`  ${i.dam.name}: ${i.dam.currentStatus}${i.dam.nextChange ? `, ${i.dam.nextChange}` : ''}`);
     lines.push('');
+    lines.push('DAM:');
+    lines.push(
+      `  ${i.dam.name}: ${i.dam.currentStatus}${
+        i.dam.nextChange ? `, ${i.dam.nextChange}` : ''
+      }`
+    );
   }
 
   if (i.activeHatches.length > 0) {
+    lines.push('');
     lines.push('ACTIVE HATCHES:');
     for (const h of i.activeHatches.slice(0, 4)) {
       lines.push(`  ${h.name} (${h.tempRange}, ${h.timeOfDay}) — ${h.flies}`);
     }
+  }
+
+  if (i.trollingDepths && i.trollingDepths.length > 0) {
     lines.push('');
-  } else {
-    lines.push('No notable hatches predicted right now.');
-    lines.push('');
+    lines.push('TROLLING DEPTHS (from seasonal/thermal model):');
+    for (const td of i.trollingDepths.slice(0, 5)) {
+      const therm =
+        td.thermoclineFt != null ? `, thermocline ~${td.thermoclineFt} ft` : '';
+      lines.push(
+        `  ${td.species}: ${td.depthRangeFt[0]}-${td.depthRangeFt[1]} ft${therm}`
+      );
+    }
   }
 
   if (i.recentCatches.length > 0) {
+    lines.push('');
     lines.push('LAST 5 CATCHES HERE:');
     for (const c of i.recentCatches) {
       const len = c.lengthInches != null ? `, ${c.lengthInches}"` : '';
@@ -236,6 +455,7 @@ function formatInputs(i: BriefingInput): string {
       );
     }
   } else {
+    lines.push('');
     lines.push('No recent catches logged at this spot.');
   }
 
