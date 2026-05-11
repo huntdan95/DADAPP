@@ -34,7 +34,11 @@
     "flies": [
       "Size 16 sulfur emerger",
       "Size 16 sulfur dun",
-      "Size 18 spinner"
+      "Size 18 spinner",
+      "Size 16 Quigley cripple (sulfur)",
+      "Size 16 CDC sulfur emerger",
+      "Size 14 sulfur soft-hackle (wet)",
+      "Size 14 pheasant-tail nymph"
     ],
     "searchTerm": "sulfur mayfly Ephemerella",
     "wikipediaSlug": "Ephemerellidae",
@@ -71,7 +75,12 @@
     ],
     "flies": [
       "Size 18-20 BWO parachute",
-      "Size 20 emerger"
+      "Size 20 emerger",
+      "Size 18-20 sparkle dun BWO",
+      "Size 20 RS2 (sub-surface emerger)",
+      "Size 22 olive Mole fly",
+      "Size 18 BWO soft-hackle (wet)",
+      "Size 18 Frenchie nymph (olive)"
     ],
     "searchTerm": "blue winged olive BWO Baetis mayfly",
     "wikipediaSlug": "Baetis",
@@ -106,7 +115,11 @@
       "emerger"
     ],
     "flies": [
-      "Size 18-22 BWO parachute"
+      "Size 18-22 BWO parachute",
+      "Size 20-22 BWO emerger",
+      "Size 22 olive RS2",
+      "Size 20 CDC BWO",
+      "Size 22 Sparkle Dun (greys)"
     ],
     "searchTerm": "blue winged olive BWO Baetis mayfly",
     "wikipediaSlug": "Baetis",
@@ -141,7 +154,11 @@
     ],
     "flies": [
       "Size 12-14 Hendrickson dun",
-      "Size 12 spinner"
+      "Size 12 spinner",
+      "Size 12-14 Hendrickson emerger",
+      "Size 14 Quigley cripple (hendrickson)",
+      "Size 12 Hendrickson soft-hackle",
+      "Size 12 dark Hare's ear nymph"
     ],
     "searchTerm": "Hendrickson mayfly Ephemerella subvaria",
     "wikipediaSlug": "Ephemerella",
@@ -174,7 +191,11 @@
       "spinner"
     ],
     "flies": [
-      "Size 12 March Brown dun"
+      "Size 12 March Brown dun",
+      "Size 12 March Brown spinner",
+      "Size 12 March Brown emerger",
+      "Size 12 March Brown wet fly (classic)",
+      "Size 10-12 hare's-ear nymph"
     ],
     "searchTerm": "March Brown mayfly Maccaffertium",
     "wikipediaSlug": "Maccaffertium",
@@ -209,7 +230,12 @@
     ],
     "flies": [
       "Size 14-16 elk-hair caddis (dark)",
-      "Size 16 LaFontaine pupa"
+      "Size 16 LaFontaine pupa",
+      "Size 14-16 Elk-hair caddis (olive)",
+      "Size 14 LaFontaine sparkle pupa",
+      "Size 14 X-caddis",
+      "Size 14 soft-hackle (partridge / olive)",
+      "Size 12-14 caddis larva (olive)"
     ],
     "searchTerm": "grannom caddis Brachycentrus",
     "wikipediaSlug": "Brachycentrus",
@@ -244,7 +270,10 @@
       "pupa"
     ],
     "flies": [
-      "Size 14-16 elk-hair caddis (tan)"
+      "Size 14-16 elk-hair caddis (tan)",
+      "Size 16 X-caddis (tan)",
+      "Size 14 LaFontaine emergent sparkle pupa (tan)",
+      "Size 16 soft-hackle (hare's ear)"
     ],
     "searchTerm": "cinnamon caddis Hydropsychidae",
     "wikipediaSlug": "Hydropsychidae",
@@ -277,7 +306,11 @@
       "adult"
     ],
     "flies": [
-      "Size 14-16 Yellow Sally"
+      "Size 14-16 Yellow Sally",
+      "Size 14 Stimulator (yellow)",
+      "Size 14 yellow Sally chubby",
+      "Size 16 yellow stone nymph",
+      "Size 14 yellow soft-hackle"
     ],
     "searchTerm": "yellow sally stonefly Isoperla",
     "wikipediaSlug": "Isoperla",
@@ -313,7 +346,11 @@
     ],
     "flies": [
       "Size 10-12 Iso dun",
-      "Pheasant tail nymph #10"
+      "Pheasant tail nymph #10",
+      "Size 10-12 Slate Drake parachute",
+      "Size 12 Iso wet fly (Leadwing Coachman)",
+      "Size 10 Iso nymph (slender, ribbed)",
+      "Size 12 Iso emerger (Quigley cripple)"
     ],
     "searchTerm": "isonychia mayfly bicolor",
     "wikipediaSlug": "Isonychia",
@@ -350,7 +387,10 @@
       "spinner"
     ],
     "flies": [
-      "Size 20-24 Trico spinner"
+      "Size 20-24 Trico spinner",
+      "Size 22 Trico CDC emerger",
+      "Size 24 spent-wing spinner",
+      "Size 22 Griffith's gnat (cluster)"
     ],
     "searchTerm": "trico spinner Tricorythodes",
     "wikipediaSlug": "Tricorythodes",
@@ -387,7 +427,11 @@
     ],
     "flies": [
       "Size 6-8 Hex dun",
-      "Size 6 Hex spinner"
+      "Size 6 Hex spinner",
+      "Size 6 Hex dun (deer-hair body)",
+      "Size 6 Hex spinner (rust)",
+      "Size 8 Hex emerger (foam wing)",
+      "Size 6-8 Hex wiggle nymph"
     ],
     "searchTerm": "Hexagenia limbata Hex mayfly",
     "wikipediaSlug": "Hexagenia_limbata",
@@ -425,7 +469,10 @@
       "spinner"
     ],
     "flies": [
-      "Size 12-14 White Wulff"
+      "Size 12-14 White Wulff",
+      "Size 12 white parachute",
+      "Size 14 White Wulff",
+      "Size 14 white spinner"
     ],
     "searchTerm": "white mayfly Ephoron leukon",
     "wikipediaSlug": "Ephoron",
@@ -465,7 +512,12 @@
     ],
     "flies": [
       "Size 20-24 zebra midge",
-      "Size 22 Griffith's gnat (cluster)"
+      "Size 22 Griffith's gnat (cluster)",
+      "Size 22-24 disco midge",
+      "Size 22 midge larva (red, olive, black)",
+      "Size 22 RS2 midge emerger",
+      "Size 24 mating-cluster Griffith's",
+      "Size 22 Top Secret midge"
     ],
     "searchTerm": "zebra midge fly Chironomidae",
     "wikipediaSlug": "Chironomidae",
@@ -505,7 +557,13 @@
     "flies": [
       "Size 14 foam ant",
       "Size 12 beetle",
-      "Size 8-10 hopper"
+      "Size 8-10 hopper",
+      "Size 16 cinnamon flying ant",
+      "Size 8-10 Chubby Chernobyl",
+      "Size 10 Dave's Hopper",
+      "Size 14 foam beetle (peacock)",
+      "Size 12-14 cricket",
+      "Size 16 black ant (parachute)"
     ],
     "searchTerm": "terrestrial fly pattern hopper ant beetle",
     "wikipediaSlug": null,
@@ -547,7 +605,11 @@
       "Size 4-6 Chubby Chernobyl (orange/black)",
       "Size 4 stonefly nymph (Pat's Rubber Legs)",
       "Sofa Pillow",
-      "Henneberry Hopper"
+      "Henneberry Hopper",
+      "Size 4-6 Salmonfly nymph (Pat's Stone, Kaufmann's)",
+      "Size 6 Rogue stone (foam body)",
+      "Size 6 sofa-pillow variant",
+      "Size 8 Norm Wood's Salmonfly (CDC wing)"
     ],
     "searchTerm": "salmonfly Pteronarcys californica",
     "wikipediaSlug": "Pteronarcys_californica",
@@ -590,7 +652,12 @@
       "Size 16-18 PMD parachute",
       "PMD cripple",
       "Sparkle dun PMD",
-      "Rusty spinner size 16"
+      "Rusty spinner size 16",
+      "Size 16 PMD CDC emerger",
+      "Size 18 PMD Quigley cripple",
+      "Size 16 PMD soft-hackle (wet)",
+      "Size 16 pheasant-tail nymph",
+      "Size 18 PMD rusty spinner"
     ],
     "searchTerm": "pale morning dun PMD Ephemerella excrucians",
     "wikipediaSlug": "Ephemerella",
@@ -631,7 +698,10 @@
       "Size 6-10 Yellow Stimulator",
       "Golden stone chubby",
       "Pat's Rubber Legs (yellow/brown)",
-      "Stimulator (size 8)"
+      "Stimulator (size 8)",
+      "Size 8-10 golden stone nymph (Pat's rubber-legs)",
+      "Size 8 Yellow Stimulator",
+      "Size 8 Mercer's Golden stone"
     ],
     "searchTerm": "golden stone Hesperoperla pacifica",
     "wikipediaSlug": "Hesperoperla",
@@ -673,7 +743,10 @@
       "Size 14-16 Callibaetis parachute",
       "Sparkle dun size 14",
       "Callibaetis nymph",
-      "Rusty spinner size 14"
+      "Rusty spinner size 14",
+      "Size 16 Callibaetis cripple",
+      "Size 16 Callibaetis soft-hackle (wet)",
+      "Size 14-16 Callibaetis nymph (PT-style)"
     ],
     "searchTerm": "callibaetis speckle-winged dun stillwater mayfly",
     "wikipediaSlug": "Callibaetis",
@@ -706,7 +779,10 @@
     "flies": [
       "Size 8-10 olive Stimulator",
       "Skwala chubby olive",
-      "Rubber-leg foam stone"
+      "Rubber-leg foam stone",
+      "Size 8 Skwala chubby",
+      "Size 10-12 Pat's rubber-legs (olive)",
+      "Size 12 dark stone nymph"
     ],
     "searchTerm": "skwala stonefly Skwala americana",
     "wikipediaSlug": "Skwala",
@@ -744,7 +820,10 @@
     "flies": [
       "Size 16 mahogany dun parachute",
       "Size 16 cripple",
-      "Mahogany spinner"
+      "Mahogany spinner",
+      "Size 16 Mahogany Quigley cripple",
+      "Size 16 Mahogany emerger",
+      "Size 18 mahogany rusty spinner"
     ],
     "searchTerm": "mahogany dun Paraleptophlebia",
     "wikipediaSlug": "Paraleptophlebia",
@@ -782,7 +861,11 @@
     "flies": [
       "Size 10-12 Green Drake parachute",
       "Lawson's Cripple",
-      "Hair-wing dun"
+      "Hair-wing dun",
+      "Size 10 Drake nymph (large PT)",
+      "Size 12 Green Drake emerger",
+      "Size 10 Green Drake spinner",
+      "Size 12 olive soft-hackle (wet)"
     ],
     "searchTerm": "western green drake Drunella grandis",
     "wikipediaSlug": "Drunella",
@@ -820,7 +903,10 @@
     "flies": [
       "Size 6-8 orange Stimulator",
       "October caddis pupa",
-      "Goddard-style adult"
+      "Goddard-style adult",
+      "Size 8 October caddis pupa (orange)",
+      "Size 8 sparkle pupa (LaFontaine, October orange)",
+      "Size 8 orange soft-hackle"
     ],
     "searchTerm": "october caddis Dicosmoecus",
     "wikipediaSlug": "Dicosmoecus",
@@ -858,10 +944,786 @@
     "flies": [
       "Size 20-22 Trico spinner",
       "Trico parachute",
-      "Griffith's Gnat"
+      "Griffith's Gnat",
+      "Size 22 CDC Trico emerger",
+      "Size 24 Trico female (greys)",
+      "Size 22 Griffith's cluster"
     ],
     "searchTerm": "trico Tricorythodes mayfly",
     "wikipediaSlug": "Tricorythodes",
     "notes": "Tailwater trico hatch — Missouri below Holter, Bighorn below Afterbay. Morning spinner falls; 7X tippet, picky fish. Same insect as Eastern trico, more reliable on Western tailwaters."
+  },
+  {
+    "id": "quill-gordon",
+    "name": "Quill Gordon",
+    "scientific": "Epeorus pleuralis",
+    "regions": [
+      "Southern Appalachia",
+      "Mid-Atlantic",
+      "Northeast"
+    ],
+    "states": [
+      "TN",
+      "NC",
+      "GA",
+      "KY",
+      "PA"
+    ],
+    "rivers": [
+      "Little River",
+      "Tellico River",
+      "Davidson River",
+      "Hiwassee River",
+      "Penn's Creek"
+    ],
+    "startMonth": 3,
+    "endMonth": 4,
+    "waterTempMinF": 50,
+    "waterTempMaxF": 56,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "dun",
+      "emerger",
+      "nymph"
+    ],
+    "flies": [
+      "Size 12-14 Quill Gordon parachute",
+      "Size 14 Quill Gordon dun (traditional)",
+      "Size 12 Quill Gordon wet fly",
+      "Size 14 Quill Gordon emerger (Lawson cripple)",
+      "Size 12 Quill Gordon nymph (PT variant)"
+    ],
+    "searchTerm": "quill gordon Epeorus pleuralis mayfly",
+    "wikipediaSlug": "Epeorus",
+    "notes": "The first mayfly hatch of the year in the Smokies. Cold, often drizzly early-spring afternoons. Trout aren't selective yet — close-enough patterns work."
+  },
+  {
+    "id": "light-cahill",
+    "name": "Light Cahill",
+    "scientific": "Stenacron interpunctatum / Stenonema modestum",
+    "regions": [
+      "Southern Appalachia",
+      "Mid-Atlantic",
+      "Northeast",
+      "Upper Midwest"
+    ],
+    "states": [
+      "TN",
+      "NC",
+      "GA",
+      "KY",
+      "PA",
+      "MI",
+      "IN",
+      "AR"
+    ],
+    "rivers": [
+      "South Holston",
+      "Watauga",
+      "Nantahala River",
+      "Davidson River",
+      "Au Sable"
+    ],
+    "startMonth": 6,
+    "endMonth": 8,
+    "waterTempMinF": 58,
+    "waterTempMaxF": 68,
+    "timeOfDay": "evening",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 14 Light Cahill parachute (cream body)",
+      "Size 14 Cahill spinner (yellow body)",
+      "Size 14 Cahill emerger",
+      "Size 14 Cahill soft-hackle (yellow)",
+      "Size 14 Light Cahill wet fly",
+      "Size 14 cream PT nymph"
+    ],
+    "searchTerm": "light cahill Stenacron Stenonema mayfly",
+    "wikipediaSlug": "Stenonema",
+    "notes": "Late-evening hatch through warm summer months. Pale cream body + light wings — easy to spot in low light. Spinner falls right at dark."
+  },
+  {
+    "id": "slate-drake",
+    "name": "Slate Drake",
+    "scientific": "Isonychia bicolor",
+    "regions": [
+      "Southern Appalachia",
+      "Mid-Atlantic",
+      "Northeast"
+    ],
+    "states": [
+      "TN",
+      "NC",
+      "GA",
+      "PA",
+      "KY"
+    ],
+    "rivers": [
+      "South Holston",
+      "Watauga",
+      "Penn's Creek",
+      "Nantahala River"
+    ],
+    "startMonth": 8,
+    "endMonth": 10,
+    "waterTempMinF": 54,
+    "waterTempMaxF": 68,
+    "timeOfDay": "evening",
+    "stages": [
+      "dun",
+      "spinner"
+    ],
+    "flies": [
+      "Size 10-12 Slate Drake parachute",
+      "Size 12 Isonychia spinner (rust body)",
+      "Size 10 Leadwing Coachman (wet)",
+      "Size 10-12 Iso swimmer nymph",
+      "Size 12 Quigley cripple (mahogany)"
+    ],
+    "searchTerm": "slate drake Isonychia bicolor mayfly",
+    "wikipediaSlug": "Isonychia",
+    "notes": "Late-summer / fall counterpart to Isonychia bicolor. Crawls out on rocks to emerge — fish wets and emergers near banks at dusk."
+  },
+  {
+    "id": "sulfur-mi",
+    "name": "Sulfur (MI rivers)",
+    "scientific": "Ephemerella invaria / dorothea",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Pere Marquette"
+    ],
+    "startMonth": 5,
+    "endMonth": 7,
+    "waterTempMinF": 54,
+    "waterTempMaxF": 64,
+    "timeOfDay": "evening",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 16 Sulfur Compara-dun",
+      "Size 16 Quigley cripple",
+      "Size 14-16 Sulfur soft-hackle",
+      "Size 18 spinner (rusty)",
+      "Size 14 pheasant-tail nymph"
+    ],
+    "searchTerm": "sulfur mayfly Ephemerella Michigan",
+    "wikipediaSlug": "Ephemerellidae",
+    "notes": "Mid-May through June on the Au Sable + Manistee. Smaller than the South Holston version. Evening rises through twilight."
+  },
+  {
+    "id": "brown-drake",
+    "name": "Brown Drake",
+    "scientific": "Ephemera simulans",
+    "regions": [
+      "Upper Midwest",
+      "Rockies",
+      "Pacific NW"
+    ],
+    "states": [
+      "MI",
+      "IN",
+      "ID",
+      "MT",
+      "PA"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Henrys Fork",
+      "Silver Creek",
+      "South Fork Snake"
+    ],
+    "startMonth": 6,
+    "endMonth": 6,
+    "waterTempMinF": 58,
+    "waterTempMaxF": 68,
+    "timeOfDay": "evening",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 10 Brown Drake parachute",
+      "Size 10 Brown Drake spinner (rust)",
+      "Size 10-12 Brown Drake emerger",
+      "Size 10 Brown Drake wiggle nymph"
+    ],
+    "searchTerm": "brown drake Ephemera simulans mayfly",
+    "wikipediaSlug": "Ephemera_simulans",
+    "notes": "Late-June dusk hatch — Hex precursor on MI rivers; Henrys Fork bucket-list event. Spinner fall at last light is THE event. Window is narrow (~10 days)."
+  },
+  {
+    "id": "mothers-day-caddis",
+    "name": "Mother's Day Caddis",
+    "scientific": "Brachycentrus occidentalis",
+    "regions": [
+      "Rockies",
+      "Pacific NW"
+    ],
+    "states": [
+      "MT",
+      "ID",
+      "UT",
+      "CO",
+      "WY"
+    ],
+    "rivers": [
+      "Madison River",
+      "Yellowstone River",
+      "Big Hole River",
+      "Beaverhead River"
+    ],
+    "startMonth": 4,
+    "endMonth": 5,
+    "waterTempMinF": 48,
+    "waterTempMaxF": 58,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "adult",
+      "pupa",
+      "larva"
+    ],
+    "flies": [
+      "Size 14-16 Elk-hair caddis (olive)",
+      "Size 14 LaFontaine emergent sparkle pupa",
+      "Size 14 X-caddis (olive)",
+      "Size 14 caddis larva (green rock-worm)",
+      "Size 14 soft-hackle (partridge / olive)"
+    ],
+    "searchTerm": "mother's day caddis Brachycentrus occidentalis",
+    "wikipediaSlug": "Brachycentrus",
+    "notes": "Yellowstone + Madison legend — dense swarms in late April / early May right before runoff. Fish lose their minds. Often coincides with the holiday weekend."
+  },
+  {
+    "id": "spruce-moth",
+    "name": "Spruce Moth",
+    "scientific": "Choristoneura occidentalis",
+    "regions": [
+      "Rockies",
+      "Pacific NW"
+    ],
+    "states": [
+      "MT",
+      "ID"
+    ],
+    "rivers": [
+      "Madison River",
+      "Yellowstone River",
+      "Big Hole River",
+      "Bitterroot",
+      "Rock Creek"
+    ],
+    "startMonth": 7,
+    "endMonth": 9,
+    "waterTempMinF": 55,
+    "waterTempMaxF": 70,
+    "timeOfDay": "morning",
+    "stages": [
+      "adult"
+    ],
+    "flies": [
+      "Size 10-12 elk-hair spruce moth (tan)",
+      "Size 12 CDC spruce moth",
+      "Size 10 stimulator (tan)"
+    ],
+    "searchTerm": "spruce moth Choristoneura occidentalis",
+    "wikipediaSlug": "Choristoneura_occidentalis",
+    "notes": "Late summer terrestrial — adults blown into the water from spruce/fir stands. Fish key on them HARD on the Madison + upper Yellowstone. Morning is best; calm water."
+  },
+  {
+    "id": "pale-evening-dun",
+    "name": "Pale Evening Dun (PED)",
+    "scientific": "Ephemerella inermis",
+    "regions": [
+      "Rockies",
+      "Pacific NW"
+    ],
+    "states": [
+      "MT",
+      "ID",
+      "UT",
+      "CO"
+    ],
+    "rivers": [
+      "Henrys Fork",
+      "Bighorn River",
+      "Madison River",
+      "Green River"
+    ],
+    "startMonth": 6,
+    "endMonth": 8,
+    "waterTempMinF": 56,
+    "waterTempMaxF": 66,
+    "timeOfDay": "evening",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 16-18 PED parachute (pale yellow)",
+      "Size 18 PED CDC emerger",
+      "Size 18 PED rusty spinner",
+      "Size 16 PED cripple",
+      "Size 16 pheasant-tail nymph"
+    ],
+    "searchTerm": "pale evening dun Ephemerella inermis PED",
+    "wikipediaSlug": "Ephemerellidae",
+    "notes": "Evening cousin of the PMD — pale yellow body, smaller. Henrys Fork + Bighorn evening fishing through summer. Trout get picky as light fades — go small."
+  },
+  {
+    "id": "flav",
+    "name": "Flav (Small Western Green Drake)",
+    "scientific": "Drunella flavilinea",
+    "regions": [
+      "Rockies",
+      "Pacific NW"
+    ],
+    "states": [
+      "MT",
+      "ID",
+      "UT",
+      "CO"
+    ],
+    "rivers": [
+      "Madison River",
+      "Henrys Fork",
+      "Yellowstone River",
+      "Frying Pan River"
+    ],
+    "startMonth": 7,
+    "endMonth": 8,
+    "waterTempMinF": 56,
+    "waterTempMaxF": 65,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 14 Flav parachute (olive)",
+      "Size 14 Flav cripple",
+      "Size 14 olive Compara-dun",
+      "Size 14 PT nymph (dark olive)"
+    ],
+    "searchTerm": "flav Drunella flavilinea mayfly",
+    "wikipediaSlug": "Drunella",
+    "notes": "Smaller follow-up to the Western Green Drake. July-August afternoons. Olive body, mottled wings — important on the Madison + Henrys Fork."
+  },
+  {
+    "id": "pink-albert",
+    "name": "Pink Albert",
+    "scientific": "Epeorus albertae",
+    "regions": [
+      "Rockies",
+      "Pacific NW"
+    ],
+    "states": [
+      "ID",
+      "MT"
+    ],
+    "rivers": [
+      "Henrys Fork",
+      "South Fork Snake",
+      "Silver Creek"
+    ],
+    "startMonth": 7,
+    "endMonth": 8,
+    "waterTempMinF": 56,
+    "waterTempMaxF": 66,
+    "timeOfDay": "evening",
+    "stages": [
+      "dun",
+      "spinner"
+    ],
+    "flies": [
+      "Size 16 Pink Albert parachute",
+      "Size 16 Pink Albert cripple",
+      "Size 16 pink rusty spinner"
+    ],
+    "searchTerm": "pink albert Epeorus albertae mayfly",
+    "wikipediaSlug": "Epeorus",
+    "notes": "Henrys Fork specialty — pinkish body, evening rise on flat water. The picky-fish hatch. 7X tippet, drag-free or nothing."
+  },
+  {
+    "id": "hydropsyche-caddis",
+    "name": "Hydropsyche / Spotted Sedge",
+    "scientific": "Hydropsyche spp.",
+    "regions": [
+      "everywhere"
+    ],
+    "states": [
+      "MT",
+      "ID",
+      "UT",
+      "CO",
+      "MI",
+      "TN",
+      "NC",
+      "GA",
+      "PA",
+      "KY",
+      "AR"
+    ],
+    "rivers": [],
+    "startMonth": 6,
+    "endMonth": 9,
+    "waterTempMinF": 55,
+    "waterTempMaxF": 68,
+    "timeOfDay": "evening",
+    "stages": [
+      "adult",
+      "pupa",
+      "larva"
+    ],
+    "flies": [
+      "Size 14-16 Elk-hair caddis (tan / cinnamon)",
+      "Size 14 LaFontaine emergent sparkle pupa",
+      "Size 14 X-caddis (tan)",
+      "Size 14 caddis larva (green or olive)",
+      "Size 14 Czech-style caddis nymph",
+      "Size 14 soft-hackle (hare's ear)"
+    ],
+    "searchTerm": "hydropsyche spotted sedge caddis",
+    "wikipediaSlug": "Hydropsyche",
+    "notes": "Most-common summer caddis across both Western + Eastern tailwaters. Larva (green rock-worm) is a year-round nymph go-to. Adults fall hard in evening."
+  },
+  {
+    "id": "little-yellow-stone",
+    "name": "Little Yellow Stone (Western)",
+    "scientific": "Isoperla / Suwallia spp.",
+    "regions": [
+      "Rockies",
+      "Pacific NW"
+    ],
+    "states": [
+      "MT",
+      "ID",
+      "UT",
+      "CO"
+    ],
+    "rivers": [
+      "Madison River",
+      "Yellowstone River",
+      "Henrys Fork",
+      "Big Hole River"
+    ],
+    "startMonth": 6,
+    "endMonth": 8,
+    "waterTempMinF": 56,
+    "waterTempMaxF": 70,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "adult",
+      "nymph"
+    ],
+    "flies": [
+      "Size 14-16 Yellow Stimulator",
+      "Size 14 Little yellow chubby",
+      "Size 16 yellow Sally",
+      "Size 16 yellow stone nymph"
+    ],
+    "searchTerm": "little yellow stone Isoperla stonefly",
+    "wikipediaSlug": "Isoperla",
+    "notes": "Western counterpart to Yellow Sally. Summer afternoon hatch — fish all day on most Western freestone. Often blanket-hatch on the Madison."
+  },
+  {
+    "id": "mysis-shrimp",
+    "name": "Mysis Shrimp (tailwater staple)",
+    "scientific": "Mysis diluviana",
+    "regions": [
+      "Rockies"
+    ],
+    "states": [
+      "CO",
+      "UT",
+      "MT",
+      "WY"
+    ],
+    "rivers": [
+      "Frying Pan River",
+      "Bighorn River",
+      "Green River",
+      "Blue River (CO)"
+    ],
+    "startMonth": 1,
+    "endMonth": 12,
+    "waterTempMinF": 35,
+    "waterTempMaxF": 65,
+    "timeOfDay": "all day",
+    "stages": [
+      "always-on"
+    ],
+    "flies": [
+      "Size 16-20 Mysis shrimp (clear/white)",
+      "Size 18 Mysis (epoxy back)",
+      "Size 16 white scud (Mysis impression)"
+    ],
+    "searchTerm": "mysis shrimp fly pattern tailwater",
+    "wikipediaSlug": "Mysis",
+    "notes": "Trophy-fish food on the Frying Pan (Toilet Bowl), Bighorn, and Green. Drift through the dam outflow — that's where the protein is. Mysis are 0.5-1 in long, translucent white."
+  },
+  {
+    "id": "scud",
+    "name": "Scud (tailwater staple)",
+    "scientific": "Amphipoda (Gammarus / Hyalella)",
+    "regions": [
+      "everywhere"
+    ],
+    "states": [
+      "CO",
+      "UT",
+      "MT",
+      "TN",
+      "AR",
+      "GA",
+      "NC",
+      "KY",
+      "PA"
+    ],
+    "rivers": [
+      "Bighorn River",
+      "Green River",
+      "White River",
+      "South Holston",
+      "Caney Fork",
+      "Norfork Tailwater"
+    ],
+    "startMonth": 1,
+    "endMonth": 12,
+    "waterTempMinF": 35,
+    "waterTempMaxF": 70,
+    "timeOfDay": "all day",
+    "stages": [
+      "always-on"
+    ],
+    "flies": [
+      "Size 14-18 grey scud",
+      "Size 14-16 orange scud (post-mortem color)",
+      "Size 16 olive scud",
+      "Size 14 pink scud (UV variant)",
+      "Size 16 sowbug (cress bug)"
+    ],
+    "searchTerm": "scud fly pattern Gammarus tailwater",
+    "wikipediaSlug": "Amphipoda",
+    "notes": "Year-round protein staple on tailwaters. Dead-drift on the bottom — split-shot, indicator. Pink scuds work where rainbows have seen everything."
+  },
+  {
+    "id": "sowbug",
+    "name": "Sowbug / Cress Bug",
+    "scientific": "Isopoda (Asellus / Lirceus)",
+    "regions": [
+      "everywhere"
+    ],
+    "states": [
+      "AR",
+      "TN",
+      "KY",
+      "PA",
+      "NC",
+      "GA",
+      "CO",
+      "UT",
+      "MT"
+    ],
+    "rivers": [
+      "White River",
+      "Norfork Tailwater",
+      "Caney Fork",
+      "South Holston",
+      "Yellow Breeches"
+    ],
+    "startMonth": 1,
+    "endMonth": 12,
+    "waterTempMinF": 35,
+    "waterTempMaxF": 70,
+    "timeOfDay": "all day",
+    "stages": [
+      "always-on"
+    ],
+    "flies": [
+      "Size 14-16 grey sowbug (flat back)",
+      "Size 16 cress bug (olive-grey)",
+      "Size 14 ribbed sowbug (UV)"
+    ],
+    "searchTerm": "sowbug cress bug fly pattern tailwater",
+    "wikipediaSlug": "Asellidae",
+    "notes": "Year-round tailwater protein, especially Arkansas + Pennsylvania limestone. Sister-fly to scud but flatter, drabber. Bounce them along bottom seams."
+  },
+  {
+    "id": "san-juan-worm",
+    "name": "San Juan Worm (universal nymph)",
+    "scientific": "Lumbricidae (aquatic worms)",
+    "regions": [
+      "everywhere"
+    ],
+    "states": [
+      "TN",
+      "MI",
+      "NC",
+      "GA",
+      "AL",
+      "KY",
+      "PA",
+      "AR",
+      "MT",
+      "ID",
+      "CO",
+      "UT",
+      "IN",
+      "IL"
+    ],
+    "rivers": [],
+    "startMonth": 1,
+    "endMonth": 12,
+    "waterTempMinF": 35,
+    "waterTempMaxF": 75,
+    "timeOfDay": "all day",
+    "stages": [
+      "always-on"
+    ],
+    "flies": [
+      "Size 12-14 red San Juan worm (chenille)",
+      "Size 12 pink squirmy worm",
+      "Size 12 wine / brown SJW",
+      "Size 12 tan squirmy (subtle)"
+    ],
+    "searchTerm": "san juan worm squirmy worm fly pattern",
+    "wikipediaSlug": null,
+    "notes": "Cheating? Maybe. Catches fish? Always. Fish it on a tight-line under an indicator anywhere worms wash in — spring runoff, post-rain, tailwaters."
+  },
+  {
+    "id": "mi-king-salmon-eggs",
+    "name": "King Salmon Eggs (MI fall run)",
+    "scientific": "Egg / spawn pattern",
+    "regions": [
+      "Upper Midwest",
+      "Great Lakes"
+    ],
+    "states": [
+      "MI"
+    ],
+    "rivers": [
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Betsie River",
+      "Boardman River",
+      "St. Joseph River"
+    ],
+    "startMonth": 9,
+    "endMonth": 10,
+    "waterTempMinF": 45,
+    "waterTempMaxF": 60,
+    "timeOfDay": "all day",
+    "stages": [
+      "run-pattern"
+    ],
+    "flies": [
+      "Size 8-10 chartreuse Estaz egg (king)",
+      "Size 8 orange / pink egg cluster (skein imitation)",
+      "Size 10 single egg (peach, oregon-cheese)",
+      "Size 6-8 articulated streamer (white / chartreuse)",
+      "Size 6 sucker spawn"
+    ],
+    "searchTerm": "king salmon eggs spawn fly Michigan",
+    "wikipediaSlug": null,
+    "notes": "September-October kings stack below dams (Tippy, Berrien Springs). Dead-drift egg patterns + flesh flies behind the redds. Steelhead + browns follow the eggs."
+  },
+  {
+    "id": "mi-steelhead-eggs",
+    "name": "Steelhead Eggs + Beads (MI winter / spring run)",
+    "scientific": "Egg / bead pattern",
+    "regions": [
+      "Upper Midwest",
+      "Great Lakes"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Betsie River",
+      "Boardman River",
+      "Trail Creek",
+      "St. Joseph River"
+    ],
+    "startMonth": 10,
+    "endMonth": 5,
+    "waterTempMinF": 35,
+    "waterTempMaxF": 50,
+    "timeOfDay": "all day",
+    "stages": [
+      "run-pattern"
+    ],
+    "flies": [
+      "Size 8-10 single egg (oregon cheese, salmon roe, peach)",
+      "6-8mm beads (peach, oregon-cheese, mottled chartreuse)",
+      "Size 6 sucker spawn (white / cream)",
+      "Size 8 nuke egg (Estaz, multi-color)",
+      "Size 8 stonefly nymph (black or brown)",
+      "Size 6-8 articulated swung pattern"
+    ],
+    "searchTerm": "steelhead eggs beads fly Great Lakes",
+    "wikipediaSlug": null,
+    "notes": "Fall steelhead chase king eggs Oct-Nov; winter holdovers continue through April. Beads on bead-pegs above a bare hook is the modern center-pin / fly-rod standard."
+  },
+  {
+    "id": "mi-articulated-streamers",
+    "name": "Articulated Streamers (MI trophy browns)",
+    "scientific": "Streamer / baitfish imitation",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "PA"
+    ],
+    "rivers": [
+      "Big Manistee",
+      "Upper Manistee",
+      "Au Sable",
+      "Pere Marquette",
+      "Muskegon"
+    ],
+    "startMonth": 9,
+    "endMonth": 12,
+    "waterTempMinF": 38,
+    "waterTempMaxF": 58,
+    "timeOfDay": "all day",
+    "stages": [
+      "streamer"
+    ],
+    "flies": [
+      "Size 2-4 Sex Dungeon (olive / black / yellow)",
+      "Size 2 Dirty Hippie (white / chartreuse)",
+      "Size 4 Galloup's Boogeyman",
+      "Size 4 Drunk & Disorderly",
+      "Size 2-4 mini-Drunk (smaller fall pattern)",
+      "Size 4 Circus Peanut"
+    ],
+    "searchTerm": "articulated streamer fly brown trout Michigan",
+    "wikipediaSlug": null,
+    "notes": "Fall pre-spawn brown-trout play. Heavy sink-tip, swing through holes. Lower light + falling temps + recent rain = streamer prime time. Strip-pause-strip."
   }
 ]
