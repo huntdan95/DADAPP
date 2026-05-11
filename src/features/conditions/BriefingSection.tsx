@@ -196,8 +196,18 @@ export function BriefingSection({ location }: { location: Location }) {
           onRefresh={() => generate({ force: true })}
         />
       ) : (
-        <div className="flex items-center gap-2">
-          <Button onClick={() => generate()} disabled={loading} size="sm">
+        // Stack on mobile, row on wider screens. Long description was
+        // overflowing the card on narrow viewports because the parent
+        // flex didn't wrap. Description copy also updated — briefings
+        // are now shared across the group so "your last 5 catches"
+        // (which we dropped to enable cross-user caching) is gone.
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 min-w-0">
+          <Button
+            onClick={() => generate()}
+            disabled={loading}
+            size="sm"
+            className="self-start sm:self-auto flex-none"
+          >
             {loading ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -210,9 +220,10 @@ export function BriefingSection({ location }: { location: Location }) {
               </>
             )}
           </Button>
-          <span className="text-xs text-muted">
-            Pulls weather, water, dam, hatches, solunar, your last 5
-            catches, and recent stocking.
+          <span className="text-xs text-muted min-w-0 break-words">
+            Reads weather, water, dam, hatches, solunar, and recent
+            stocking. Shared across the group so each spot only
+            costs once a day.
           </span>
         </div>
       )}
