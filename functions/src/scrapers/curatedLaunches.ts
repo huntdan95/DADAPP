@@ -127,4 +127,184 @@ export const CURATED_LAUNCHES: CuratedLaunch[] = [
   { name: 'Gossett Tract canoe access', lat: 36.1289, lng: -87.0631, type: 'put-in', state: 'TN', river: 'Harpeth' },
   { name: 'Riverwalk Park — Kingston Springs', lat: 36.1058, lng: -87.0978, type: 'put-in', state: 'TN', river: 'Harpeth' },
   { name: 'Cedar Hill canoe access — Bellevue', lat: 36.0750, lng: -86.9606, type: 'put-in', state: 'TN', river: 'Harpeth' },
+
+  // ============================
+  // Montana — premier blue-ribbon trout
+  // ============================
+  // Madison River — upper / Yellowstone area through Ennis
+  { name: 'Three Dollar Bridge — Madison', lat: 44.7572, lng: -111.6189, type: 'put-in', state: 'MT', river: 'Madison' },
+  { name: 'Slide Inn access — Madison', lat: 44.8092, lng: -111.5500, type: 'put-in', state: 'MT', river: 'Madison' },
+  { name: 'Lyons Bridge — Madison', lat: 44.9806, lng: -111.6303, type: 'ramp', state: 'MT', river: 'Madison' },
+  { name: 'McAtee Bridge — Madison', lat: 45.1372, lng: -111.6403, type: 'put-in', state: 'MT', river: 'Madison' },
+  { name: 'Ennis FAS — Madison', lat: 45.3439, lng: -111.7222, type: 'ramp', state: 'MT', river: 'Madison' },
+  { name: 'Reynolds Pass — Madison', lat: 44.6850, lng: -111.5550, type: 'put-in', state: 'MT', river: 'Madison' },
+  { name: 'Black\'s Ford FAS — Madison', lat: 45.4406, lng: -111.7806, type: 'ramp', state: 'MT', river: 'Madison' },
+  // Missouri River — Land of Giants below Holter
+  { name: 'Wolf Creek Bridge — Missouri', lat: 47.0050, lng: -112.0658, type: 'ramp', state: 'MT', river: 'Missouri' },
+  { name: 'Craig — Missouri', lat: 47.0892, lng: -111.9744, type: 'ramp', state: 'MT', river: 'Missouri' },
+  { name: 'Mid-Canyon FAS — Missouri', lat: 46.9714, lng: -112.0506, type: 'put-in', state: 'MT', river: 'Missouri' },
+  { name: 'Holter Dam FAS — Missouri', lat: 46.9697, lng: -112.0144, type: 'ramp', state: 'MT', river: 'Missouri' },
+  { name: 'Cascade FAS — Missouri', lat: 47.2700, lng: -111.6975, type: 'ramp', state: 'MT', river: 'Missouri' },
+  // Yellowstone River
+  { name: 'Mallard\'s Rest — Yellowstone', lat: 45.4933, lng: -110.7867, type: 'ramp', state: 'MT', river: 'Yellowstone' },
+  { name: 'Pine Creek FAS — Yellowstone', lat: 45.4922, lng: -110.7011, type: 'ramp', state: 'MT', river: 'Yellowstone' },
+  { name: 'Carter Bridge — Yellowstone', lat: 45.4517, lng: -110.6789, type: 'put-in', state: 'MT', river: 'Yellowstone' },
+  { name: 'Mayors Landing — Yellowstone', lat: 45.6772, lng: -110.5658, type: 'ramp', state: 'MT', river: 'Yellowstone' },
+  // Bighorn River — Afterbay tailwater
+  { name: 'Afterbay — Bighorn', lat: 45.3275, lng: -107.9342, type: 'ramp', state: 'MT', river: 'Bighorn' },
+  { name: 'Three Mile FAS — Bighorn', lat: 45.3022, lng: -107.9694, type: 'ramp', state: 'MT', river: 'Bighorn' },
+  { name: 'Bighorn FAS', lat: 45.2589, lng: -107.9869, type: 'ramp', state: 'MT', river: 'Bighorn' },
+  { name: 'Two Leggins FAS — Bighorn', lat: 45.6517, lng: -108.0364, type: 'ramp', state: 'MT', river: 'Bighorn' },
+  // Big Hole
+  { name: 'Wisdom FAS — Big Hole', lat: 45.6172, lng: -113.4453, type: 'put-in', state: 'MT', river: 'Big Hole' },
+  { name: 'Maidenrock FAS — Big Hole', lat: 45.7717, lng: -112.9286, type: 'ramp', state: 'MT', river: 'Big Hole' },
+  // Blackfoot
+  { name: 'Roundup FAS — Blackfoot', lat: 46.9728, lng: -113.0392, type: 'put-in', state: 'MT', river: 'Blackfoot' },
+  { name: 'Wisherd Bridge — Blackfoot', lat: 46.9381, lng: -113.4750, type: 'put-in', state: 'MT', river: 'Blackfoot' },
+
+  // ============================
+  // Idaho
+  // ============================
+  // Henry's Fork
+  { name: 'Mack\'s Inn — Henry\'s Fork', lat: 44.5119, lng: -111.3303, type: 'put-in', state: 'ID', river: 'Henry\'s Fork' },
+  { name: 'Last Chance — Henry\'s Fork', lat: 44.4925, lng: -111.3119, type: 'put-in', state: 'ID', river: 'Henry\'s Fork' },
+  { name: 'Riverside Campground — Henry\'s Fork', lat: 44.3275, lng: -111.3014, type: 'put-in', state: 'ID', river: 'Henry\'s Fork' },
+  { name: 'Pinehaven access — Henry\'s Fork', lat: 44.0497, lng: -111.4256, type: 'put-in', state: 'ID', river: 'Henry\'s Fork' },
+  { name: 'Ashton Reservoir ramp — Henry\'s Fork', lat: 44.0825, lng: -111.4475, type: 'ramp', state: 'ID', river: 'Henry\'s Fork' },
+  // South Fork Snake
+  { name: 'Spring Creek — South Fork Snake', lat: 43.3722, lng: -111.6492, type: 'put-in', state: 'ID', river: 'South Fork Snake' },
+  { name: 'Conant Valley — South Fork Snake', lat: 43.4456, lng: -111.5847, type: 'ramp', state: 'ID', river: 'South Fork Snake' },
+  { name: 'Heise — South Fork Snake', lat: 43.6147, lng: -111.7156, type: 'ramp', state: 'ID', river: 'South Fork Snake' },
+  { name: 'Byington — South Fork Snake', lat: 43.5872, lng: -111.6586, type: 'put-in', state: 'ID', river: 'South Fork Snake' },
+  { name: 'Wolf flat — South Fork Snake', lat: 43.6975, lng: -111.7575, type: 'put-in', state: 'ID', river: 'South Fork Snake' },
+  // Snake River (Hells Canyon area)
+  { name: 'Hells Canyon Dam — Snake', lat: 45.2419, lng: -116.6989, type: 'ramp', state: 'ID', river: 'Snake' },
+  { name: 'Asotin ramp — Snake', lat: 46.3258, lng: -117.0508, type: 'ramp', state: 'ID', river: 'Snake' },
+  // St. Joe
+  { name: 'Avery boat launch — St. Joe', lat: 47.2503, lng: -115.8050, type: 'ramp', state: 'ID', river: 'St. Joe' },
+
+  // ============================
+  // Utah
+  // ============================
+  // Green River below Flaming Gorge
+  { name: 'Little Hole — Green River', lat: 40.9261, lng: -109.3697, type: 'put-in', state: 'UT', river: 'Green' },
+  { name: 'Indian Crossing — Green River', lat: 40.8869, lng: -109.2647, type: 'put-in', state: 'UT', river: 'Green' },
+  { name: 'Browns Park — Green River', lat: 40.8064, lng: -109.0494, type: 'put-in', state: 'UT', river: 'Green' },
+  { name: 'Flaming Gorge Dam access — Green River', lat: 40.9131, lng: -109.4222, type: 'ramp', state: 'UT', river: 'Green' },
+  // Provo River
+  { name: 'Charleston — Provo (Lower)', lat: 40.4581, lng: -111.5181, type: 'put-in', state: 'UT', river: 'Provo' },
+  { name: 'Vivian Park — Provo', lat: 40.3506, lng: -111.6042, type: 'put-in', state: 'UT', river: 'Provo' },
+  { name: 'Olmstead — Provo', lat: 40.3206, lng: -111.6444, type: 'put-in', state: 'UT', river: 'Provo' },
+  // Strawberry Reservoir
+  { name: 'Strawberry Bay Marina', lat: 40.1797, lng: -111.1633, type: 'marina', state: 'UT', river: 'Strawberry Reservoir' },
+  { name: 'Soldier Creek ramp — Strawberry', lat: 40.1622, lng: -111.0517, type: 'ramp', state: 'UT', river: 'Strawberry Reservoir' },
+
+  // ============================
+  // Colorado
+  // ============================
+  // South Platte
+  { name: 'Cheesman Canyon — Gill Trail trailhead', lat: 39.2200, lng: -105.2750, type: 'put-in', state: 'CO', river: 'South Platte' },
+  { name: 'Eleven Mile Canyon — Spillway', lat: 38.9319, lng: -105.4742, type: 'put-in', state: 'CO', river: 'South Platte' },
+  { name: 'Dream Stream — Spinney access', lat: 38.9756, lng: -105.6772, type: 'put-in', state: 'CO', river: 'South Platte' },
+  { name: 'Trumbull — South Platte', lat: 39.1700, lng: -105.2647, type: 'put-in', state: 'CO', river: 'South Platte' },
+  // Fryingpan
+  { name: 'Ruedi Dam tailwater — Fryingpan', lat: 39.3611, lng: -106.8222, type: 'put-in', state: 'CO', river: 'Fryingpan' },
+  { name: 'Old Faithful pool — Fryingpan', lat: 39.3697, lng: -106.8889, type: 'put-in', state: 'CO', river: 'Fryingpan' },
+  // Roaring Fork
+  { name: 'Westbank access — Roaring Fork', lat: 39.4400, lng: -107.0617, type: 'ramp', state: 'CO', river: 'Roaring Fork' },
+  { name: 'Carbondale — Roaring Fork', lat: 39.4019, lng: -107.2156, type: 'ramp', state: 'CO', river: 'Roaring Fork' },
+  // Colorado River
+  { name: 'Pumphouse Recreation — Colorado', lat: 39.9636, lng: -106.5253, type: 'ramp', state: 'CO', river: 'Colorado' },
+  { name: 'Radium SWA — Colorado', lat: 39.9433, lng: -106.5806, type: 'put-in', state: 'CO', river: 'Colorado' },
+  { name: 'State Bridge — Colorado', lat: 39.8158, lng: -106.7456, type: 'ramp', state: 'CO', river: 'Colorado' },
+  // Blue River
+  { name: 'Silverthorne pullout — Blue', lat: 39.6322, lng: -106.0769, type: 'put-in', state: 'CO', river: 'Blue' },
+  { name: 'Green Mountain Reservoir ramp', lat: 39.8636, lng: -106.3411, type: 'ramp', state: 'CO', river: 'Blue' },
+  // Arkansas
+  { name: 'Salida East boat ramp — Arkansas', lat: 38.5400, lng: -106.0014, type: 'ramp', state: 'CO', river: 'Arkansas' },
+  { name: 'Buena Vista riverpark — Arkansas', lat: 38.8425, lng: -106.1303, type: 'put-in', state: 'CO', river: 'Arkansas' },
+
+  // ============================
+  // Pennsylvania
+  // ============================
+  // Susquehanna
+  { name: 'Wrightsville boat launch — Susquehanna', lat: 40.0247, lng: -76.5292, type: 'ramp', state: 'PA', river: 'Susquehanna' },
+  { name: 'Long Level Marina — Susquehanna', lat: 39.9856, lng: -76.5611, type: 'marina', state: 'PA', river: 'Susquehanna' },
+  { name: 'Columbia River Park — Susquehanna', lat: 40.0353, lng: -76.5050, type: 'ramp', state: 'PA', river: 'Susquehanna' },
+  { name: 'Goldsboro boat ramp — Susquehanna', lat: 40.1497, lng: -76.7639, type: 'ramp', state: 'PA', river: 'Susquehanna' },
+  // Lehigh
+  { name: 'Walnutport access — Lehigh', lat: 40.7553, lng: -75.5969, type: 'put-in', state: 'PA', river: 'Lehigh' },
+  { name: 'Treichlers — Lehigh', lat: 40.6981, lng: -75.5797, type: 'put-in', state: 'PA', river: 'Lehigh' },
+  // Allegheny
+  { name: 'Tionesta boat launch — Allegheny', lat: 41.4978, lng: -79.4500, type: 'ramp', state: 'PA', river: 'Allegheny' },
+  { name: 'Foxburg launch — Allegheny', lat: 41.1486, lng: -79.6928, type: 'ramp', state: 'PA', river: 'Allegheny' },
+  // Penns Creek
+  { name: 'Coburn — Penns Creek', lat: 40.8989, lng: -77.4828, type: 'put-in', state: 'PA', river: 'Penns Creek' },
+  { name: 'Weikert — Penns Creek', lat: 40.8997, lng: -77.1956, type: 'put-in', state: 'PA', river: 'Penns Creek' },
+  // Yellow Breeches
+  { name: 'Boiling Springs — Yellow Breeches', lat: 40.1497, lng: -77.1247, type: 'put-in', state: 'PA', river: 'Yellow Breeches' },
+  // Lake Erie tributaries
+  { name: 'Elk Creek access — Erie tribs', lat: 41.9886, lng: -80.3781, type: 'put-in', state: 'PA', river: 'Elk Creek' },
+  { name: 'Walnut Creek access — Erie tribs', lat: 42.0894, lng: -80.1900, type: 'put-in', state: 'PA', river: 'Walnut Creek' },
+
+  // ============================
+  // Arkansas — White River + Norfork tailwater trout
+  // ============================
+  { name: 'Bull Shoals Dam — White River', lat: 36.3633, lng: -92.5742, type: 'ramp', state: 'AR', river: 'White' },
+  { name: 'Wildcat Shoals access — White', lat: 36.3592, lng: -92.5039, type: 'ramp', state: 'AR', river: 'White' },
+  { name: 'Cotter access — White', lat: 36.2792, lng: -92.5269, type: 'ramp', state: 'AR', river: 'White' },
+  { name: 'Rim Shoals access — White', lat: 36.2553, lng: -92.4239, type: 'ramp', state: 'AR', river: 'White' },
+  { name: 'Round House Shoals — White', lat: 36.3308, lng: -92.4906, type: 'put-in', state: 'AR', river: 'White' },
+  { name: 'Norfork Dam tailwater — North Fork White', lat: 36.2497, lng: -92.2300, type: 'ramp', state: 'AR', river: 'North Fork (White)' },
+  { name: 'Quarry Park — Norfork', lat: 36.2253, lng: -92.2700, type: 'ramp', state: 'AR', river: 'North Fork (White)' },
+  // Little Red
+  { name: 'JFK access — Little Red', lat: 35.4783, lng: -92.0392, type: 'ramp', state: 'AR', river: 'Little Red' },
+  { name: 'Pangburn — Little Red', lat: 35.4256, lng: -91.8311, type: 'ramp', state: 'AR', river: 'Little Red' },
+  // Buffalo National
+  { name: 'Tyler Bend — Buffalo', lat: 35.9844, lng: -92.7689, type: 'put-in', state: 'AR', river: 'Buffalo' },
+  { name: 'Pruitt — Buffalo', lat: 35.9789, lng: -93.0858, type: 'put-in', state: 'AR', river: 'Buffalo' },
+
+  // ============================
+  // Oklahoma
+  // ============================
+  // Lower Mountain Fork (trout tailwater)
+  { name: 'Beavers Bend State Park — Lower Mountain Fork', lat: 34.1494, lng: -94.6906, type: 'ramp', state: 'OK', river: 'Lower Mountain Fork' },
+  { name: 'Re-regulation Dam — Lower Mountain Fork', lat: 34.1311, lng: -94.6750, type: 'put-in', state: 'OK', river: 'Lower Mountain Fork' },
+  // Lake Texoma
+  { name: 'Eisenhower State Park ramp — Texoma', lat: 33.8231, lng: -96.5658, type: 'ramp', state: 'OK', river: 'Lake Texoma' },
+  { name: 'Highport Marina — Texoma', lat: 33.8525, lng: -96.7000, type: 'marina', state: 'OK', river: 'Lake Texoma' },
+  // Illinois River
+  { name: 'Tahlequah float access — Illinois River', lat: 35.9156, lng: -94.9700, type: 'put-in', state: 'OK', river: 'Illinois' },
+  { name: 'Watts Bridge — Illinois River', lat: 36.1133, lng: -94.5642, type: 'put-in', state: 'OK', river: 'Illinois' },
+
+  // ============================
+  // Mississippi
+  // ============================
+  // Ross Barnett / Pearl
+  { name: 'Ross Barnett — Madison Landing', lat: 32.4356, lng: -90.0481, type: 'ramp', state: 'MS', river: 'Pearl (Ross Barnett)' },
+  { name: 'Pelahatchie Bay ramp — Ross Barnett', lat: 32.4194, lng: -89.9461, type: 'ramp', state: 'MS', river: 'Pearl (Ross Barnett)' },
+  // Pickwick on TN River
+  { name: 'Pickwick Landing State Park — TN River', lat: 35.0608, lng: -88.2453, type: 'ramp', state: 'MS', river: 'Tennessee' },
+  // Mississippi River
+  { name: 'Greenville harbor — Mississippi', lat: 33.3811, lng: -91.0594, type: 'ramp', state: 'MS', river: 'Mississippi' },
+  { name: 'Vicksburg riverfront — Mississippi', lat: 32.3550, lng: -90.8753, type: 'ramp', state: 'MS', river: 'Mississippi' },
+  // Pascagoula
+  { name: 'Wade boat ramp — Pascagoula', lat: 30.5511, lng: -88.5447, type: 'ramp', state: 'MS', river: 'Pascagoula' },
+
+  // ============================
+  // Illinois
+  // ============================
+  // Mississippi River
+  { name: 'Camanche boat launch — Mississippi', lat: 41.7878, lng: -90.2483, type: 'ramp', state: 'IL', river: 'Mississippi' },
+  { name: 'Andalusia ramp — Mississippi', lat: 41.4344, lng: -90.7228, type: 'ramp', state: 'IL', river: 'Mississippi' },
+  // Illinois River
+  { name: 'Starved Rock — Illinois River', lat: 41.3147, lng: -88.9892, type: 'ramp', state: 'IL', river: 'Illinois' },
+  { name: 'Hennepin — Illinois River', lat: 41.2553, lng: -89.3389, type: 'ramp', state: 'IL', river: 'Illinois' },
+  { name: 'Spring Valley boat launch — Illinois', lat: 41.3236, lng: -89.2017, type: 'ramp', state: 'IL', river: 'Illinois' },
+  // Fox River
+  { name: 'Algonquin Dam — Fox', lat: 42.1656, lng: -88.2939, type: 'ramp', state: 'IL', river: 'Fox' },
+  { name: 'McHenry Dam — Fox', lat: 42.3447, lng: -88.2536, type: 'ramp', state: 'IL', river: 'Fox' },
+  // Kankakee
+  { name: 'Wilmington ramp — Kankakee', lat: 41.3083, lng: -88.1456, type: 'ramp', state: 'IL', river: 'Kankakee' },
+  { name: 'Aroma Park — Kankakee', lat: 41.0686, lng: -87.7969, type: 'ramp', state: 'IL', river: 'Kankakee' },
 ];
