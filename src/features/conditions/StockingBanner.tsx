@@ -31,10 +31,11 @@ export function StockingBanner({ location }: { location: Location }) {
   );
 
   useEffect(() => {
-    // Wider window: 1 year of history + 90 days forward. We partition
-    // past/future client-side and prefer upcoming when available.
+    // 90 days back + 90 days forward. Tight enough to keep the
+    // banner relevant to the current season; wide enough to catch
+    // both 'just-stocked-last-week' and 'scheduled-for-next-month'.
     return watchStockingWindowByState(location.state, setEvents, {
-      daysBack: 365,
+      daysBack: 90,
       daysForward: 90,
     });
   }, [location.state]);

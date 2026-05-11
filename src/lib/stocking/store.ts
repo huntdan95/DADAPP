@@ -83,7 +83,7 @@ export function watchStockingWindowByState(
   cb: (events: StockingEvent[]) => void,
   opts: { daysBack?: number; daysForward?: number } = {}
 ): () => void {
-  const daysBack = opts.daysBack ?? 365;       // a year of history
+  const daysBack = opts.daysBack ?? 90;        // ~one season of history
   const daysForward = opts.daysForward ?? 90;  // upcoming season
   const startMs = Date.now() - daysBack * 86_400_000;
   const endMs = Date.now() + daysForward * 86_400_000;
