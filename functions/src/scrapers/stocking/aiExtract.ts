@@ -40,6 +40,15 @@ interface StockingExtractInput {
    * instead of asking Claude to scan the entire state generically.
    */
   focusWaters?: string[];
+  /**
+   * Optional direct PDF URL the state publishes (Georgia's weekly
+   * trout-stocking report, for instance). When provided, we fetch
+   * the PDF binary + attach it to the Claude message as a document
+   * block so it can read the report directly. Way more reliable
+   * than web_search guessing — Claude sees the actual document
+   * and parses every row.
+   */
+  directPdfUrl?: string;
 }
 
 const SYSTEM_PROMPT = `You are a fishing-data assistant. Use the web_search tool to find recent SPECIFIC fish stocking events from the given state's DNR / wildlife agency database. Return STRUCTURED JSON only — no prose, no markdown, no commentary.
@@ -119,16 +128,57 @@ export async function aiExtractStocking(
     `'multiple waters' / 'various' summaries.` +
     focusList;
 
+  // Build the user message content. Default: text-only with
+  // web_search tool. When a PDF URL is supplied, fetch the bytes
+  // and attach as a document block so Claude reads the report
+  // directly (no web_search guessing).
+  const userContent: Anthropic.Messages.ContentBlockParam[] = [];
+  let docFetchNote: string | null = null;
+  if (input.directPdfUrl) {
+    try {
+      const pdfRes = await fetch(input.directPdfUrl, {
+        headers: { Accept: 'application/pdf' },
+      });
+      if (!pdfRes.ok) {
+        throw new Error(`HTTP ${pdfRes.status}`);
+      }
+      const buf = Buffer.from(await pdfRes.arrayBuffer());
+      const data = buf.toString('base64');
+      userContent.push({
+        type: 'document',
+        source: {
+          type: 'base64',
+          media_type: 'application/pdf',
+          data,
+        },
+      });
+      docFetchNote = `Attached PDF from ${input.directPdfUrl} (${buf.length} bytes).`;
+    } catch (e) {
+      logger.warn('aiExtractStocking.pdf_fetch_failed', {
+        url: input.directPdfUrl,
+        error: String(e),
+      });
+      docFetchNote = `Could not attach PDF (${String(e)}); falling back to web search.`;
+    }
+  }
+  userContent.push({
+    type: 'text',
+    text: docFetchNote
+      ? `${docFetchNote}\n\n${userMessage}`
+      : userMessage,
+  });
+
   let response: Anthropic.Messages.Message;
   try {
     response = await anthropic().messages.create({
-      // Sonnet is fast + cheap enough for this. Output is small (~1KB
-      // of JSON max). Web search is the long pole here.
       model: 'claude-sonnet-4-6',
       max_tokens: 4000,
       system: SYSTEM_PROMPT,
+      // Web search stays available as a backup. When a PDF is
+      // attached Claude usually reads it directly without needing
+      // to search.
       tools: [{ type: 'web_search_20260209', name: 'web_search' }],
-      messages: [{ role: 'user', content: userMessage }],
+      messages: [{ role: 'user', content: userContent }],
     });
   } catch (e) {
     logger.error('aiExtractStocking.api_failed', {

@@ -78,6 +78,20 @@ const STUB_SOURCES: ReadonlySet<StockingSource> = new Set([
 ]);
 
 /**
+ * Per-source direct PDF URLs. When provided, the AI extractor
+ * downloads the PDF and attaches it to Claude's message as a
+ * document block — way more reliable than asking Claude to find
+ * and parse the same PDF via web_search.
+ *
+ * Add a new entry when a state DNR publishes its stocking data as a
+ * stable, single-URL PDF (e.g., GA's Weekly_Stocking_Report.pdf).
+ */
+const SOURCE_PDF_URLS: Partial<Record<StockingSource, string>> = {
+  'ga-dnr':
+    'https://georgiawildlife.com/sites/default/files/wrd/pdf/trout/Weekly_Stocking_Report.pdf',
+};
+
+/**
  * Map source code → USPS state for AI-extraction fallback. When the
  * HTML scraper returns 0 records, the orchestrator falls through to
  * Claude w/ web_search using the matching state name. Stub sources
@@ -204,10 +218,12 @@ async function runAll(): Promise<{
           }
         } else {
           const focusWaters = FOCUS_WATERS[state];
+          const directPdfUrl = SOURCE_PDF_URLS[source];
           logger.info('stocking.ai.fallback', {
             source,
             state,
             focusWaterCount: focusWaters?.length ?? 0,
+            directPdfUrl: directPdfUrl ?? null,
           });
           try {
             const ai = await aiExtractStocking({
@@ -215,6 +231,7 @@ async function runAll(): Promise<{
               source,
               lookbackDays: 90,
               focusWaters,
+              directPdfUrl,
             });
             if (ai.events.length > 0) {
               records = ai.events;
