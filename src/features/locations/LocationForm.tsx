@@ -200,6 +200,12 @@ export function LocationForm({
   const [knownLake, setKnownLake] = useState<KnownLakeMatch | null>(null);
 
   const [error, setError] = useState<string | null>(null);
+  /**
+   * True while the parent's `onSave` (a Firestore upsert) is in flight.
+   * Disables the Save button and shows a spinner so the user can see
+   * something is happening instead of staring at an unresponsive form.
+   */
+  const [saving, setSaving] = useState(false);
   const [autoFilling, setAutoFilling] = useState(false);
   const [autoStatus, setAutoStatus] = useState<string | null>(null);
   const [locating, setLocating] = useState(false);
@@ -489,13 +495,29 @@ export function LocationForm({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lat, lng]);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setError(null);
     if (!name.trim()) return setError('Name is required');
     if (lat == null || lng == null) return setError('Drop a pin on the map');
 
-    const flow = makeFlowProvider(flowKind, flowSiteId.trim());
-    const damSchedule = makeDamProvider(damKind, damName.trim(), flowSiteId.trim());
+    // Stillwater types: drop any stale flow / dam picks from a prior
+    // auto-detect on a river. These fields are irrelevant for lakes
+    // and would otherwise trip validation ("Auto dam status needs a
+    // USGS flow gauge") on a spot whose Type was switched to lake
+    // after the auto-detect already chose a tailwater config.
+    const isStillwater =
+      type === 'lake' ||
+      type === 'reservoir' ||
+      type === 'pond' ||
+      type === 'great_lakes';
+
+    const flow = isStillwater
+      ? null
+      : makeFlowProvider(flowKind, flowSiteId.trim());
+    const damSchedule = isStillwater
+      ? null
+      : makeDamProvider(damKind, damName.trim(), flowSiteId.trim());
     // Save tides whenever a station is entered, regardless of water
     // type. Lots of brackish / tidal-creek spots aren't strictly
     // "saltwater" but the tide is the dominant signal.
@@ -504,11 +526,17 @@ export function LocationForm({
       : null;
     const lakeData = makeLakeProvider(lakeKind, lakeId.trim());
 
-    if (flowKind && flow == null) return setError('Flow site ID is required');
-    if ((damKind === 'tva' || damKind === 'consumers-energy') && !damName)
-      return setError('Dam name is required');
-    if (damKind === 'auto' && (!flow || flow.kind !== 'usgs'))
-      return setError('Auto dam status needs a USGS flow gauge — pick one above');
+    // Validation only applies to non-stillwater spots — dam / flow
+    // are skipped for lakes.
+    if (!isStillwater) {
+      if (flowKind && flow == null) return setError('Flow site ID is required');
+      if ((damKind === 'tva' || damKind === 'consumers-energy') && !damName)
+        return setError('Dam name is required');
+      if (damKind === 'auto' && (!flow || flow.kind !== 'usgs'))
+        return setError(
+          'Auto dam status needs a USGS flow gauge — pick one above'
+        );
+    }
 
     const loc: Location = {
       id: initial?.id ?? slugify(name),
@@ -529,7 +557,18 @@ export function LocationForm({
         ...(lakeData ? { lakeData } : {}),
       },
     };
-    onSave(loc);
+
+    // Wrap the parent's save in try/catch so Firestore-rule denials,
+    // network errors, or any other failure mode lands in front of
+    // the user instead of silently swallowing.
+    setSaving(true);
+    try {
+      await onSave(loc);
+    } catch (e) {
+      setError(friendlyError(e));
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
@@ -1067,7 +1106,16 @@ export function LocationForm({
         <Button type="button" variant="secondary" onClick={onCancel}>
           Cancel
         </Button>
-        <Button type="submit">Save</Button>
+        <Button type="submit" disabled={saving}>
+          {saving ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin" />
+              Saving…
+            </>
+          ) : (
+            'Save'
+          )}
+        </Button>
       </div>
     </form>
   );
