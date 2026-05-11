@@ -24,6 +24,7 @@ const SERVICES = [
   'identifyspecies',
   'analyzephoto',
   'seedboatlaunchescallable',
+  'triggerstockingscrape',
 ];
 
 (async () => {
