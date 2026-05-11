@@ -55,6 +55,44 @@ export const KY_WATERBODIES: Waterbody[] = [
       'Tailwater extends ~75 miles from Wolf Creek Dam to Burkesville. Trophy brown trout fishery. Generation = no wading. Check USACE schedule.',
   },
   {
+    id: 'ky-licking-river-tailwater',
+    name: 'Licking River (below Cave Run Dam)',
+    aliases: ['Cave Run Tailwater', 'Licking River Tailwater'],
+    states: ['KY'],
+    type: 'tailwater',
+    bbox: [38.05, -83.65, 38.20, -83.45],
+    centroid: { lat: 38.12, lng: -83.55 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      flow: { kind: 'usgs', siteId: '03249500' },
+      // Cave Run Dam (USACE) — auto-infer from downstream gauge.
+      damSchedule: { kind: 'auto', flowSiteId: '03249500' },
+    },
+    species: ['Rainbow Trout', 'Brown Trout', 'Muskie', 'Smallmouth Bass'],
+    hatchTags: ['caddis', 'sulfur', 'midge', 'bwo'],
+    accessNotes:
+      'Cave Run Dam → KY DFWR stocks rainbows + browns. Coldwater for ~5 miles below the dam in summer. Muskie + smallmouth lower on the river.',
+  },
+  {
+    id: 'ky-obey-river-tailwater',
+    name: 'Obey River (below Dale Hollow Dam)',
+    aliases: ['Dale Hollow Tailwater', 'Obey River'],
+    states: ['TN', 'KY'],
+    type: 'tailwater',
+    bbox: [36.52, -85.45, 36.62, -85.10],
+    centroid: { lat: 36.57, lng: -85.30 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      flow: { kind: 'usgs', siteId: '03414000' },
+      // Dale Hollow Dam (USACE) — auto-infer.
+      damSchedule: { kind: 'auto', flowSiteId: '03414000' },
+    },
+    species: ['Rainbow Trout', 'Brown Trout', 'Walleye', 'Smallmouth Bass'],
+    hatchTags: ['midge', 'sulfur', 'caddis', 'bwo'],
+    accessNotes:
+      'Cold tailwater below Dale Hollow Dam. Wading windows tight; check USACE generation schedule. Browns to 10+ lb caught annually.',
+  },
+  {
     id: 'ky-cave-run-lake',
     name: 'Cave Run Lake',
     states: ['KY'],

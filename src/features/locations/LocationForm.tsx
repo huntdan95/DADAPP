@@ -1142,7 +1142,15 @@ export function LocationForm({
                 label="Dam schedule"
                 hint={
                   damKind === 'auto'
-                    ? 'Status derived from your flow gauge — no setup'
+                    ? flowKind === 'usgs' && flowSiteId.trim()
+                      ? `Auto-inferring generation from USGS ${flowSiteId.trim()} (rising flow = generation, steady = closed).`
+                      : 'Set a USGS flow source above so Auto has a gauge to read from.'
+                    : damKind === 'tva'
+                    ? 'TVA publishes hourly schedules — scraped from tva.com.'
+                    : damKind === 'consumers-energy'
+                    ? 'Consumers Energy has no public schedule feed. Prefer Auto from a USGS gauge below the dam.'
+                    : damKind === 'usace'
+                    ? 'USACE has no integrated scraper yet — enter generation manually, or prefer Auto from a USGS gauge.'
                     : undefined
                 }
               >
@@ -1153,7 +1161,7 @@ export function LocationForm({
                   <option value="">none</option>
                   <option value="auto">Auto (from flow gauge)</option>
                   <option value="manual">Manual entry</option>
-                  <option value="tva">TVA (manual)</option>
+                  <option value="tva">TVA (scraped)</option>
                   <option value="usace">USACE (manual)</option>
                   <option value="consumers-energy">
                     Consumers Energy (manual)

@@ -1256,7 +1256,10 @@ export const MI_WATERBODIES: Waterbody[] = [
     dataProviders: {
       weather: { kind: 'open-meteo' },
       flow: { kind: 'usgs', siteId: '04125550' },
-      damSchedule: { kind: 'consumers-energy', dam: 'Tippy' },
+      // Tippy is Consumers Energy — no public schedule API. We
+      // infer from the USGS gauge below the dam (rising water =
+      // generation on). More reliable than the stubbed CE scraper.
+      damSchedule: { kind: 'auto', flowSiteId: '04125550' },
     },
     species: [
       'Chinook Salmon',
@@ -1329,6 +1332,27 @@ export const MI_WATERBODIES: Waterbody[] = [
       "Burton's Landing → Wakeley Bridge = flies-only catch-and-release Holy Water. South Branch the most famous Hex hatch in MI. Trico mornings in August. Isolated from salmon-run waters by the Mio + Alcona + Loud + Five Channels + Cooke + Foote dam chain.",
   },
   {
+    id: 'mi-au-sable-mio-tailwater',
+    name: 'Au Sable below Mio Dam (Trophy Water)',
+    aliases: ['Au Sable Trophy Water', 'AuSable Trophy', 'Mio Tailwater'],
+    states: ['MI'],
+    type: 'tailwater',
+    // Mio Dam → McKinley Bridge → Alcona Pond.
+    // Famous trophy-brown stretch managed under special regs.
+    bbox: [44.55, -84.15, 44.70, -83.90],
+    centroid: { lat: 44.63, lng: -84.05 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      flow: { kind: 'usgs', siteId: '04136500' },
+      // Mio Dam (Consumers Energy) — auto-infer from gauge.
+      damSchedule: { kind: 'auto', flowSiteId: '04136500' },
+    },
+    species: ['Brown Trout', 'Rainbow Trout', 'Brook Trout', 'Smallmouth Bass'],
+    hatchTags: ['hex', 'isonychia', 'caddis', 'sulfur', 'bwo'],
+    accessNotes:
+      'Special-regs trophy brown stretch — Mio Dam to McKinley Bridge runs ~12 mi of artificial-only, slot-limit water. Drift the slot pools; streamers at low light. Big browns 24"+ are caught here every season.',
+  },
+  {
     id: 'mi-au-sable-lower',
     name: 'Lower Au Sable (below Foote Dam)',
     aliases: ['Lower AuSable', 'Au Sable Foote'],
@@ -1339,6 +1363,11 @@ export const MI_WATERBODIES: Waterbody[] = [
     dataProviders: {
       weather: { kind: 'open-meteo' },
       flow: { kind: 'usgs', siteId: '04137500' },
+      // Foote Dam is Consumers Energy. They don't publish a schedule
+      // feed we can scrape, so we infer generation status from the
+      // downstream USGS gauge flow pattern (rising = generation,
+      // steady = closed). The same gauge powers `flow` above.
+      damSchedule: { kind: 'auto', flowSiteId: '04137500' },
     },
     species: [
       'Chinook Salmon',
@@ -1391,6 +1420,8 @@ export const MI_WATERBODIES: Waterbody[] = [
     dataProviders: {
       weather: { kind: 'open-meteo' },
       flow: { kind: 'usgs', siteId: '04121970' },
+      // Croton Dam (Consumers Energy) — auto-infer from gauge.
+      damSchedule: { kind: 'auto', flowSiteId: '04121970' },
     },
     species: [
       'Chinook Salmon',
@@ -1476,6 +1507,8 @@ export const MI_WATERBODIES: Waterbody[] = [
     dataProviders: {
       weather: { kind: 'open-meteo' },
       flow: { kind: 'usgs', siteId: '04122200' },
+      // Hesperia Dam — auto-infer from downstream gauge.
+      damSchedule: { kind: 'auto', flowSiteId: '04122200' },
     },
     species: [
       'Chinook Salmon',
@@ -1692,6 +1725,8 @@ export const MI_WATERBODIES: Waterbody[] = [
     dataProviders: {
       weather: { kind: 'open-meteo' },
       flow: { kind: 'usgs', siteId: '04108660' },
+      // Allegan Dam — auto-infer from downstream gauge.
+      damSchedule: { kind: 'auto', flowSiteId: '04108660' },
     },
     species: [
       'Chinook Salmon',
@@ -1727,6 +1762,8 @@ export const MI_WATERBODIES: Waterbody[] = [
     dataProviders: {
       weather: { kind: 'open-meteo' },
       flow: { kind: 'usgs', siteId: '04101500' },
+      // Berrien Springs Dam (Indiana Michigan Power) — auto-infer.
+      damSchedule: { kind: 'auto', flowSiteId: '04101500' },
     },
     species: [
       'Steelhead',
@@ -1755,12 +1792,14 @@ export const MI_WATERBODIES: Waterbody[] = [
     id: 'mi-grand-river',
     name: 'Grand River',
     states: ['MI'],
-    type: 'freestone',
+    type: 'tailwater',
     bbox: [42.85, -85.80, 43.05, -84.60],
     centroid: { lat: 42.95, lng: -85.20 },
     dataProviders: {
       weather: { kind: 'open-meteo' },
       flow: { kind: 'usgs', siteId: '04119000' },
+      // Sixth Street Dam (downtown Grand Rapids) — auto-infer.
+      damSchedule: { kind: 'auto', flowSiteId: '04119000' },
     },
     species: [
       'Steelhead',
