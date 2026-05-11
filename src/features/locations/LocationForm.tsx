@@ -246,7 +246,11 @@ export function LocationForm({
           nearestTideStations(lat, lng, 3, 50).catch(
             () => [] as NearbyTideStation[]
           ),
-          nearestNdbcStations(lat, lng, 3, 40).catch(
+          // 60-mi radius (vs. 40 for tide stations) — Great-Lakes
+          // shoreline spots like Lake St. Clair sit ~55 mi from the
+          // nearest open-lake buoy, and that buoy's surface temp is
+          // still a meaningful signal even at that range.
+          nearestNdbcStations(lat, lng, 3, 60).catch(
             () => [] as NearbyNdbcStation[]
           ),
         ]);
@@ -267,6 +271,13 @@ export function LocationForm({
         // Heuristic water-type detection. Only override if the user
         // hasn't manually chosen a type yet (typeUserSet stays false
         // until they touch the Type dropdown).
+        //
+        // `effectiveType` mirrors what we're about to setType() to so
+        // the rest of this effect can branch on the just-detected
+        // value. Without it the `stillwater` check below would see
+        // the stale React state (default 'tailwater') for the first
+        // pin drop on a lake and incorrectly auto-bind flow.
+        let effectiveType = type;
         if (!typeUserSet) {
           const inferred = inferWaterType({
             river: geo?.river,
@@ -275,7 +286,10 @@ export function LocationForm({
             lat,
             lng,
           });
-          if (inferred) setType(inferred);
+          if (inferred) {
+            setType(inferred);
+            effectiveType = inferred;
+          }
         }
 
         // Name suggestion — only set if the user hasn't typed yet.
@@ -290,43 +304,59 @@ export function LocationForm({
           );
         }
 
-        if (gauges.length > 0) {
-          const pick = gauges.find((g) => g.hasWaterTemp) ?? gauges[0];
-          setFlowOptions(gauges);
-          if (!flowKind) {
-            setFlowKind('usgs');
-            setFlowSiteId(pick.siteId);
-          }
-          parts.push(`USGS ${pick.siteId}`);
+        // Compute the spot's "water role" once and let downstream
+        // auto-picks branch off it. Stillwater types should default
+        // to lake-data providers, NOT flow — a flow gauge on a creek
+        // 8 mi away is not what a Lake St. Clair pin should pull.
+        const stillwater =
+          effectiveType === 'lake' ||
+          effectiveType === 'reservoir' ||
+          effectiveType === 'pond' ||
+          effectiveType === 'great_lakes';
 
-          // Known-tailwater detection. If the picked gauge is in our
-          // curated lookup (Center Hill / Tippy / Wolf Creek / Bull
-          // Shoals / Flaming Gorge / etc.) we automatically flip the
-          // type to tailwater AND wire up the right dam-schedule
-          // provider. Only applies when the user hasn't manually
-          // overridden these — manual choice is sticky.
+        if (gauges.length > 0) {
+          // Make the gauge list available as a manual picker either
+          // way — the user might want to override.
+          setFlowOptions(gauges);
+
+          const pick = gauges.find((g) => g.hasWaterTemp) ?? gauges[0];
           const known = lookupTailwater(pick.siteId);
-          if (known) {
-            if (!typeUserSet) setType('tailwater');
-            if (damKind === '' || damKind === 'manual') {
-              if (known.authority === 'tva') {
-                setDamKind('tva');
-                setDamName(known.damName);
-              } else if (known.authority === 'consumers-energy') {
-                setDamKind('consumers-energy');
-                setDamName(known.damName);
-              } else {
-                // USACE / reclamation / auto → derive status from
-                // the flow gauge itself.
-                setDamKind('auto');
-              }
+
+          if (!stillwater) {
+            // River-type spots auto-bind flow.
+            if (!flowKind) {
+              setFlowKind('usgs');
+              setFlowSiteId(pick.siteId);
             }
-            parts.push(`${known.damName} tailwater`);
-          } else if (
-            (type === 'tailwater' || (!typeUserSet && geo?.river)) &&
-            (damKind === '' || damKind === 'manual')
-          ) {
-            setDamKind('auto');
+            parts.push(`USGS ${pick.siteId}`);
+
+            // Known-tailwater detection (Center Hill / Tippy / Wolf
+            // Creek / Bull Shoals / Flaming Gorge / etc.). Only fires
+            // on river types — a stillwater pin near a tailwater
+            // gauge shouldn't get flipped to "tailwater".
+            if (known) {
+              if (!typeUserSet) setType('tailwater');
+              if (damKind === '' || damKind === 'manual') {
+                if (known.authority === 'tva') {
+                  setDamKind('tva');
+                  setDamName(known.damName);
+                } else if (known.authority === 'consumers-energy') {
+                  setDamKind('consumers-energy');
+                  setDamName(known.damName);
+                } else {
+                  // USACE / reclamation / auto → derive status from
+                  // the flow gauge itself.
+                  setDamKind('auto');
+                }
+              }
+              parts.push(`${known.damName} tailwater`);
+            } else if (
+              (effectiveType === 'tailwater' ||
+                (!typeUserSet && geo?.river)) &&
+              (damKind === '' || damKind === 'manual')
+            ) {
+              setDamKind('auto');
+            }
           }
         }
 
@@ -336,34 +366,44 @@ export function LocationForm({
           parts.push(`NOAA ${tides[0].stationId}`);
         }
 
-        // Lake-data auto-pick: prefer NDBC for great_lakes / coastal
-        // spots, fall through to a USGS lake gauge for inland
-        // reservoirs / lakes. Only sets the provider when the user
-        // hasn't picked one — manual choices stay sticky.
+        // Lake-data auto-pick. Priority is:
+        //   1. NDBC buoy within 60 mi (real-time surface temp + waves)
+        //   2. USGS lake/river gauge (water temp from 00010)
+        //   3. Nothing — the spot relies on weather forecast only.
+        //
+        // For stillwater types we ALWAYS try one of these — even an
+        // upstream-tributary USGS gauge gives us water temp, which is
+        // the single most-actionable lake signal. For river types we
+        // only auto-bind if there's a buoy (rivers don't need a
+        // second water source).
         if (buoys.length > 0) {
+          // Always surface the picker so the user CAN pick a buoy if
+          // they want, but only auto-bind when the spot's water type
+          // makes lake-data the primary signal. A coastal-NC trout
+          // stream shouldn't get a Lake-Erie buoy stamped on it just
+          // because the buoy fell inside the 60-mi search radius.
           setLakeOptions(buoys);
-          if (!lakeKind) {
+          if (!lakeKind && (stillwater || effectiveType === 'saltwater')) {
             setLakeKind('noaa-buoy');
             setLakeId(buoys[0].stationId);
+            parts.push(`NDBC ${buoys[0].stationId}`);
           }
-          parts.push(`NDBC ${buoys[0].stationId}`);
-        } else if (gauges.length > 0 && !lakeKind) {
-          // No buoy nearby. If the spot's a stillwater type and the
-          // nearest gauge has water temp (likely a reservoir/lake
-          // gauge), wire it as `usgs-lake`. Doesn't conflict with
-          // `flow` — both can coexist on the same gauge id.
-          const stillwater =
-            type === 'lake' ||
-            type === 'reservoir' ||
-            type === 'pond' ||
-            type === 'great_lakes';
-          if (stillwater) {
-            const pick =
-              gauges.find((g) => g.hasWaterTemp) ?? gauges[0];
-            setLakeKind('usgs-lake');
-            setLakeId(pick.siteId);
-            parts.push(`USGS-lake ${pick.siteId}`);
-          }
+        }
+        if (
+          (!lakeKind ||
+            (lakeKind === 'noaa-buoy' && !lakeId)) &&
+          stillwater &&
+          gauges.length > 0 &&
+          buoys.length === 0
+        ) {
+          // No buoy nearby. Bind to the closest gauge that publishes
+          // water temp (or fall back to the absolute-closest gauge).
+          // Doesn't conflict with `flow` — same site id can power
+          // both providers if the user happens to want both later.
+          const pick = gauges.find((g) => g.hasWaterTemp) ?? gauges[0];
+          setLakeKind('usgs-lake');
+          setLakeId(pick.siteId);
+          parts.push(`USGS-lake ${pick.siteId}`);
         }
 
         setAutoStatus(parts.length > 0 ? parts.join(' · ') : null);
@@ -567,176 +607,57 @@ export function LocationForm({
         )}
       </div>
 
-      <div>
-        <div className="text-xs uppercase tracking-wider text-muted mb-1">
-          Providers
-        </div>
-        <div className="grid grid-cols-2 gap-3">
-          <Field label="Flow source">
-            <Select
-              value={flowKind}
-              onChange={(e) => setFlowKind(e.target.value as FlowKind)}
-            >
-              <option value="">none</option>
-              <option value="usgs">USGS</option>
-              <option value="env-canada">Environment Canada</option>
-              <option value="uk-ea">UK EA</option>
-            </Select>
-          </Field>
-          {flowKind && (
-            <Field label="Site/station ID">
-              <Input
-                value={flowSiteId}
-                onChange={(e) => setFlowSiteId(e.target.value)}
-                placeholder={flowKind === 'usgs' ? '03424860' : ''}
-              />
-            </Field>
-          )}
-        </div>
-
-        {flowOptions.length > 0 && (
-          <div className="mt-2">
-            <div className="text-[11px] uppercase tracking-wider text-muted mb-1">
-              Nearby gauges — pick one
-            </div>
-            <div className="flex flex-col gap-1.5">
-              {flowOptions.map((g) => {
-                const selected = flowKind === 'usgs' && flowSiteId === g.siteId;
-                return (
-                  <button
-                    key={g.siteId}
-                    type="button"
-                    onClick={() => {
-                      setFlowKind('usgs');
-                      setFlowSiteId(g.siteId);
-                    }}
-                    className={
-                      'text-left px-3 py-2 rounded-lg border text-xs transition ' +
-                      (selected
-                        ? 'bg-accent/15 border-accent text-text'
-                        : 'bg-surface-2 border-border text-muted hover:border-accent/40')
-                    }
-                  >
-                    <div className="font-medium text-text">{g.name}</div>
-                    <div className="num">
-                      {g.siteId} · {g.distanceMiles.toFixed(1)} mi
-                      {g.hasWaterTemp && ' · water temp ✓'}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        )}
-
-        {(type === 'saltwater' || tideOptions.length > 0) && (
-          <div className="mt-3">
-            <Field
-              label="NOAA tide station ID"
-              hint={
-                type !== 'saltwater'
-                  ? 'Coast is close enough that tide info is meaningful — pick a station or clear to skip'
-                  : undefined
-              }
-            >
-              <Input
-                value={tideStationId}
-                onChange={(e) => setTideStationId(e.target.value)}
-                placeholder="8726520"
-              />
-            </Field>
-            {tideOptions.length > 0 && (
-              <div className="mt-2">
-                <div className="text-[11px] uppercase tracking-wider text-muted mb-1">
-                  Nearby tide stations — pick one
-                </div>
-                <div className="flex flex-col gap-1.5">
-                  {tideOptions.map((s) => {
-                    const selected = tideStationId === s.stationId;
-                    return (
-                      <button
-                        key={s.stationId}
-                        type="button"
-                        onClick={() => setTideStationId(s.stationId)}
-                        className={
-                          'text-left px-3 py-2 rounded-lg border text-xs transition ' +
-                          (selected
-                            ? 'bg-accent/15 border-accent text-text'
-                            : 'bg-surface-2 border-border text-muted hover:border-accent/40')
-                        }
-                      >
-                        <div className="font-medium text-text">{s.name}</div>
-                        <div className="num">
-                          {s.stationId}
-                          {s.state ? ` · ${s.state}` : ''} ·{' '}
-                          {s.distanceMiles.toFixed(1)} mi
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {(type === 'lake' ||
+      {(() => {
+        // Compose provider blocks in an order tuned to the spot's
+        // water type. Stillwater (lake / reservoir / pond / great
+        // lakes) leads with Lake data — that's the actionable signal.
+        // River types lead with Flow. Tides only shows when relevant.
+        const isStillwater =
+          type === 'lake' ||
           type === 'reservoir' ||
           type === 'pond' ||
-          type === 'great_lakes' ||
-          lakeOptions.length > 0 ||
-          lakeKind) && (
-          <div className="mt-3">
+          type === 'great_lakes';
+
+        const flowBlock = (
+          <div key="flow">
             <div className="grid grid-cols-2 gap-3">
-              <Field
-                label="Lake data source"
-                hint={
-                  lakeKind === 'noaa-buoy'
-                    ? 'NDBC buoy — surface temp, waves, wind.'
-                    : lakeKind === 'usgs-lake'
-                    ? 'USGS lake gauge — temp + elevation.'
-                    : undefined
-                }
-              >
+              <Field label="Flow source">
                 <Select
-                  value={lakeKind}
-                  onChange={(e) =>
-                    setLakeKind(
-                      e.target.value as '' | 'noaa-buoy' | 'usgs-lake'
-                    )
-                  }
+                  value={flowKind}
+                  onChange={(e) => setFlowKind(e.target.value as FlowKind)}
                 >
                   <option value="">none</option>
-                  <option value="noaa-buoy">NOAA NDBC buoy</option>
-                  <option value="usgs-lake">USGS lake gauge</option>
+                  <option value="usgs">USGS</option>
+                  <option value="env-canada">Environment Canada</option>
+                  <option value="uk-ea">UK EA</option>
                 </Select>
               </Field>
-              {lakeKind && (
-                <Field label="Station / site ID">
+              {flowKind && (
+                <Field label="Site/station ID">
                   <Input
-                    value={lakeId}
-                    onChange={(e) => setLakeId(e.target.value)}
-                    placeholder={lakeKind === 'noaa-buoy' ? '45007' : '03413000'}
+                    value={flowSiteId}
+                    onChange={(e) => setFlowSiteId(e.target.value)}
+                    placeholder={flowKind === 'usgs' ? '03424860' : ''}
                   />
                 </Field>
               )}
             </div>
-            {lakeOptions.length > 0 && (
+            {flowOptions.length > 0 && (
               <div className="mt-2">
                 <div className="text-[11px] uppercase tracking-wider text-muted mb-1">
-                  Nearby NDBC buoys — pick one
+                  Nearby gauges — pick one
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  {lakeOptions.map((s) => {
+                  {flowOptions.map((g) => {
                     const selected =
-                      lakeKind === 'noaa-buoy' && lakeId === s.stationId;
+                      flowKind === 'usgs' && flowSiteId === g.siteId;
                     return (
                       <button
-                        key={s.stationId}
+                        key={g.siteId}
                         type="button"
                         onClick={() => {
-                          setLakeKind('noaa-buoy');
-                          setLakeId(s.stationId);
+                          setFlowKind('usgs');
+                          setFlowSiteId(g.siteId);
                         }}
                         className={
                           'text-left px-3 py-2 rounded-lg border text-xs transition ' +
@@ -745,10 +666,10 @@ export function LocationForm({
                             : 'bg-surface-2 border-border text-muted hover:border-accent/40')
                         }
                       >
-                        <div className="font-medium text-text">{s.name}</div>
+                        <div className="font-medium text-text">{g.name}</div>
                         <div className="num">
-                          {s.stationId} · {s.distanceMiles.toFixed(1)} mi ·{' '}
-                          {s.region.replace('_', ' ')}
+                          {g.siteId} · {g.distanceMiles.toFixed(1)} mi
+                          {g.hasWaterTemp && ' · water temp ✓'}
                         </div>
                       </button>
                     );
@@ -757,40 +678,248 @@ export function LocationForm({
               </div>
             )}
           </div>
-        )}
+        );
 
-        <div className="grid grid-cols-2 gap-3 mt-3">
-          <Field
-            label="Dam schedule"
-            hint={
-              damKind === 'auto'
-                ? 'Status derived from your flow gauge — no setup'
-                : undefined
-            }
+        const tidesBlock =
+          type === 'saltwater' || tideOptions.length > 0 ? (
+            <div key="tides">
+              <Field
+                label="NOAA tide station ID"
+                hint={
+                  type !== 'saltwater'
+                    ? 'Coast is close enough that tide info is meaningful — pick a station or clear to skip'
+                    : undefined
+                }
+              >
+                <Input
+                  value={tideStationId}
+                  onChange={(e) => setTideStationId(e.target.value)}
+                  placeholder="8726520"
+                />
+              </Field>
+              {tideOptions.length > 0 && (
+                <div className="mt-2">
+                  <div className="text-[11px] uppercase tracking-wider text-muted mb-1">
+                    Nearby tide stations — pick one
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    {tideOptions.map((s) => {
+                      const selected = tideStationId === s.stationId;
+                      return (
+                        <button
+                          key={s.stationId}
+                          type="button"
+                          onClick={() => setTideStationId(s.stationId)}
+                          className={
+                            'text-left px-3 py-2 rounded-lg border text-xs transition ' +
+                            (selected
+                              ? 'bg-accent/15 border-accent text-text'
+                              : 'bg-surface-2 border-border text-muted hover:border-accent/40')
+                          }
+                        >
+                          <div className="font-medium text-text">{s.name}</div>
+                          <div className="num">
+                            {s.stationId}
+                            {s.state ? ` · ${s.state}` : ''} ·{' '}
+                            {s.distanceMiles.toFixed(1)} mi
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : null;
+
+        const lakeBlock =
+          isStillwater || lakeOptions.length > 0 || lakeKind ? (
+            <div key="lake">
+              <div className="grid grid-cols-2 gap-3">
+                <Field
+                  label="Lake data source"
+                  hint={
+                    lakeKind === 'noaa-buoy'
+                      ? 'NDBC buoy — surface temp, waves, wind.'
+                      : lakeKind === 'usgs-lake'
+                      ? 'USGS lake gauge — temp + elevation.'
+                      : isStillwater
+                      ? 'Surface temp + (buoy) waves / (gauge) elevation.'
+                      : undefined
+                  }
+                >
+                  <Select
+                    value={lakeKind}
+                    onChange={(e) =>
+                      setLakeKind(
+                        e.target.value as '' | 'noaa-buoy' | 'usgs-lake'
+                      )
+                    }
+                  >
+                    <option value="">none</option>
+                    <option value="noaa-buoy">NOAA NDBC buoy</option>
+                    <option value="usgs-lake">USGS lake gauge</option>
+                  </Select>
+                </Field>
+                {lakeKind && (
+                  <Field label="Station / site ID">
+                    <Input
+                      value={lakeId}
+                      onChange={(e) => setLakeId(e.target.value)}
+                      placeholder={
+                        lakeKind === 'noaa-buoy' ? '45007' : '03413000'
+                      }
+                    />
+                  </Field>
+                )}
+              </div>
+              {lakeOptions.length > 0 && (
+                <div className="mt-2">
+                  <div className="text-[11px] uppercase tracking-wider text-muted mb-1">
+                    Nearby NDBC buoys — pick one
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    {lakeOptions.map((s) => {
+                      const selected =
+                        lakeKind === 'noaa-buoy' && lakeId === s.stationId;
+                      return (
+                        <button
+                          key={s.stationId}
+                          type="button"
+                          onClick={() => {
+                            setLakeKind('noaa-buoy');
+                            setLakeId(s.stationId);
+                          }}
+                          className={
+                            'text-left px-3 py-2 rounded-lg border text-xs transition ' +
+                            (selected
+                              ? 'bg-accent/15 border-accent text-text'
+                              : 'bg-surface-2 border-border text-muted hover:border-accent/40')
+                          }
+                        >
+                          <div className="font-medium text-text">{s.name}</div>
+                          <div className="num">
+                            {s.stationId} · {s.distanceMiles.toFixed(1)} mi ·{' '}
+                            {s.region.replace('_', ' ')}
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+              {/* When the spot is stillwater and there are nearby
+                  USGS gauges, surface them as a fallback for the lake
+                  picker. Many MI lakes have no buoy within 40 mi but
+                  a tributary USGS gauge gives us water temp — which
+                  is the most-actionable lake signal. */}
+              {isStillwater && lakeOptions.length === 0 && flowOptions.length > 0 && (
+                <div className="mt-2">
+                  <div className="text-[11px] uppercase tracking-wider text-muted mb-1">
+                    Nearby USGS gauges (water temp) — pick one
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    {flowOptions.map((g) => {
+                      const selected =
+                        lakeKind === 'usgs-lake' && lakeId === g.siteId;
+                      return (
+                        <button
+                          key={g.siteId}
+                          type="button"
+                          onClick={() => {
+                            setLakeKind('usgs-lake');
+                            setLakeId(g.siteId);
+                          }}
+                          className={
+                            'text-left px-3 py-2 rounded-lg border text-xs transition ' +
+                            (selected
+                              ? 'bg-accent/15 border-accent text-text'
+                              : 'bg-surface-2 border-border text-muted hover:border-accent/40')
+                          }
+                        >
+                          <div className="font-medium text-text">{g.name}</div>
+                          <div className="num">
+                            {g.siteId} · {g.distanceMiles.toFixed(1)} mi
+                            {g.hasWaterTemp && ' · water temp ✓'}
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : null;
+
+        // For stillwater spots, the Flow source is a secondary
+        // (optional) provider — collapse it behind a <details> so it
+        // doesn't visually dominate. Open by default only if the
+        // user has manually set one.
+        const flowSection = isStillwater ? (
+          <details
+            key="flow-collapsed"
+            open={Boolean(flowKind)}
+            className="rounded-lg border border-border bg-surface-2/40 px-3 py-2"
           >
-            <Select
-              value={damKind}
-              onChange={(e) => setDamKind(e.target.value as DamKind)}
-            >
-              <option value="">none</option>
-              <option value="auto">Auto (from flow gauge)</option>
-              <option value="manual">Manual entry</option>
-              <option value="tva">TVA (manual)</option>
-              <option value="usace">USACE (manual)</option>
-              <option value="consumers-energy">Consumers Energy (manual)</option>
-            </Select>
-          </Field>
-          {(damKind === 'tva' || damKind === 'consumers-energy') && (
-            <Field label="Dam name">
-              <Input
-                value={damName}
-                onChange={(e) => setDamName(e.target.value)}
-                placeholder="Center Hill"
-              />
-            </Field>
-          )}
-        </div>
-      </div>
+            <summary className="text-xs uppercase tracking-wider text-muted cursor-pointer select-none">
+              Flow source (optional for lakes)
+            </summary>
+            <div className="mt-2">{flowBlock}</div>
+          </details>
+        ) : (
+          flowBlock
+        );
+
+        const ordered = isStillwater
+          ? [lakeBlock, tidesBlock, flowSection]
+          : [flowBlock, tidesBlock, lakeBlock];
+
+        return (
+          <div className="flex flex-col gap-3">
+            <div className="text-xs uppercase tracking-wider text-muted">
+              Providers
+            </div>
+            {ordered.filter(Boolean)}
+
+            {/* Dam schedule lives in the same Providers section but
+                is unrelated to the flow/lake/tides re-ordering — keep
+                it pinned at the bottom regardless of water type. */}
+            <div className="grid grid-cols-2 gap-3">
+              <Field
+                label="Dam schedule"
+                hint={
+                  damKind === 'auto'
+                    ? 'Status derived from your flow gauge — no setup'
+                    : undefined
+                }
+              >
+                <Select
+                  value={damKind}
+                  onChange={(e) => setDamKind(e.target.value as DamKind)}
+                >
+                  <option value="">none</option>
+                  <option value="auto">Auto (from flow gauge)</option>
+                  <option value="manual">Manual entry</option>
+                  <option value="tva">TVA (manual)</option>
+                  <option value="usace">USACE (manual)</option>
+                  <option value="consumers-energy">
+                    Consumers Energy (manual)
+                  </option>
+                </Select>
+              </Field>
+              {(damKind === 'tva' || damKind === 'consumers-energy') && (
+                <Field label="Dam name">
+                  <Input
+                    value={damName}
+                    onChange={(e) => setDamName(e.target.value)}
+                    placeholder="Center Hill"
+                  />
+                </Field>
+              )}
+            </div>
+          </div>
+        );
+      })()}
 
       {error && <div className="text-sm text-danger">{error}</div>}
 
