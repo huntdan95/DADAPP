@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { ChevronRight, Fish } from 'lucide-react';
+import { Anchor, ChevronRight, Fish } from 'lucide-react';
 import { CardSection } from '@/components/ui/Card';
 import type { Location } from '@/lib/providers/types';
 import {
@@ -8,6 +8,12 @@ import {
   type SpeciesTactic,
 } from '@/lib/species/store';
 import { BottomSheet } from '@/components/ui/BottomSheet';
+import {
+  estimateTrollingDepth,
+  type TrollingDepthEstimate,
+} from '@/lib/trolling/depthEstimator';
+import { fetchLakeData } from '@/lib/providers';
+import { useAsync } from './useAsync';
 
 /**
  * Species + lure recommendations for water types where insect hatches
@@ -33,6 +39,23 @@ export function SpeciesSection({ location }: { location: Location }) {
   const top = species.slice(0, VISIBLE_COUNT);
   const rest = species.slice(VISIBLE_COUNT);
 
+  // Pull surface water temp for the spot when it has a lakeData
+  // provider — refines the trolling-depth estimate for any species
+  // that has a depth profile. Falls back to seasonal-only when no
+  // lake data is configured (river spots, etc.).
+  const lakeProvider = location.dataProviders.lakeData;
+  const { state: lakeState } = useAsync(
+    () =>
+      lakeProvider
+        ? fetchLakeData(lakeProvider, location)
+        : Promise.resolve(null),
+    [location.id, lakeProvider?.kind]
+  );
+  const surfaceTempF =
+    lakeState.status === 'success' && lakeState.data
+      ? lakeState.data.surfaceTempF
+      : null;
+
   function openSpecies(s: SpeciesEntry) {
     // Close the more-sheet first so we don't have nested portals
     // animating against each other on mobile.
@@ -52,7 +75,12 @@ export function SpeciesSection({ location }: { location: Location }) {
       ) : (
         <div className="flex flex-col gap-2">
           {top.map((s) => (
-            <SpeciesRow key={s.id} species={s} onOpen={() => openSpecies(s)} />
+            <SpeciesRow
+              key={s.id}
+              species={s}
+              depth={depthFor(s, location, surfaceTempF)}
+              onOpen={() => openSpecies(s)}
+            />
           ))}
           {rest.length > 0 && (
             <button
@@ -69,6 +97,7 @@ export function SpeciesSection({ location }: { location: Location }) {
 
       <SpeciesDetailSheet
         species={selected}
+        depth={selected ? depthFor(selected, location, surfaceTempF) : null}
         onClose={() => setSelected(null)}
       />
 
@@ -83,7 +112,12 @@ export function SpeciesSection({ location }: { location: Location }) {
             for tactics + lures.
           </div>
           {rest.map((s) => (
-            <SpeciesRow key={s.id} species={s} onOpen={() => openSpecies(s)} />
+            <SpeciesRow
+              key={s.id}
+              species={s}
+              depth={depthFor(s, location, surfaceTempF)}
+              onOpen={() => openSpecies(s)}
+            />
           ))}
         </div>
       </BottomSheet>
@@ -91,11 +125,33 @@ export function SpeciesSection({ location }: { location: Location }) {
   );
 }
 
+/**
+ * Returns a trolling-depth estimate when the species has a profile
+ * AND at least one of its tactics involves trolling. Skips species
+ * that don't troll (panfish, bass, etc.).
+ */
+function depthFor(
+  s: SpeciesEntry,
+  location: Location,
+  surfaceTempF: number | null
+): TrollingDepthEstimate | null {
+  const trolls = s.tactics.some((t) => t.method === 'troll');
+  if (!trolls) return null;
+  return estimateTrollingDepth({
+    location,
+    speciesId: s.id,
+    speciesName: s.name,
+    surfaceTempF,
+  });
+}
+
 function SpeciesRow({
   species,
+  depth,
   onOpen,
 }: {
   species: SpeciesEntry;
+  depth: TrollingDepthEstimate | null;
   onOpen: () => void;
 }) {
   const flyOrLures = species.tactics
@@ -113,6 +169,15 @@ function SpeciesRow({
           {species.name}
           <ChevronRight className="w-3 h-3 text-muted" />
         </div>
+        {depth && (
+          <span
+            className="inline-flex items-center gap-1 text-[11px] text-info bg-info/10 border border-info/30 rounded-full px-1.5 py-0.5 num shrink-0"
+            title={depth.rationale}
+          >
+            <Anchor className="w-3 h-3" />
+            {depth.depthRangeFt[0]}-{depth.depthRangeFt[1]} ft
+          </span>
+        )}
       </div>
       <div className="text-xs text-muted italic mt-0.5">
         {species.scientific}
@@ -124,9 +189,11 @@ function SpeciesRow({
 
 function SpeciesDetailSheet({
   species,
+  depth,
   onClose,
 }: {
   species: SpeciesEntry | null;
+  depth: TrollingDepthEstimate | null;
   onClose: () => void;
 }) {
   return (
@@ -138,6 +205,7 @@ function SpeciesDetailSheet({
       {species && (
         <div className="flex flex-col gap-4">
           <div className="text-xs italic text-muted">{species.scientific}</div>
+          {depth && <TrollingDepthBlock depth={depth} />}
           {species.seasons.length > 0 && (
             <div>
               <div className="text-[11px] uppercase tracking-wider text-muted mb-1">
@@ -166,6 +234,50 @@ function SpeciesDetailSheet({
         </div>
       )}
     </BottomSheet>
+  );
+}
+
+/**
+ * Trolling depth + thermocline + rationale block. Renders only when
+ * the species has a curated trolling profile AND the spot is a
+ * trolling-relevant water type. Includes a disclosure of HOW the
+ * model works so the user understands "this isn't a live scrape of
+ * fishing reports — it's the consensus from those reports baked into
+ * the seasonal + thermal model."
+ */
+function TrollingDepthBlock({ depth }: { depth: TrollingDepthEstimate }) {
+  const confidenceTone =
+    depth.confidence === 'high'
+      ? 'text-accent'
+      : depth.confidence === 'medium'
+      ? 'text-info'
+      : 'text-muted';
+  return (
+    <div className="rounded-lg bg-info/5 border border-info/30 p-3 flex flex-col gap-2">
+      <div className="flex items-center gap-2">
+        <Anchor className="w-4 h-4 text-info" />
+        <div className="text-sm font-semibold">
+          Trolling depth · {depth.depthRangeFt[0]}-{depth.depthRangeFt[1]} ft
+        </div>
+        <span className={`text-[10px] uppercase tracking-wider ml-auto ${confidenceTone}`}>
+          {depth.confidence}
+        </span>
+      </div>
+      <div className="text-xs text-muted leading-snug">
+        {depth.rationale}
+      </div>
+      {depth.thermoclineFt != null && (
+        <div className="text-[11px] text-muted num">
+          🌡️ Thermocline ~{depth.thermoclineFt} ft — set riggers 5-10 ft
+          above for active fish, right at the boundary for staging.
+        </div>
+      )}
+      <div className="text-[10px] text-muted/80 leading-snug">
+        Estimate from seasonal pattern + species thermal preference,
+        distilled from Great Lakes charter reports + state DNR forecasts.
+        Start here, then trust your sonar.
+      </div>
+    </div>
   );
 }
 
