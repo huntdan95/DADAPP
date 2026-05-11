@@ -44,6 +44,19 @@ interface BriefingInput {
     daysAgo: number;
     notes?: string;
   }>;
+  /**
+   * Stocking events within ~25 mi of this spot in the last 30 days.
+   * Empty array if nothing recent — Claude is told to weave them into
+   * the briefing only when they're actionable ("stocked Friday, hit it
+   * before the truck-chasers find them").
+   */
+  recentStockings?: Array<{
+    daysAgo: number;
+    species: string;
+    count?: number;
+    size?: string;
+    locationName: string;
+  }>;
 }
 
 // ---- client-side cache -----------------------------------------------------
@@ -116,6 +129,13 @@ export async function fetchBriefing(args: {
   damCurrentStatus?: string;
   activeHatches: Hatch[];
   recentCatches: Catch[];
+  recentStockings?: Array<{
+    date: string;          // YYYY-MM-DD
+    species: string;
+    count?: number;
+    size?: string;
+    locationName: string;
+  }>;
   force?: boolean;
 }): Promise<BriefingResponse> {
   const { location, weather, flow, damSchedule, activeHatches, recentCatches } = args;
@@ -164,6 +184,19 @@ export async function fetchBriefing(args: {
         Math.round((now - new Date(c.time).getTime()) / (24 * 3600 * 1000))
       ),
       notes: c.notes,
+    })),
+    recentStockings: (args.recentStockings ?? []).slice(0, 5).map((s) => ({
+      daysAgo: Math.max(
+        0,
+        Math.round(
+          (now - new Date(s.date + 'T12:00:00').getTime()) /
+            (24 * 3600 * 1000)
+        )
+      ),
+      species: s.species,
+      count: s.count,
+      size: s.size,
+      locationName: s.locationName,
     })),
   };
 

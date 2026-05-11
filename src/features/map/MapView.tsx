@@ -9,16 +9,14 @@ import {
 } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { Anchor, Crosshair, Fish, Info, Loader2, Plus } from 'lucide-react';
+import { Anchor, Crosshair, Info, Loader2, Plus } from 'lucide-react';
 import { BASEMAPS, type BasemapKey } from './basemaps';
 import { MapMarker } from './MapMarker';
 import { BoatLaunchLayer } from './BoatLaunchLayer';
 import { BoatLaunchSheet } from './BoatLaunchSheet';
 import { AddLaunchForm } from './AddLaunchForm';
-import { CatchLayer } from './CatchLayer';
 import type { Location } from '@/lib/providers/types';
 import { ConditionsCard } from '@/features/conditions/ConditionsCard';
-import { LogEntryDetail } from '@/features/log/LogEntryDetail';
 import { BottomSheet } from '@/components/ui/BottomSheet';
 import {
   type BoatLaunch,
@@ -27,8 +25,6 @@ import {
   loadBoatLaunchesCached,
 } from '@/lib/boatLaunches/store';
 import { watchUserLaunches } from '@/lib/boatLaunches/userLaunches';
-import { watchLogEntries } from '@/lib/log/store';
-import type { LogEntry } from '@/lib/log/types';
 import { cn } from '@/lib/utils';
 import { friendlyError } from '@/lib/errors';
 
@@ -41,10 +37,6 @@ export function MapView({ locations }: { locations: Location[] }) {
   const [userLaunches, setUserLaunches] = useState<BoatLaunch[]>([]);
   const [addLaunchOpen, setAddLaunchOpen] = useState(false);
   const [launchesLoaded, setLaunchesLoaded] = useState(false);
-  /** Logged catches subscribed live; rendered as the catch heat layer. */
-  const [logEntries, setLogEntries] = useState<LogEntry[]>([]);
-  const [showCatches, setShowCatches] = useState(true);
-  const [selectedEntry, setSelectedEntry] = useState<LogEntry | null>(null);
   const [findingLocation, setFindingLocation] = useState(false);
   const [nearest, setNearest] = useState<{
     user: { lat: number; lng: number };
@@ -108,16 +100,6 @@ export function MapView({ locations }: { locations: Location[] }) {
   // Subscribe to user-added launches. Empty list if signed out.
   useEffect(() => {
     return watchUserLaunches(setUserLaunches);
-  }, []);
-
-  // Subscribe to the user's log entries — fuels the catch heat layer.
-  useEffect(() => {
-    try {
-      return watchLogEntries(setLogEntries);
-    } catch {
-      // Signed-out / no Firebase — no catches to show.
-      return undefined;
-    }
   }, []);
 
   /** Combined list used by the map layer + find-nearest. */
@@ -228,12 +210,6 @@ export function MapView({ locations }: { locations: Location[] }) {
           onLaunchClick={setSelectedLaunch}
         />
 
-        <CatchLayer
-          entries={logEntries}
-          visible={showCatches}
-          onEntryClick={setSelectedEntry}
-        />
-
         {userLocation && (
           <Marker position={[userLocation.lat, userLocation.lng]} icon={youIcon}>
             <Popup>You are here</Popup>
@@ -259,21 +235,6 @@ export function MapView({ locations }: { locations: Location[] }) {
           Launches
           {launchesLoaded && allLaunches.length > 0 ? ` (${allLaunches.length})` : ''}
         </button>
-        {logEntries.some((e) => e.gps) && (
-          <button
-            type="button"
-            onClick={() => setShowCatches((v) => !v)}
-            className={cn(
-              'flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border shadow backdrop-blur',
-              showCatches
-                ? 'bg-accent/15 border-accent/40 text-accent'
-                : 'bg-surface/90 border-border text-muted'
-            )}
-          >
-            <Fish className="w-3.5 h-3.5" />
-            My catches ({logEntries.filter((e) => e.gps).length})
-          </button>
-        )}
         <button
           type="button"
           onClick={findNearest}
@@ -371,18 +332,6 @@ export function MapView({ locations }: { locations: Location[] }) {
         )}
       </BottomSheet>
 
-      <BottomSheet
-        open={selectedEntry != null}
-        onClose={() => setSelectedEntry(null)}
-        title="Log entry"
-      >
-        {selectedEntry && (
-          <LogEntryDetail
-            entry={selectedEntry}
-            onClose={() => setSelectedEntry(null)}
-          />
-        )}
-      </BottomSheet>
     </div>
   );
 }
@@ -454,27 +403,6 @@ function MapLegend({
                 </svg>
               </span>
               Boat launch
-            </li>
-            <li className="flex flex-col gap-0.5">
-              <div className="text-[10px] text-muted/80 uppercase tracking-wider">
-                Your catches
-              </div>
-              <div className="flex items-center gap-1.5 ml-1">
-                <span className="inline-block w-2.5 h-2.5 rounded-full bg-[#4ade80] border border-bg" />
-                <span>This week</span>
-              </div>
-              <div className="flex items-center gap-1.5 ml-1">
-                <span className="inline-block w-2.5 h-2.5 rounded-full bg-[#fbbf24] border border-bg" />
-                <span>This month</span>
-              </div>
-              <div className="flex items-center gap-1.5 ml-1">
-                <span className="inline-block w-2.5 h-2.5 rounded-full bg-[#60a5fa] border border-bg" />
-                <span>Past 6 mo</span>
-              </div>
-              <div className="flex items-center gap-1.5 ml-1">
-                <span className="inline-block w-2.5 h-2.5 rounded-full bg-[#7a857a] border border-bg" />
-                <span>Older</span>
-              </div>
             </li>
             <li className="flex items-center gap-2">
               <span className="inline-block w-3 h-3 rounded-full bg-[#3b82f6] border-2 border-white" />

@@ -9,6 +9,7 @@ import { SpeciesSection } from './SpeciesSection';
 import { TidesSection } from './TidesSection';
 import { TidesSetupPrompt } from './TidesSetupPrompt';
 import { BriefingSection } from './BriefingSection';
+import { StockingBanner } from './StockingBanner';
 import { useAuth } from '@/lib/useAuth';
 import { activeHatchesForLocation } from '@/lib/hatches/store';
 
@@ -54,6 +55,8 @@ export function ConditionsCard({ location }: { location: Location }) {
             .join(' · ')}
         </CardSubtitle>
       </CardHeader>
+
+      <StockingBanner location={location} />
 
       <WeatherSection provider={dataProviders.weather} location={location} />
       {dataProviders.flow && <FlowSection provider={dataProviders.flow} />}

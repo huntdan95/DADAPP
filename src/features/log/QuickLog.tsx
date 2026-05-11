@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import {
   Camera,
+  CloudOff,
   Crosshair,
   Image as ImageIcon,
   Loader2,
@@ -8,6 +9,7 @@ import {
   Sparkles,
   StickyNote,
 } from 'lucide-react';
+import { useOnline } from '@/lib/useOnline';
 import { Button } from '@/components/ui/Button';
 import { Field, Input, Select } from '@/components/ui/Input';
 import type { Location } from '@/lib/providers/types';
@@ -68,6 +70,7 @@ export function QuickLog({
   const [kind, setKind] = useState<LogKind>('catch');
   const [loadingStatus, setLoadingStatus] = useState<string>('Working…');
   const [error, setError] = useState<string | null>(null);
+  const online = useOnline();
   /**
    * Where conditions come from. 'gps' = grab my device GPS and snap
    * weather there (the original behavior). A spot id = use that spot's
@@ -245,7 +248,16 @@ export function QuickLog({
         kind,
         userId: '',         // store fills this in
       };
-      await saveLogEntry(entry);
+      if (online) {
+        await saveLogEntry(entry);
+      } else {
+        // Firestore offline persistence queues the write in IndexedDB
+        // and replays it when the connection returns. Awaiting would
+        // hang forever — fire-and-forget so the user gets immediate
+        // confirmation. The header offline badge tells them why it's
+        // not synced yet.
+        void saveLogEntry(entry).catch(() => undefined);
+      }
       onSaved(entry);
     } catch (e) {
       setError(friendlyError(e));
@@ -277,6 +289,20 @@ export function QuickLog({
           }}
         />
 
+        {!online && (
+          <div className="rounded-xl border border-warn/40 bg-warn/10 p-3 flex items-start gap-2 text-sm">
+            <CloudOff className="w-4 h-4 text-warn mt-0.5 shrink-0" />
+            <div>
+              <div className="text-warn font-medium">You're offline</div>
+              <div className="text-xs text-muted mt-0.5">
+                Notes save locally and will sync when you're back online. Photo
+                logging is paused until you have a connection — use "Note only"
+                for now.
+              </div>
+            </div>
+          </div>
+        )}
+
         <Field label="Conditions from">
           <Select
             value={conditionsSource}
@@ -307,15 +333,25 @@ export function QuickLog({
 
         <BigChoice
           label="Take a photo"
-          hint="Claude will figure out fish or hatch and snap conditions."
+          hint={
+            online
+              ? 'Claude will figure out fish or hatch and snap conditions.'
+              : 'Photo upload requires a connection — try Note only.'
+          }
           icon={Camera}
           onClick={pickFromCamera}
+          disabled={!online}
         />
         <BigChoice
           label="Choose from library"
-          hint="Same as above, but pick an existing photo."
+          hint={
+            online
+              ? 'Same as above, but pick an existing photo.'
+              : 'Photo upload requires a connection — try Note only.'
+          }
           icon={ImageIcon}
           onClick={pickFromLibrary}
+          disabled={!online}
         />
         <BigChoice
           label="Note only"
@@ -601,17 +637,20 @@ function BigChoice({
   hint,
   icon: Icon,
   onClick,
+  disabled,
 }: {
   label: string;
   hint: string;
   icon: React.ComponentType<{ className?: string }>;
   onClick: () => void;
+  disabled?: boolean;
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="flex items-start gap-3 px-4 py-3 rounded-xl border border-border bg-surface-2 hover:border-accent/40 active:scale-[0.99] transition text-left"
+      disabled={disabled}
+      className="flex items-start gap-3 px-4 py-3 rounded-xl border border-border bg-surface-2 hover:border-accent/40 active:scale-[0.99] transition text-left disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-border disabled:active:scale-100"
     >
       <div className="rounded-lg bg-accent/15 p-2 text-accent">
         <Icon className="w-5 h-5" />

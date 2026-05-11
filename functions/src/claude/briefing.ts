@@ -55,6 +55,13 @@ interface BriefingInput {
     daysAgo: number;
     notes?: string;
   }>;
+  recentStockings?: Array<{
+    daysAgo: number;
+    species: string;
+    count?: number;
+    size?: string;
+    locationName: string;
+  }>;
 }
 
 const SYSTEM_PROMPT = `You are a fishing co-pilot. Write a SHORT, USEFUL pre-trip briefing — exactly 3 sentences. No greetings, no sign-off, no preamble.
@@ -101,6 +108,12 @@ Trolling (lakes / Great Lakes / large rivers):
   - Surface temps drive depth: cold = shallow, warm = downriggers.
   - Stinger spoons in chrome/orange when sun is bright; glow/UV at dawn.
   - Speed: walleye 1.2-1.8 mph, trout 2.0-2.8 mph, kings 2.4-3.2 mph.
+
+Recent stocking:
+  - If a stocking happened in the last 3 days, lead with it as the headline opportunity. Stocked fish are dumb and hungry — small spinners, salmon eggs, Powerbait, or a size 12 nymph dropped past them.
+  - Day 1-2 after stocking is peak; by day 7-10 the truck-chasers thin them out and they wise up.
+  - If multiple species stocked, mention the headline (largest count or trophy size).
+  - If stocking is older than 14 days, don't mention it unless other intel is empty.
 
 Last-5 pattern recognition:
   - If recent catches all came on one fly or one method, lean that way unless conditions clearly differ.
@@ -224,6 +237,18 @@ function formatInputs(i: BriefingInput): string {
     }
   } else {
     lines.push('No recent catches logged at this spot.');
+  }
+
+  if (i.recentStockings && i.recentStockings.length > 0) {
+    lines.push('');
+    lines.push('RECENT STOCKING WITHIN ~25 MI:');
+    for (const s of i.recentStockings) {
+      const count = s.count != null ? `${s.count.toLocaleString()} ` : '';
+      const size = s.size ? ` (${s.size})` : '';
+      lines.push(
+        `  ${s.daysAgo}d ago — ${count}${s.species}${size} @ ${s.locationName}`
+      );
+    }
   }
 
   return lines.join('\n');

@@ -28,6 +28,12 @@ service cloud.firestore {
       // also write — fine for now, lock down later if abuse.
       allow read, write: if signedIn();
     }
+    match /stockingEvents/{id} {
+      // Shared stocking intel — any group member can add entries and
+      // everyone reads them. Auto-scrapers (Cloud Functions, admin SDK)
+      // will also write here.
+      allow read, write: if signedIn();
+    }
 
     // Per-user private collections — your trips are yours.
     match /users/{uid}/{document=**} {

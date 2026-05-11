@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
 import {
   Activity,
+  CloudOff,
   Map as MapIcon,
   ListChecks,
   NotebookPen,
@@ -23,6 +24,7 @@ import { useAuth } from '@/lib/useAuth';
 import { signOutCurrent } from '@/lib/firebase';
 import { seedLocations } from '@/seedLocations';
 import { prefetchConditionsForSpots } from '@/lib/prefetch';
+import { useOnline } from '@/lib/useOnline';
 
 // Heavy features are lazy-loaded — Map drags in Leaflet (~150KB), Journal
 // drags in Firebase Storage and image compression. Conditions tab is the
@@ -63,6 +65,7 @@ function TabFallback() {
 
 export default function App() {
   const auth = useAuth();
+  const online = useOnline();
   const [store, setStore] = useState<LocationStore | null>(null);
   const [tab, setTab] = useState<Tab>('conditions');
   const [locations, setLocations] = useState<Location[]>([]);
@@ -157,6 +160,15 @@ export default function App() {
             </p>
           </div>
           <div className="flex items-center gap-1">
+            {!online && (
+              <span
+                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-warn/15 border border-warn/40 text-warn text-[10px] font-medium"
+                title="No network — logs are saved locally and will sync when you're back online."
+              >
+                <CloudOff className="w-3 h-3" />
+                Offline
+              </span>
+            )}
             {tab === 'conditions' && (
               <Button
                 size="icon"

@@ -20,6 +20,10 @@ import {
   readDamSchedule,
   todayLocalDate,
 } from '@/lib/damSchedule/store';
+import {
+  fetchRecentStockingNearLocation,
+  filterStockingForLocation,
+} from '@/lib/stocking/store';
 
 /**
  * "Get briefing" button → calls the Claude-powered briefing Cloud Function
@@ -85,6 +89,13 @@ export function BriefingSection({ location }: { location: Location }) {
 
       const recentCatches = await fetchRecentCatches(location.id);
 
+      // Recent stocking events within ~25 mi — fed into the briefing
+      // context so Claude leads with them when fresh.
+      const stockings = await fetchRecentStockingNearLocation(location, 30).catch(
+        () => []
+      );
+      const relevantStockings = filterStockingForLocation(stockings, location, 25);
+
       const res = await fetchBriefing({
         location,
         weather,
@@ -94,6 +105,13 @@ export function BriefingSection({ location }: { location: Location }) {
         damNextChange: null,
         activeHatches: hatches,
         recentCatches,
+        recentStockings: relevantStockings.map((s) => ({
+          date: s.date,
+          species: s.species,
+          count: s.count,
+          size: s.size,
+          locationName: s.locationName,
+        })),
         force: opts.force,
       });
       setBriefing(res.briefing);
