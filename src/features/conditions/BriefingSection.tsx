@@ -218,31 +218,31 @@ function BriefingCard({
 
   return (
     <div
-      className={`rounded-xl border ${tone.border} ${tone.bg} px-3 py-3 flex flex-col gap-3`}
+      className={`min-w-0 max-w-full rounded-xl border ${tone.border} ${tone.bg} px-3 py-3 flex flex-col gap-3 overflow-hidden`}
     >
       <BiteBadge quality={response.biteQuality} />
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 min-w-0">
         {sentences.map((s, i) => (
           <SentenceLine key={i} index={i} text={s} />
         ))}
       </div>
       {response.citations && response.citations.length > 0 && (
-        <div className="flex flex-col gap-1 pt-1 border-t border-border/50">
+        <div className="flex flex-col gap-1 pt-1 border-t border-border/50 min-w-0">
           <div className="text-[10px] uppercase tracking-wider text-muted">
             Sources cited
           </div>
-          <div className="flex flex-wrap gap-1">
+          <div className="flex flex-wrap gap-1 min-w-0">
             {response.citations.slice(0, 6).map((c) => (
               <a
                 key={c.url}
                 href={c.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-[11px] text-info hover:text-accent underline truncate max-w-[200px]"
+                className="inline-flex items-center gap-1 text-[11px] text-info hover:text-accent underline truncate max-w-[140px]"
                 title={c.title}
               >
                 <ExternalLink className="w-3 h-3 flex-none" />
-                {hostnameOf(c.url)}
+                <span className="truncate">{hostnameOf(c.url)}</span>
               </a>
             ))}
           </div>
@@ -280,14 +280,16 @@ function BiteBadge({ quality }: { quality: BiteQuality | null }) {
   const tone = toneFor(quality);
   const Icon = iconFor(quality);
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 flex-wrap min-w-0">
       <span
-        className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-semibold uppercase tracking-wider ${tone.chipBg} ${tone.chipText}`}
+        className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-semibold uppercase tracking-wider flex-none ${tone.chipBg} ${tone.chipText}`}
       >
         <Icon className="w-3 h-3" />
         {quality}
       </span>
-      <span className="text-[11px] text-muted">{toneFor(quality).blurb}</span>
+      <span className="text-[11px] text-muted min-w-0">
+        {toneFor(quality).blurb}
+      </span>
     </div>
   );
 }
@@ -300,7 +302,7 @@ function BiteBadge({ quality }: { quality: BiteQuality | null }) {
  */
 function SentenceLine({ index, text }: { index: number; text: string }) {
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-2 min-w-0">
       <div
         className={
           'flex-none mt-1.5 w-1.5 h-1.5 rounded-full ' +
@@ -311,7 +313,7 @@ function SentenceLine({ index, text }: { index: number; text: string }) {
             : 'bg-muted/40')
         }
       />
-      <p className="text-sm leading-snug">{text}</p>
+      <p className="text-sm leading-snug min-w-0 break-words">{text}</p>
     </div>
   );
 }

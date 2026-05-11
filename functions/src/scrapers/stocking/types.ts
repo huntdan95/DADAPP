@@ -87,7 +87,14 @@ export interface StockingDoc {
  */
 export interface StockingScrapeDiagnostic {
   source: StockingSource;
-  status: 'ok' | 'empty' | 'fetch_failed' | 'parse_failed' | 'stub';
+  status:
+    | 'ok'
+    | 'empty'
+    | 'fetch_failed'
+    | 'parse_failed'
+    | 'stub'
+    | 'ai_failed'           // AI-fallback call errored (Anthropic API issue)
+    | 'ai_credits_low';     // explicit "credit balance is too low" 400
   url: string;
   httpStatus?: number;
   bodySnippet?: string;          // first ~240 chars of the page

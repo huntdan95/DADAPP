@@ -36,6 +36,21 @@
     padding-top: env(safe-area-inset-top);
   }
 
+  /* Strip Leaflet's default white background + 1-px gray border off
+     divIcons. The fish marker is a self-contained SVG teardrop — the
+     default styling adds a small rectangular halo behind it that
+     looks "funky" on mobile (especially on satellite basemaps) and
+     also breaks the visual on the search-pin. Apply to anything we
+     style ourselves; Leaflet's default markers (`.leaflet-marker-icon`)
+     are unaffected. */
+  .leaflet-div-icon,
+  .fish-marker,
+  .search-pin {
+    background: transparent !important;
+    border: 0 !important;
+  }
+
+
   /* Indeterminate progress: a one-third-width segment that slides
      from off-screen left to off-screen right and loops. Used by
      <ProgressBar> when no numeric value is provided. */

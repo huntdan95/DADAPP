@@ -233,9 +233,9 @@ async function runAll(): Promise<{
               focusWaters,
               directPdfUrl,
             });
+            const idx = diagnostics.findIndex((d) => d.source === source);
             if (ai.events.length > 0) {
               records = ai.events;
-              const idx = diagnostics.findIndex((d) => d.source === source);
               if (idx >= 0) {
                 diagnostics[idx] = {
                   ...diagnostics[idx],
@@ -243,6 +243,22 @@ async function runAll(): Promise<{
                   message: `AI-extracted ${ai.events.length} events via web search (focused on ${focusWaters?.length ?? 0} named waters).`,
                 };
               }
+            } else if (ai.apiErrorKind && idx >= 0) {
+              // The AI fallback itself errored — surface a clear,
+              // actionable diagnostic instead of the generic
+              // "parser found 0 rows" message that fired from the
+              // upstream scraper.
+              diagnostics[idx] = {
+                ...diagnostics[idx],
+                status:
+                  ai.apiErrorKind === 'credits_low'
+                    ? 'ai_credits_low'
+                    : 'ai_failed',
+                message:
+                  ai.apiErrorKind === 'credits_low'
+                    ? `Anthropic credit balance is too low — top up at console.anthropic.com to re-enable AI-extracted stocking. (${state})`
+                    : `AI fallback failed for ${state}: ${ai.apiErrorMessage ?? 'unknown API error'}`,
+              };
             }
           } catch (e) {
             logger.error('stocking.ai.fallback_failed', {
@@ -250,6 +266,14 @@ async function runAll(): Promise<{
               state,
               error: String(e),
             });
+            const idx = diagnostics.findIndex((d) => d.source === source);
+            if (idx >= 0) {
+              diagnostics[idx] = {
+                ...diagnostics[idx],
+                status: 'ai_failed',
+                message: `AI fallback threw for ${state}: ${String(e)}`,
+              };
+            }
           }
         }
       }

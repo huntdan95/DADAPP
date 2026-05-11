@@ -103,9 +103,18 @@ The web_search tool is your only research mechanism. Use 2-4 queries maximum, fo
  * Returns the parsed events (possibly empty) and a diagnostic so the
  * orchestrator can log what Claude actually did.
  */
+export interface AiExtractResult {
+  events: StockingScrapeRecord[];
+  rawText: string;
+  /** Set when the API call itself failed. Used by the orchestrator to
+   *  emit a clear diagnostic ('ai_credits_low' vs 'ai_failed'). */
+  apiErrorKind?: 'credits_low' | 'api_error';
+  apiErrorMessage?: string;
+}
+
 export async function aiExtractStocking(
   input: StockingExtractInput
-): Promise<{ events: StockingScrapeRecord[]; rawText: string }> {
+): Promise<AiExtractResult> {
   const lookbackDays = input.lookbackDays ?? 60;
   const focusList =
     input.focusWaters && input.focusWaters.length > 0
@@ -181,11 +190,26 @@ export async function aiExtractStocking(
       messages: [{ role: 'user', content: userContent }],
     });
   } catch (e) {
+    const errStr = String(e);
     logger.error('aiExtractStocking.api_failed', {
       state: input.state,
-      error: String(e),
+      error: errStr,
     });
-    return { events: [], rawText: `API error: ${String(e)}` };
+    // Classify so the orchestrator can surface a clear diagnostic.
+    // Credit-balance failure is the most actionable (the user can
+    // top up at console.anthropic.com); everything else is grouped
+    // as a generic api error.
+    const apiErrorKind: 'credits_low' | 'api_error' =
+      /credit\s*balance\s*is\s*too\s*low/i.test(errStr) ||
+      /insufficient\s*credit/i.test(errStr)
+        ? 'credits_low'
+        : 'api_error';
+    return {
+      events: [],
+      rawText: `API error: ${errStr}`,
+      apiErrorKind,
+      apiErrorMessage: errStr,
+    };
   }
 
   // Pull the text blocks. Claude often emits one big JSON block.

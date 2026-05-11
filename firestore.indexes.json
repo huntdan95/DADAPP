@@ -16,6 +16,22 @@
         { "fieldPath": "kind", "order": "ASCENDING" },
         { "fieldPath": "time", "order": "DESCENDING" }
       ]
+    },
+    {
+      "collectionGroup": "stockingEvents",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "source", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "stockingEvents",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "source", "order": "ASCENDING" },
+        { "fieldPath": "date", "order": "ASCENDING" }
+      ]
     }
   ],
   "fieldOverrides": []

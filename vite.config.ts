@@ -47,6 +47,14 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
         // App-shell route → /index.html for client routing fallback.
         navigateFallback: '/index.html',
+        // New SW takes over immediately on install. Without this iOS
+        // PWAs stay on the old SW until every tab is closed, which on
+        // a home-screen install means "until the user force-quits the
+        // app" — and the user typically never does that, so they sit
+        // on the stale bundle for weeks. Combined with clientsClaim,
+        // the next page load picks up the new bundle automatically.
+        skipWaiting: true,
+        clientsClaim: true,
         // Don't intercept Firebase OAuth + Firestore long-poll endpoints.
         navigateFallbackDenylist: [
           /^\/__\/auth\//,

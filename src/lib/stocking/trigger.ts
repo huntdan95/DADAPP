@@ -15,7 +15,14 @@ export interface StockingScrapeResult {
  */
 export interface StockingScrapeDiagnostic {
   source: string;
-  status: 'ok' | 'empty' | 'fetch_failed' | 'parse_failed' | 'stub';
+  status:
+    | 'ok'
+    | 'empty'
+    | 'fetch_failed'
+    | 'parse_failed'
+    | 'stub'
+    | 'ai_failed'
+    | 'ai_credits_low';
   url: string;
   httpStatus?: number;
   bodySnippet?: string;

@@ -636,6 +636,8 @@ function DiagnosticsPanel({
   diagnostics: StockingScrapeDiagnostic[];
 }) {
   const order: StockingScrapeDiagnostic['status'][] = [
+    'ai_credits_low',
+    'ai_failed',
     'fetch_failed',
     'parse_failed',
     'empty',
@@ -721,6 +723,8 @@ function statusTone(status: StockingScrapeDiagnostic['status']): {
         bg: 'bg-warn/5',
         text: 'text-warn',
       };
+    case 'ai_credits_low':
+    case 'ai_failed':
     case 'fetch_failed':
       return {
         border: 'border-danger/40',
