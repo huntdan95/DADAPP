@@ -10,6 +10,8 @@ import {
   type StockingSource,
 } from './types';
 import { withFetchTrace } from './fetch';
+import { aiExtractStocking } from './aiExtract';
+import { anthropicApiKey } from '../../claude/_shared';
 import { scrape as scrapeTwra } from './twra';
 import { scrape as scrapeGa } from './gaDnr';
 import { scrape as scrapeNc } from './ncWrc';
@@ -73,6 +75,33 @@ const STUB_SOURCES: ReadonlySet<StockingSource> = new Set([
   'fwc',
   'al-dcnr',
 ]);
+
+/**
+ * Map source code → USPS state for AI-extraction fallback. When the
+ * HTML scraper returns 0 records, the orchestrator falls through to
+ * Claude w/ web_search using the matching state name. Stub sources
+ * also fall through (they were stubs precisely because HTML scraping
+ * was too brittle).
+ */
+const SOURCE_TO_STATE: Record<StockingSource, string> = {
+  twra: 'TN',
+  'ga-dnr': 'GA',
+  'nc-wrc': 'NC',
+  'mi-dnr': 'MI',
+  'in-dnr': 'IN',
+  fwc: 'FL',
+  'al-dcnr': 'AL',
+  'ky-dfwr': 'KY',
+  'pa-fbc': 'PA',
+  'mt-fwp': 'MT',
+  'id-fg': 'ID',
+  'co-cpw': 'CO',
+  'ut-dwr': 'UT',
+  'ar-agfc': 'AR',
+  'ok-odwc': 'OK',
+  'ms-mdwfp': 'MS',
+  'il-dnr': 'IL',
+};
 
 interface ScraperResult {
   source: StockingSource;
@@ -145,6 +174,44 @@ async function runAll(): Promise<{
     if (runError) {
       results.push({ source, added: 0, total: 0, error: runError });
       continue;
+    }
+
+    // AI fallback: if the HTML scraper returned 0 records (including
+    // stub sources), ask Claude w/ web_search to find recent stocking
+    // events for the state. This is far more robust than fighting
+    // ASP.NET PostBack pages and brittle table layouts. Cost: ~$0.05
+    // per state per run; bounded by the weekly cron.
+    if (records.length === 0) {
+      const state = SOURCE_TO_STATE[source];
+      if (state) {
+        logger.info('stocking.ai.fallback', { source, state });
+        try {
+          const ai = await aiExtractStocking({
+            state,
+            source,
+            lookbackDays: 90,
+          });
+          if (ai.events.length > 0) {
+            records = ai.events;
+            // Update the diagnostic so the UI shows where the data
+            // actually came from.
+            const idx = diagnostics.findIndex((d) => d.source === source);
+            if (idx >= 0) {
+              diagnostics[idx] = {
+                ...diagnostics[idx],
+                status: 'ok',
+                message: `AI-extracted ${ai.events.length} events via web search.`,
+              };
+            }
+          }
+        } catch (e) {
+          logger.error('stocking.ai.fallback_failed', {
+            source,
+            state,
+            error: String(e),
+          });
+        }
+      }
     }
 
     let added = 0;
@@ -227,7 +294,12 @@ async function runAll(): Promise<{
 }
 
 async function pruneOldAutoEvents(): Promise<void> {
-  const cutoff = new Date(Date.now() - 60 * 24 * 60 * 60 * 1000)
+  // Keep 400 days of history so the StockingBanner's "most recent in
+  // the last 365 days" fallback always has data to fall back to.
+  // Previously we pruned at 60 days, which silently removed last
+  // year's spring + fall stockings before the user could see them
+  // ahead of a return trip.
+  const cutoff = new Date(Date.now() - 400 * 24 * 60 * 60 * 1000)
     .toISOString()
     .slice(0, 10);
   const db = getFirestore();
@@ -285,6 +357,9 @@ export const scrapeStocking = onSchedule(
     region: 'us-central1',
     memory: '512MiB',
     timeoutSeconds: 540,
+    // Anthropic key is needed for the AI-extraction fallback that
+    // fires when an HTML scraper returns 0 records.
+    secrets: [anthropicApiKey],
   },
   async () => {
     const { results, diagnostics } = await runAll();
@@ -303,6 +378,7 @@ export const triggerStockingScrape = onCall(
     memory: '512MiB',
     timeoutSeconds: 540,
     invoker: 'public',
+    secrets: [anthropicApiKey],
   },
   async (request) => {
     if (!request.auth) {

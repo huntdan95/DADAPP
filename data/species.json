@@ -724,18 +724,17 @@
       "MT",
       "ID",
       "UT",
-      "CO"
+      "CO",
+      "NY",
+      "OH",
+      "WI",
+      "MN"
     ],
     "seasons": [
       {
         "startMonth": 1,
-        "endMonth": 5,
-        "label": "Cold water near surface"
-      },
-      {
-        "startMonth": 10,
         "endMonth": 12,
-        "label": "Fall — shallow again"
+        "label": "Year-round — surface Jan-May + Oct-Dec; downriggers 60-130 ft Jun-Sep"
       }
     ],
     "tactics": [
@@ -965,18 +964,16 @@
       "MI",
       "IN",
       "PA",
-      "ID"
+      "ID",
+      "NY",
+      "OH",
+      "WI"
     ],
     "seasons": [
       {
-        "startMonth": 10,
+        "startMonth": 1,
         "endMonth": 12,
-        "label": "Fall run"
-      },
-      {
-        "startMonth": 3,
-        "endMonth": 5,
-        "label": "Spring run + drop-back"
+        "label": "Great Lakes troll summer; fall run Oct-Dec; spring drop-back Mar-May; winter holdovers Jan-Feb"
       }
     ],
     "tactics": [
@@ -1015,13 +1012,16 @@
       "MI",
       "IN",
       "PA",
-      "ID"
+      "ID",
+      "NY",
+      "OH",
+      "WI"
     ],
     "seasons": [
       {
-        "startMonth": 8,
-        "endMonth": 10,
-        "label": "Lake-Michigan run staging Aug → river runs Sep–Oct"
+        "startMonth": 4,
+        "endMonth": 11,
+        "label": "Great Lakes troll Apr–Aug; staging Aug; river runs Sep–Oct; lingering until ice-up"
       }
     ],
     "tactics": [
@@ -1059,13 +1059,16 @@
       "MI",
       "IN",
       "PA",
-      "ID"
+      "ID",
+      "NY",
+      "OH",
+      "WI"
     ],
     "seasons": [
       {
-        "startMonth": 9,
+        "startMonth": 4,
         "endMonth": 11,
-        "label": "Fall river runs Sep–Oct"
+        "label": "Top-of-column Great Lakes troll Apr–Aug; river run Sep–Oct"
       }
     ],
     "tactics": [
@@ -1130,13 +1133,14 @@
     ],
     "states": [
       "MI",
-      "PA"
+      "PA",
+      "NY"
     ],
     "seasons": [
       {
-        "startMonth": 6,
+        "startMonth": 4,
         "endMonth": 10,
-        "label": "St. Marys River run Jul–Sep"
+        "label": "Great Lakes troll Apr–Aug; St. Marys + Boyne River runs Jul–Sep"
       }
     ],
     "tactics": [

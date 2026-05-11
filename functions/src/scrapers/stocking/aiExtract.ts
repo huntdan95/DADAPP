@@ -1,0 +1,246 @@
+import type Anthropic from '@anthropic-ai/sdk';
+import { logger } from 'firebase-functions';
+import { anthropic } from '../../claude/_shared';
+import type { StockingScrapeRecord, StockingSource } from './types';
+
+/**
+ * AI-powered stocking-event extractor.
+ *
+ * Why this exists: the hand-rolled state-DNR scrapers (TWRA, MI DNR,
+ * etc.) keep returning 0 records — most DNRs publish behind ASP.NET
+ * form-based UIs that require POST + ViewState parameters or behind
+ * JS-rendered tables. Pure HTML parsing is brittle and breaks every
+ * time a page layout changes.
+ *
+ * Instead, this module asks Claude (with the built-in web_search
+ * tool) to find recent stocking events for a given state and return
+ * them as structured JSON. Claude can navigate the official DNR
+ * pages, news posts, and fishing-club summaries — whatever indexes
+ * the data — and respond with clean records.
+ *
+ * Cost discipline: this runs weekly per state on a cron. Each call
+ * is one Claude w/ web_search request with a small output_token cap.
+ * Expected: ~$0.05 per state per week → < $1/month even at 17 states.
+ *
+ * Output format: same `StockingScrapeRecord` shape as the legacy
+ * scrapers, so the orchestrator can persist them identically.
+ */
+
+interface StockingExtractInput {
+  state: string;                 // USPS 2-letter code
+  source: StockingSource;        // for the source tag on persisted docs
+  /** Window in days back from today. Defaults to 60 — covers spring +
+   * early-summer trout and salmon stocking when the call fires. */
+  lookbackDays?: number;
+}
+
+const SYSTEM_PROMPT = `You are a fishing-data assistant. Use the web_search tool to find recent fish stocking events from the given state's DNR / wildlife agency database, plus any reputable fishing news that mentions stocking events. Return STRUCTURED JSON only — no prose, no markdown, no commentary.
+
+OUTPUT FORMAT (strict JSON, no other text):
+{
+  "events": [
+    {
+      "date": "YYYY-MM-DD",
+      "species": "Rainbow trout" | "Brown trout" | "Brook trout" | "Lake trout" | "Splake" | "Steelhead" | "King salmon" | "Coho salmon" | "Atlantic salmon" | "Walleye" | "Northern pike" | "Muskellunge" | etc,
+      "water": "Manistee River" | "Lake Cumberland" | etc. (the named body of water),
+      "county": "Kalkaska" | "DeKalb" | etc. (county where the stocking happened, optional),
+      "count": 5000 (integer, optional),
+      "size": "9-11 in" | "fingerlings" (optional),
+      "notes": "Brief context if it adds value, e.g. 'pre-spawn brood stock' or 'hatchery: Wolf Lake'."
+    },
+    ...
+  ]
+}
+
+RULES:
+- Only include events from the requested state.
+- Only include events within the requested lookback window.
+- If you cannot find any verified events for the state, return {"events": []}.
+- Do NOT invent events. If a number / county / size is uncertain, omit that field.
+- Prefer the official state DNR fish-stocking database as the primary source. Cross-check with one secondary source (fishing news, club report) when uncertain.
+- Use the canonical species name (e.g., "Brown trout" not "browns" or "BNT").
+- Date is the date the fish were placed in the water, in ISO format.
+- Return AT MOST 200 events. If there are more, prioritize most-recent.
+
+The web_search tool is your only research mechanism. Use 2-4 queries maximum.`;
+
+/**
+ * Asks Claude to extract recent stocking events for the given state.
+ * Returns the parsed events (possibly empty) and a diagnostic so the
+ * orchestrator can log what Claude actually did.
+ */
+export async function aiExtractStocking(
+  input: StockingExtractInput
+): Promise<{ events: StockingScrapeRecord[]; rawText: string }> {
+  const lookbackDays = input.lookbackDays ?? 60;
+  const userMessage =
+    `Find fish stocking events in ${stateName(input.state)} (${input.state}) ` +
+    `from the last ${lookbackDays} days. ` +
+    `Today is ${new Date().toISOString().slice(0, 10)}. ` +
+    `Search the ${stateName(input.state)} DNR fish stocking database first ` +
+    `(usually at the state DNR website's fishing or hatchery section), ` +
+    `then cross-check with any recent fishing reports.`;
+
+  let response: Anthropic.Messages.Message;
+  try {
+    response = await anthropic().messages.create({
+      // Sonnet is fast + cheap enough for this. Output is small (~1KB
+      // of JSON max). Web search is the long pole here.
+      model: 'claude-sonnet-4-6',
+      max_tokens: 4000,
+      system: SYSTEM_PROMPT,
+      tools: [{ type: 'web_search_20260209', name: 'web_search' }],
+      messages: [{ role: 'user', content: userMessage }],
+    });
+  } catch (e) {
+    logger.error('aiExtractStocking.api_failed', {
+      state: input.state,
+      error: String(e),
+    });
+    return { events: [], rawText: `API error: ${String(e)}` };
+  }
+
+  // Pull the text blocks. Claude often emits one big JSON block.
+  const text = response.content
+    .filter((b): b is Anthropic.Messages.TextBlock => b.type === 'text')
+    .map((b) => b.text)
+    .join('\n')
+    .trim();
+
+  const events = parseEventsJson(text, input.state);
+
+  logger.info('aiExtractStocking.complete', {
+    state: input.state,
+    eventCount: events.length,
+    input_tokens: response.usage.input_tokens,
+    output_tokens: response.usage.output_tokens,
+  });
+
+  return { events, rawText: text };
+}
+
+/**
+ * Extracts the events array from Claude's response. Robust to:
+ *   - Markdown code fences (```json ... ```)
+ *   - Leading prose before the JSON (we look for the first `{` and
+ *     last `}` and parse the span)
+ *   - Empty / malformed responses (returns [])
+ */
+function parseEventsJson(
+  text: string,
+  state: string
+): StockingScrapeRecord[] {
+  if (!text) return [];
+
+  // Strip ```json ... ``` fences if present.
+  let body = text.replace(/```json\s*([\s\S]*?)```/g, '$1');
+  body = body.replace(/```([\s\S]*?)```/g, '$1');
+
+  // Find the first `{` and last `}` to peel off any surrounding prose.
+  const firstBrace = body.indexOf('{');
+  const lastBrace = body.lastIndexOf('}');
+  if (firstBrace < 0 || lastBrace < 0 || lastBrace < firstBrace) {
+    logger.warn('aiExtractStocking.parse.no_json', {
+      state,
+      snippet: text.slice(0, 200),
+    });
+    return [];
+  }
+  const jsonSlice = body.slice(firstBrace, lastBrace + 1);
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(jsonSlice);
+  } catch (e) {
+    logger.warn('aiExtractStocking.parse.invalid_json', {
+      state,
+      error: String(e),
+      snippet: jsonSlice.slice(0, 200),
+    });
+    return [];
+  }
+  if (!parsed || typeof parsed !== 'object' || !('events' in parsed)) {
+    return [];
+  }
+  const raw = (parsed as { events: unknown }).events;
+  if (!Array.isArray(raw)) return [];
+
+  const out: StockingScrapeRecord[] = [];
+  for (const e of raw) {
+    if (!e || typeof e !== 'object') continue;
+    const obj = e as Record<string, unknown>;
+    const date = typeof obj.date === 'string' ? obj.date : null;
+    const species = typeof obj.species === 'string' ? obj.species : null;
+    const water = typeof obj.water === 'string' ? obj.water : null;
+    if (!date || !species || !water) continue;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) continue;
+    const county = typeof obj.county === 'string' ? obj.county : undefined;
+    const count =
+      typeof obj.count === 'number' && Number.isFinite(obj.count)
+        ? obj.count
+        : undefined;
+    const size = typeof obj.size === 'string' ? obj.size : undefined;
+    const notes = typeof obj.notes === 'string' ? obj.notes : undefined;
+    out.push({
+      date,
+      locationName: county ? `${water} (${county} Co.)` : water,
+      state,
+      species: normalizeSpecies(species),
+      count,
+      size,
+      notes: notes ?? 'AI-extracted from state DNR + fishing reports',
+    });
+  }
+  return out;
+}
+
+/** Canonicalize common variations Claude might use. */
+function normalizeSpecies(raw: string): string {
+  const t = raw.trim().toLowerCase();
+  if (!t) return 'Unknown';
+  if (t.includes('rainbow')) return 'Rainbow trout';
+  if (t.includes('brown')) return 'Brown trout';
+  if (t.includes('brook')) return 'Brook trout';
+  if (t.includes('lake trout') || /\blaker\b/.test(t)) return 'Lake trout';
+  if (t.includes('splake')) return 'Splake';
+  if (t.includes('steelhead')) return 'Steelhead';
+  if (t.includes('chinook') || /\bking\b/.test(t)) return 'King salmon';
+  if (t.includes('coho')) return 'Coho salmon';
+  if (t.includes('atlantic salmon')) return 'Atlantic salmon';
+  if (t.includes('walleye')) return 'Walleye';
+  if (t.includes('muskie') || t.includes('muskellunge')) return 'Muskellunge';
+  if (t.includes('northern pike')) return 'Northern pike';
+  if (t.includes('lake sturgeon')) return 'Lake sturgeon';
+  // Title case fallback
+  return raw
+    .trim()
+    .split(/\s+/)
+    .map((w) => (w[0] ? w[0].toUpperCase() + w.slice(1).toLowerCase() : ''))
+    .join(' ');
+}
+
+function stateName(code: string): string {
+  const map: Record<string, string> = {
+    MI: 'Michigan',
+    TN: 'Tennessee',
+    KY: 'Kentucky',
+    NC: 'North Carolina',
+    GA: 'Georgia',
+    FL: 'Florida',
+    AL: 'Alabama',
+    IN: 'Indiana',
+    PA: 'Pennsylvania',
+    MT: 'Montana',
+    ID: 'Idaho',
+    CO: 'Colorado',
+    UT: 'Utah',
+    AR: 'Arkansas',
+    OK: 'Oklahoma',
+    MS: 'Mississippi',
+    IL: 'Illinois',
+    NY: 'New York',
+    OH: 'Ohio',
+    WI: 'Wisconsin',
+  };
+  return map[code.toUpperCase()] ?? code;
+}
