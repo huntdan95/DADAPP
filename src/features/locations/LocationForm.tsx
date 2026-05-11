@@ -38,16 +38,6 @@ import {
   type WaterbodyMatch,
 } from '@/lib/waterbodies/registry';
 
-const WATER_TYPES: WaterType[] = [
-  'tailwater',
-  'freestone',
-  'lake',
-  'pond',
-  'reservoir',
-  'great_lakes',
-  'saltwater',
-];
-
 type FlowKind = '' | 'usgs' | 'env-canada' | 'uk-ea';
 type DamKind = '' | 'tva' | 'usace' | 'consumers-energy' | 'manual' | 'auto';
 
@@ -678,7 +668,7 @@ export function LocationForm({
             placeholder="optional — river, lake, reservoir, etc."
           />
         </Field>
-        <Field label="Type">
+        <Field label="Water type">
           <Select
             value={type}
             onChange={(e) => {
@@ -686,11 +676,19 @@ export function LocationForm({
               setTypeUserSet(true);
             }}
           >
-            {WATER_TYPES.map((t) => (
-              <option key={t} value={t}>
-                {t}
-              </option>
-            ))}
+            <optgroup label="Rivers">
+              <option value="tailwater">Tailwater (below a dam)</option>
+              <option value="freestone">Freestone river</option>
+            </optgroup>
+            <optgroup label="Stillwater">
+              <option value="lake">Lake</option>
+              <option value="reservoir">Reservoir</option>
+              <option value="pond">Pond</option>
+              <option value="great_lakes">Great Lakes</option>
+            </optgroup>
+            <optgroup label="Coastal">
+              <option value="saltwater">Saltwater</option>
+            </optgroup>
           </Select>
         </Field>
       </div>
