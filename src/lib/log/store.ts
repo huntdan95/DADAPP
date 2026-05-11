@@ -107,6 +107,59 @@ export function watchLogEntries(
   });
 }
 
+/**
+ * Most-recent catch at a location, used to pre-fill QuickLog with the
+ * angler's last-known defaults (species, method, fly/lure, trolling
+ * specifics). If `locationId` is omitted or no catches exist at the
+ * spot, falls back to the most recent catch globally — the assumption
+ * being "if I'm logging a catch, I probably want the gear I just used."
+ *
+ * One-shot read (not subscribed) — QuickLog opens, reads, applies.
+ */
+import { query as fsQuery, where, getDocs } from 'firebase/firestore';
+
+export async function fetchLastCatch(
+  locationId?: string
+): Promise<LogEntry | null> {
+  // Per-spot first; fall back to global.
+  const candidates: Array<() => Promise<LogEntry | null>> = [];
+  if (locationId) {
+    candidates.push(() =>
+      readFirst(
+        fsQuery(
+          logsCol(),
+          where('kind', '==', 'catch'),
+          where('locationId', '==', locationId),
+          orderBy('time', 'desc'),
+          fsLimit(1)
+        )
+      )
+    );
+  }
+  candidates.push(() =>
+    readFirst(
+      fsQuery(
+        logsCol(),
+        where('kind', '==', 'catch'),
+        orderBy('time', 'desc'),
+        fsLimit(1)
+      )
+    )
+  );
+
+  for (const run of candidates) {
+    const hit = await run().catch(() => null);
+    if (hit) return hit;
+  }
+  return null;
+}
+
+async function readFirst(q: ReturnType<typeof fsQuery>): Promise<LogEntry | null> {
+  const snap = await getDocs(q);
+  if (snap.empty) return null;
+  return snap.docs[0].data() as LogEntry;
+}
+
 export async function uploadLogPhoto(
   logId: string,
   file: File

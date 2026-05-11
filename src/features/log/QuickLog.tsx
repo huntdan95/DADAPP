@@ -20,6 +20,7 @@ import {
   type LogKind,
 } from '@/lib/log/types';
 import {
+  fetchLastCatch,
   makeThumbnailDataUrl,
   saveLogEntry,
   uploadLogPhoto,
@@ -86,6 +87,20 @@ export function QuickLog({
   // Draft fields — populated by photo analysis + conditions snapshot.
   const [thumb, setThumb] = useState<string | null>(null);
   const [draft, setDraft] = useState<Partial<LogEntry>>({});
+  /**
+   * "Sticky" defaults: the most recent catch at the resolved spot (or
+   * globally if nothing here yet). Used to soft-fill species / method /
+   * fly when the user is logging a similar trip. AI analysis still
+   * wins — the sticky values are only applied if the corresponding
+   * field is still empty after AI runs.
+   */
+  const [lastCatch, setLastCatch] = useState<LogEntry | null>(null);
+  /**
+   * True while Claude vision is running in the background after the
+   * preview screen has already shown. Drives the "AI is still
+   * thinking — fields will update" banner.
+   */
+  const [aiAnalysisPending, setAiAnalysisPending] = useState(false);
 
   const cameraRef = useRef<HTMLInputElement>(null);
   const libraryRef = useRef<HTMLInputElement>(null);
@@ -160,19 +175,28 @@ export function QuickLog({
         });
         const ctx = await resolveConditionsContext();
         const { gps, matchedLoc, snap } = ctx;
+        // Sticky defaults — pre-fill from the most recent catch at this
+        // spot (or globally) so an offline log doesn't start blank.
+        const sticky = await fetchLastCatch(matchedLoc?.id).catch(() => null);
+        setLastCatch(sticky);
         setKind('catch');                                  // best guess; user can change
-        setDraft({
-          id: logId,
-          kind: 'catch',
-          time: new Date().toISOString(),
-          gps: gps ?? undefined,
-          locationId: matchedLoc?.id,
-          locationName: matchedLoc?.name,
-          photoQueued: true,
-          // photoUrl + photoPath get filled in by the drain worker.
-          conditions: snap.conditions,
-          flowReading: snap.flowReading,
-        });
+        setDraft(
+          applyStickyDefaults(
+            {
+              id: logId,
+              kind: 'catch',
+              time: new Date().toISOString(),
+              gps: gps ?? undefined,
+              locationId: matchedLoc?.id,
+              locationName: matchedLoc?.name,
+              photoQueued: true,
+              // photoUrl + photoPath get filled in by the drain worker.
+              conditions: snap.conditions,
+              flowReading: snap.flowReading,
+            },
+            sticky
+          )
+        );
         setPhase('preview');
         return;
       }
@@ -183,56 +207,93 @@ export function QuickLog({
           : 'Uploading + snapping spot conditions…'
       );
 
-      // Run upload + conditions context in parallel.
+      // Run upload + conditions context + last-catch lookup in parallel.
+      // Note: we do NOT block on Claude vision here — that happens in
+      // the background after we show the preview screen. This is the
+      // big logging-speed win: the user sees the photo + conditions
+      // within ~5 seconds (whatever the upload takes) instead of
+      // waiting another 15-25 s for Opus + adaptive thinking to finish.
       const [{ url, path }, ctx] = await Promise.all([
         uploadLogPhoto(logId, file),
         resolveConditionsContext(),
       ]);
 
       const { gps, matchedLoc, snap } = ctx;
+      const sticky = await fetchLastCatch(matchedLoc?.id).catch(() => null);
+      setLastCatch(sticky);
 
-      setLoadingStatus('Analyzing photo…');
-      const analysis = await analyzePhoto({
+      // Default to 'catch' — most photos are. AI may correct this to
+      // hatch / note when it returns; user can also change manually.
+      setKind('catch');
+
+      setDraft(
+        applyStickyDefaults(
+          {
+            id: logId,
+            kind: 'catch',
+            time: new Date().toISOString(),
+            gps: gps ?? undefined,
+            locationId: matchedLoc?.id,
+            locationName: matchedLoc?.name,
+            photoUrl: url,
+            photoPath: path,
+            conditions: snap.conditions,
+            flowReading: snap.flowReading,
+          },
+          sticky
+        )
+      );
+
+      // Show the preview screen NOW — user can start editing while
+      // Claude vision runs.
+      setAiAnalysisPending(true);
+      setPhase('preview');
+
+      // Background AI analysis. When it returns, patch the draft with
+      // species / length / hatch fields. If the user has already
+      // edited those fields by the time AI returns, we skip them so
+      // we don't clobber their typing.
+      analyzePhoto({
         imageUrl: url,
         hintLocation: matchedLoc?.name,
-      }).catch((e) => {
-        console.warn('analyzePhoto failed', e);
-        return null;
-      });
-
-      const inferredKind: LogKind =
-        analysis?.kind === 'insect'
-          ? 'hatch'
-          : analysis?.kind === 'fish'
-          ? 'catch'
-          : 'note';
-      setKind(inferredKind);
-
-      setDraft({
-        id: logId,
-        kind: inferredKind,
-        time: new Date().toISOString(),
-        gps: gps ?? undefined,
-        locationId: matchedLoc?.id,
-        locationName: matchedLoc?.name,
-        photoUrl: url,
-        photoPath: path,
-        species: analysis?.kind === 'fish' ? analysis.species : undefined,
-        speciesConfidence:
-          analysis?.kind === 'fish' ? analysis.confidence : undefined,
-        lengthInches:
-          analysis?.kind === 'fish' && analysis.estimated_length_inches != null
-            ? analysis.estimated_length_inches
-            : undefined,
-        hatchName: analysis?.kind === 'insect' ? analysis.insect_name : undefined,
-        hatchStage:
-          analysis?.kind === 'insect' ? analysis.insect_stage : undefined,
-        notes: analysis?.notes ?? undefined,
-        conditions: snap.conditions,
-        flowReading: snap.flowReading,
-      });
-
-      setPhase('preview');
+      })
+        .then((analysis) => {
+          if (!analysis) return;
+          const inferredKind: LogKind =
+            analysis.kind === 'insect'
+              ? 'hatch'
+              : analysis.kind === 'fish'
+              ? 'catch'
+              : 'note';
+          setKind((prev) => prev /* don't override if user picked already */);
+          // Only override the AI fields, never user-editable text the
+          // user might have already typed.
+          setDraft((prev) => {
+            const next: Partial<LogEntry> = { ...prev };
+            if (inferredKind === 'catch' && analysis.kind === 'fish') {
+              if (!prev.species) next.species = analysis.species;
+              if (!prev.speciesConfidence)
+                next.speciesConfidence = analysis.confidence;
+              if (prev.lengthInches == null && analysis.estimated_length_inches != null) {
+                next.lengthInches = analysis.estimated_length_inches;
+              }
+            }
+            if (inferredKind === 'hatch' && analysis.kind === 'insect') {
+              if (!prev.hatchName) next.hatchName = analysis.insect_name;
+              if (!prev.hatchStage) next.hatchStage = analysis.insect_stage;
+              setKind('hatch');
+            }
+            if (!prev.notes && analysis.notes) next.notes = analysis.notes;
+            return next;
+          });
+        })
+        .catch((e) => {
+          // Don't block the user — they can still save without AI.
+          console.warn('analyzePhoto failed', e);
+        })
+        .finally(() => {
+          setAiAnalysisPending(false);
+        });
     } catch (e) {
       setError(friendlyError(e));
       setPhase('pick');
@@ -249,6 +310,11 @@ export function QuickLog({
     );
     try {
       const { gps, matchedLoc, snap } = await resolveConditionsContext();
+      // Note-only stays 'note' as the kind. The lookup is still useful
+      // so the user can see what they last caught here if they decide
+      // to switch to 'catch'.
+      const sticky = await fetchLastCatch(matchedLoc?.id).catch(() => null);
+      setLastCatch(sticky);
       setKind('note');
       setDraft({
         id: newLogId(),
@@ -265,6 +331,32 @@ export function QuickLog({
       setError(friendlyError(e));
       setPhase('pick');
     }
+  }
+
+  /**
+   * If the draft is a catch and the corresponding fields are empty,
+   * fill them from the most recent catch. AI vision (when it runs)
+   * still overrides these via the late-arriving setDraft patches.
+   * Hatch/note entries are passed through untouched.
+   */
+  function applyStickyDefaults(
+    base: Partial<LogEntry>,
+    last: LogEntry | null
+  ): Partial<LogEntry> {
+    if (!last || base.kind !== 'catch') return base;
+    return {
+      ...base,
+      species: base.species ?? last.species,
+      method: base.method ?? last.method,
+      flyOrLure: base.flyOrLure ?? last.flyOrLure,
+      releasedOrKept: base.releasedOrKept ?? last.releasedOrKept,
+      trollingDepthFt:
+        base.trollingDepthFt ??
+        (last.method === 'troll' ? last.trollingDepthFt : undefined),
+      trollingSpeedMph:
+        base.trollingSpeedMph ??
+        (last.method === 'troll' ? last.trollingSpeedMph : undefined),
+    };
   }
 
   function update<K extends keyof LogEntry>(key: K, value: LogEntry[K] | undefined) {
@@ -439,6 +531,24 @@ export function QuickLog({
           alt="catch"
           className="w-full max-h-64 object-cover rounded-xl border border-border"
         />
+      )}
+
+      {aiAnalysisPending && (
+        <div className="rounded-lg bg-info/10 border border-info/40 px-3 py-2 text-xs flex items-center gap-2">
+          <Loader2 className="w-3.5 h-3.5 animate-spin text-info" />
+          <span>
+            Claude is still analyzing the photo — species + length will
+            update when it lands. You can keep editing and save anytime.
+          </span>
+        </div>
+      )}
+
+      {lastCatch && kind === 'catch' && !aiAnalysisPending && (
+        <div className="text-[11px] text-muted -mb-1">
+          Pre-filled from your last catch
+          {lastCatch.locationName ? ` at ${lastCatch.locationName}` : ''} —
+          edit anything below.
+        </div>
       )}
 
       <Field label="Type">
