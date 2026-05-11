@@ -110,6 +110,28 @@ export interface Waterbody {
   accessNotes?: string;
   /** Curated access points / launches inside this water. */
   primaryAccess?: WaterbodyAccessPoint[];
+  /**
+   * Anadromous-run barriers. Each entry: which species, where their
+   * upstream migration ends, and any seasonal note. Lets the briefing
+   * AI tell anglers things like "salmon run reaches up to Tippy Dam"
+   * without inferring from prose.
+   *
+   * Examples:
+   *   - Big Manistee: Chinook → Tippy Dam (impassable)
+   *   - Muskegon:   Steelhead → Croton Dam
+   *   - Lower Au Sable: Steelhead → Foote Dam
+   *   - Grand: Salmon → Sixth Street Dam (Grand Rapids)
+   */
+  runLimits?: Array<{
+    species: string;
+    /**
+     * Human-readable barrier description — usually a dam name + brief
+     * navigability note. e.g., "Tippy Dam (impassable)" or "Foote Dam".
+     */
+    limit: string;
+    /** Optional seasonal note, e.g. "Peak runs Sept-Nov". */
+    note?: string;
+  }>;
 }
 
 export interface WaterbodyMatch {

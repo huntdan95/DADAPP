@@ -106,6 +106,12 @@ interface BriefingInput {
     name: string;
     species: string[];
     accessNotes?: string;
+    /**
+     * Anadromous-run barriers — where salmon / steelhead runs end on
+     * this water. Lets Claude tell the angler "kings stack at Tippy
+     * Dam in October" instead of inferring from a flow gauge.
+     */
+    runLimits?: Array<{ species: string; limit: string; note?: string }>;
   };
   /**
    * Solunar window data. Major periods bracket lunar transits;
@@ -203,6 +209,13 @@ Stocking:
 
 Waterbody-curated species:
   - When a curated species list is provided for the spot, recommend ONE of those species, not generic "fish." A Lake St. Clair pin should mention smallmouth/muskie/walleye, not generic "bass."
+
+Run barriers (salmon / steelhead rivers):
+  - When a "run limits" list is provided, the spot is ON a river with an anadromous run. Use the listed barrier (e.g. "Tippy Dam") in your tactical recommendation when the timing is right:
+    * Sept-Oct: kings stack BELOW the barrier — recommend skein / spawn / streamers near the dam.
+    * Oct-April: steelhead are present below the barrier — eggs, beads, swung soft-hackles.
+    * March-May: spring steelhead run.
+  - Do NOT recommend salmon / steelhead on a section above the barrier — they cannot physically reach it. If the spot is upstream of the barrier, default to resident trout / smallmouth tactics instead.
 
 Last-5 pattern recognition:
   - Recent catches all on one fly/method → lean that way unless conditions clearly differ.
@@ -329,6 +342,14 @@ function formatInputs(i: BriefingInput): string {
     }
     if (i.waterbody.accessNotes) {
       lines.push(`  Access note: ${i.waterbody.accessNotes}`);
+    }
+    if (i.waterbody.runLimits && i.waterbody.runLimits.length > 0) {
+      lines.push(`  Anadromous run limits:`);
+      for (const r of i.waterbody.runLimits) {
+        lines.push(
+          `    - ${r.species} → ${r.limit}${r.note ? ` (${r.note})` : ''}`
+        );
+      }
     }
   }
 

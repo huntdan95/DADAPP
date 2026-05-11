@@ -89,6 +89,7 @@ interface BriefingInput {
     name: string;
     species: string[];
     accessNotes?: string;
+    runLimits?: Array<{ species: string; limit: string; note?: string }>;
   };
   solunar?: {
     moonPhaseLabel: string;
@@ -226,6 +227,7 @@ export async function fetchBriefing(args: {
         name: wbHit.waterbody.name,
         species: wbHit.waterbody.species ?? [],
         accessNotes: wbHit.waterbody.accessNotes,
+        runLimits: wbHit.waterbody.runLimits,
       }
     : undefined;
 
