@@ -119,6 +119,13 @@ export interface FlowReading {
   flowCfs: number | null;
   gaugeFt: number | null;
   waterTempF: number | null;
+  /**
+   * Per-param timestamp for the water-temp reading. Lets callers detect
+   * a sensor that's been dark for hours even though the gauge still
+   * publishes flow / gauge-height regularly. ISO string when present,
+   * undefined when no temp reading exists at all.
+   */
+  waterTempObservedAt?: string;
   /** Why a value is missing (USGS published a 'no record' or stale flag, etc). */
   notes?: string;
 }

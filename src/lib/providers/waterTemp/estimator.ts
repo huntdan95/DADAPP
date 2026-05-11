@@ -256,7 +256,9 @@ async function calibrateAgainstSameWaterbodyGauge(
 
   // Stage 2: USGS stream gauges with water temp (param 00010). Same-
   // water match for rivers that have a USGS thermistor anywhere on
-  // their length.
+  // their length. usgsFetchFlow now returns the most-recent VALID
+  // reading (walking backwards through 2 days of IV data) so a sensor
+  // that briefly dropped out today still surfaces yesterday's 43°F.
   const streamGauges = await nearestUsgsGauges(lat, lng, 5, 0.6).catch(
     () => []
   );
@@ -268,10 +270,26 @@ async function calibrateAgainstSameWaterbodyGauge(
     const reading = await usgsFetchFlow(gauge.siteId).catch(() => null);
     if (!reading || reading.waterTempF == null) continue;
     if (reading.waterTempF < 30 || reading.waterTempF > 95) continue;
+
+    // Staleness gate: anchor only on readings within 48 hours. Older
+    // than that and the water has had enough time to drift that a
+    // hard anchor would mislead. (The pure-model estimate is still
+    // returned without calibration in that case.)
+    const ageHours = reading.waterTempObservedAt
+      ? (Date.now() - new Date(reading.waterTempObservedAt).getTime()) /
+        3_600_000
+      : 0;
+    if (ageHours > 48) continue;
+
+    // Same distance taper as before; freshness modifier kicks in only
+    // once a reading is meaningfully stale (2+ hours). A reading
+    // taken hours ago is still a strong anchor — water temp moves
+    // slowly — but past 24 h we start to discount.
+    const baseWeight = Math.max(0, 1 - gauge.distanceMiles / 50);
+    const freshness = ageHours <= 2 ? 1 : ageHours <= 24 ? 0.9 : 0.7;
     // Slightly lower weight than a same-water lake gauge — river temps
     // can shift quickly under sun / shade / dam releases.
-    const baseWeight = Math.max(0, 1 - gauge.distanceMiles / 50);
-    const weight = baseWeight * 0.85;
+    const weight = baseWeight * 0.85 * freshness;
     const blended = modeled * (1 - weight) + reading.waterTempF * weight;
     return {
       surfaceTempF: blended,
