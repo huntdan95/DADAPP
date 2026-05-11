@@ -71,25 +71,19 @@ const OVERPASS = 'https://overpass-api.de/api/interpreter';
  * doesn't show up as three pins on top of each other.
  */
 async function fetchStateLaunches(state: string): Promise<BoatLaunch[]> {
-  // Greatly-expanded name-regex sweep. The earlier version missed all
-  // launches named "Burton's Landing", "Stephan Bridge", "Newsom's
-  // Mill", or "Pinkerton Park" — extremely common patterns on MI / TN
-  // rivers where the launch is named after the landmark, not after
-  // the function. This pass adds:
-  //   - "landing" (canoe landing, river landing, named-X landing)
-  //   - "X bridge" patterns (Stephan Bridge, Wakeley Bridge, etc.)
-  //   - "mill / dam / ford" patterns (Newsom's Mill, etc.) — heavy
-  //     correlation with public river access
-  //   - standalone " access" (catches "Smithville Access")
-  //   - "X park" / "park access" (river parks are launch sites)
-  //   - "put in" / "take out" with separators
-  // We accept some false positives (a park name that's nowhere near
-  // water might slip through) but the dedupe + the map's
-  // distance-from-spots context handles most noise.
+  // Focused name-regex: matches the canonical access-point phrasings
+  // anglers use, without the overly-broad "anything ending in
+  // bridge / mill / ford / landing" patterns that the earlier
+  // version included. Those broad ones forced Overpass to scan
+  // every named feature in the state, which timed out for high-
+  // density states (IL, PA, MS) and caused the seed to silently
+  // fail. The named-after-landmark launches (Burton's Landing,
+  // Stephan Bridge, Newsom's Mill, etc.) are now covered by the
+  // curated dataset in curatedLaunches.ts instead.
   const nameRegex =
-    'boat launch|boat ramp|canoe (launch|access|landing)|kayak (launch|access|landing)|river access|fishing access|public access|put.?in|take.?out|landing$|bridge (access|crossing)|.+ landing|.+ bridge$|.+ ford$|.+ mill$|.+ park access| access$| crossing$';
+    'boat (launch|ramp|access)|canoe (launch|access|landing)|kayak (launch|access|landing)|river access|fishing access|public access|water access|put.?in|take.?out|launch (site|area)|access (site|area|point)';
 
-  const query = `[out:json][timeout:240];
+  const query = `[out:json][timeout:120];
 area["ISO3166-2"="US-${state}"][admin_level=4]->.a;
 (
   node["leisure"="slipway"](area.a);
@@ -128,7 +122,16 @@ out center tags;`;
     },
   });
   if (!res.ok) {
-    throw new Error(`Overpass HTTP ${res.status} for ${state}`);
+    // Pull the body so we can see Overpass's actual error message
+    // (rate-limit / timeout / query-too-complex). Most failures
+    // include a useful HTML snippet.
+    const bodySnippet = await res
+      .text()
+      .then((t) => t.slice(0, 240).replace(/\s+/g, ' '))
+      .catch(() => '');
+    throw new Error(
+      `Overpass HTTP ${res.status} for ${state}: ${bodySnippet}`
+    );
   }
   const json = (await res.json()) as {
     elements: Array<{
