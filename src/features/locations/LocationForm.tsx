@@ -33,9 +33,10 @@ import {
 } from '@/lib/geo/nearestNdbcStations';
 import { lookupTailwater } from '@/lib/geo/tailwaterLookup';
 import {
-  lookupKnownLake,
-  type KnownLakeMatch,
-} from '@/lib/geo/knownLakes';
+  lookupWaterbody,
+  type Waterbody,
+  type WaterbodyMatch,
+} from '@/lib/waterbodies/registry';
 
 const WATER_TYPES: WaterType[] = [
   'tailwater',
@@ -192,12 +193,14 @@ export function LocationForm({
   const [usgsLakeOptions, setUsgsLakeOptions] = useState<NearbyLakeSite[]>([]);
   const [lakeOptions, setLakeOptions] = useState<NearbyNdbcStation[]>([]);
   /**
-   * Curated lake hit (Lake St. Clair / Lake Erie / TVA reservoirs /
-   * etc.). When the pin sits inside a known-lake bbox we use this for
-   * the primary data source AND surface the alternative stations in
-   * the picker. Cleared on every fresh pin drop.
+   * Curated waterbody hit (Lake St. Clair / Caney Fork / Lake
+   * Cumberland / etc.). When the pin sits inside a registered
+   * bbox we use the body's `dataProviders` as the primary config
+   * AND surface the alternative lake stations in the picker.
+   * Cleared on every fresh pin drop.
    */
-  const [knownLake, setKnownLake] = useState<KnownLakeMatch | null>(null);
+  const [waterbodyMatch, setWaterbodyMatch] =
+    useState<WaterbodyMatch | null>(null);
 
   const [error, setError] = useState<string | null>(null);
   /**
@@ -335,10 +338,87 @@ export function LocationForm({
           );
         }
 
-        // Compute the spot's "water role" once and let downstream
-        // auto-picks branch off it. Stillwater types should default
-        // to lake-data providers, NOT flow — a flow gauge on a creek
-        // 8 mi away is not what a Lake St. Clair pin should pull.
+        // Tier 0: waterbody registry. Sits ahead of every geometric
+        // proximity tier — if the pin is inside a curated body's
+        // bbox, that body's `dataProviders` config is the source of
+        // truth. Everything below (USGS gauge, NDBC buoy, etc.)
+        // becomes a no-op for any provider the registry has already
+        // pre-bound (via the `if (!flowKind)` / `if (!lakeKind)`
+        // guards downstream).
+        const wbMatch = lookupWaterbody(lat, lng);
+        setWaterbodyMatch(wbMatch);
+        const matched = wbMatch?.waterbody;
+        if (matched) {
+          // Type override + name suggestion. Update effectiveType too
+          // so the stillwater check below sees the registry's verdict
+          // (not a stale `type` state).
+          if (!typeUserSet) {
+            setType(matched.type);
+            effectiveType = matched.type;
+          }
+          if (
+            !river &&
+            matched.type !== 'lake' &&
+            matched.type !== 'great_lakes' &&
+            matched.type !== 'pond' &&
+            matched.type !== 'reservoir' &&
+            matched.type !== 'saltwater'
+          ) {
+            setRiver(matched.name);
+          }
+          parts.push(`🎯 ${matched.name}`);
+
+          // Pre-bind providers from the registry entry.
+          const dp = matched.dataProviders;
+          if (dp?.flow && !flowKind) {
+            if (dp.flow.kind === 'usgs') {
+              setFlowKind('usgs');
+              setFlowSiteId(dp.flow.siteId);
+            } else if (dp.flow.kind === 'env-canada') {
+              setFlowKind('env-canada');
+              setFlowSiteId(dp.flow.stationId);
+            } else if (dp.flow.kind === 'uk-ea') {
+              setFlowKind('uk-ea');
+              setFlowSiteId(dp.flow.stationRef);
+            }
+          }
+          if (dp?.damSchedule && (damKind === '' || damKind === 'manual')) {
+            const ds = dp.damSchedule;
+            if (ds.kind === 'tva') {
+              setDamKind('tva');
+              setDamName(ds.dam);
+            } else if (ds.kind === 'consumers-energy') {
+              setDamKind('consumers-energy');
+              setDamName(ds.dam);
+            } else if (ds.kind === 'auto') {
+              setDamKind('auto');
+            } else if (ds.kind === 'manual') {
+              setDamKind('manual');
+            }
+          }
+          if (dp?.lakeData && !lakeKind) {
+            const ld = dp.lakeData;
+            setLakeKind(ld.kind);
+            const id =
+              ld.kind === 'noaa-buoy'
+                ? ld.stationId
+                : ld.kind === 'noaa-coops'
+                ? ld.stationId
+                : ld.kind === 'usgs-lake'
+                ? ld.siteId
+                : '';
+            setLakeId(id);
+          }
+          if (dp?.tides && !tideStationId) {
+            setTideStationId(dp.tides.stationId);
+          }
+        }
+
+        // Compute the spot's "water role" AFTER the registry has
+        // had a chance to override `effectiveType`. Stillwater types
+        // default to lake-data providers, NOT flow — a flow gauge on
+        // a creek 8 mi away is not what a Lake St. Clair pin should
+        // pull.
         const stillwater =
           effectiveType === 'lake' ||
           effectiveType === 'reservoir' ||
@@ -412,30 +492,15 @@ export function LocationForm({
         //   5. Estimated — air-temp-driven model. Last resort but
         //      always available. Better than nothing for the many
         //      MI / IN inland lakes with no real-time sensor at all.
-        const lakeHit = lookupKnownLake(lat, lng);
-        setKnownLake(lakeHit);
+        // Lake/buoy picker options surface regardless of match —
+        // user can still browse alternatives. The waterbody match
+        // already pre-bound the primary lake-data provider up in
+        // the Tier-0 block above.
         setLakeOptions(buoys);
         setUsgsLakeOptions(lakeSites);
 
         if (stillwater || effectiveType === 'saltwater') {
-          let lakeBound = false;
-
-          // Tier 1: curated known-lake hit.
-          if (lakeHit && !lakeKind) {
-            const primary = lakeHit.primary.provider;
-            setLakeKind(primary.kind);
-            const id =
-              primary.kind === 'noaa-buoy'
-                ? primary.stationId
-                : primary.kind === 'noaa-coops'
-                ? primary.stationId
-                : primary.kind === 'usgs-lake'
-                ? primary.siteId
-                : '';
-            setLakeId(id);
-            parts.push(`${lakeHit.lake.name} → ${id}`);
-            lakeBound = true;
-          }
+          let lakeBound = Boolean(lakeKind);
 
           // Tier 2: USGS lake-type sensor (proper in-lake gauge).
           if (!lakeBound && !lakeKind && lakeSites.length > 0) {
@@ -896,18 +961,20 @@ export function LocationForm({
                   </Field>
                 )}
               </div>
-              {/* Curated known-lake match (Lake St. Clair, Lake
-                  Erie, TVA reservoirs, etc). The primary station is
-                  auto-bound; alternatives surface here for the user
-                  to switch (e.g., upstream water-mass buoy). */}
-              {knownLake && (
-                <div className="mt-2">
-                  <div className="text-[11px] uppercase tracking-wider text-muted mb-1">
-                    {knownLake.lake.name} — stations
-                  </div>
-                  <div className="flex flex-col gap-1.5">
-                    {[knownLake.primary, ...knownLake.alternatives].map(
-                      (s) => {
+              {/* Curated waterbody match — list its primary lake-
+                  data station + any alternates. The primary is
+                  already auto-bound by Tier 0; the alternates let
+                  the user swap (e.g., upstream water-mass buoy for
+                  Lake St. Clair). */}
+              {waterbodyMatch &&
+                (waterbodyMatch.waterbody.dataProviders?.lakeData ||
+                  (waterbodyMatch.waterbody.alternateLakeStations?.length ?? 0) > 0) && (
+                  <div className="mt-2">
+                    <div className="text-[11px] uppercase tracking-wider text-muted mb-1">
+                      {waterbodyMatch.waterbody.name} — stations
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      {buildWaterbodyStations(waterbodyMatch.waterbody).map((s) => {
                         const id =
                           s.provider.kind === 'noaa-buoy'
                             ? s.provider.stationId
@@ -920,7 +987,7 @@ export function LocationForm({
                           lakeKind === s.provider.kind && lakeId === id;
                         return (
                           <button
-                            key={id}
+                            key={`${s.provider.kind}-${id}`}
                             type="button"
                             onClick={() => {
                               setLakeKind(s.provider.kind);
@@ -938,11 +1005,10 @@ export function LocationForm({
                             </div>
                           </button>
                         );
-                      }
-                    )}
+                      })}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
               {/* Nearby USGS lake-type sites (siteType=LK + water
                   temp). These are gauges INSIDE lakes/reservoirs —
                   distinct from the river-gauge "nearby gauges" list
@@ -986,7 +1052,7 @@ export function LocationForm({
               )}
               {/* Nearby NDBC buoys (only when there's no curated hit
                   — for unknown lakes, e.g., MI inland water). */}
-              {!knownLake && lakeOptions.length > 0 && (
+              {!waterbodyMatch && lakeOptions.length > 0 && (
                 <div className="mt-2">
                   <div className="text-[11px] uppercase tracking-wider text-muted mb-1">
                     Nearby NDBC buoys — pick one
@@ -1165,6 +1231,41 @@ function makeFlowProvider(kind: FlowKind, value: string): FlowProvider | null {
   if (kind === 'env-canada') return { kind: 'env-canada', stationId: value };
   if (kind === 'uk-ea') return { kind: 'uk-ea', stationRef: value };
   return null;
+}
+
+/**
+ * Builds the station-picker list for a matched waterbody.
+ * Combines the body's primary `dataProviders.lakeData` (synthesized
+ * label from station id + kind) with any explicitly-declared
+ * alternates.
+ */
+function buildWaterbodyStations(
+  w: Waterbody
+): Array<{ provider: LakeDataProvider; label: string }> {
+  const out: Array<{ provider: LakeDataProvider; label: string }> = [];
+  const primary = w.dataProviders?.lakeData;
+  if (primary) {
+    out.push({
+      provider: primary,
+      label: friendlyLakeLabel(primary, 'primary'),
+    });
+  }
+  for (const alt of w.alternateLakeStations ?? []) {
+    out.push(alt);
+  }
+  return out;
+}
+
+function friendlyLakeLabel(
+  p: LakeDataProvider,
+  tag: 'primary' | 'alternate'
+): string {
+  const prefix = tag === 'primary' ? '✓ ' : '';
+  if (p.kind === 'noaa-buoy') return `${prefix}NDBC ${p.stationId}`;
+  if (p.kind === 'noaa-coops') return `${prefix}CO-OPS ${p.stationId}`;
+  if (p.kind === 'usgs-lake') return `${prefix}USGS-lake ${p.siteId}`;
+  if (p.kind === 'estimated') return `${prefix}Estimated (air-temp model)`;
+  return prefix;
 }
 
 function makeLakeProvider(
