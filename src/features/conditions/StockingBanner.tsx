@@ -40,6 +40,14 @@ export function StockingBanner({ location }: { location: Location }) {
   }, [location.state]);
 
   const nearby = filterStockingForLocation(events, location, 25);
+  // For the debug expand: events in the state window that were
+  // filtered out of `nearby`. Lets the user see what the system
+  // knows about and decide whether a match was missed.
+  const filteredOut = useMemo(
+    () => events.filter((ev) => !nearby.some((m) => m.id === ev.id)),
+    [events, nearby]
+  );
+  const [showAll, setShowAll] = useState(false);
 
   // Partition into upcoming vs historical using the spot's local date
   // as the boundary (handles edge cases where the user is in eastern
@@ -207,6 +215,63 @@ export function StockingBanner({ location }: { location: Location }) {
             status="Pulling state DNRs — usually under a minute"
             variant="info"
           />
+        </div>
+      )}
+
+      {events.length > 0 && (
+        <div className="mx-4 mb-3 -mt-2 flex items-center gap-3 text-[10px] text-muted">
+          <span>
+            {nearby.length} of {events.length} match this spot ·{' '}
+            {events.length - nearby.length} other event
+            {events.length - nearby.length === 1 ? '' : 's'} in{' '}
+            {location.state}
+          </span>
+          {filteredOut.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setShowAll((v) => !v)}
+              className="text-info hover:text-accent transition"
+            >
+              {showAll ? 'Hide' : 'Show all'}
+            </button>
+          )}
+        </div>
+      )}
+
+      {showAll && filteredOut.length > 0 && (
+        <div className="mx-4 mb-3 -mt-1 rounded-lg border border-border bg-surface-2/40 p-2 max-h-64 overflow-y-auto">
+          <div className="text-[10px] text-muted uppercase tracking-wider mb-1">
+            Other {location.state} events ({filteredOut.length})
+          </div>
+          <ul className="flex flex-col gap-1 text-[11px]">
+            {filteredOut.slice(0, 50).map((ev) => (
+              <li key={ev.id} className="flex items-start gap-2">
+                <span className="text-muted num shrink-0">
+                  {formatDate(ev.date, todayLocal)}
+                </span>
+                <span className="flex-1 text-text/80">
+                  {ev.locationName}
+                  <span className="text-muted ml-1">
+                    · {ev.species.toLowerCase()}
+                    {ev.count ? ` × ${ev.count.toLocaleString()}` : ''}
+                    {' · '}
+                    {sourceLabel(ev.source)}
+                  </span>
+                </span>
+              </li>
+            ))}
+            {filteredOut.length > 50 && (
+              <li className="text-[10px] text-muted">
+                + {filteredOut.length - 50} more not shown
+              </li>
+            )}
+          </ul>
+          <div className="text-[10px] text-muted mt-2 leading-relaxed">
+            Not matching means none of the event's name tokens overlap
+            with your spot's body-of-water or county. If you see one
+            here that SHOULD match (e.g. spelling difference), let me
+            know and I'll tune the matcher.
+          </div>
         </div>
       )}
 
