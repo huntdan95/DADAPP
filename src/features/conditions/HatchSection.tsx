@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Bug, ChevronRight } from 'lucide-react';
 import { CardSection } from '@/components/ui/Card';
+import { BottomSheet } from '@/components/ui/BottomSheet';
 import type { Location } from '@/lib/providers/types';
 import { activeHatchesForLocation, hexCountdown, type Hatch } from '@/lib/hatches/store';
 import { fetchFlow } from '@/lib/providers';
@@ -17,6 +18,7 @@ import { HatchDetailSheet } from '@/features/hatches/HatchDetailSheet';
 export function HatchSection({ location }: { location: Location }) {
   const [waterTempF, setWaterTempF] = useState<number | null>(null);
   const [selectedHatch, setSelectedHatch] = useState<Hatch | null>(null);
+  const [moreOpen, setMoreOpen] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -34,6 +36,14 @@ export function HatchSection({ location }: { location: Location }) {
   const hatches = activeHatchesForLocation(location, waterTempF);
   const hex = hexCountdown(location);
   const top = hatches.slice(0, 4);
+  const rest = hatches.slice(4);
+
+  function openHatch(h: Hatch) {
+    // Close the more-sheet first to avoid nested portal stacking on
+    // mobile — same pattern as SpeciesSection.
+    setMoreOpen(false);
+    setSelectedHatch(h);
+  }
 
   return (
     <CardSection label="What's hatching">
@@ -69,13 +79,18 @@ export function HatchSection({ location }: { location: Location }) {
               key={h.id}
               hatch={h}
               waterTempF={waterTempF}
-              onOpen={() => setSelectedHatch(h)}
+              onOpen={() => openHatch(h)}
             />
           ))}
-          {hatches.length > top.length && (
-            <div className="text-xs text-muted">
-              + {hatches.length - top.length} more match the season
-            </div>
+          {rest.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setMoreOpen(true)}
+              className="mt-1 flex items-center justify-between rounded-lg border border-border bg-surface-2/50 hover:bg-surface-2 hover:border-accent/40 px-3 py-2 text-xs text-muted transition active:scale-[0.99]"
+            >
+              <span>+ {rest.length} more hatches in season</span>
+              <ChevronRight className="w-3.5 h-3.5" />
+            </button>
           )}
         </div>
       )}
@@ -84,6 +99,27 @@ export function HatchSection({ location }: { location: Location }) {
         hatch={selectedHatch}
         onClose={() => setSelectedHatch(null)}
       />
+
+      <BottomSheet
+        open={moreOpen}
+        onClose={() => setMoreOpen(false)}
+        title="More hatches in season"
+      >
+        <div className="flex flex-col gap-2">
+          <div className="text-xs text-muted">
+            Lower-priority for this spot right now, but possible. Tap any to
+            see flies + identifying features.
+          </div>
+          {rest.map((h) => (
+            <HatchRow
+              key={h.id}
+              hatch={h}
+              waterTempF={waterTempF}
+              onOpen={() => openHatch(h)}
+            />
+          ))}
+        </div>
+      </BottomSheet>
     </CardSection>
   );
 }

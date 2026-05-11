@@ -391,11 +391,11 @@ export function LocationForm({
       </Field>
 
       <div className="grid grid-cols-2 gap-3">
-        <Field label="River">
+        <Field label="Body of water">
           <Input
             value={river}
             onChange={(e) => setRiver(e.target.value)}
-            placeholder="optional"
+            placeholder="optional — river, lake, reservoir, etc."
           />
         </Field>
         <Field label="Type">
