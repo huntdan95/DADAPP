@@ -27,7 +27,14 @@ export const MODELS = {
   briefing: 'claude-sonnet-4-6',
   parseJournal: 'claude-haiku-4-5',
   patterns: 'claude-sonnet-4-6',
+  // Vision identification — bumped to Opus 4.7 after a channel-catfish was
+  // misidentified as a smallmouth bass on Sonnet 4.6. Opus is markedly
+  // stronger at fine-grained visual differentiation; combined with
+  // adaptive thinking and a feature-checklist prompt it should rarely
+  // confuse families. The legacy `identifySpecies` key still points to
+  // Sonnet for any older code paths; new vision calls use `analyzePhoto`.
   identifySpecies: 'claude-sonnet-4-6',
+  analyzePhoto: 'claude-opus-4-7',
 } as const;
 
 /**
