@@ -22,6 +22,7 @@ import type { Location } from '@/lib/providers/types';
 import { useAuth } from '@/lib/useAuth';
 import { signOutCurrent } from '@/lib/firebase';
 import { seedLocations } from '@/seedLocations';
+import { prefetchConditionsForSpots } from '@/lib/prefetch';
 
 // Heavy features are lazy-loaded — Map drags in Leaflet (~150KB), Journal
 // drags in Firebase Storage and image compression. Conditions tab is the
@@ -105,6 +106,14 @@ export default function App() {
       Promise.all(seedLocations.map((l) => store.upsert(l))).catch(console.error);
     }
   }, [auth.kind, store, hasFirstSnapshot, seeded, locations.length]);
+
+  // Silent background prefetch of conditions for every saved spot when
+  // we're on a fast / Wi-Fi connection. Pre-warms the service-worker
+  // cache so opening the Conditions tab feels instant.
+  useEffect(() => {
+    if (locations.length === 0) return;
+    prefetchConditionsForSpots(locations).catch(() => undefined);
+  }, [locations]);
 
   // Keep the Conditions-tab selection valid as the locations list changes.
   // First load picks the first spot; if the selected spot gets deleted we

@@ -53,6 +53,8 @@ export function LogFeed({
         New log entry
       </Button>
 
+      {entries.length >= 3 && <AskClaude />}
+
       {entries.length === 0 ? (
         <div className="text-center text-muted py-8 text-sm">
           No entries yet. Tap above to log your first catch, hatch, or note.
@@ -95,8 +97,6 @@ export function LogFeed({
           />
         )}
       </BottomSheet>
-
-      <AskClaude />
     </div>
   );
 }
