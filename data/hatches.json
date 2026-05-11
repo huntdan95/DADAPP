@@ -1725,5 +1725,1464 @@
     "searchTerm": "articulated streamer fly brown trout Michigan",
     "wikipediaSlug": null,
     "notes": "Fall pre-spawn brown-trout play. Heavy sink-tip, swing through holes. Lower light + falling temps + recent rain = streamer prime time. Strip-pause-strip."
+  },
+  {
+    "id": "mi-tiny-black-stonefly",
+    "name": "Tiny Black Stonefly (MI)",
+    "scientific": "Allocapnia granulata, Nemouridae sp.",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 1,
+    "endMonth": 5,
+    "waterTempMinF": 38,
+    "waterTempMaxF": 52,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "adult",
+      "nymph"
+    ],
+    "flies": [
+      "Size 16-20 Tiny Black Stonefly adult (Stimulator-style)",
+      "Size 16-20 Tiny Black Stonefly nymph (Pat's rubber-legs)",
+      "Size 16-20 dark stone nymph"
+    ],
+    "searchTerm": "Allocapnia granulata stonefly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch. 12:00-16:00"
+  },
+  {
+    "id": "mi-early-black-stonefly",
+    "name": "Early Black Stonefly (MI)",
+    "scientific": "Taeniopteryx nivalis",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 3,
+    "endMonth": 5,
+    "waterTempMinF": 38,
+    "waterTempMaxF": 52,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "adult",
+      "nymph"
+    ],
+    "flies": [
+      "Size 10-14 Early Black Stonefly adult (Stimulator-style)",
+      "Size 10-14 Early Black Stonefly nymph (Pat's rubber-legs)",
+      "Size 10-14 dark stone nymph"
+    ],
+    "searchTerm": "Taeniopteryx nivalis stonefly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch. 12:00-16:00"
+  },
+  {
+    "id": "mi-early-brown-stonefly",
+    "name": "Early Brown Stonefly (MI)",
+    "scientific": "Brachyptera fasciata",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 3,
+    "endMonth": 5,
+    "waterTempMinF": 38,
+    "waterTempMaxF": 52,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "adult",
+      "nymph"
+    ],
+    "flies": [
+      "Size 12-14 Early Brown Stonefly adult (Stimulator-style)",
+      "Size 12-14 Early Brown Stonefly nymph (Pat's rubber-legs)",
+      "Size 12-14 dark stone nymph"
+    ],
+    "searchTerm": "Brachyptera fasciata stonefly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch. 13:00-19:00"
+  },
+  {
+    "id": "mi-slate-wing-mahogany",
+    "name": "Slate Wing Mahogany / Little Red Quill (MI)",
+    "scientific": "Paraleptophlebia adoptiva",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 4,
+    "endMonth": 7,
+    "waterTempMinF": 42,
+    "waterTempMaxF": 54,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 16-18 Slate Wing Mahogany parachute",
+      "Size 16-18 Slate Wing Mahogany Compara-dun",
+      "Size 16-18 Slate Wing Mahogany cripple",
+      "Size 16-18 Slate Wing Mahogany CDC emerger",
+      "Size 16-18 Slate Wing Mahogany rusty spinner",
+      "Size 16-18 pheasant-tail nymph"
+    ],
+    "searchTerm": "Paraleptophlebia adoptiva mayfly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch. Peak 5/14-5/28. 10:00-16:00"
+  },
+  {
+    "id": "mi-little-black-caddis",
+    "name": "Little Black Caddis (MI)",
+    "scientific": "Chimarra aterrima",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 5,
+    "endMonth": 8,
+    "waterTempMinF": 48,
+    "waterTempMaxF": 60,
+    "timeOfDay": "night",
+    "stages": [
+      "adult",
+      "pupa",
+      "larva"
+    ],
+    "flies": [
+      "Size 16-18 elk-hair caddis",
+      "Size 16-18 LaFontaine emergent sparkle pupa",
+      "Size 16-18 X-caddis",
+      "Size 16-18 caddis larva (green rock-worm)"
+    ],
+    "searchTerm": "Chimarra aterrima caddis fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch. Peak 5/14-5/21. 12:00-22:00"
+  },
+  {
+    "id": "mi-borchers-drake",
+    "name": "Borcher's Drake (MI)",
+    "scientific": "Leptophlebia cupida",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 5,
+    "endMonth": 8,
+    "waterTempMinF": 50,
+    "waterTempMaxF": 60,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 12-14 Borcher's Drake parachute",
+      "Size 12-14 Borcher's Drake Compara-dun",
+      "Size 12-14 Borcher's Drake cripple",
+      "Size 12-14 Borcher's Drake CDC emerger",
+      "Size 12-14 Borcher's Drake rusty spinner",
+      "Size 12-14 pheasant-tail nymph"
+    ],
+    "searchTerm": "Leptophlebia cupida mayfly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch. 10:00-16:00"
+  },
+  {
+    "id": "mi-green-rock-worm",
+    "name": "Green Caddis / Green Rock Worm (MI)",
+    "scientific": "Rhyacophilidae fenestra",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 5,
+    "endMonth": 7,
+    "waterTempMinF": 48,
+    "waterTempMaxF": 60,
+    "timeOfDay": "night",
+    "stages": [
+      "adult",
+      "pupa",
+      "larva"
+    ],
+    "flies": [
+      "Size 10-18 elk-hair caddis",
+      "Size 10-18 LaFontaine emergent sparkle pupa",
+      "Size 10-18 X-caddis",
+      "Size 10-18 caddis larva (green rock-worm)"
+    ],
+    "searchTerm": "Rhyacophilidae fenestra caddis fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch. 14:00-Dark"
+  },
+  {
+    "id": "mi-medium-brown-stonefly",
+    "name": "Medium Brown Stonefly (MI)",
+    "scientific": "Perlodidae isogenus",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 5,
+    "endMonth": 8,
+    "waterTempMinF": 50,
+    "waterTempMaxF": 65,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "adult",
+      "nymph"
+    ],
+    "flies": [
+      "Size 8-14 Medium Brown Stonefly adult (Stimulator-style)",
+      "Size 8-14 Medium Brown Stonefly nymph (Pat's rubber-legs)",
+      "Size 8-14 dark stone nymph"
+    ],
+    "searchTerm": "Perlodidae isogenus stonefly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch. Afternoons"
+  },
+  {
+    "id": "mi-light-hendrickson",
+    "name": "Light Hendrickson (MI)",
+    "scientific": "Ephemerella rotunda",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 5,
+    "endMonth": 7,
+    "waterTempMinF": 50,
+    "waterTempMaxF": 60,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 14-16 Light Hendrickson parachute",
+      "Size 14-16 Light Hendrickson Compara-dun",
+      "Size 14-16 Light Hendrickson cripple",
+      "Size 14-16 Light Hendrickson CDC emerger",
+      "Size 14-16 Light Hendrickson rusty spinner",
+      "Size 14-16 pheasant-tail nymph"
+    ],
+    "searchTerm": "Ephemerella rotunda mayfly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch. 12:00-17:00"
+  },
+  {
+    "id": "mi-giant-stonefly",
+    "name": "Giant Stonefly / Salmonfly (MI)",
+    "scientific": "Pteronarcys dorsata",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 5,
+    "endMonth": 7,
+    "waterTempMinF": 50,
+    "waterTempMaxF": 65,
+    "timeOfDay": "all day",
+    "stages": [
+      "adult",
+      "nymph"
+    ],
+    "flies": [
+      "Size 2-8 Giant Stonefly adult (Stimulator-style)",
+      "Size 2-8 Giant Stonefly nymph (Pat's rubber-legs)",
+      "Size 2-8 dark stone nymph"
+    ],
+    "searchTerm": "Pteronarcys dorsata stonefly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch. Anytime"
+  },
+  {
+    "id": "mi-great-speckled-olive",
+    "name": "Great Speckled Olive Mayfly (MI)",
+    "scientific": "Siphloplecton baslae",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 5,
+    "endMonth": 7,
+    "waterTempMinF": 50,
+    "waterTempMaxF": 60,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 10-14 Great Speckled Olive Mayfly parachute",
+      "Size 10-14 Great Speckled Olive Mayfly Compara-dun",
+      "Size 10-14 Great Speckled Olive Mayfly cripple",
+      "Size 10-14 Great Speckled Olive Mayfly CDC emerger",
+      "Size 10-14 Great Speckled Olive Mayfly rusty spinner",
+      "Size 10-14 pheasant-tail nymph"
+    ],
+    "searchTerm": "Siphloplecton baslae mayfly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch. 12:00-17:00"
+  },
+  {
+    "id": "mi-true-hendrickson",
+    "name": "True Hendrickson (MI)",
+    "scientific": "Ephemerella invaria",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 5,
+    "endMonth": 8,
+    "waterTempMinF": 50,
+    "waterTempMaxF": 60,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 14-16 True Hendrickson parachute",
+      "Size 14-16 True Hendrickson Compara-dun",
+      "Size 14-16 True Hendrickson cripple",
+      "Size 14-16 True Hendrickson CDC emerger",
+      "Size 14-16 True Hendrickson rusty spinner",
+      "Size 14-16 pheasant-tail nymph"
+    ],
+    "searchTerm": "Ephemerella invaria mayfly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch. Peak 6/4-6/21. 12:00-17:00"
+  },
+  {
+    "id": "mi-bwo-evening",
+    "name": "Blue-Winged Olive (evening) (MI)",
+    "scientific": "Baetis sp.",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 5,
+    "endMonth": 7,
+    "waterTempMinF": 50,
+    "waterTempMaxF": 60,
+    "timeOfDay": "night",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 14-16 Blue-Winged Olive parachute",
+      "Size 14-16 Blue-Winged Olive Compara-dun",
+      "Size 14-16 Blue-Winged Olive cripple",
+      "Size 14-16 Blue-Winged Olive CDC emerger",
+      "Size 14-16 Blue-Winged Olive rusty spinner",
+      "Size 14-16 pheasant-tail nymph"
+    ],
+    "searchTerm": "Baetis sp. mayfly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch. 20:00-22:00"
+  },
+  {
+    "id": "mi-tiny-bwo",
+    "name": "Tiny Blue-Winged Olive (MI)",
+    "scientific": "Baetis cingulatis",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 5,
+    "endMonth": 9,
+    "waterTempMinF": 50,
+    "waterTempMaxF": 60,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 20-22 Tiny Blue-Winged Olive parachute",
+      "Size 20-22 Tiny Blue-Winged Olive Compara-dun",
+      "Size 20-22 Tiny Blue-Winged Olive cripple",
+      "Size 20-22 Tiny Blue-Winged Olive CDC emerger",
+      "Size 20-22 Tiny Blue-Winged Olive rusty spinner",
+      "Size 20-22 pheasant-tail nymph"
+    ],
+    "searchTerm": "Baetis cingulatis mayfly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch. 10:00-21:00"
+  },
+  {
+    "id": "mi-green-oak-worm",
+    "name": "Green Oak Worm (MI)",
+    "scientific": "Lepidoptera sp.",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 5,
+    "endMonth": 7,
+    "waterTempMinF": 58,
+    "waterTempMaxF": 78,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "adult"
+    ],
+    "flies": [
+      "Size 8-12 green worm (chenille)",
+      "Size 10 inchworm"
+    ],
+    "searchTerm": "Lepidoptera sp. terrestrial fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch. Peak 6/21-7/5. Daytime"
+  },
+  {
+    "id": "mi-white-miller-caddis",
+    "name": "White Miller Caddis (MI)",
+    "scientific": "Nectopsyche",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 5,
+    "endMonth": 11,
+    "waterTempMinF": 48,
+    "waterTempMaxF": 60,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "adult",
+      "pupa",
+      "larva"
+    ],
+    "flies": [
+      "Size 14-16 elk-hair caddis",
+      "Size 14-16 LaFontaine emergent sparkle pupa",
+      "Size 14-16 X-caddis",
+      "Size 14-16 caddis larva (green rock-worm)"
+    ],
+    "searchTerm": "Nectopsyche caddis fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch. Afternoons"
+  },
+  {
+    "id": "mi-early-gray-drake",
+    "name": "Early Gray Drake (MI)",
+    "scientific": "Siphlonurus rapidus",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 6,
+    "endMonth": 6,
+    "waterTempMinF": 54,
+    "waterTempMaxF": 66,
+    "timeOfDay": "night",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 12-14 Early Gray Drake parachute",
+      "Size 12-14 Early Gray Drake Compara-dun",
+      "Size 12-14 Early Gray Drake cripple",
+      "Size 12-14 Early Gray Drake CDC emerger",
+      "Size 12-14 Early Gray Drake rusty spinner",
+      "Size 12-14 pheasant-tail nymph"
+    ],
+    "searchTerm": "Siphlonurus rapidus mayfly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch. Peak 6/14-6/21. Dark"
+  },
+  {
+    "id": "mi-sand-drake",
+    "name": "Sand Drake (MI)",
+    "scientific": "Stenonema fuscum",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 6,
+    "endMonth": 8,
+    "waterTempMinF": 54,
+    "waterTempMaxF": 66,
+    "timeOfDay": "night",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 12-14 Sand Drake parachute",
+      "Size 12-14 Sand Drake Compara-dun",
+      "Size 12-14 Sand Drake cripple",
+      "Size 12-14 Sand Drake CDC emerger",
+      "Size 12-14 Sand Drake rusty spinner",
+      "Size 12-14 pheasant-tail nymph"
+    ],
+    "searchTerm": "Stenonema fuscum mayfly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch. Peak 6/14-6/28. 20:00-24:00"
+  },
+  {
+    "id": "mi-quill-gordon",
+    "name": "Quill Gordon (MI)",
+    "scientific": "Epeorus pleuralis",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 6,
+    "endMonth": 7,
+    "waterTempMinF": 54,
+    "waterTempMaxF": 66,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 12-14 Quill Gordon parachute",
+      "Size 12-14 Quill Gordon Compara-dun",
+      "Size 12-14 Quill Gordon cripple",
+      "Size 12-14 Quill Gordon CDC emerger",
+      "Size 12-14 Quill Gordon rusty spinner",
+      "Size 12-14 pheasant-tail nymph"
+    ],
+    "searchTerm": "Epeorus pleuralis mayfly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch. 13:00-16:00"
+  },
+  {
+    "id": "mi-pale-evening-dun",
+    "name": "Pale Evening Dun (MI)",
+    "scientific": "Ephemerella dorothea",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 6,
+    "endMonth": 7,
+    "waterTempMinF": 54,
+    "waterTempMaxF": 66,
+    "timeOfDay": "night",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 16-18 Pale Evening Dun parachute",
+      "Size 16-18 Pale Evening Dun Compara-dun",
+      "Size 16-18 Pale Evening Dun cripple",
+      "Size 16-18 Pale Evening Dun CDC emerger",
+      "Size 16-18 Pale Evening Dun rusty spinner",
+      "Size 16-18 pheasant-tail nymph"
+    ],
+    "searchTerm": "Ephemerella dorothea mayfly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch. 20:00-24:00"
+  },
+  {
+    "id": "mi-great-orange-sedge",
+    "name": "Great Orange Sedge (MI)",
+    "scientific": "Phryganlidae ptilostomis",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 6,
+    "endMonth": 8,
+    "waterTempMinF": 55,
+    "waterTempMaxF": 68,
+    "timeOfDay": "evening",
+    "stages": [
+      "adult",
+      "pupa",
+      "larva"
+    ],
+    "flies": [
+      "Size 8-10 elk-hair caddis",
+      "Size 8-10 LaFontaine emergent sparkle pupa",
+      "Size 8-10 X-caddis",
+      "Size 8-10 caddis larva (green rock-worm)"
+    ],
+    "searchTerm": "Phryganlidae ptilostomis caddis fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch. Evenings"
+  },
+  {
+    "id": "mi-beetles",
+    "name": "Beetles (MI)",
+    "scientific": "Coleoptera",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 6,
+    "endMonth": 10,
+    "waterTempMinF": 58,
+    "waterTempMaxF": 78,
+    "timeOfDay": "evening",
+    "stages": [
+      "adult"
+    ],
+    "flies": [
+      "Size 12-14 foam beetle",
+      "Size 12 Dave's beetle",
+      "Size 14 peacock beetle"
+    ],
+    "searchTerm": "Coleoptera terrestrial fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch. Daytime & Evenings"
+  },
+  {
+    "id": "mi-late-gray-drake",
+    "name": "Late Gray Drake (MI)",
+    "scientific": "Siphlonurus alternatus",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 6,
+    "endMonth": 8,
+    "waterTempMinF": 54,
+    "waterTempMaxF": 66,
+    "timeOfDay": "night",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 10-12 Late Gray Drake parachute",
+      "Size 10-12 Late Gray Drake Compara-dun",
+      "Size 10-12 Late Gray Drake cripple",
+      "Size 10-12 Late Gray Drake CDC emerger",
+      "Size 10-12 Late Gray Drake rusty spinner",
+      "Size 10-12 pheasant-tail nymph"
+    ],
+    "searchTerm": "Siphlonurus alternatus mayfly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch. Peak 7/15-7/28. Dark"
+  },
+  {
+    "id": "mi-mahogany-dun-isonychia",
+    "name": "Mahogany Dun (MI)",
+    "scientific": "Isonychia sadleri",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 6,
+    "endMonth": 8,
+    "waterTempMinF": 54,
+    "waterTempMaxF": 66,
+    "timeOfDay": "night",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 10-12 Mahogany Dun parachute",
+      "Size 10-12 Mahogany Dun Compara-dun",
+      "Size 10-12 Mahogany Dun cripple",
+      "Size 10-12 Mahogany Dun CDC emerger",
+      "Size 10-12 Mahogany Dun rusty spinner",
+      "Size 10-12 pheasant-tail nymph"
+    ],
+    "searchTerm": "Isonychia sadleri mayfly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch. 16:00-22:00"
+  },
+  {
+    "id": "mi-golden-drake",
+    "name": "Golden Drake (MI)",
+    "scientific": "Ephemera varia",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 6,
+    "endMonth": 8,
+    "waterTempMinF": 54,
+    "waterTempMaxF": 66,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 10-12 Golden Drake parachute",
+      "Size 10-12 Golden Drake Compara-dun",
+      "Size 10-12 Golden Drake cripple",
+      "Size 10-12 Golden Drake CDC emerger",
+      "Size 10-12 Golden Drake rusty spinner",
+      "Size 10-12 pheasant-tail nymph"
+    ],
+    "searchTerm": "Ephemera varia mayfly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch."
+  },
+  {
+    "id": "mi-leadwing-coachman",
+    "name": "Leadwing Coachman / Iso (MI)",
+    "scientific": "Isonychia bicolor",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 6,
+    "endMonth": 9,
+    "waterTempMinF": 54,
+    "waterTempMaxF": 66,
+    "timeOfDay": "night",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 10-12 Leadwing Coachman parachute",
+      "Size 10-12 Leadwing Coachman Compara-dun",
+      "Size 10-12 Leadwing Coachman cripple",
+      "Size 10-12 Leadwing Coachman CDC emerger",
+      "Size 10-12 Leadwing Coachman rusty spinner",
+      "Size 10-12 pheasant-tail nymph"
+    ],
+    "searchTerm": "Isonychia bicolor mayfly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch. 16:00-22:00"
+  },
+  {
+    "id": "mi-big-golden-stonefly",
+    "name": "Big Golden Stonefly (MI)",
+    "scientific": "Paragentina media",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 7,
+    "endMonth": 8,
+    "waterTempMinF": 50,
+    "waterTempMaxF": 65,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "adult",
+      "nymph"
+    ],
+    "flies": [
+      "Size 6-8 Big Golden Stonefly adult (Stimulator-style)",
+      "Size 6-8 Big Golden Stonefly nymph (Pat's rubber-legs)",
+      "Size 6-8 dark stone nymph"
+    ],
+    "searchTerm": "Paragentina media stonefly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch."
+  },
+  {
+    "id": "mi-slate-winged-olive",
+    "name": "Slate Winged Olive (MI)",
+    "scientific": "Ephemerella lata",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 7,
+    "endMonth": 8,
+    "waterTempMinF": 54,
+    "waterTempMaxF": 66,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 14-18 Slate Winged Olive parachute",
+      "Size 14-18 Slate Winged Olive Compara-dun",
+      "Size 14-18 Slate Winged Olive cripple",
+      "Size 14-18 Slate Winged Olive CDC emerger",
+      "Size 14-18 Slate Winged Olive rusty spinner",
+      "Size 14-18 pheasant-tail nymph"
+    ],
+    "searchTerm": "Ephemerella lata mayfly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch."
+  },
+  {
+    "id": "mi-dark-slate-wing-olive",
+    "name": "Dark Slate Wing Olive (MI)",
+    "scientific": "Ephemerella simplex",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 7,
+    "endMonth": 10,
+    "waterTempMinF": 54,
+    "waterTempMaxF": 66,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 18-20 Dark Slate Wing Olive parachute",
+      "Size 18-20 Dark Slate Wing Olive Compara-dun",
+      "Size 18-20 Dark Slate Wing Olive cripple",
+      "Size 18-20 Dark Slate Wing Olive CDC emerger",
+      "Size 18-20 Dark Slate Wing Olive rusty spinner",
+      "Size 18-20 pheasant-tail nymph"
+    ],
+    "searchTerm": "Ephemerella simplex mayfly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch."
+  },
+  {
+    "id": "mi-pseudocloeon",
+    "name": "Tiny Blue Winged Olive (Pseudocloen) (MI)",
+    "scientific": "Pseudocloen anoka",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 7,
+    "endMonth": 10,
+    "waterTempMinF": 54,
+    "waterTempMaxF": 66,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 22-24 Tiny Blue Winged Olive parachute",
+      "Size 22-24 Tiny Blue Winged Olive Compara-dun",
+      "Size 22-24 Tiny Blue Winged Olive cripple",
+      "Size 22-24 Tiny Blue Winged Olive CDC emerger",
+      "Size 22-24 Tiny Blue Winged Olive rusty spinner",
+      "Size 22-24 pheasant-tail nymph"
+    ],
+    "searchTerm": "Pseudocloen anoka mayfly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch."
+  },
+  {
+    "id": "mi-crickets",
+    "name": "Crickets (MI)",
+    "scientific": "Orthoptera sp.",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 7,
+    "endMonth": 10,
+    "waterTempMinF": 58,
+    "waterTempMaxF": 78,
+    "timeOfDay": "all day",
+    "stages": [
+      "adult"
+    ],
+    "flies": [
+      "Size 10-12 foam cricket",
+      "Size 10 Dave's cricket"
+    ],
+    "searchTerm": "Orthoptera sp. terrestrial fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch. Anytime"
+  },
+  {
+    "id": "mi-grasshoppers",
+    "name": "Grasshoppers (MI)",
+    "scientific": "Orthoptera sp.",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 7,
+    "endMonth": 10,
+    "waterTempMinF": 58,
+    "waterTempMaxF": 78,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "adult"
+    ],
+    "flies": [
+      "Size 6-12 hopper",
+      "Size 8 Dave's hopper",
+      "Size 10 Chubby Chernobyl"
+    ],
+    "searchTerm": "Orthoptera sp. terrestrial fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch. Daytime"
+  },
+  {
+    "id": "mi-small-slate-mahogany",
+    "name": "Small Slate Mahogany (MI)",
+    "scientific": "Paraleptophlebia debilis",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 8,
+    "endMonth": 11,
+    "waterTempMinF": 55,
+    "waterTempMaxF": 70,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 16-18 Small Slate Mahogany parachute",
+      "Size 16-18 Small Slate Mahogany Compara-dun",
+      "Size 16-18 Small Slate Mahogany cripple",
+      "Size 16-18 Small Slate Mahogany CDC emerger",
+      "Size 16-18 Small Slate Mahogany rusty spinner",
+      "Size 16-18 pheasant-tail nymph"
+    ],
+    "searchTerm": "Paraleptophlebia debilis mayfly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch."
+  },
+  {
+    "id": "mi-black-dancer-caddis",
+    "name": "Black Dancer Caddisfly (MI)",
+    "scientific": "Mystocides sepulchralis",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 8,
+    "endMonth": 10,
+    "waterTempMinF": 50,
+    "waterTempMaxF": 65,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "adult",
+      "pupa",
+      "larva"
+    ],
+    "flies": [
+      "Size 18-20 elk-hair caddis",
+      "Size 18-20 LaFontaine emergent sparkle pupa",
+      "Size 18-20 X-caddis",
+      "Size 18-20 caddis larva (green rock-worm)"
+    ],
+    "searchTerm": "Mystocides sepulchralis caddis fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch."
+  },
+  {
+    "id": "mi-little-medium-olive",
+    "name": "Little Medium Olive (MI)",
+    "scientific": "Baetis brunneicolor",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 8,
+    "endMonth": 10,
+    "waterTempMinF": 55,
+    "waterTempMaxF": 70,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 22-24 Little Medium Olive parachute",
+      "Size 22-24 Little Medium Olive Compara-dun",
+      "Size 22-24 Little Medium Olive cripple",
+      "Size 22-24 Little Medium Olive CDC emerger",
+      "Size 22-24 Little Medium Olive rusty spinner",
+      "Size 22-24 pheasant-tail nymph"
+    ],
+    "searchTerm": "Baetis brunneicolor mayfly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch."
+  },
+  {
+    "id": "mi-slate-wing-brown",
+    "name": "Slate Wing Brown Mayfly (MI)",
+    "scientific": "Baetis heimalis",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 9,
+    "endMonth": 11,
+    "waterTempMinF": 55,
+    "waterTempMaxF": 70,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 14-16 Slate Wing Brown Mayfly parachute",
+      "Size 14-16 Slate Wing Brown Mayfly Compara-dun",
+      "Size 14-16 Slate Wing Brown Mayfly cripple",
+      "Size 14-16 Slate Wing Brown Mayfly CDC emerger",
+      "Size 14-16 Slate Wing Brown Mayfly rusty spinner",
+      "Size 14-16 pheasant-tail nymph"
+    ],
+    "searchTerm": "Baetis heimalis mayfly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch."
+  },
+  {
+    "id": "mi-october-caddis",
+    "name": "October Caddis (MI)",
+    "scientific": "Trichoptera",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee",
+      "Big Manistee",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 9,
+    "endMonth": 10,
+    "waterTempMinF": 50,
+    "waterTempMaxF": 65,
+    "timeOfDay": "evening",
+    "stages": [
+      "adult",
+      "pupa",
+      "larva"
+    ],
+    "flies": [
+      "Size 10-14 elk-hair caddis",
+      "Size 10-14 LaFontaine emergent sparkle pupa",
+      "Size 10-14 X-caddis",
+      "Size 10-14 caddis larva (green rock-worm)"
+    ],
+    "searchTerm": "Trichoptera caddis fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Michigan-specific hatch. Afternoons/Evenings"
   }
 ]
