@@ -12,16 +12,33 @@ import { BottomSheet } from '@/components/ui/BottomSheet';
 /**
  * Species + lure recommendations for water types where insect hatches
  * aren't the actionable signal (lakes, reservoirs, saltwater, and many
- * warm-water rivers). Each row expands to a sheet with method + lure
- * details. Mirrors `HatchSection`'s rhythm so they feel like siblings.
+ * warm-water rivers).
+ *
+ * Card surface shows the top 5 most-likely-to-be-caught fish for this
+ * specific spot (ranked by commonality + state-specific bonus). The
+ * remainder live behind a "+N more species in season" button that opens
+ * a sheet — so a Homosassa marsh doesn't lead with sailfish, but a Keys
+ * boat trip can still drill down to find permit and bonefish.
  */
+const VISIBLE_COUNT = 5;
+
 export function SpeciesSection({ location }: { location: Location }) {
   const [selected, setSelected] = useState<SpeciesEntry | null>(null);
+  const [moreOpen, setMoreOpen] = useState(false);
+
   const species = useMemo(
     () => recommendedSpeciesForLocation(location),
     [location]
   );
-  const top = species.slice(0, 6);
+  const top = species.slice(0, VISIBLE_COUNT);
+  const rest = species.slice(VISIBLE_COUNT);
+
+  function openSpecies(s: SpeciesEntry) {
+    // Close the more-sheet first so we don't have nested portals
+    // animating against each other on mobile.
+    setMoreOpen(false);
+    setSelected(s);
+  }
 
   return (
     <CardSection label="What's biting">
@@ -35,19 +52,41 @@ export function SpeciesSection({ location }: { location: Location }) {
       ) : (
         <div className="flex flex-col gap-2">
           {top.map((s) => (
-            <SpeciesRow key={s.id} species={s} onOpen={() => setSelected(s)} />
+            <SpeciesRow key={s.id} species={s} onOpen={() => openSpecies(s)} />
           ))}
-          {species.length > top.length && (
-            <div className="text-xs text-muted">
-              + {species.length - top.length} more in season
-            </div>
+          {rest.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setMoreOpen(true)}
+              className="mt-1 flex items-center justify-between rounded-lg border border-border bg-surface-2/50 hover:bg-surface-2 hover:border-accent/40 px-3 py-2 text-xs text-muted transition active:scale-[0.99]"
+            >
+              <span>+ {rest.length} more species in season</span>
+              <ChevronRight className="w-3.5 h-3.5" />
+            </button>
           )}
         </div>
       )}
+
       <SpeciesDetailSheet
         species={selected}
         onClose={() => setSelected(null)}
       />
+
+      <BottomSheet
+        open={moreOpen}
+        onClose={() => setMoreOpen(false)}
+        title="More species in season"
+      >
+        <div className="flex flex-col gap-2">
+          <div className="text-xs text-muted">
+            Less commonly caught here, but possible right now. Tap any one
+            for tactics + lures.
+          </div>
+          {rest.map((s) => (
+            <SpeciesRow key={s.id} species={s} onOpen={() => openSpecies(s)} />
+          ))}
+        </div>
+      </BottomSheet>
     </CardSection>
   );
 }
