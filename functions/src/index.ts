@@ -18,6 +18,9 @@ export {
 // Phase 4 — TVA dam schedule scraper stub
 export { scrapeTva } from './scrapers/tva';
 
+// Phase 8 — state-DNR stocking scrapers (TWRA, GA, NC active; MI/IN/FL/AL stubs)
+export { scrapeStocking, triggerStockingScrape } from './scrapers/stocking';
+
 // Phase 6 — Claude API
 export { briefing } from './claude/briefing';
 export { parseJournal } from './claude/parseJournal';
