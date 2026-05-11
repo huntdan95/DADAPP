@@ -40,6 +40,15 @@ service cloud.firestore {
       allow read, write: if signedIn() && request.auth.uid == uid;
     }
 
+    // AI usage counters at aiUsage/{uid}/days/{date} — written by
+    // Cloud Functions (admin SDK, bypasses these rules) and read by
+    // the user's own SystemHealth dashboard. Read-only from the
+    // client to prevent users from zeroing out their own caps.
+    match /aiUsage/{uid}/{document=**} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow write: if false;
+    }
+
     // Catches are stored under users/{uid}/trips/{tripId}/catches —
     // already covered by the rule above for direct access. Allow
     // collectionGroup queries on catches scoped to the requesting user
