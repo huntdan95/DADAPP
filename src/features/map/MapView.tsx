@@ -44,6 +44,8 @@ export function MapView({ locations }: { locations: Location[] }) {
   const [launchesLoaded, setLaunchesLoaded] = useState(false);
   /** Set when the user taps "Save as fishing spot" on a launch sheet. */
   const [seedFromLaunch, setSeedFromLaunch] = useState<Partial<Location> | null>(null);
+  /** Most recent per-state scrape results, surfaced in the legend after refresh. */
+  const [seedSummary, setSeedSummary] = useState<string | null>(null);
   const [findingLocation, setFindingLocation] = useState(false);
   const [nearest, setNearest] = useState<{
     user: { lat: number; lng: number };
@@ -117,14 +119,27 @@ export function MapView({ locations }: { locations: Location[] }) {
 
   /**
    * One-tap "load boat launches" for the empty-state. Calls the Cloud
-   * Function that scrapes OpenStreetMap (~60-90s end to end). On success
-   * we re-fetch from Firestore and the map populates.
+   * Function that scrapes OpenStreetMap (~10 min for all 17 states).
+   * On success we re-fetch from Firestore and the map populates;
+   * the per-state result summary is shown inline so the user can see
+   * which states succeeded and which returned 0 or errored.
    */
   async function loadLaunches() {
     setSeeding(true);
     setSeedError(null);
+    setSeedSummary(null);
     try {
-      await callSeedBoatLaunches();
+      const res = await callSeedBoatLaunches();
+      // Build "MI 3.2k · TN 1.8k · KY 12 (failed)" — hides successful
+      // mid-tier counts so the line stays scannable.
+      const summary = res.results
+        .map((r) =>
+          r.count < 0
+            ? `${r.state} failed`
+            : `${r.state} ${formatCount(r.count)}`
+        )
+        .join(' · ');
+      setSeedSummary(summary);
       await reloadLaunches();
     } catch (e) {
       setSeedError(friendlyError(e));
@@ -233,6 +248,7 @@ export function MapView({ locations }: { locations: Location[] }) {
         onRefresh={loadLaunches}
         refreshing={seeding}
         refreshError={seedError}
+        refreshSummary={seedSummary}
       />
 
       <div className="absolute top-2 left-2 z-[1000] flex flex-col gap-2">
@@ -424,6 +440,7 @@ function MapLegend({
   onRefresh,
   refreshing,
   refreshError,
+  refreshSummary,
 }: {
   open: boolean;
   onToggle: () => void;
@@ -432,6 +449,7 @@ function MapLegend({
   onRefresh: () => void;
   refreshing: boolean;
   refreshError: string | null;
+  refreshSummary: string | null;
 }) {
   return (
     <div className="absolute top-12 right-2 z-[1000]">
@@ -483,6 +501,11 @@ function MapLegend({
             {launchesLoaded && (
               <div className="text-[10px] text-muted/80">
                 {launchCount.toLocaleString()} launches loaded
+              </div>
+            )}
+            {refreshSummary && (
+              <div className="text-[10px] text-muted/80 leading-relaxed">
+                Last run: {refreshSummary}
               </div>
             )}
             {refreshError && (
@@ -602,6 +625,13 @@ function NearestList({
       </div>
     </div>
   );
+}
+
+/** Short count format for the per-state seed summary chip. */
+function formatCount(n: number): string {
+  if (n >= 10000) return `${(n / 1000).toFixed(0)}k`;
+  if (n >= 1000) return `${(n / 1000).toFixed(1)}k`;
+  return String(n);
 }
 
 const youIcon = L.divIcon({

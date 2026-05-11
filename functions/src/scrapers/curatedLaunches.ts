@@ -129,6 +129,70 @@ export const CURATED_LAUNCHES: CuratedLaunch[] = [
   { name: 'Cedar Hill canoe access — Bellevue', lat: 36.0750, lng: -86.9606, type: 'put-in', state: 'TN', river: 'Harpeth' },
 
   // ============================
+  // Kentucky — full coverage
+  // ============================
+  // Cumberland River below Wolf Creek Dam (trophy trout tailwater)
+  { name: 'Wolf Creek Dam below — Hatchery Creek access', lat: 36.8694, lng: -85.1408, type: 'ramp', state: 'KY', river: 'Cumberland' },
+  { name: 'Helms Landing — Cumberland tailwater', lat: 36.8753, lng: -85.2086, type: 'ramp', state: 'KY', river: 'Cumberland' },
+  { name: 'Long Creek access — Cumberland', lat: 36.8567, lng: -85.1717, type: 'put-in', state: 'KY', river: 'Cumberland' },
+  { name: 'Winfrey\'s Ferry — Cumberland', lat: 36.8731, lng: -85.2603, type: 'ramp', state: 'KY', river: 'Cumberland' },
+  { name: 'Rainbow Run access — Cumberland', lat: 36.8736, lng: -85.1689, type: 'put-in', state: 'KY', river: 'Cumberland' },
+  { name: 'Burkesville ramp — Cumberland', lat: 36.7903, lng: -85.3711, type: 'ramp', state: 'KY', river: 'Cumberland' },
+
+  // Lake Cumberland — major reservoir
+  { name: 'State Dock Marina — Lake Cumberland', lat: 37.0011, lng: -85.0136, type: 'marina', state: 'KY', river: 'Lake Cumberland' },
+  { name: 'Burnside Marina — Lake Cumberland', lat: 36.9844, lng: -84.6017, type: 'marina', state: 'KY', river: 'Lake Cumberland' },
+  { name: 'Wolf Creek Marina — Lake Cumberland', lat: 36.8689, lng: -85.1456, type: 'marina', state: 'KY', river: 'Lake Cumberland' },
+  { name: 'Lee\'s Ford Resort Marina — Lake Cumberland', lat: 37.0019, lng: -84.7344, type: 'marina', state: 'KY', river: 'Lake Cumberland' },
+  { name: 'Conley Bottom Resort — Lake Cumberland', lat: 36.8772, lng: -84.7825, type: 'marina', state: 'KY', river: 'Lake Cumberland' },
+  { name: 'Beaver Creek Marina — Lake Cumberland', lat: 36.8761, lng: -84.5867, type: 'marina', state: 'KY', river: 'Lake Cumberland' },
+  { name: 'Pulaski County Park ramp — Lake Cumberland', lat: 36.9742, lng: -84.5739, type: 'ramp', state: 'KY', river: 'Lake Cumberland' },
+
+  // Kentucky Lake (TN River impoundment)
+  { name: 'Kentucky Dam Village ramp — Kentucky Lake', lat: 37.0142, lng: -88.2722, type: 'ramp', state: 'KY', river: 'Kentucky Lake' },
+  { name: 'Aurora ramp — Kentucky Lake', lat: 36.7669, lng: -88.1233, type: 'ramp', state: 'KY', river: 'Kentucky Lake' },
+  { name: 'Eggners Ferry — Kentucky Lake', lat: 36.7475, lng: -88.0808, type: 'ramp', state: 'KY', river: 'Kentucky Lake' },
+  { name: 'Jonathan Creek — Kentucky Lake', lat: 36.8242, lng: -88.1819, type: 'ramp', state: 'KY', river: 'Kentucky Lake' },
+
+  // Lake Barkley (Cumberland impoundment)
+  { name: 'Lake Barkley State Resort ramp', lat: 36.9156, lng: -87.9514, type: 'ramp', state: 'KY', river: 'Lake Barkley' },
+  { name: 'Kuttawa boat ramp — Lake Barkley', lat: 37.0567, lng: -88.1019, type: 'ramp', state: 'KY', river: 'Lake Barkley' },
+  { name: 'Eddyville Riverfront — Lake Barkley', lat: 37.0908, lng: -88.0856, type: 'ramp', state: 'KY', river: 'Lake Barkley' },
+
+  // Cave Run Lake (muskie destination)
+  { name: 'Cave Run Lake Marina', lat: 38.0772, lng: -83.5364, type: 'marina', state: 'KY', river: 'Cave Run Lake' },
+  { name: 'Twin Knobs Beach ramp — Cave Run', lat: 38.0494, lng: -83.5331, type: 'ramp', state: 'KY', river: 'Cave Run Lake' },
+  { name: 'Zilpo Creek ramp — Cave Run', lat: 38.0789, lng: -83.4747, type: 'ramp', state: 'KY', river: 'Cave Run Lake' },
+  { name: 'Scott Creek ramp — Cave Run', lat: 38.1306, lng: -83.5703, type: 'ramp', state: 'KY', river: 'Cave Run Lake' },
+
+  // Green River Lake
+  { name: 'Green River State Park ramp', lat: 37.2675, lng: -85.3531, type: 'ramp', state: 'KY', river: 'Green River Lake' },
+  { name: 'Pikes Ridge ramp — Green River Lake', lat: 37.2792, lng: -85.3697, type: 'ramp', state: 'KY', river: 'Green River Lake' },
+  { name: 'Holmes Bend ramp — Green River Lake', lat: 37.3211, lng: -85.3550, type: 'ramp', state: 'KY', river: 'Green River Lake' },
+
+  // Laurel River Lake
+  { name: 'Holly Bay Marina — Laurel Lake', lat: 36.9683, lng: -84.2153, type: 'marina', state: 'KY', river: 'Laurel Lake' },
+  { name: 'Pier 17 Marina — Laurel Lake', lat: 36.9483, lng: -84.2706, type: 'marina', state: 'KY', river: 'Laurel Lake' },
+  { name: 'Spillway boat ramp — Laurel Lake', lat: 36.9722, lng: -84.2925, type: 'ramp', state: 'KY', river: 'Laurel Lake' },
+
+  // Dale Hollow Lake (KY side)
+  { name: 'Wisdom Dock — Dale Hollow', lat: 36.6494, lng: -85.2350, type: 'ramp', state: 'KY', river: 'Dale Hollow Lake' },
+  { name: 'Sulphur Creek Resort — Dale Hollow', lat: 36.6753, lng: -85.4239, type: 'marina', state: 'KY', river: 'Dale Hollow Lake' },
+
+  // Other notable KY waters
+  { name: 'Buckhorn Lake ramp', lat: 37.3450, lng: -83.4736, type: 'ramp', state: 'KY', river: 'Buckhorn Lake' },
+  { name: 'Yatesville Lake State Park ramp', lat: 38.1442, lng: -82.6900, type: 'ramp', state: 'KY', river: 'Yatesville Lake' },
+  { name: 'Carr Creek Lake ramp', lat: 37.2433, lng: -82.9694, type: 'ramp', state: 'KY', river: 'Carr Creek Lake' },
+  { name: 'Herrington Lake ramp', lat: 37.7672, lng: -84.7000, type: 'ramp', state: 'KY', river: 'Herrington Lake' },
+  // Ohio River public ramps
+  { name: 'McAlpine Dam — Louisville Ohio River', lat: 38.2722, lng: -85.7906, type: 'ramp', state: 'KY', river: 'Ohio' },
+  { name: 'Smothers Park ramp — Owensboro Ohio', lat: 37.7747, lng: -87.1119, type: 'ramp', state: 'KY', river: 'Ohio' },
+  { name: 'Audubon State Park ramp — Henderson Ohio', lat: 37.8975, lng: -87.5419, type: 'ramp', state: 'KY', river: 'Ohio' },
+  // Elkhorn Creek — popular smallmouth float
+  { name: 'Knight\'s Bridge — Elkhorn Creek', lat: 38.1903, lng: -84.5847, type: 'put-in', state: 'KY', river: 'Elkhorn Creek' },
+  { name: 'Forks of Elkhorn put-in', lat: 38.2200, lng: -84.7833, type: 'put-in', state: 'KY', river: 'Elkhorn Creek' },
+
+  // ============================
   // Montana — premier blue-ribbon trout
   // ============================
   // Madison River — upper / Yellowstone area through Ennis
