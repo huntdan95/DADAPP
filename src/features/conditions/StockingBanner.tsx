@@ -7,6 +7,7 @@ import {
 } from '@/lib/stocking/store';
 import type { StockingEvent } from '@/lib/stocking/types';
 import { BottomSheet } from '@/components/ui/BottomSheet';
+import { ProgressBar } from '@/components/ui/ProgressBar';
 import { StockingForm } from '@/features/stocking/StockingForm';
 import { triggerStockingScrape } from '@/lib/stocking/trigger';
 import { friendlyError } from '@/lib/errors';
@@ -197,6 +198,15 @@ export function StockingBanner({ location }: { location: Location }) {
           {scrapeError && (
             <span className="text-[10px] text-danger">{scrapeError}</span>
           )}
+        </div>
+      )}
+
+      {scraping && mode === 'empty' && (
+        <div className="mx-4 mb-3 -mt-2">
+          <ProgressBar
+            status="Pulling state DNRs — usually under a minute"
+            variant="info"
+          />
         </div>
       )}
 

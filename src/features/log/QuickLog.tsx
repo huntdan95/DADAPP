@@ -10,6 +10,7 @@ import {
   StickyNote,
 } from 'lucide-react';
 import { useOnline } from '@/lib/useOnline';
+import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Button } from '@/components/ui/Button';
 import { Field, Input, Select } from '@/components/ui/Input';
 import type { Location } from '@/lib/providers/types';
@@ -511,9 +512,8 @@ export function QuickLog({
             className="w-32 h-32 object-cover rounded-xl border border-border"
           />
         )}
-        <div className="flex items-center gap-2 text-muted">
-          <Loader2 className="w-4 h-4 animate-spin" />
-          {loadingStatus}
+        <div className="w-full max-w-xs">
+          <ProgressBar status={loadingStatus} variant="info" />
         </div>
         <Button variant="ghost" size="sm" onClick={onClose}>
           Cancel

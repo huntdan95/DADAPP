@@ -16,6 +16,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { Card, CardHeader, CardSubtitle, CardTitle } from '@/components/ui/Card';
+import { ProgressBar } from '@/components/ui/ProgressBar';
 import { getFirebaseApp, getFirebaseAuth } from '@/lib/firebase';
 import { pendingPhotoCount } from '@/lib/log/photoQueue';
 import { triggerStockingScrape } from '@/lib/stocking/trigger';
@@ -52,7 +53,11 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
   const [scrapingStocking, setScrapingStocking] = useState(false);
   const [seedingLaunches, setSeedingLaunches] = useState(false);
   const [seedingMissing, setSeedingMissing] = useState(false);
-  const [seedProgress, setSeedProgress] = useState<string | null>(null);
+  const [seedProgress, setSeedProgress] = useState<{
+    pct: number;
+    label: string;
+    etaSeconds: number | null;
+  } | null>(null);
 
   async function load() {
     setLoading(true);
@@ -92,13 +97,26 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
     }
   }
 
+  async function runWithProgress(states?: string[]): Promise<void> {
+    const start = Date.now();
+    await callSeedBoatLaunches((p) => {
+      const pct = (p.chunkIndex / p.totalChunks) * 100;
+      const elapsedMs = Date.now() - start;
+      const avgChunkMs = elapsedMs / p.chunkIndex;
+      const remainingMs = avgChunkMs * (p.totalChunks - p.chunkIndex);
+      setSeedProgress({
+        pct,
+        label: `Chunk ${p.chunkIndex} of ${p.totalChunks}`,
+        etaSeconds: Math.max(0, Math.round(remainingMs / 1000)),
+      });
+    }, states);
+  }
+
   async function refreshLaunches() {
     setSeedingLaunches(true);
-    setSeedProgress(null);
+    setSeedProgress({ pct: 0, label: 'Starting…', etaSeconds: null });
     try {
-      await callSeedBoatLaunches((p) => {
-        setSeedProgress(`Chunk ${p.chunkIndex}/${p.totalChunks} done`);
-      });
+      await runWithProgress();
       await load();
     } catch (e) {
       setError(friendlyError(e));
@@ -120,11 +138,9 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
       .map((row) => row.state);
     if (missing.length === 0) return;
     setSeedingMissing(true);
-    setSeedProgress(null);
+    setSeedProgress({ pct: 0, label: 'Starting…', etaSeconds: null });
     try {
-      await callSeedBoatLaunches((p) => {
-        setSeedProgress(`Chunk ${p.chunkIndex}/${p.totalChunks} done`);
-      }, missing);
+      await runWithProgress(missing);
       await load();
     } catch (e) {
       setError(friendlyError(e));
@@ -185,7 +201,14 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
             </div>
           )}
           {seedProgress && (
-            <div className="mt-2 text-[11px] text-info">{seedProgress}…</div>
+            <div className="mt-3">
+              <ProgressBar
+                value={seedProgress.pct > 0 ? seedProgress.pct : undefined}
+                status={seedProgress.label}
+                eta={formatEtaSeconds(seedProgress.etaSeconds)}
+                variant="info"
+              />
+            </div>
           )}
           <div className="mt-3 flex flex-wrap gap-2">
             <Button
@@ -531,4 +554,10 @@ function formatAge(ms: number | null): string {
   if (hrs < 1) return `${Math.round(ageMs / 60_000)}m ago`;
   if (hrs < 48) return `${Math.round(hrs)}h ago`;
   return `${Math.round(hrs / 24)}d ago`;
+}
+
+function formatEtaSeconds(seconds: number | null): string | undefined {
+  if (seconds == null || !Number.isFinite(seconds)) return undefined;
+  if (seconds < 60) return `~${seconds}s left`;
+  return `~${Math.round(seconds / 60)} min left`;
 }

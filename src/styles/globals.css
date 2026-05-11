@@ -35,4 +35,19 @@
   .safe-top {
     padding-top: env(safe-area-inset-top);
   }
+
+  /* Indeterminate progress: a one-third-width segment that slides
+     from off-screen left to off-screen right and loops. Used by
+     <ProgressBar> when no numeric value is provided. */
+  .progress-indeterminate {
+    animation: progressIndeterminate 1.4s ease-in-out infinite;
+  }
+  @keyframes progressIndeterminate {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(400%);
+    }
+  }
 }

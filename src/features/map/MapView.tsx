@@ -17,6 +17,7 @@ import { BoatLaunchSheet } from './BoatLaunchSheet';
 import { AddLaunchForm } from './AddLaunchForm';
 import type { Location } from '@/lib/providers/types';
 import { ConditionsCard } from '@/features/conditions/ConditionsCard';
+import { ProgressBar } from '@/components/ui/ProgressBar';
 import { getLocationStore } from '@/lib/store';
 
 const LocationForm = lazy(() =>
@@ -46,6 +47,13 @@ export function MapView({ locations }: { locations: Location[] }) {
   const [seedFromLaunch, setSeedFromLaunch] = useState<Partial<Location> | null>(null);
   /** Most recent per-state scrape results, surfaced in the legend after refresh. */
   const [seedSummary, setSeedSummary] = useState<string | null>(null);
+  /** Live progress while a refresh is in flight: chunk index / total + ETA. */
+  const [seedProgress, setSeedProgress] = useState<{
+    pct: number;
+    chunkIndex: number;
+    totalChunks: number;
+    etaSeconds: number | null;
+  } | null>(null);
   const [findingLocation, setFindingLocation] = useState(false);
   const [nearest, setNearest] = useState<{
     user: { lat: number; lng: number };
@@ -128,9 +136,22 @@ export function MapView({ locations }: { locations: Location[] }) {
     setSeeding(true);
     setSeedError(null);
     setSeedSummary(null);
+    // Indeterminate at first; flips to determinate after chunk 1 lands.
+    setSeedProgress({ pct: 0, chunkIndex: 0, totalChunks: 0, etaSeconds: null });
+    const startMs = Date.now();
     try {
       const res = await callSeedBoatLaunches((p) => {
-        // Live update during the run.
+        const pct = (p.chunkIndex / p.totalChunks) * 100;
+        // ETA: average chunk time so far × remaining chunks.
+        const elapsedMs = Date.now() - startMs;
+        const avgChunkMs = elapsedMs / p.chunkIndex;
+        const remainingMs = avgChunkMs * (p.totalChunks - p.chunkIndex);
+        setSeedProgress({
+          pct,
+          chunkIndex: p.chunkIndex,
+          totalChunks: p.totalChunks,
+          etaSeconds: Math.max(0, Math.round(remainingMs / 1000)),
+        });
         const so_far = p.cumulativeResults
           .map((r) =>
             r.count < 0
@@ -138,9 +159,7 @@ export function MapView({ locations }: { locations: Location[] }) {
               : `${r.state} ${formatCount(r.count)}`
           )
           .join(' · ');
-        setSeedSummary(
-          `Chunk ${p.chunkIndex}/${p.totalChunks}: ${so_far}`
-        );
+        setSeedSummary(so_far);
         // Pull fresh data from Firestore between chunks so the map
         // markers populate progressively rather than all-or-nothing.
         reloadLaunches().catch(() => undefined);
@@ -158,6 +177,7 @@ export function MapView({ locations }: { locations: Location[] }) {
       setSeedError(friendlyError(e));
     } finally {
       setSeeding(false);
+      setSeedProgress(null);
     }
   }
 
@@ -262,6 +282,7 @@ export function MapView({ locations }: { locations: Location[] }) {
         refreshing={seeding}
         refreshError={seedError}
         refreshSummary={seedSummary}
+        refreshProgress={seedProgress}
       />
 
       <div className="absolute top-2 left-2 z-[1000] flex flex-col gap-2">
@@ -454,6 +475,7 @@ function MapLegend({
   refreshing,
   refreshError,
   refreshSummary,
+  refreshProgress,
 }: {
   open: boolean;
   onToggle: () => void;
@@ -463,6 +485,12 @@ function MapLegend({
   refreshing: boolean;
   refreshError: string | null;
   refreshSummary: string | null;
+  refreshProgress: {
+    pct: number;
+    chunkIndex: number;
+    totalChunks: number;
+    etaSeconds: number | null;
+  } | null;
 }) {
   return (
     <div className="absolute top-12 right-2 z-[1000]">
@@ -500,25 +528,40 @@ function MapLegend({
             </li>
           </ul>
           <div className="border-t border-border mt-3 pt-2.5 flex flex-col gap-1.5">
-            <button
-              type="button"
-              onClick={onRefresh}
-              disabled={refreshing}
-              className="text-[11px] text-info hover:text-accent transition disabled:opacity-50 inline-flex items-center gap-1.5 text-left"
-            >
-              {refreshing && <Loader2 className="w-3 h-3 animate-spin" />}
-              {refreshing
-                ? 'Refreshing — takes ~2 min…'
-                : 'Refresh launches from sources'}
-            </button>
-            {launchesLoaded && (
+            {!refreshing && (
+              <button
+                type="button"
+                onClick={onRefresh}
+                className="text-[11px] text-info hover:text-accent transition inline-flex items-center gap-1.5 text-left"
+              >
+                Refresh launches from sources
+              </button>
+            )}
+            {refreshing && refreshProgress && (
+              <ProgressBar
+                value={
+                  refreshProgress.totalChunks > 0
+                    ? refreshProgress.pct
+                    : undefined
+                }
+                status={
+                  refreshProgress.totalChunks > 0
+                    ? `Chunk ${refreshProgress.chunkIndex}/${refreshProgress.totalChunks}`
+                    : 'Starting…'
+                }
+                eta={formatEta(refreshProgress.etaSeconds)}
+                variant="info"
+              />
+            )}
+            {launchesLoaded && !refreshing && (
               <div className="text-[10px] text-muted/80">
                 {launchCount.toLocaleString()} launches loaded
               </div>
             )}
             {refreshSummary && (
               <div className="text-[10px] text-muted/80 leading-relaxed">
-                Last run: {refreshSummary}
+                {refreshing ? 'In progress: ' : 'Last run: '}
+                {refreshSummary}
               </div>
             )}
             {refreshError && (
@@ -645,6 +688,14 @@ function formatCount(n: number): string {
   if (n >= 10000) return `${(n / 1000).toFixed(0)}k`;
   if (n >= 1000) return `${(n / 1000).toFixed(1)}k`;
   return String(n);
+}
+
+/** "~3 min left" style helper for the progress-bar ETA. Null → empty. */
+function formatEta(seconds: number | null): string | undefined {
+  if (seconds == null || !Number.isFinite(seconds)) return undefined;
+  if (seconds < 60) return `~${seconds}s left`;
+  const mins = Math.round(seconds / 60);
+  return `~${mins} min left`;
 }
 
 const youIcon = L.divIcon({
