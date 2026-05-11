@@ -144,12 +144,55 @@ async function freshLoad(): Promise<BoatLaunch[]> {
   const sets = await Promise.all(STATES.map(fetchStateLaunches));
   const all: BoatLaunch[] = [];
   const versions: Record<string, string> = {};
+  const missing: string[] = [];
   sets.forEach((s, i) => {
     if (s?.launches) all.push(...s.launches);
     if (s) versions[STATES[i]] = versionKey(s);
+    else missing.push(STATES[i]);
   });
   writeLocalCache({ cachedAt: Date.now(), versions, launches: all });
+
+  // Self-healing: if any configured states have no Firestore doc at
+  // all (i.e., never scraped — usually because a state was added to
+  // the canonical list since the last cron run), fire a background
+  // seed for just those. The result lands in the same shared
+  // Firestore docs that every user reads — so only one device on
+  // earth ever needs to hit this code path per newly-added state.
+  // Rate-limited so the same user doesn't refire it repeatedly while
+  // a seed is in flight.
+  if (missing.length > 0) {
+    void autoSeedMissingIfFresh(missing);
+  }
+
   return all;
+}
+
+/** Rate-limit key — most recent auto-seed attempt timestamp. */
+const AUTO_SEED_TS_KEY = 'dad-fishing.boatLaunchesAutoSeed.lastAt';
+/** Minimum gap between auto-seed attempts (30 min). */
+const AUTO_SEED_COOLDOWN_MS = 30 * 60 * 1000;
+
+async function autoSeedMissingIfFresh(missingStates: string[]): Promise<void> {
+  try {
+    const last = Number(localStorage.getItem(AUTO_SEED_TS_KEY) ?? '0');
+    if (Date.now() - last < AUTO_SEED_COOLDOWN_MS) return;
+    localStorage.setItem(AUTO_SEED_TS_KEY, String(Date.now()));
+    // Console-only so we don't pop a UI dialog — silent background
+    // healing is the design goal.
+    // eslint-disable-next-line no-console
+    console.info(
+      '[boatLaunches] auto-seeding missing states in background:',
+      missingStates.join(', ')
+    );
+    await callSeedBoatLaunches(undefined, missingStates);
+    invalidateBoatLaunchCache();
+    void freshLoad();
+  } catch (e) {
+    // Best-effort — the manual 'Refresh launches' button + next
+    // cron run will retry. Surface to console for debug.
+    // eslint-disable-next-line no-console
+    console.warn('[boatLaunches] auto-seed failed', e);
+  }
 }
 
 async function revalidate(

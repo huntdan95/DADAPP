@@ -351,14 +351,20 @@ async function seedAll(
   return results;
 }
 
-/** Scheduled monthly refresh — boat launches don't change often. */
+/**
+ * Scheduled weekly refresh — Mondays at 6am ET. Boat launches don't
+ * change often but new OSM contributions land throughout the year,
+ * and weekly catches them without burning resources. Single source
+ * of truth for the whole user base; everyone reads from the Firestore
+ * docs this writes.
+ */
 export const seedBoatLaunches = onSchedule(
   {
-    schedule: '0 6 1 * *',          // 06:00 on the 1st of each month
+    schedule: '0 6 * * MON',         // 06:00 every Monday
     timeZone: 'America/New_York',
     region: 'us-central1',
-    memory: '1GiB',                  // 17 states × parsed JSON, comfortably under cap
-    timeoutSeconds: 540,             // max for scheduled functions
+    memory: '1GiB',
+    timeoutSeconds: 540,
   },
   async () => {
     const results = await seedAll();
