@@ -11,6 +11,7 @@ import {
 } from './types';
 import { withFetchTrace } from './fetch';
 import { aiExtractStocking } from './aiExtract';
+import { FOCUS_WATERS } from './focusWaters';
 import { anthropicApiKey } from '../../claude/_shared';
 import { scrape as scrapeTwra } from './twra';
 import { scrape as scrapeGa } from './gaDnr';
@@ -181,26 +182,35 @@ async function runAll(): Promise<{
     // events for the state. This is far more robust than fighting
     // ASP.NET PostBack pages and brittle table layouts. Cost: ~$0.05
     // per state per run; bounded by the weekly cron.
+    //
+    // Seed with focusWaters[state] — the named fisheries that show
+    // up in our waterbody registry — so Claude prioritizes events
+    // on specific waters the user is likely to have a spot on,
+    // instead of returning generic "Statewide stocking" summaries.
     if (records.length === 0) {
       const state = SOURCE_TO_STATE[source];
       if (state) {
-        logger.info('stocking.ai.fallback', { source, state });
+        const focusWaters = FOCUS_WATERS[state];
+        logger.info('stocking.ai.fallback', {
+          source,
+          state,
+          focusWaterCount: focusWaters?.length ?? 0,
+        });
         try {
           const ai = await aiExtractStocking({
             state,
             source,
             lookbackDays: 90,
+            focusWaters,
           });
           if (ai.events.length > 0) {
             records = ai.events;
-            // Update the diagnostic so the UI shows where the data
-            // actually came from.
             const idx = diagnostics.findIndex((d) => d.source === source);
             if (idx >= 0) {
               diagnostics[idx] = {
                 ...diagnostics[idx],
                 status: 'ok',
-                message: `AI-extracted ${ai.events.length} events via web search.`,
+                message: `AI-extracted ${ai.events.length} events via web search (focused on ${focusWaters?.length ?? 0} named waters).`,
               };
             }
           }

@@ -32,9 +32,17 @@ interface StockingExtractInput {
   /** Window in days back from today. Defaults to 60 — covers spring +
    * early-summer trout and salmon stocking when the call fires. */
   lookbackDays?: number;
+  /**
+   * Optional list of specific water-body names to focus the search
+   * on. When provided, the prompt asks Claude to prioritize stocking
+   * events on these waters. Lets the orchestrator seed the query
+   * with the user's actual fishery (Manistee, Pere Marquette, etc.)
+   * instead of asking Claude to scan the entire state generically.
+   */
+  focusWaters?: string[];
 }
 
-const SYSTEM_PROMPT = `You are a fishing-data assistant. Use the web_search tool to find recent fish stocking events from the given state's DNR / wildlife agency database, plus any reputable fishing news that mentions stocking events. Return STRUCTURED JSON only — no prose, no markdown, no commentary.
+const SYSTEM_PROMPT = `You are a fishing-data assistant. Use the web_search tool to find recent SPECIFIC fish stocking events from the given state's DNR / wildlife agency database. Return STRUCTURED JSON only — no prose, no markdown, no commentary.
 
 OUTPUT FORMAT (strict JSON, no other text):
 {
@@ -42,7 +50,7 @@ OUTPUT FORMAT (strict JSON, no other text):
     {
       "date": "YYYY-MM-DD",
       "species": "Rainbow trout" | "Brown trout" | "Brook trout" | "Lake trout" | "Splake" | "Steelhead" | "King salmon" | "Coho salmon" | "Atlantic salmon" | "Walleye" | "Northern pike" | "Muskellunge" | etc,
-      "water": "Manistee River" | "Lake Cumberland" | etc. (the named body of water),
+      "water": "Manistee River" | "Lake Cumberland" | etc. (the SPECIFIC named body of water — never generic),
       "county": "Kalkaska" | "DeKalb" | etc. (county where the stocking happened, optional),
       "count": 5000 (integer, optional),
       "size": "9-11 in" | "fingerlings" (optional),
@@ -52,17 +60,34 @@ OUTPUT FORMAT (strict JSON, no other text):
   ]
 }
 
+CRITICAL: SPECIFICITY IS THE WHOLE POINT.
+
+Every event MUST name a specific water body. An angler with a spot on the Manistee River in Kalkaska County, MI wants to know "5,000 brown trout stocked in the Manistee River, Kalkaska Co. on April 12" — not "MI DNR stocked multiple inland waters statewide this spring." We already know the agency exists; we need the granular records.
+
+REJECT and DO NOT INCLUDE any event whose 'water' field would be:
+- "Multiple inland waters statewide"
+- "Various lakes"
+- "Numerous rivers"
+- "Statewide stocking"
+- "Multiple counties"
+- Any phrasing that bundles many waters into one record.
+
+If the only data available is summary-level, return {"events": []} — empty is better than misleading.
+
+WHERE TO SEARCH:
+1. The state DNR's fish-stocking database (e.g., Michigan: https://www2.dnr.state.mi.us/fishstock/). These pages publish per-event records with date / species / specific water / county / count / size.
+2. State DNR weekly stocking reports (often distributed as PDFs or press releases that list specific waters).
+3. Local fishing-club / news mentions that pinpoint a specific water + date.
+
 RULES:
 - Only include events from the requested state.
 - Only include events within the requested lookback window.
-- If you cannot find any verified events for the state, return {"events": []}.
-- Do NOT invent events. If a number / county / size is uncertain, omit that field.
-- Prefer the official state DNR fish-stocking database as the primary source. Cross-check with one secondary source (fishing news, club report) when uncertain.
+- Do NOT invent events. If a number / county / size is uncertain, omit that field — never make one up.
 - Use the canonical species name (e.g., "Brown trout" not "browns" or "BNT").
 - Date is the date the fish were placed in the water, in ISO format.
 - Return AT MOST 200 events. If there are more, prioritize most-recent.
 
-The web_search tool is your only research mechanism. Use 2-4 queries maximum.`;
+The web_search tool is your only research mechanism. Use 2-4 queries maximum, focused on the SPECIFIC database / records page if possible (not just generic news).`;
 
 /**
  * Asks Claude to extract recent stocking events for the given state.
@@ -73,13 +98,26 @@ export async function aiExtractStocking(
   input: StockingExtractInput
 ): Promise<{ events: StockingScrapeRecord[]; rawText: string }> {
   const lookbackDays = input.lookbackDays ?? 60;
+  const focusList =
+    input.focusWaters && input.focusWaters.length > 0
+      ? `\n\nFOCUS WATERS — the user has spots on these specific waters in ${stateName(
+          input.state
+        )}. Prioritize stocking events on these by name (do not exclude others, but make sure these are covered if data exists):\n` +
+        input.focusWaters
+          .slice(0, 60)
+          .map((w) => `  - ${w}`)
+          .join('\n')
+      : '';
   const userMessage =
     `Find fish stocking events in ${stateName(input.state)} (${input.state}) ` +
     `from the last ${lookbackDays} days. ` +
     `Today is ${new Date().toISOString().slice(0, 10)}. ` +
     `Search the ${stateName(input.state)} DNR fish stocking database first ` +
     `(usually at the state DNR website's fishing or hatchery section), ` +
-    `then cross-check with any recent fishing reports.`;
+    `then cross-check with any recent fishing reports. ` +
+    `Each returned event MUST name a specific water body — reject 'statewide' / ` +
+    `'multiple waters' / 'various' summaries.` +
+    focusList;
 
   let response: Anthropic.Messages.Message;
   try {
@@ -166,6 +204,7 @@ function parseEventsJson(
   if (!Array.isArray(raw)) return [];
 
   const out: StockingScrapeRecord[] = [];
+  let droppedGeneric = 0;
   for (const e of raw) {
     if (!e || typeof e !== 'object') continue;
     const obj = e as Record<string, unknown>;
@@ -174,6 +213,10 @@ function parseEventsJson(
     const water = typeof obj.water === 'string' ? obj.water : null;
     if (!date || !species || !water) continue;
     if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) continue;
+    if (isGenericLocation(water)) {
+      droppedGeneric++;
+      continue;
+    }
     const county = typeof obj.county === 'string' ? obj.county : undefined;
     const count =
       typeof obj.count === 'number' && Number.isFinite(obj.count)
@@ -191,7 +234,38 @@ function parseEventsJson(
       notes: notes ?? 'AI-extracted from state DNR + fishing reports',
     });
   }
+  if (droppedGeneric > 0) {
+    logger.info('aiExtractStocking.dropped_generic', {
+      state,
+      droppedGeneric,
+    });
+  }
   return out;
+}
+
+/**
+ * Filters out "Statewide stocking" / "Multiple inland waters" /
+ * "Various lakes" entries that the AI sometimes returns despite the
+ * prompt telling it not to. We want SPECIFIC water names — generic
+ * bundles are useless because the spot-match filter can't tie them
+ * to any one fishery.
+ */
+function isGenericLocation(water: string): boolean {
+  const w = water.toLowerCase();
+  if (w.length < 4) return true;
+  const patterns = [
+    /statewide/,
+    /multiple\s+(inland\s+)?(waters|lakes|rivers|streams)/,
+    /various\s+(waters|lakes|rivers|streams|locations)/,
+    /numerous\s+(waters|lakes|rivers|streams|locations)/,
+    /multiple\s+counties/,
+    /multiple\s+sites/,
+    /\bseveral\s+waters\b/,
+    /\bmultiple\s+sites\b/,
+    /assorted\s+waters/,
+    /^(various|multiple|several|numerous|assorted)\b/,
+  ];
+  return patterns.some((re) => re.test(w));
 }
 
 /** Canonicalize common variations Claude might use. */
