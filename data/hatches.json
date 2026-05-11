@@ -3,14 +3,37 @@
     "id": "sulfur",
     "name": "Sulfur",
     "scientific": "Ephemerella dorothea / invaria",
-    "regions": ["TN", "Southern Appalachia", "Mid-Atlantic"],
-    "states": ["TN", "NC", "GA"],
-    "rivers": ["South Holston", "Caney Fork", "Watauga"],
-    "startMonth": 5, "endMonth": 8,
-    "waterTempMinF": 52, "waterTempMaxF": 65,
+    "regions": [
+      "TN",
+      "Southern Appalachia",
+      "Mid-Atlantic"
+    ],
+    "states": [
+      "TN",
+      "NC",
+      "GA",
+      "KY"
+    ],
+    "rivers": [
+      "South Holston",
+      "Caney Fork",
+      "Watauga"
+    ],
+    "startMonth": 5,
+    "endMonth": 8,
+    "waterTempMinF": 52,
+    "waterTempMaxF": 65,
     "timeOfDay": "evening",
-    "stages": ["dun", "spinner", "emerger"],
-    "flies": ["Size 16 sulfur emerger", "Size 16 sulfur dun", "Size 18 spinner"],
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 16 sulfur emerger",
+      "Size 16 sulfur dun",
+      "Size 18 spinner"
+    ],
     "searchTerm": "sulfur mayfly Ephemerella",
     "wikipediaSlug": "Ephemerellidae",
     "notes": "On peak evenings the hatch is dense — go small and exact. South Holston is the standout."
@@ -19,14 +42,33 @@
     "id": "bwo-spring",
     "name": "Blue-Winged Olive (spring)",
     "scientific": "Baetis spp.",
-    "regions": ["everywhere"],
-    "states": ["TN", "MI", "IN", "NC", "GA", "AL", "FL"],
+    "regions": [
+      "everywhere"
+    ],
+    "states": [
+      "TN",
+      "MI",
+      "IN",
+      "NC",
+      "GA",
+      "AL",
+      "FL",
+      "KY"
+    ],
     "rivers": [],
-    "startMonth": 3, "endMonth": 5,
-    "waterTempMinF": 42, "waterTempMaxF": 55,
+    "startMonth": 3,
+    "endMonth": 5,
+    "waterTempMinF": 42,
+    "waterTempMaxF": 55,
     "timeOfDay": "afternoon",
-    "stages": ["dun", "emerger"],
-    "flies": ["Size 18-20 BWO parachute", "Size 20 emerger"],
+    "stages": [
+      "dun",
+      "emerger"
+    ],
+    "flies": [
+      "Size 18-20 BWO parachute",
+      "Size 20 emerger"
+    ],
     "searchTerm": "blue winged olive BWO Baetis mayfly",
     "wikipediaSlug": "Baetis",
     "notes": "Best on overcast / drizzly days. Multi-brooded so they show up multiple times a year."
@@ -35,14 +77,31 @@
     "id": "bwo-fall",
     "name": "Blue-Winged Olive (fall)",
     "scientific": "Baetis spp.",
-    "regions": ["everywhere"],
-    "states": ["TN", "MI", "IN", "NC", "GA", "AL"],
+    "regions": [
+      "everywhere"
+    ],
+    "states": [
+      "TN",
+      "MI",
+      "IN",
+      "NC",
+      "GA",
+      "AL",
+      "KY"
+    ],
     "rivers": [],
-    "startMonth": 9, "endMonth": 11,
-    "waterTempMinF": 45, "waterTempMaxF": 58,
+    "startMonth": 9,
+    "endMonth": 11,
+    "waterTempMinF": 45,
+    "waterTempMaxF": 58,
     "timeOfDay": "afternoon",
-    "stages": ["dun", "emerger"],
-    "flies": ["Size 18-22 BWO parachute"],
+    "stages": [
+      "dun",
+      "emerger"
+    ],
+    "flies": [
+      "Size 18-22 BWO parachute"
+    ],
     "searchTerm": "blue winged olive BWO Baetis mayfly",
     "wikipediaSlug": "Baetis",
     "notes": "Fall return; even smaller. Trout key on emergers."
@@ -51,14 +110,32 @@
     "id": "hendrickson",
     "name": "Hendrickson",
     "scientific": "Ephemerella subvaria",
-    "regions": ["MI", "Northeast", "Upper Midwest"],
-    "states": ["MI", "IN"],
-    "rivers": ["Au Sable", "Upper Manistee"],
-    "startMonth": 4, "endMonth": 5,
-    "waterTempMinF": 50, "waterTempMaxF": 58,
+    "regions": [
+      "MI",
+      "Northeast",
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Upper Manistee"
+    ],
+    "startMonth": 4,
+    "endMonth": 5,
+    "waterTempMinF": 50,
+    "waterTempMaxF": 58,
     "timeOfDay": "afternoon",
-    "stages": ["dun", "spinner"],
-    "flies": ["Size 12-14 Hendrickson dun", "Size 12 spinner"],
+    "stages": [
+      "dun",
+      "spinner"
+    ],
+    "flies": [
+      "Size 12-14 Hendrickson dun",
+      "Size 12 spinner"
+    ],
     "searchTerm": "Hendrickson mayfly Ephemerella subvaria",
     "wikipediaSlug": "Ephemerella",
     "notes": "First major mayfly hatch of the year up north. Kicks off dry-fly season."
@@ -67,14 +144,30 @@
     "id": "march-brown",
     "name": "March Brown",
     "scientific": "Maccaffertium vicarium",
-    "regions": ["everywhere east of Rockies"],
-    "states": ["TN", "MI", "IN", "NC", "GA"],
+    "regions": [
+      "everywhere east of Rockies"
+    ],
+    "states": [
+      "TN",
+      "MI",
+      "IN",
+      "NC",
+      "GA",
+      "KY"
+    ],
     "rivers": [],
-    "startMonth": 5, "endMonth": 6,
-    "waterTempMinF": 55, "waterTempMaxF": 65,
+    "startMonth": 5,
+    "endMonth": 6,
+    "waterTempMinF": 55,
+    "waterTempMaxF": 65,
     "timeOfDay": "afternoon",
-    "stages": ["dun", "spinner"],
-    "flies": ["Size 12 March Brown dun"],
+    "stages": [
+      "dun",
+      "spinner"
+    ],
+    "flies": [
+      "Size 12 March Brown dun"
+    ],
     "searchTerm": "March Brown mayfly Maccaffertium",
     "wikipediaSlug": "Maccaffertium",
     "notes": "Sporadic emergence rather than dense hatches. Big bite when it comes off."
@@ -83,14 +176,32 @@
     "id": "caddis-grannom",
     "name": "Grannom Caddis",
     "scientific": "Brachycentrus spp.",
-    "regions": ["everywhere"],
-    "states": ["TN", "MI", "IN", "NC", "GA", "AL"],
+    "regions": [
+      "everywhere"
+    ],
+    "states": [
+      "TN",
+      "MI",
+      "IN",
+      "NC",
+      "GA",
+      "AL",
+      "KY"
+    ],
     "rivers": [],
-    "startMonth": 4, "endMonth": 5,
-    "waterTempMinF": 50, "waterTempMaxF": 62,
+    "startMonth": 4,
+    "endMonth": 5,
+    "waterTempMinF": 50,
+    "waterTempMaxF": 62,
     "timeOfDay": "all day",
-    "stages": ["adult", "pupa"],
-    "flies": ["Size 14-16 elk-hair caddis (dark)", "Size 16 LaFontaine pupa"],
+    "stages": [
+      "adult",
+      "pupa"
+    ],
+    "flies": [
+      "Size 14-16 elk-hair caddis (dark)",
+      "Size 16 LaFontaine pupa"
+    ],
     "searchTerm": "grannom caddis Brachycentrus",
     "wikipediaSlug": "Brachycentrus",
     "notes": "Mother's-Day caddis on many rivers. Bites both surface and subsurface — fish a dropper."
@@ -99,14 +210,31 @@
     "id": "caddis-cinnamon",
     "name": "Cinnamon Caddis",
     "scientific": "Ceratopsyche spp.",
-    "regions": ["everywhere"],
-    "states": ["TN", "MI", "IN", "NC", "GA", "AL"],
+    "regions": [
+      "everywhere"
+    ],
+    "states": [
+      "TN",
+      "MI",
+      "IN",
+      "NC",
+      "GA",
+      "AL",
+      "KY"
+    ],
     "rivers": [],
-    "startMonth": 5, "endMonth": 9,
-    "waterTempMinF": 55, "waterTempMaxF": 70,
+    "startMonth": 5,
+    "endMonth": 9,
+    "waterTempMinF": 55,
+    "waterTempMaxF": 70,
     "timeOfDay": "evening",
-    "stages": ["adult", "pupa"],
-    "flies": ["Size 14-16 elk-hair caddis (tan)"],
+    "stages": [
+      "adult",
+      "pupa"
+    ],
+    "flies": [
+      "Size 14-16 elk-hair caddis (tan)"
+    ],
     "searchTerm": "cinnamon caddis Hydropsychidae",
     "wikipediaSlug": "Hydropsychidae",
     "notes": "Reliable evening hatch all summer long."
@@ -115,14 +243,30 @@
     "id": "stonefly-yellow-sally",
     "name": "Yellow Sally Stonefly",
     "scientific": "Isoperla spp.",
-    "regions": ["everywhere"],
-    "states": ["TN", "MI", "IN", "NC", "GA", "AL"],
+    "regions": [
+      "everywhere"
+    ],
+    "states": [
+      "TN",
+      "MI",
+      "IN",
+      "NC",
+      "GA",
+      "AL",
+      "KY"
+    ],
     "rivers": [],
-    "startMonth": 5, "endMonth": 7,
-    "waterTempMinF": 55, "waterTempMaxF": 68,
+    "startMonth": 5,
+    "endMonth": 7,
+    "waterTempMinF": 55,
+    "waterTempMaxF": 68,
     "timeOfDay": "afternoon",
-    "stages": ["adult"],
-    "flies": ["Size 14-16 Yellow Sally"],
+    "stages": [
+      "adult"
+    ],
+    "flies": [
+      "Size 14-16 Yellow Sally"
+    ],
     "searchTerm": "yellow sally stonefly Isoperla",
     "wikipediaSlug": "Isoperla",
     "notes": "Small bright-yellow stonefly. Fish like them as a searching pattern even when no rises."
@@ -131,14 +275,33 @@
     "id": "isonychia",
     "name": "Isonychia",
     "scientific": "Isonychia bicolor",
-    "regions": ["Southern Appalachia", "Northeast"],
-    "states": ["TN", "NC"],
-    "rivers": ["Watauga", "South Holston", "Hiwassee"],
-    "startMonth": 6, "endMonth": 9,
-    "waterTempMinF": 58, "waterTempMaxF": 68,
+    "regions": [
+      "Southern Appalachia",
+      "Northeast"
+    ],
+    "states": [
+      "TN",
+      "NC",
+      "KY"
+    ],
+    "rivers": [
+      "Watauga",
+      "South Holston",
+      "Hiwassee"
+    ],
+    "startMonth": 6,
+    "endMonth": 9,
+    "waterTempMinF": 58,
+    "waterTempMaxF": 68,
     "timeOfDay": "evening",
-    "stages": ["dun", "spinner"],
-    "flies": ["Size 10-12 Iso dun", "Pheasant tail nymph #10"],
+    "stages": [
+      "dun",
+      "spinner"
+    ],
+    "flies": [
+      "Size 10-12 Iso dun",
+      "Pheasant tail nymph #10"
+    ],
     "searchTerm": "isonychia mayfly bicolor",
     "wikipediaSlug": "Isonychia",
     "notes": "Swim-fast nymphs trout key on. Great pre-hatch swing pattern."
@@ -147,14 +310,33 @@
     "id": "trico",
     "name": "Trico",
     "scientific": "Tricorythodes spp.",
-    "regions": ["everywhere"],
-    "states": ["TN", "MI", "IN", "NC", "GA", "AL"],
-    "rivers": ["South Holston", "Au Sable"],
-    "startMonth": 7, "endMonth": 9,
-    "waterTempMinF": 60, "waterTempMaxF": 70,
+    "regions": [
+      "everywhere"
+    ],
+    "states": [
+      "TN",
+      "MI",
+      "IN",
+      "NC",
+      "GA",
+      "AL",
+      "KY"
+    ],
+    "rivers": [
+      "South Holston",
+      "Au Sable"
+    ],
+    "startMonth": 7,
+    "endMonth": 9,
+    "waterTempMinF": 60,
+    "waterTempMaxF": 70,
     "timeOfDay": "morning",
-    "stages": ["spinner"],
-    "flies": ["Size 20-24 Trico spinner"],
+    "stages": [
+      "spinner"
+    ],
+    "flies": [
+      "Size 20-24 Trico spinner"
+    ],
     "searchTerm": "trico spinner Tricorythodes",
     "wikipediaSlug": "Tricorythodes",
     "notes": "Spinner fall first thing in the morning. Fish 6x or 7x tippet."
@@ -163,14 +345,33 @@
     "id": "hex",
     "name": "Hexagenia (the Hex)",
     "scientific": "Hexagenia limbata",
-    "regions": ["MI", "Upper Midwest", "Great Lakes"],
-    "states": ["MI", "IN"],
-    "rivers": ["Big Manistee", "Upper Manistee", "Au Sable"],
-    "startMonth": 6, "endMonth": 7,
-    "waterTempMinF": 65, "waterTempMaxF": 72,
+    "regions": [
+      "MI",
+      "Upper Midwest",
+      "Great Lakes"
+    ],
+    "states": [
+      "MI",
+      "IN"
+    ],
+    "rivers": [
+      "Big Manistee",
+      "Upper Manistee",
+      "Au Sable"
+    ],
+    "startMonth": 6,
+    "endMonth": 7,
+    "waterTempMinF": 65,
+    "waterTempMaxF": 72,
     "timeOfDay": "night",
-    "stages": ["dun", "spinner"],
-    "flies": ["Size 6-8 Hex dun", "Size 6 Hex spinner"],
+    "stages": [
+      "dun",
+      "spinner"
+    ],
+    "flies": [
+      "Size 6-8 Hex dun",
+      "Size 6 Hex spinner"
+    ],
     "searchTerm": "Hexagenia limbata Hex mayfly",
     "wikipediaSlug": "Hexagenia_limbata",
     "notes": "The hatch. Night fishing, big browns. Plan around it. Typical peak: third week of June on the Manistee."
@@ -179,14 +380,31 @@
     "id": "white-mayfly",
     "name": "White Mayfly",
     "scientific": "Ephoron leukon",
-    "regions": ["everywhere"],
-    "states": ["TN", "MI", "IN", "NC", "GA", "AL"],
+    "regions": [
+      "everywhere"
+    ],
+    "states": [
+      "TN",
+      "MI",
+      "IN",
+      "NC",
+      "GA",
+      "AL",
+      "KY"
+    ],
     "rivers": [],
-    "startMonth": 7, "endMonth": 9,
-    "waterTempMinF": 65, "waterTempMaxF": 75,
+    "startMonth": 7,
+    "endMonth": 9,
+    "waterTempMinF": 65,
+    "waterTempMaxF": 75,
     "timeOfDay": "evening",
-    "stages": ["dun", "spinner"],
-    "flies": ["Size 12-14 White Wulff"],
+    "stages": [
+      "dun",
+      "spinner"
+    ],
+    "flies": [
+      "Size 12-14 White Wulff"
+    ],
     "searchTerm": "white mayfly Ephoron leukon",
     "wikipediaSlug": "Ephoron",
     "notes": "Dense late-summer evening hatches; pure-white wings make it unmistakable."
@@ -195,14 +413,33 @@
     "id": "midges",
     "name": "Midges",
     "scientific": "Chironomidae",
-    "regions": ["everywhere"],
-    "states": ["TN", "MI", "IN", "NC", "GA", "AL", "FL"],
+    "regions": [
+      "everywhere"
+    ],
+    "states": [
+      "TN",
+      "MI",
+      "IN",
+      "NC",
+      "GA",
+      "AL",
+      "FL",
+      "KY"
+    ],
     "rivers": [],
-    "startMonth": 1, "endMonth": 12,
-    "waterTempMinF": 35, "waterTempMaxF": 72,
+    "startMonth": 1,
+    "endMonth": 12,
+    "waterTempMinF": 35,
+    "waterTempMaxF": 72,
     "timeOfDay": "all day",
-    "stages": ["adult", "pupa"],
-    "flies": ["Size 20-24 zebra midge", "Size 22 Griffith's gnat (cluster)"],
+    "stages": [
+      "adult",
+      "pupa"
+    ],
+    "flies": [
+      "Size 20-24 zebra midge",
+      "Size 22 Griffith's gnat (cluster)"
+    ],
     "searchTerm": "zebra midge fly Chironomidae",
     "wikipediaSlug": "Chironomidae",
     "notes": "Year-round; especially the only game in winter. Trail behind a heavier nymph."
@@ -211,14 +448,33 @@
     "id": "terrestrials-summer",
     "name": "Terrestrials (ants, beetles, hoppers)",
     "scientific": "Hymenoptera / Coleoptera / Orthoptera",
-    "regions": ["everywhere"],
-    "states": ["TN", "MI", "IN", "NC", "GA", "AL", "FL"],
+    "regions": [
+      "everywhere"
+    ],
+    "states": [
+      "TN",
+      "MI",
+      "IN",
+      "NC",
+      "GA",
+      "AL",
+      "FL",
+      "KY"
+    ],
     "rivers": [],
-    "startMonth": 6, "endMonth": 9,
-    "waterTempMinF": 55, "waterTempMaxF": 75,
+    "startMonth": 6,
+    "endMonth": 9,
+    "waterTempMinF": 55,
+    "waterTempMaxF": 75,
     "timeOfDay": "afternoon",
-    "stages": ["adult"],
-    "flies": ["Size 14 foam ant", "Size 12 beetle", "Size 8-10 hopper"],
+    "stages": [
+      "adult"
+    ],
+    "flies": [
+      "Size 14 foam ant",
+      "Size 12 beetle",
+      "Size 8-10 hopper"
+    ],
     "searchTerm": "terrestrial fly pattern hopper ant beetle",
     "wikipediaSlug": null,
     "notes": "Summer bread-and-butter when no hatch is happening. Plop them under overhanging banks."
@@ -227,14 +483,23 @@
     "id": "salmonfly",
     "name": "Salmonfly (Western)",
     "scientific": "Pteronarcys californica",
-    "regions": ["Rockies", "Pacific NW"],
+    "regions": [
+      "Rockies",
+      "Pacific NW"
+    ],
     "states": [],
     "rivers": [],
-    "startMonth": 5, "endMonth": 7,
-    "waterTempMinF": 50, "waterTempMaxF": 60,
+    "startMonth": 5,
+    "endMonth": 7,
+    "waterTempMinF": 50,
+    "waterTempMaxF": 60,
     "timeOfDay": "all day",
-    "stages": ["adult"],
-    "flies": ["Size 4-6 stimulator or chubby"],
+    "stages": [
+      "adult"
+    ],
+    "flies": [
+      "Size 4-6 stimulator or chubby"
+    ],
     "searchTerm": "salmonfly Pteronarcys californica",
     "wikipediaSlug": "Pteronarcys_californica",
     "notes": "Western tailwaters and freestones. Listed for future West-region expansion."
@@ -243,14 +508,24 @@
     "id": "pmd",
     "name": "PMD (Western)",
     "scientific": "Ephemerella excrucians",
-    "regions": ["Rockies", "Pacific NW"],
+    "regions": [
+      "Rockies",
+      "Pacific NW"
+    ],
     "states": [],
     "rivers": [],
-    "startMonth": 6, "endMonth": 8,
-    "waterTempMinF": 55, "waterTempMaxF": 65,
+    "startMonth": 6,
+    "endMonth": 8,
+    "waterTempMinF": 55,
+    "waterTempMaxF": 65,
     "timeOfDay": "afternoon",
-    "stages": ["dun", "spinner"],
-    "flies": ["Size 16-18 PMD parachute"],
+    "stages": [
+      "dun",
+      "spinner"
+    ],
+    "flies": [
+      "Size 16-18 PMD parachute"
+    ],
     "searchTerm": "pale morning dun PMD Ephemerella excrucians",
     "wikipediaSlug": "Ephemerella",
     "notes": "Pale Morning Dun — western analog of the Sulfur. Future West-region expansion."

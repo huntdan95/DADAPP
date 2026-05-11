@@ -31,7 +31,7 @@ export interface StockingEvent {
   /** Free-text notes — bonus details from the contributor or scraper. */
   notes?: string;
 
-  source: 'manual' | 'twra' | 'mi-dnr' | 'nc-wrc' | 'ga-dnr' | 'fwc' | 'in-dnr' | 'al-dcnr';
+  source: 'manual' | 'twra' | 'mi-dnr' | 'nc-wrc' | 'ga-dnr' | 'fwc' | 'in-dnr' | 'al-dcnr' | 'ky-dfwr';
   contributorEmail?: string;
   createdAt: Timestamp | null;
 }

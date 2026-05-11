@@ -171,6 +171,8 @@ function sourceLabel(source: StockingEvent['source']): string {
       return 'IN DNR';
     case 'al-dcnr':
       return 'AL DCNR';
+    case 'ky-dfwr':
+      return 'KDFWR';
     default:
       return 'reported';
   }

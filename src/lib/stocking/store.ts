@@ -89,7 +89,15 @@ export async function fetchRecentStockingNearLocation(
 
 /**
  * Filters a state-wide event list down to ones that *probably apply* to
- * this location — direct locationId match, or within ~25 miles by GPS.
+ * this location:
+ *   - direct locationId match → always include
+ *   - GPS coords present → include if within `maxMiles`
+ *   - GPS coords missing AND no locationId → include (state-wide
+ *     bulletin — better to show than hide; many auto-scrapers don't
+ *     publish lat/lng, and a "stocked somewhere in your state this
+ *     week" signal is still useful)
+ *   - GPS coords present and outside the radius → exclude
+ *   - Location bound to a *different* spot id → exclude
  */
 export function filterStockingForLocation(
   events: StockingEvent[],
@@ -97,6 +105,8 @@ export function filterStockingForLocation(
   maxMiles = 25
 ): StockingEvent[] {
   return events.filter((ev) => {
+    // Bound to a specific other spot? Exclude.
+    if (ev.locationId && ev.locationId !== location.id) return false;
     if (ev.locationId && ev.locationId === location.id) return true;
     if (ev.lat != null && ev.lng != null) {
       const miles = haversineMiles(
@@ -105,9 +115,9 @@ export function filterStockingForLocation(
       );
       return miles <= maxMiles;
     }
-    // No coords and no locationId → assume statewide bulletin; surface it
-    // (the user can see the locationName and decide).
-    return false;
+    // No coords, no locationId, but the state-wide subscription already
+    // confirmed this event is in `location.state`. Surface it.
+    return true;
   });
 }
 

@@ -10,6 +10,7 @@ import { scrape as scrapeMi } from './miDnr';
 import { scrape as scrapeIn } from './inDnr';
 import { scrape as scrapeFwc } from './fwc';
 import { scrape as scrapeAl } from './alDcnr';
+import { scrape as scrapeKy } from './kyDfwr';
 
 /**
  * Orchestrator for state-DNR stocking scrapers.
@@ -34,6 +35,7 @@ const SCRAPERS: Array<{
   { source: 'in-dnr', run: scrapeIn },
   { source: 'fwc', run: scrapeFwc },
   { source: 'al-dcnr', run: scrapeAl },
+  { source: 'ky-dfwr', run: scrapeKy },
 ];
 
 async function runAll(): Promise<
@@ -51,11 +53,27 @@ async function runAll(): Promise<
     try {
       const records = await run();
       let added = 0;
+      let skipped = 0;
+
+      // Sample logging: dump the first parsed record so we can verify
+      // the parser is reading the right page after a deploy. The
+      // record itself is small (no html blob).
+      if (records.length > 0) {
+        logger.info('stocking.scrape.sample', {
+          source,
+          sample: records[0],
+          totalParsed: records.length,
+        });
+      } else {
+        logger.warn('stocking.scrape.empty', {
+          source,
+          hint:
+            'Parser returned 0 records. Either the source page has no current entries or the layout changed and selectors need tuning.',
+        });
+      }
 
       // Batch writes for efficiency; only set docs that don't already
       // exist so re-runs don't churn createdAt timestamps.
-      // Firestore batches max 500 ops; we chunk if a scraper returns
-      // more (rare).
       const chunked: StockingScrapeRecord[][] = [];
       for (let i = 0; i < records.length; i += 400) {
         chunked.push(records.slice(i, i + 400));
@@ -66,7 +84,10 @@ async function runAll(): Promise<
           const id = deriveStockingId(source, rec);
           const ref = db.collection('stockingEvents').doc(id);
           const existing = await ref.get();
-          if (existing.exists) continue;
+          if (existing.exists) {
+            skipped++;
+            continue;
+          }
           const doc: Omit<StockingDoc, 'createdAt'> & {
             createdAt: FirebaseFirestore.FieldValue;
           } = stripUndefined({
@@ -90,7 +111,12 @@ async function runAll(): Promise<
       }
 
       results.push({ source, added, total: records.length });
-      logger.info('stocking.scrape.complete', { source, added, total: records.length });
+      logger.info('stocking.scrape.complete', {
+        source,
+        added,
+        skipped,
+        total: records.length,
+      });
     } catch (e) {
       logger.error('stocking.scrape.failed', { source, error: String(e) });
       results.push({ source, added: 0, total: 0, error: String(e) });
@@ -119,6 +145,7 @@ async function pruneOldAutoEvents(): Promise<void> {
     'in-dnr',
     'fwc',
     'al-dcnr',
+    'ky-dfwr',
   ];
   for (const src of autoSources) {
     const snap = await db

@@ -41,7 +41,7 @@ interface BoatLaunchSet {
   fetchedAt: FirebaseFirestore.Timestamp;
 }
 
-const STATES = ['MI', 'TN', 'IN', 'NC', 'FL', 'GA', 'AL'];
+const STATES = ['MI', 'TN', 'IN', 'NC', 'FL', 'GA', 'AL', 'KY'];
 
 const OVERPASS = 'https://overpass-api.de/api/interpreter';
 
