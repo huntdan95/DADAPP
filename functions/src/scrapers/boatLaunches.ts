@@ -2,6 +2,7 @@ import { onSchedule } from 'firebase-functions/v2/scheduler';
 import { onCall, HttpsError } from 'firebase-functions/v2/https';
 import { logger } from 'firebase-functions';
 import { getFirestore, FieldValue } from 'firebase-admin/firestore';
+import { CURATED_LAUNCHES } from './curatedLaunches';
 
 /**
  * Seeds boat launches into Firestore from OpenStreetMap via the Overpass
@@ -30,7 +31,12 @@ interface BoatLaunch {
    *     access point even if no longer maintained
    */
   type: 'ramp' | 'put-in' | 'pier' | 'rental' | 'marina' | 'historic';
-  source: 'osm';
+  /**
+   * 'osm' = scraped from OpenStreetMap. 'curated' = hand-curated entry
+   * in functions/src/scrapers/curatedLaunches.ts (mostly MI / TN
+   * river-specific spots OSM contributors missed).
+   */
+  source: 'osm' | 'curated';
 }
 
 interface BoatLaunchSet {
@@ -58,14 +64,23 @@ const OVERPASS = 'https://overpass-api.de/api/interpreter';
  * doesn't show up as three pins on top of each other.
  */
 async function fetchStateLaunches(state: string): Promise<BoatLaunch[]> {
-  // The name-regex sweep catches launches OSM contributors named but
-  // didn't tag with one of the canonical access tags. "Hole in the
-  // Wall Launch", "Tree Farm Canoe Access", "Smith Bridge River
-  // Access" — all common on MI/TN rivers but not tagged
-  // leisure=slipway. Same idea for marinas and disused/historic
-  // slipways which the previous query skipped entirely.
+  // Greatly-expanded name-regex sweep. The earlier version missed all
+  // launches named "Burton's Landing", "Stephan Bridge", "Newsom's
+  // Mill", or "Pinkerton Park" — extremely common patterns on MI / TN
+  // rivers where the launch is named after the landmark, not after
+  // the function. This pass adds:
+  //   - "landing" (canoe landing, river landing, named-X landing)
+  //   - "X bridge" patterns (Stephan Bridge, Wakeley Bridge, etc.)
+  //   - "mill / dam / ford" patterns (Newsom's Mill, etc.) — heavy
+  //     correlation with public river access
+  //   - standalone " access" (catches "Smithville Access")
+  //   - "X park" / "park access" (river parks are launch sites)
+  //   - "put in" / "take out" with separators
+  // We accept some false positives (a park name that's nowhere near
+  // water might slip through) but the dedupe + the map's
+  // distance-from-spots context handles most noise.
   const nameRegex =
-    'boat launch|boat ramp|canoe (launch|access)|kayak (launch|access)|river access|fishing access|put.?in|take.?out|public access';
+    'boat launch|boat ramp|canoe (launch|access|landing)|kayak (launch|access|landing)|river access|fishing access|public access|put.?in|take.?out|landing$|bridge (access|crossing)|.+ landing|.+ bridge$|.+ ford$|.+ mill$|.+ park access| access$| crossing$';
 
   const query = `[out:json][timeout:160];
 area["ISO3166-2"="US-${state}"][admin_level=4]->.a;
@@ -142,7 +157,30 @@ out center tags;`;
     });
   }
 
-  return dedupeNearby(raw);
+  // Merge curated launches for this state in BEFORE dedupe — that way
+  // if OSM has the same launch the curated entry coalesces; if OSM is
+  // missing it, the curated entry stays.
+  const curated = CURATED_LAUNCHES.filter((c) => c.state === state).map<BoatLaunch>(
+    (c) => ({
+      id: `curated-${state}-${slugify(c.river)}-${slugify(c.name)}`,
+      name: c.name,
+      lat: Number(c.lat.toFixed(5)),
+      lng: Number(c.lng.toFixed(5)),
+      state: c.state,
+      type: c.type,
+      source: 'curated',
+    })
+  );
+
+  return dedupeNearby([...raw, ...curated]);
+}
+
+function slugify(s: string): string {
+  return s
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+    .slice(0, 40);
 }
 
 /**

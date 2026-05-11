@@ -19,7 +19,13 @@ const URL = 'https://georgiawildlife.com/fishing/trout-stocking';
 const DATE_HEADER_RE = /(\d{1,2})\/(\d{1,2})\/(\d{2,4})/;
 
 export async function scrape(): Promise<StockingScrapeRecord[]> {
-  const html = await fetchHtml(URL);
+  let html: string;
+  try {
+    html = await fetchHtml(URL);
+  } catch (e) {
+    logger.warn('gaDnr.fetch.failed', { url: URL, error: String(e) });
+    return [];
+  }
   const $ = cheerio.load(html);
 
   const records: StockingScrapeRecord[] = [];
@@ -60,6 +66,10 @@ export async function scrape(): Promise<StockingScrapeRecord[]> {
       });
   });
 
+  if (records.length === 0) {
+    const bodyText = $('body').text().replace(/\s+/g, ' ').trim().slice(0, 240);
+    logger.warn('gaDnr.parse.empty', { url: URL, bodySnippet: bodyText });
+  }
   logger.info('gaDnr.scrape', { count: records.length });
   return records;
 }

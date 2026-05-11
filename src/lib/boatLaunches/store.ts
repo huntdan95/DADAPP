@@ -25,7 +25,12 @@ export interface BoatLaunch {
    * ('slipway') and we coerce that to 'ramp' at read time below.
    */
   type: 'ramp' | 'put-in' | 'pier' | 'rental' | 'marina' | 'historic' | string;
-  source: 'osm' | 'user';
+  /**
+   * 'osm' = scraped from OpenStreetMap. 'curated' = handpicked
+   * supplementary entry (river-specific launches OSM missed).
+   * 'user' = manually added by the signed-in angler.
+   */
+  source: 'osm' | 'user' | 'curated';
 }
 
 export interface BoatLaunchSet {

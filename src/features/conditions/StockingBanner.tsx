@@ -25,6 +25,9 @@ export function StockingBanner({ location }: { location: Location }) {
   const [formOpen, setFormOpen] = useState(false);
   const [scraping, setScraping] = useState(false);
   const [scrapeError, setScrapeError] = useState<string | null>(null);
+  const [lastScrapeSummary, setLastScrapeSummary] = useState<string | null>(
+    null
+  );
 
   useEffect(() => {
     return watchRecentStockingByState(location.state, setEvents, 30);
@@ -35,11 +38,24 @@ export function StockingBanner({ location }: { location: Location }) {
   async function refreshFromDnrs() {
     setScraping(true);
     setScrapeError(null);
+    setLastScrapeSummary(null);
     try {
       // Hits every state DNR scraper in one call. Live writes flow into
       // the same stockingEvents collection so this banner picks them up
       // automatically via the existing subscription.
-      await triggerStockingScrape();
+      const res = await triggerStockingScrape();
+      // Build a human summary: "TWRA 12, MI 8, GA 0 (err)…" so users
+      // can SEE which scrapers actually returned data and which are
+      // dead. Without this it looks like "nothing happened" when in
+      // reality the scrapers may have failed silently.
+      const summary = res.results
+        .map((r) => {
+          if (r.error) return `${labelFor(r.source)} error`;
+          if (r.total === 0) return `${labelFor(r.source)} 0`;
+          return `${labelFor(r.source)} ${r.added}+`;
+        })
+        .join(' · ');
+      setLastScrapeSummary(summary || 'No scrapers ran');
     } catch (e) {
       setScrapeError(friendlyError(e));
     } finally {
@@ -123,6 +139,12 @@ export function StockingBanner({ location }: { location: Location }) {
         </div>
       )}
 
+      {lastScrapeSummary && nearby.length === 0 && (
+        <div className="mx-4 mb-3 -mt-2 text-[10px] text-muted">
+          Last refresh: {lastScrapeSummary}
+        </div>
+      )}
+
       <BottomSheet
         open={formOpen}
         onClose={() => setFormOpen(false)}
@@ -153,6 +175,33 @@ function formatDate(yyyyMmDd: string): string {
     month: 'short',
     day: 'numeric',
   }).format(d);
+}
+
+/**
+ * Short labels used in the post-refresh summary line. Mirror the
+ * full sourceLabel() codes but trimmed for a compact one-line read.
+ */
+function labelFor(sourceCode: string): string {
+  switch (sourceCode) {
+    case 'twra':
+      return 'TN';
+    case 'mi-dnr':
+      return 'MI';
+    case 'nc-wrc':
+      return 'NC';
+    case 'ga-dnr':
+      return 'GA';
+    case 'fwc':
+      return 'FL';
+    case 'in-dnr':
+      return 'IN';
+    case 'al-dcnr':
+      return 'AL';
+    case 'ky-dfwr':
+      return 'KY';
+    default:
+      return sourceCode;
+  }
 }
 
 function sourceLabel(source: StockingEvent['source']): string {

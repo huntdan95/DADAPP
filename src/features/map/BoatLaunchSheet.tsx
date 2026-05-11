@@ -74,6 +74,7 @@ export function BoatLaunchSheet({
               <div>
                 {launch.state} · {launchTypeLabel(launch.type)}
                 {launch.source === 'user' && ' · added by you'}
+                {launch.source === 'curated' && ' · curated'}
               </div>
               <div className="text-xs num">
                 {launch.lat.toFixed(5)}, {launch.lng.toFixed(5)}

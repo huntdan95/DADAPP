@@ -18,19 +18,57 @@ import type { StockingScrapeRecord } from './types';
  * page redesigns. When/if it breaks, log a sample line and adjust.
  */
 
+// Primary published URL. TWRA also publishes the schedule as a PDF
+// some weeks — we fall through to a second URL below if the HTML page
+// has no parseable rows.
 const URL = 'https://www.tn.gov/twra/fishing/trout-stocking.html';
+const FALLBACK_URLS = [
+  'https://www.tn.gov/twra/fishing/trout-fishing.html',
+];
 
 const DATE_RE = /^(\d{1,2})\/(\d{1,2})\/(\d{2,4})$/;
 
 export async function scrape(): Promise<StockingScrapeRecord[]> {
-  const html = await fetchHtml(URL);
+  const records = await tryScrape(URL);
+  if (records.length > 0) return records;
+
+  // Empty parse: try fallback URLs in case TWRA moved the schedule.
+  for (const fallbackUrl of FALLBACK_URLS) {
+    const more = await tryScrape(fallbackUrl).catch(() => []);
+    if (more.length > 0) {
+      logger.info('twra.scrape.fallback-hit', { url: fallbackUrl });
+      return more;
+    }
+  }
+  return records;
+}
+
+async function tryScrape(url: string): Promise<StockingScrapeRecord[]> {
+  let html: string;
+  try {
+    html = await fetchHtml(url);
+  } catch (e) {
+    logger.warn('twra.fetch.failed', { url, error: String(e) });
+    return [];
+  }
   const $ = cheerio.load(html);
 
+  const records = parseRows($);
+
+  // Diagnostic: if we got zero rows, log a short snippet of the page so
+  // we can tell whether the page loaded (just structured differently)
+  // or returned a redirect / error page entirely.
+  if (records.length === 0) {
+    const bodyText = $('body').text().replace(/\s+/g, ' ').trim().slice(0, 240);
+    logger.warn('twra.parse.empty', { url, bodySnippet: bodyText });
+  }
+
+  return records;
+}
+
+function parseRows($: cheerio.CheerioAPI): StockingScrapeRecord[] {
   const records: StockingScrapeRecord[] = [];
 
-  // Walk every table on the page. Trout stocking is in one main table,
-  // but TWRA's CMS sometimes wraps it in extra layout containers — we
-  // detect the right table by the date-shaped first cell.
   $('table').each((_, tbl) => {
     $(tbl)
       .find('tr')
@@ -44,13 +82,10 @@ export async function scrape(): Promise<StockingScrapeRecord[]> {
         const m = dateRaw.match(DATE_RE);
         if (!m) return;
 
-        // Normalize date → YYYY-MM-DD. Two-digit years assume 2000s.
         const [, mo, d, yRaw] = m;
         const year = yRaw.length === 2 ? `20${yRaw}` : yRaw;
         const isoDate = `${year}-${mo.padStart(2, '0')}-${d.padStart(2, '0')}`;
 
-        // TWRA columns historically: Date | Stream | County | Species | Count
-        // Be tolerant: variations sometimes drop or merge columns.
         const water = cells[1] ?? '';
         const county = cells[2] ?? '';
         const speciesRaw = cells[3] ?? 'Rainbow trout';
@@ -72,7 +107,6 @@ export async function scrape(): Promise<StockingScrapeRecord[]> {
       });
   });
 
-  logger.info('twra.scrape', { count: records.length });
   return records;
 }
 
