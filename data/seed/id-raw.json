@@ -1,0 +1,22 @@
+[
+  {"date":"2026-05-15","water":"Bannock Reservoir","county":"Bannock","region":"Southeast","species":"Rainbow Trout","count":1000,"size":"catchable"},
+  {"date":"2026-05-15","water":"Bear River below Oneida Dam","county":"Bear Lake","region":"Southeast","species":"Rainbow Trout","count":2000,"size":"catchable"},
+  {"date":"2026-05-15","water":"Crystal Springs Pond","county":"Bannock","region":"Southeast","species":"Rainbow Trout","count":1000,"size":"catchable"},
+  {"date":"2026-05-15","water":"Devil Creek Reservoir","county":"Oneida","region":"Southeast","species":"Rainbow Trout","count":2200,"size":"catchable"},
+  {"date":"2026-05-15","water":"Edson Fichter Pond","county":"Bannock","region":"Southeast","species":"Rainbow Trout","count":1900,"size":"catchable"},
+  {"date":"2026-05-15","water":"Upper Kelly Park Pond","county":"Caribou","region":"Southeast","species":"Rainbow Trout","count":250,"size":"catchable"},
+  {"date":"2026-05-15","water":"Montpelier Rearing Pond","county":"Bear Lake","region":"Southeast","species":"Rainbow Trout","count":250,"size":"catchable"},
+  {"date":"2026-05-15","water":"Twin Lakes Reservoir","county":"Franklin","region":"Southeast","species":"Rainbow Trout","count":1000,"size":"catchable"},
+  {"date":"2026-02-04","water":"Crystal Springs Lake","region":"Magic Valley","species":"Rainbow Trout","count":300,"size":"10-12 in"},
+  {"date":"2026-02-04","water":"Niagara Springs","region":"Magic Valley","species":"Rainbow Trout","count":250,"size":"10-12 in"},
+  {"date":"2026-02-11","water":"Filer Kids Pond & Filer Pond","region":"Magic Valley","species":"Rainbow Trout","count":450,"size":"10-12 in"},
+  {"date":"2026-02-11","water":"Freedom Park Pond","region":"Magic Valley","species":"Rainbow Trout","count":500,"size":"10-12 in"},
+  {"date":"2026-02-18","water":"Crystal Springs Lake","region":"Magic Valley","species":"Rainbow Trout","count":300,"size":"10-12 in"},
+  {"date":"2026-02-18","water":"Niagara Springs","region":"Magic Valley","species":"Rainbow Trout","count":250,"size":"10-12 in"},
+  {"date":"2026-02-25","water":"Filer Kids Pond & Filer Pond","region":"Magic Valley","species":"Rainbow Trout","count":450,"size":"10-12 in"},
+  {"date":"2026-02-25","water":"Hagerman WMA Oster Lake #1","region":"Magic Valley","species":"Rainbow Trout","count":2000,"size":"10-12 in"},
+  {"date":"2026-02-25","water":"Hagerman WMA Oster Lake #2","region":"Magic Valley","species":"Rainbow Trout","count":450,"size":"10-12 in"},
+  {"date":"2026-02-25","water":"Hagerman WMA Oster Lake #3","region":"Magic Valley","species":"Rainbow Trout","count":450,"size":"10-12 in"},
+  {"date":"2026-02-25","water":"Hagerman WMA Oster Lake #4","region":"Magic Valley","species":"Rainbow Trout","count":450,"size":"10-12 in"},
+  {"date":"2026-02-25","water":"Hagerman WMA Riley Creek Pond","region":"Magic Valley","species":"Rainbow Trout","count":1000,"size":"10-12 in"}
+]
