@@ -17,15 +17,22 @@ const updateSW = registerSW({
     window.dispatchEvent(new Event('pwa-need-refresh'));
   },
   onRegistered(r) {
-    // Hourly check for newer SW while the tab stays open.
-    if (r) {
-      setInterval(
-        () => {
-          r.update().catch(() => undefined);
-        },
-        60 * 60 * 1000
-      );
-    }
+    if (!r) return;
+    const checkForUpdate = () => r.update().catch(() => undefined);
+    // Check every 15 min instead of hourly — users hit a fast loop
+    // when we're shipping fixes and waiting an hour for the toast
+    // to show is too long. Negligible cost.
+    setInterval(checkForUpdate, 15 * 60 * 1000);
+    // Also check whenever the tab becomes visible again. A user who
+    // backgrounds the PWA for hours and reopens it would otherwise
+    // sit on the stale cached bundle until the next 15-min tick.
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') checkForUpdate();
+    });
+    // And on initial load. registerSW does this automatically but
+    // belt-and-suspenders: a SW that was activated in a prior tab
+    // can be skipped over here without the extra check.
+    checkForUpdate();
   },
 });
 

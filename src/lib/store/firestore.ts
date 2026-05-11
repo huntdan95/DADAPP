@@ -56,7 +56,13 @@ export function makeFirestoreLocationStore(): LocationStore {
       return snap.exists() ? (snap.data() as Location) : null;
     },
     async upsert(loc) {
-      await setDoc(doc(userCol(), loc.id), loc);
+      // Defensive strip of undefined values before the setDoc.
+      // We ALSO pass `ignoreUndefinedProperties: true` to
+      // initializeFirestore, but that flag only protects clients
+      // running the latest bundle — older cached PWA bundles still
+      // throw "Unsupported field value: undefined" without this
+      // explicit strip. Belt + suspenders.
+      await setDoc(doc(userCol(), loc.id), stripUndefinedDeep(loc) as Location);
     },
     async remove(id) {
       await deleteDoc(doc(userCol(), id));
@@ -67,4 +73,21 @@ export function makeFirestoreLocationStore(): LocationStore {
       });
     },
   };
+}
+
+/**
+ * Recursively drops keys whose value is `undefined`. Preserves
+ * `null`, empty string, 0, false, etc. Walks nested objects but
+ * not arrays (Firestore handles array contents fine).
+ */
+function stripUndefinedDeep<T>(value: T): T {
+  if (value == null || typeof value !== 'object' || Array.isArray(value)) {
+    return value;
+  }
+  const out: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
+    if (v === undefined) continue;
+    out[k] = stripUndefinedDeep(v);
+  }
+  return out as T;
 }
