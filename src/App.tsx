@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
 import {
   Activity,
+  Cog,
   CloudOff,
   Map as MapIcon,
   ListChecks,
@@ -46,6 +47,9 @@ const LocationForm = lazy(() =>
 const LogFeed = lazy(() =>
   import('@/features/log/LogFeed').then((m) => ({ default: m.LogFeed }))
 );
+const SystemHealth = lazy(() =>
+  import('@/features/admin/SystemHealth').then((m) => ({ default: m.SystemHealth }))
+);
 
 type Tab = 'conditions' | 'map' | 'spots' | 'log';
 
@@ -73,6 +77,7 @@ export default function App() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [selectedSpotId, setSelectedSpotId] = useState<string | null>(null);
   const [addSpotOpen, setAddSpotOpen] = useState(false);
+  const [healthOpen, setHealthOpen] = useState(false);
 
   // Only initialize the store once auth has resolved into a usable state.
   // Otherwise Firestore listeners fire while signed-out and 403.
@@ -218,6 +223,16 @@ export default function App() {
               <Button
                 size="icon"
                 variant="ghost"
+                onClick={() => setHealthOpen(true)}
+                aria-label="System health"
+              >
+                <Cog className="w-5 h-5" />
+              </Button>
+            )}
+            {auth.kind === 'signed-in' && (
+              <Button
+                size="icon"
+                variant="ghost"
                 onClick={() => signOutCurrent()}
                 aria-label="Sign out"
               >
@@ -298,6 +313,18 @@ export default function App() {
                 setAddSpotOpen(false);
               }}
             />
+          </Suspense>
+        )}
+      </BottomSheet>
+
+      <BottomSheet
+        open={healthOpen}
+        onClose={() => setHealthOpen(false)}
+        title="System health"
+      >
+        {healthOpen && (
+          <Suspense fallback={<TabFallback />}>
+            <SystemHealth onClose={() => setHealthOpen(false)} />
           </Suspense>
         )}
       </BottomSheet>
