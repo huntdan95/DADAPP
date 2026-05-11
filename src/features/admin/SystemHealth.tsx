@@ -317,7 +317,7 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
             <Fish className="w-4 h-4 text-accent" />
             Stocking events
           </CardTitle>
-          <CardSubtitle>By state, last 30 days</CardSubtitle>
+          <CardSubtitle>All 17 covered states, last 90 days</CardSubtitle>
         </CardHeader>
         <div className="px-4 pb-4">
           {loading ? (
@@ -326,32 +326,50 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
             </div>
           ) : (
             <div className="flex flex-col gap-1.5">
-              {stockingByState.map((row) => (
-                <div
-                  key={row.state}
-                  className="flex items-center justify-between text-sm"
-                >
-                  <div className="font-mono text-xs w-8 text-muted">
-                    {row.state}
-                  </div>
-                  <div className="flex-1">
-                    <span className="num">{row.count}</span>
-                    {row.sourceBreakdown && (
-                      <span className="text-[11px] text-muted ml-2">
-                        {row.sourceBreakdown}
+              {stockingByState.map((row) => {
+                const isEmpty = row.count === 0;
+                const isStale = isEmpty && row.everSeen != null;
+                const isNever = isEmpty && row.everSeen == null;
+                return (
+                  <div
+                    key={row.state}
+                    className={
+                      'flex items-center justify-between text-sm gap-2 ' +
+                      (isNever ? 'text-warn' : '')
+                    }
+                  >
+                    <div className="font-mono text-xs w-8 text-muted">
+                      {row.state}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <span className="num">
+                        {isEmpty ? '—' : row.count.toLocaleString()}
                       </span>
-                    )}
+                      {row.sourceBreakdown && (
+                        <span className="text-[11px] text-muted ml-2">
+                          {row.sourceBreakdown}
+                        </span>
+                      )}
+                    </div>
+                    <div
+                      className={
+                        'text-[11px] flex-none ' +
+                        (isNever
+                          ? 'text-warn'
+                          : isStale
+                          ? 'text-warn/80'
+                          : 'text-muted')
+                      }
+                    >
+                      {isNever
+                        ? 'never seen'
+                        : isStale
+                        ? `stale · last ${row.everSeen}`
+                        : row.mostRecent ?? '—'}
+                    </div>
                   </div>
-                  <div className="text-[11px] text-muted">
-                    {row.mostRecent ?? '—'}
-                  </div>
-                </div>
-              ))}
-              {stockingByState.length === 0 && (
-                <div className="text-xs text-muted">
-                  No stocking events in the last 30 days.
-                </div>
-              )}
+                );
+              })}
             </div>
           )}
           <div className="mt-3 flex flex-wrap gap-2 items-center">
@@ -465,8 +483,12 @@ interface LaunchSetSummary {
 
 interface StockingSummary {
   state: string;
+  /** Count in the 90-day window. */
   count: number;
+  /** Most recent event date inside the 90-day window, or null. */
   mostRecent: string | null;          // YYYY-MM-DD
+  /** Most recent event date of ANY age — surfaces stale states. */
+  everSeen?: string | null;
   sourceBreakdown?: string;
 }
 
@@ -512,17 +534,29 @@ async function loadLaunchSets(): Promise<LaunchSetSummary[]> {
     .sort((a, b) => a.state.localeCompare(b.state));
 }
 
+/**
+ * Every state the stocking orchestrator covers. Stays in sync with the
+ * SCRAPERS array in functions/src/scrapers/stocking/index.ts. Showing
+ * all 17 (rather than only states with recent events) makes "this
+ * state is stale" obvious instead of "this state quietly missing".
+ */
+const STOCKING_STATES = [
+  'AL', 'AR', 'CO', 'FL', 'GA', 'ID', 'IL', 'IN', 'KY',
+  'MI', 'MS', 'MT', 'NC', 'OK', 'PA', 'TN', 'UT',
+];
+
 async function loadStockingSummary(): Promise<StockingSummary[]> {
-  // Pull events from the last 30 days (no where clause — small per-day
-  // collection across all states), then group.
-  const cutoffMs = Date.now() - 30 * 24 * 60 * 60 * 1000;
+  // Pull events from the last 90 days (a season — narrow 30 days hid
+  // states that only stock spring-summer once we're past the window).
+  const cutoffMs = Date.now() - 90 * 24 * 60 * 60 * 1000;
   const cutoffDate = new Date(cutoffMs).toISOString().slice(0, 10);
   const snap = await getDocs(collection(db(), 'stockingEvents'));
   const byState = new Map<
     string,
     {
-      count: number;
-      mostRecent: string | null;
+      count: number;            // count in the 90-day window
+      mostRecent: string | null; // most recent in the window
+      everSeen: string | null;   // most recent of any age — surfaces stale data clearly
       bySource: Map<string, number>;
     }
   >();
@@ -532,44 +566,104 @@ async function loadStockingSummary(): Promise<StockingSummary[]> {
       date?: string;
       source?: string;
     };
-    if (!data.state || !data.date || data.date < cutoffDate) continue;
-    const entry = byState.get(data.state) ?? {
+    if (!data.state || !data.date) continue;
+    const state = data.state.toUpperCase();
+    const entry = byState.get(state) ?? {
       count: 0,
       mostRecent: null,
+      everSeen: null,
       bySource: new Map<string, number>(),
     };
-    entry.count++;
-    if (entry.mostRecent == null || data.date > entry.mostRecent) {
-      entry.mostRecent = data.date;
+    // Always track the absolute-most-recent — even if outside the
+    // window, surfaces "last stocked 145 days ago" so the row isn't
+    // a pure mystery.
+    if (entry.everSeen == null || data.date > entry.everSeen) {
+      entry.everSeen = data.date;
     }
-    if (data.source) {
-      entry.bySource.set(data.source, (entry.bySource.get(data.source) ?? 0) + 1);
+    if (data.date >= cutoffDate) {
+      entry.count++;
+      if (entry.mostRecent == null || data.date > entry.mostRecent) {
+        entry.mostRecent = data.date;
+      }
+      if (data.source) {
+        entry.bySource.set(
+          data.source,
+          (entry.bySource.get(data.source) ?? 0) + 1
+        );
+      }
     }
-    byState.set(data.state, entry);
+    byState.set(state, entry);
   }
-  return Array.from(byState.entries())
-    .map(([state, v]) => ({
+
+  // Fold over ALL configured states so empty / never-scraped ones
+  // surface explicitly. Mirrors the boat-launch pattern.
+  return STOCKING_STATES.map((state) => {
+    const v = byState.get(state);
+    if (!v) {
+      return {
+        state,
+        count: 0,
+        mostRecent: null,
+        everSeen: null,
+      } as StockingSummary;
+    }
+    return {
       state,
       count: v.count,
       mostRecent: v.mostRecent,
-      sourceBreakdown: Array.from(v.bySource.entries())
-        .map(([src, n]) => `${shortSource(src)} ${n}`)
-        .join(' · '),
-    }))
-    .sort((a, b) => a.state.localeCompare(b.state));
+      everSeen: v.everSeen,
+      sourceBreakdown:
+        v.bySource.size > 0
+          ? Array.from(v.bySource.entries())
+              .map(([src, n]) => `${shortSource(src)} ${n}`)
+              .join(' · ')
+          : undefined,
+    };
+  }).sort((a, b) => a.state.localeCompare(b.state));
 }
 
+/** Compact source labels for the System Health breakdown line. */
 function shortSource(src: string): string {
-  if (src === 'twra') return 'TN';
-  if (src === 'ga-dnr') return 'GA';
-  if (src === 'nc-wrc') return 'NC';
-  if (src === 'mi-dnr') return 'MI';
-  if (src === 'ky-dfwr') return 'KY';
-  if (src === 'in-dnr') return 'IN';
-  if (src === 'fwc') return 'FL';
-  if (src === 'al-dcnr') return 'AL';
-  if (src === 'manual') return 'manual';
-  return src;
+  switch (src) {
+    case 'twra':
+      return 'TN';
+    case 'ga-dnr':
+      return 'GA';
+    case 'nc-wrc':
+      return 'NC';
+    case 'mi-dnr':
+      return 'MI';
+    case 'in-dnr':
+      return 'IN';
+    case 'fwc':
+      return 'FL';
+    case 'al-dcnr':
+      return 'AL';
+    case 'ky-dfwr':
+      return 'KY';
+    case 'pa-fbc':
+      return 'PA';
+    case 'mt-fwp':
+      return 'MT';
+    case 'id-fg':
+      return 'ID';
+    case 'co-cpw':
+      return 'CO';
+    case 'ut-dwr':
+      return 'UT';
+    case 'ar-agfc':
+      return 'AR';
+    case 'ok-odwc':
+      return 'OK';
+    case 'ms-mdwfp':
+      return 'MS';
+    case 'il-dnr':
+      return 'IL';
+    case 'manual':
+      return 'manual';
+    default:
+      return src;
+  }
 }
 
 async function loadAiUsageToday(): Promise<AiUsageSummary | null> {
