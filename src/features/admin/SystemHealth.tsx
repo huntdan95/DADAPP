@@ -19,7 +19,7 @@ import { Card, CardHeader, CardSubtitle, CardTitle } from '@/components/ui/Card'
 import { getFirebaseApp, getFirebaseAuth } from '@/lib/firebase';
 import { pendingPhotoCount } from '@/lib/log/photoQueue';
 import { triggerStockingScrape } from '@/lib/stocking/trigger';
-import { callSeedBoatLaunches } from '@/lib/boatLaunches/store';
+import { callSeedBoatLaunches, STATES as LAUNCH_STATES } from '@/lib/boatLaunches/store';
 import { Button } from '@/components/ui/Button';
 import { friendlyError } from '@/lib/errors';
 
@@ -51,6 +51,8 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
 
   const [scrapingStocking, setScrapingStocking] = useState(false);
   const [seedingLaunches, setSeedingLaunches] = useState(false);
+  const [seedingMissing, setSeedingMissing] = useState(false);
+  const [seedProgress, setSeedProgress] = useState<string | null>(null);
 
   async function load() {
     setLoading(true);
@@ -92,13 +94,43 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
 
   async function refreshLaunches() {
     setSeedingLaunches(true);
+    setSeedProgress(null);
     try {
-      await callSeedBoatLaunches();
+      await callSeedBoatLaunches((p) => {
+        setSeedProgress(`Chunk ${p.chunkIndex}/${p.totalChunks} done`);
+      });
       await load();
     } catch (e) {
       setError(friendlyError(e));
     } finally {
       setSeedingLaunches(false);
+      setSeedProgress(null);
+    }
+  }
+
+  /**
+   * Re-seed only states that have no doc yet or count of 0. Useful
+   * when a previous full refresh failed for some states and we want
+   * to retry the failed ones without waiting another 10 minutes for
+   * already-seeded states.
+   */
+  async function refreshMissingLaunches() {
+    const missing = launchSets
+      .filter((row) => row.count === 0 || row.fetchedAtMs == null)
+      .map((row) => row.state);
+    if (missing.length === 0) return;
+    setSeedingMissing(true);
+    setSeedProgress(null);
+    try {
+      await callSeedBoatLaunches((p) => {
+        setSeedProgress(`Chunk ${p.chunkIndex}/${p.totalChunks} done`);
+      }, missing);
+      await load();
+    } catch (e) {
+      setError(friendlyError(e));
+    } finally {
+      setSeedingMissing(false);
+      setSeedProgress(null);
     }
   }
 
@@ -124,43 +156,74 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
             </div>
           ) : (
             <div className="flex flex-col gap-1.5">
-              {launchSets.map((row) => (
-                <div
-                  key={row.state}
-                  className="flex items-center justify-between text-sm"
-                >
-                  <div className="font-mono text-xs w-8 text-muted">
-                    {row.state}
+              {launchSets.map((row) => {
+                const isMissing = row.count === 0 || row.fetchedAtMs == null;
+                return (
+                  <div
+                    key={row.state}
+                    className={
+                      'flex items-center justify-between text-sm ' +
+                      (isMissing ? 'text-warn' : '')
+                    }
+                  >
+                    <div className="font-mono text-xs w-8 text-muted">
+                      {row.state}
+                    </div>
+                    <div className="flex-1 num">
+                      {isMissing ? '—' : row.count.toLocaleString()}
+                    </div>
+                    <div
+                      className={
+                        'text-[11px] ' + (isMissing ? 'text-warn' : 'text-muted')
+                      }
+                    >
+                      {isMissing ? 'never scraped' : formatAge(row.fetchedAtMs)}
+                    </div>
                   </div>
-                  <div className="flex-1 num">
-                    {row.count.toLocaleString()}
-                  </div>
-                  <div className="text-[11px] text-muted">
-                    {formatAge(row.fetchedAtMs)}
-                  </div>
-                </div>
-              ))}
-              {launchSets.length === 0 && (
-                <div className="text-xs text-muted">
-                  No launches loaded yet — tap Refresh below to scrape.
-                </div>
-              )}
+                );
+              })}
             </div>
           )}
-          <div className="mt-3">
+          {seedProgress && (
+            <div className="mt-2 text-[11px] text-info">{seedProgress}…</div>
+          )}
+          <div className="mt-3 flex flex-wrap gap-2">
             <Button
               size="sm"
               variant="secondary"
               onClick={refreshLaunches}
-              disabled={seedingLaunches}
+              disabled={seedingLaunches || seedingMissing}
             >
               {seedingLaunches ? (
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
               ) : (
                 <RefreshCcw className="w-3.5 h-3.5" />
               )}
-              {seedingLaunches ? 'Scraping (~2 min)…' : 'Refresh boat launches'}
+              {seedingLaunches ? 'Scraping…' : 'Refresh all states'}
             </Button>
+            {launchSets.some(
+              (r) => r.count === 0 || r.fetchedAtMs == null
+            ) && (
+              <Button
+                size="sm"
+                variant="secondary"
+                onClick={refreshMissingLaunches}
+                disabled={seedingMissing || seedingLaunches}
+              >
+                {seedingMissing ? (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                ) : (
+                  <RefreshCcw className="w-3.5 h-3.5" />
+                )}
+                {seedingMissing
+                  ? 'Scraping missing…'
+                  : `Re-seed ${
+                      launchSets.filter(
+                        (r) => r.count === 0 || r.fetchedAtMs == null
+                      ).length
+                    } missing`}
+              </Button>
+            )}
           </div>
         </div>
       </Card>
@@ -328,18 +391,24 @@ function uid(): string | null {
 
 async function loadLaunchSets(): Promise<LaunchSetSummary[]> {
   const snap = await getDocs(collection(db(), 'boatLaunchSets'));
-  return snap.docs
-    .map((d) => {
-      const data = d.data() as {
-        count?: number;
-        fetchedAt?: Timestamp;
-      };
-      return {
-        state: d.id,
-        count: data.count ?? 0,
-        fetchedAtMs: data.fetchedAt?.toMillis() ?? null,
-      };
-    })
+  // Index existing docs by state code.
+  const byState = new Map<string, { count: number; fetchedAtMs: number | null }>();
+  for (const d of snap.docs) {
+    const data = d.data() as { count?: number; fetchedAt?: Timestamp };
+    byState.set(d.id, {
+      count: data.count ?? 0,
+      fetchedAtMs: data.fetchedAt?.toMillis() ?? null,
+    });
+  }
+  // Fold every CONFIGURED state — present states keep their data,
+  // missing states show count=0 and fetchedAtMs=null so the row
+  // surfaces as 'never'.
+  return LAUNCH_STATES
+    .map((state) => ({
+      state,
+      count: byState.get(state)?.count ?? 0,
+      fetchedAtMs: byState.get(state)?.fetchedAtMs ?? null,
+    }))
     .sort((a, b) => a.state.localeCompare(b.state));
 }
 

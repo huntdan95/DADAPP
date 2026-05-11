@@ -41,7 +41,13 @@ export interface BoatLaunchSet {
   fetchedAt: Timestamp | null;
 }
 
-const STATES = [
+/**
+ * Canonical state list — must match the server's STATES in
+ * functions/src/scrapers/boatLaunches.ts. Exported so the System
+ * Health page can show all configured states (including ones that
+ * haven't been scraped yet) and offer a 'Re-seed missing' button.
+ */
+export const STATES = [
   'MI', 'TN', 'IN', 'NC', 'FL', 'GA', 'AL', 'KY',
   'MS', 'AR', 'OK', 'IL', 'PA',
   'MT', 'ID', 'UT', 'CO',
@@ -80,6 +86,15 @@ function readLocalCache(): CachePayload | null {
     const parsed = JSON.parse(raw) as CachePayload;
     if (!parsed?.launches || !parsed?.versions) return null;
     if (Date.now() - parsed.cachedAt > CACHE_MAX_AGE_MS) return null;
+    // Schema-version check: if the canonical STATES list has entries
+    // the cache doesn't know about (we added states since this cache
+    // was written), force a fresh load. Without this the user sees a
+    // stale cache with only the old states forever.
+    const missingStates = STATES.filter((st) => !(st in parsed.versions));
+    if (missingStates.length > 0) {
+      localStorage.removeItem(CACHE_KEY);
+      return null;
+    }
     memoryCache = parsed;
     return parsed;
   } catch {
@@ -205,7 +220,6 @@ export function invalidateBoatLaunchCache(): void {
  * (e.g. "Chunk 2 of 4 done").
  */
 const SEED_CHUNK_SIZE = 5;
-const ALL_STATES = STATES;
 
 export interface SeedProgress {
   chunkIndex: number;        // 1-based — for "Chunk 2 of 4" messaging
@@ -216,7 +230,9 @@ export interface SeedProgress {
 }
 
 export async function callSeedBoatLaunches(
-  onProgress?: (p: SeedProgress) => void
+  onProgress?: (p: SeedProgress) => void,
+  /** If provided, only scrape these states. Otherwise scrapes all 17. */
+  targetStates?: string[]
 ): Promise<{ results: Array<{ state: string; count: number }> }> {
   const app = getFirebaseApp();
   if (!app) throw new Error('Firebase not configured');
@@ -229,9 +245,11 @@ export async function callSeedBoatLaunches(
     { results: Array<{ state: string; count: number }> }
   >(functions, 'seedBoatLaunchesCallable', { timeout: 540_000 });
 
+  const stateList =
+    targetStates && targetStates.length > 0 ? targetStates : STATES;
   const chunks: string[][] = [];
-  for (let i = 0; i < ALL_STATES.length; i += SEED_CHUNK_SIZE) {
-    chunks.push(ALL_STATES.slice(i, i + SEED_CHUNK_SIZE));
+  for (let i = 0; i < stateList.length; i += SEED_CHUNK_SIZE) {
+    chunks.push(stateList.slice(i, i + SEED_CHUNK_SIZE));
   }
 
   const allResults: Array<{ state: string; count: number }> = [];
