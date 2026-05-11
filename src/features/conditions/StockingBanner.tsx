@@ -1,4 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
+import {
+  collection,
+  getDocs,
+  getFirestore,
+  orderBy,
+  query,
+  where,
+  limit as fsLimit,
+} from 'firebase/firestore';
 import { Fish, Loader2, Plus, RefreshCcw } from 'lucide-react';
 import type { Location } from '@/lib/providers/types';
 import {
@@ -7,9 +16,8 @@ import {
 } from '@/lib/stocking/store';
 import type { StockingEvent } from '@/lib/stocking/types';
 import { BottomSheet } from '@/components/ui/BottomSheet';
-import { ProgressBar } from '@/components/ui/ProgressBar';
 import { StockingForm } from '@/features/stocking/StockingForm';
-import { triggerStockingScrape } from '@/lib/stocking/trigger';
+import { getFirebaseApp } from '@/lib/firebase';
 import { friendlyError } from '@/lib/errors';
 
 /**
@@ -24,11 +32,9 @@ import { friendlyError } from '@/lib/errors';
 export function StockingBanner({ location }: { location: Location }) {
   const [events, setEvents] = useState<StockingEvent[]>([]);
   const [formOpen, setFormOpen] = useState(false);
-  const [scraping, setScraping] = useState(false);
-  const [scrapeError, setScrapeError] = useState<string | null>(null);
-  const [lastScrapeSummary, setLastScrapeSummary] = useState<string | null>(
-    null
-  );
+  const [checking, setChecking] = useState(false);
+  const [checkError, setCheckError] = useState<string | null>(null);
+  const [lastCheckSummary, setLastCheckSummary] = useState<string | null>(null);
 
   useEffect(() => {
     // 90 days back + 90 days forward. Tight enough to keep the
@@ -87,38 +93,70 @@ export function StockingBanner({ location }: { location: Location }) {
       : 'empty';
   const displayed = mode === 'upcoming' ? upcoming : historical;
 
-  async function refreshFromDnrs() {
-    setScraping(true);
-    setScrapeError(null);
-    setLastScrapeSummary(null);
+  /**
+   * Free Firestore re-read. This banner already has a live onSnapshot
+   * subscription via `watchStockingWindowByState` so new cron writes
+   * appear without any user action. The button is here purely for
+   * user feedback ("yes, I checked — here's the database state for
+   * your state") — it never triggers a Cloud Function call, never
+   * spends Anthropic credits.
+   *
+   * The actual scraping happens on the Monday 5 AM ET cron in
+   * Cloud Functions. Nothing about this banner can trigger it.
+   */
+  async function checkDatabase() {
+    setChecking(true);
+    setCheckError(null);
+    setLastCheckSummary(null);
     try {
-      // Hits every state DNR scraper in one call. Live writes flow into
-      // the same stockingEvents collection so this banner picks them up
-      // automatically via the existing subscription.
-      //
-      // The manual trigger NEVER calls Claude — only free CSV/HTML
-      // scrapers run. States without a live scraper (most of them
-      // currently) backfill once a week via the Monday cron. Keeps
-      // this button safe to tap.
-      const res = await triggerStockingScrape();
-
-      // Build a human summary: "TWRA 12, MI 8, GA 0 (err)…" so users
-      // can SEE which scrapers actually returned data and which are
-      // dead. Without this it looks like "nothing happened" when in
-      // reality the scrapers may have failed silently.
-      const summary = res.results
-        .map((r) => {
-          if (r.error) return `${labelFor(r.source)} error`;
-          if (r.total === 0) return `${labelFor(r.source)} 0`;
-          return `${labelFor(r.source)} ${r.added}+`;
-        })
-        .join(' · ');
-      setLastScrapeSummary(summary || 'No scrapers ran');
+      const app = getFirebaseApp();
+      if (!app) throw new Error('Firebase not configured');
+      const db = getFirestore(app);
+      // Single query against the same composite index the live
+      // subscription uses, sorted newest first.
+      const cutoffMs = Date.now() - 90 * 86_400_000;
+      const cutoffDate = new Date(cutoffMs).toISOString().slice(0, 10);
+      const q = query(
+        collection(db, 'stockingEvents'),
+        where('state', '==', location.state.toUpperCase()),
+        where('date', '>=', cutoffDate),
+        orderBy('date', 'desc'),
+        fsLimit(300)
+      );
+      const snap = await getDocs(q);
+      if (snap.empty) {
+        setLastCheckSummary(
+          `No stocking events in the last 90 days for ${location.state}. ` +
+            `The Monday cron will refresh state DNR data — check back after Monday 5 AM ET.`
+        );
+      } else {
+        const newest = snap.docs[0].data() as StockingEvent;
+        // Use createdAt when available so the user knows when the
+        // cron last wrote — otherwise fall back to the event date.
+        const createdMs =
+          (newest as { createdAt?: { toMillis?: () => number } })?.createdAt
+            ?.toMillis?.() ?? null;
+        const freshness = createdMs
+          ? formatAge(Date.now() - createdMs)
+          : `event date ${newest.date}`;
+        setLastCheckSummary(
+          `${snap.size} event${snap.size === 1 ? '' : 's'} for ${
+            location.state
+          } in the last 90 days · most recent ${freshness}`
+        );
+      }
     } catch (e) {
-      setScrapeError(friendlyError(e));
+      setCheckError(friendlyError(e));
     } finally {
-      setScraping(false);
+      setChecking(false);
     }
+  }
+
+  function formatAge(ageMs: number): string {
+    const hours = ageMs / 3_600_000;
+    if (hours < 1) return `${Math.round(ageMs / 60_000)} min ago`;
+    if (hours < 48) return `${Math.round(hours)} hr ago`;
+    return `${Math.round(hours / 24)} days ago`;
   }
 
   // Header line for the banner adapts to whether we're showing future
@@ -188,7 +226,7 @@ export function StockingBanner({ location }: { location: Location }) {
           all (past year + 90 days forward). Hidden when the banner
           above is already showing. */}
       {mode === 'empty' && (
-        <div className="px-4 mb-3 -mt-2 flex items-center gap-3">
+        <div className="px-4 mb-3 -mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
           <button
             type="button"
             onClick={() => setFormOpen(true)}
@@ -199,29 +237,21 @@ export function StockingBanner({ location }: { location: Location }) {
           </button>
           <button
             type="button"
-            onClick={refreshFromDnrs}
-            disabled={scraping}
+            onClick={checkDatabase}
+            disabled={checking}
             className="text-[11px] text-muted hover:text-text inline-flex items-center gap-1 disabled:opacity-50"
+            title="Re-read the stocking database (free, no API calls). Cron auto-refreshes Monday 5 AM ET."
           >
-            {scraping ? (
+            {checking ? (
               <Loader2 className="w-3 h-3 animate-spin" />
             ) : (
               <RefreshCcw className="w-3 h-3" />
             )}
-            {scraping ? 'Pulling DNRs…' : 'Refresh from DNRs'}
+            {checking ? 'Checking database…' : 'Check database'}
           </button>
-          {scrapeError && (
-            <span className="text-[10px] text-danger">{scrapeError}</span>
+          {checkError && (
+            <span className="text-[10px] text-danger w-full">{checkError}</span>
           )}
-        </div>
-      )}
-
-      {scraping && mode === 'empty' && (
-        <div className="mx-4 mb-3 -mt-2">
-          <ProgressBar
-            status="Pulling state DNRs — usually under a minute"
-            variant="info"
-          />
         </div>
       )}
 
@@ -282,9 +312,9 @@ export function StockingBanner({ location }: { location: Location }) {
         </div>
       )}
 
-      {lastScrapeSummary && mode === 'empty' && (
-        <div className="mx-4 mb-3 -mt-2 text-[10px] text-muted">
-          Last refresh: {lastScrapeSummary}
+      {lastCheckSummary && mode === 'empty' && (
+        <div className="mx-4 mb-3 -mt-2 text-[10px] text-muted leading-snug">
+          {lastCheckSummary}
         </div>
       )}
 
@@ -328,51 +358,6 @@ function formatDate(yyyyMmDd: string, todayLocal: string): string {
     day: 'numeric',
     ...(includeYear ? { year: 'numeric' } : {}),
   }).format(d);
-}
-
-/**
- * Short labels used in the post-refresh summary line. Mirror the
- * full sourceLabel() codes but trimmed for a compact one-line read.
- */
-function labelFor(sourceCode: string): string {
-  switch (sourceCode) {
-    case 'twra':
-      return 'TN';
-    case 'mi-dnr':
-      return 'MI';
-    case 'nc-wrc':
-      return 'NC';
-    case 'ga-dnr':
-      return 'GA';
-    case 'fwc':
-      return 'FL';
-    case 'in-dnr':
-      return 'IN';
-    case 'al-dcnr':
-      return 'AL';
-    case 'ky-dfwr':
-      return 'KY';
-    case 'pa-fbc':
-      return 'PA';
-    case 'mt-fwp':
-      return 'MT';
-    case 'id-fg':
-      return 'ID';
-    case 'co-cpw':
-      return 'CO';
-    case 'ut-dwr':
-      return 'UT';
-    case 'ar-agfc':
-      return 'AR';
-    case 'ok-odwc':
-      return 'OK';
-    case 'ms-mdwfp':
-      return 'MS';
-    case 'il-dnr':
-      return 'IL';
-    default:
-      return sourceCode;
-  }
 }
 
 function sourceLabel(source: StockingEvent['source']): string {
