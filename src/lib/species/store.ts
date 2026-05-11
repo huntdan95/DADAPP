@@ -66,7 +66,6 @@ const COMMONALITY: Record<string, number> = {
   'sheepshead-salt': 2,
   'black-drum': 2,
   bluefish: 2,
-  'mangrove-snapper': 2,
   tripletail: 2,
   pompano: 2,
   'jack-crevalle': 2,
@@ -74,8 +73,9 @@ const COMMONALITY: Record<string, number> = {
   'whiting-kingfish': 2,
   spot: 2,
   'atlantic-croaker': 2,
-  snook: 2,
-  tarpon: 2,
+  snook: 1,
+  tarpon: 1,
+  'mangrove-snapper': 1,
   'rock-bass': 2,
   'freshwater-drum': 2,
   'hybrid-striped-bass': 2,
@@ -135,6 +135,91 @@ const COMMONALITY: Record<string, number> = {
   bonefish: 5,
   permit: 5,
   'lake-sturgeon': 5,
+
+  // ---- Expansion set (commonality for the second wave of species) ----
+
+  // Tier 1 staples
+  pumpkinseed: 1,
+  'green-sunfish': 1,
+  warmouth: 1,
+
+  // Tier 2 commons
+  'chain-pickerel': 2,
+  'longear-sunfish': 2,
+  'spotted-sunfish': 2,
+  'spotted-gar': 2,
+  'florida-gar': 2,
+  'shortnose-gar': 2,
+  pinfish: 2,
+  tomtate: 2,
+  weakfish: 2,
+  'sand-seatrout': 2,
+  'striped-mullet': 2,
+  'american-shad': 2,
+  'hickory-shad': 2,
+  'bonnethead-shark': 2,
+  'gulf-flounder': 2,
+  'summer-flounder-fluke': 2,
+  'white-grunt': 2,                 // Reef species — not a flats / marsh fish
+
+  // Tier 3 regional / seasonal specialty
+  'suwannee-bass': 3,
+  'alabama-bass': 3,
+  flier: 3,
+  'grass-pickerel': 3,
+  'redfin-pickerel': 3,
+  'brown-bullhead': 3,
+  'black-bullhead': 3,
+  'white-catfish': 3,
+  'smallmouth-buffalo': 3,
+  'bigmouth-buffalo': 3,
+  'northern-hog-sucker': 3,
+  'black-redhorse': 3,
+  'golden-redhorse': 3,
+  'yellow-bass': 3,
+  'american-eel': 3,
+  'white-perch': 3,
+  saugeye: 3,
+  'lane-snapper': 3,
+  'vermilion-snapper': 3,
+  'mutton-snapper': 3,
+  scamp: 3,
+  'knobbed-porgy': 3,
+  'atlantic-bonito': 3,
+  'blacktip-shark': 3,
+  'sandbar-shark': 3,
+  'blacknose-shark': 3,
+  'banded-rudderfish': 3,
+  'cero-mackerel': 3,
+  'atlantic-spadefish': 3,          // Schools on nearshore wrecks, not marsh / flats
+
+  // Tier 4 niche / specialty / heavier gear or boat
+  'tiger-trout': 4,
+  'schoolmaster-snapper': 4,
+  'black-grouper': 4,
+  'almaco-jack': 4,
+  'african-pompano': 4,
+  'yellow-jack': 4,
+  'lookdown': 4,
+  'lesser-amberjack': 4,
+  'yellowfin-tuna': 4,
+  'skipjack-tuna': 4,
+  'bull-shark': 4,
+  'spinner-shark': 4,
+  'lemon-shark': 4,
+  'nurse-shark': 4,
+
+  // Tier 5 trophy / blue-water / deep
+  'cubera-snapper': 5,
+  'snowy-grouper': 5,
+  'warsaw-grouper': 5,
+  'great-hammerhead': 5,
+  'blue-marlin': 5,
+  'white-marlin': 5,
+  'bigeye-tuna': 5,
+  swordfish: 5,
+  'golden-tilefish': 5,
+  'blueline-tilefish': 5,
 };
 
 /**
@@ -157,6 +242,21 @@ const LAT_RANGES: Record<string, [number, number]> = {
   'yellowtail-snapper': [24.4, 31.0], // FL reefs
   'goliath-grouper': [24.4, 28.5],    // SW FL wrecks primarily
   sailfish: [24.0, 31.0],             // FL + lower Atlantic offshore
+
+  // Expansion set — strict sub-state localizations
+  'suwannee-bass': [29.0, 30.7],      // Suwannee + Santa Fe drainages only
+  'cubera-snapper': [24.4, 26.5],     // FL Keys + Biscayne
+  'schoolmaster-snapper': [24.4, 27.0], // Keys + south FL reefs
+  'mutton-snapper': [24.4, 28.5],     // Keys through middle FL
+  'lemon-shark': [24.4, 28.0],        // FL flats + south
+  'great-hammerhead': [24.4, 30.5],   // FL Atlantic + south
+  'nurse-shark': [24.4, 30.0],        // FL reefs primarily
+  'cero-mackerel': [24.4, 27.5],      // Keys + south FL
+  'african-pompano': [24.4, 30.0],    // FL Atlantic wrecks
+  'yellow-jack': [24.4, 27.5],        // Keys + south FL
+  'florida-gar': [24.4, 30.7],        // FL only (state filter already enforces)
+  'white-perch': [34.0, 36.6],        // NC sound country only
+  'weakfish': [33.8, 36.6],           // NC sound + ocean only
 };
 
 /**

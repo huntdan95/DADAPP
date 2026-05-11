@@ -760,7 +760,7 @@
     "waterTypes": ["saltwater"],
     "states": ["FL", "GA", "AL", "NC"],
     "seasons": [
-      { "startMonth": 2, "endMonth": 4, "label": "Late-winter spawn around structure" }
+      { "startMonth": 1, "endMonth": 12, "label": "Year-round inshore; biggest schools Feb–Apr pre-spawn" }
     ],
     "tactics": [
       { "method": "cast", "lures": ["Live fiddler crab", "Live shrimp on small hook", "Tubeworm"], "notes": "Drop straight down on bridge pilings, dock posts, jetty rocks." }
@@ -1191,5 +1191,910 @@
       { "method": "cast", "lures": ["1/16 oz inline spinner", "Sabiki rig (multi-fish at once)"], "notes": "Tailwaters below TN River dams; cast small flash in current seams." }
     ],
     "notes": "Mostly fished as cut bait for blue cats and stripers — but a fun light-tackle bonus species."
+  },
+
+  {
+    "id": "suwannee-bass",
+    "name": "Suwannee bass",
+    "scientific": "Micropterus notius",
+    "waterTypes": ["freestone"],
+    "states": ["FL"],
+    "seasons": [{ "startMonth": 3, "endMonth": 10, "label": "Spring through fall in clear-water rivers" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Soft plastic crawfish", "Small jerkbait", "1/8 oz inline spinner"], "notes": "Tight to rocky shoals and limestone ledges in clear rivers." },
+      { "method": "fly", "lures": ["Wooly bugger", "Clouser minnow", "Small popper"], "notes": "Sight-fish in clear current." }
+    ],
+    "notes": "Native to Suwannee + Santa Fe + Ochlockonee drainages. Small (max ~3 lb) but pugnacious in cold spring-fed rivers."
+  },
+  {
+    "id": "alabama-bass",
+    "name": "Alabama bass",
+    "scientific": "Micropterus henshalli",
+    "waterTypes": ["lake", "reservoir", "freestone"],
+    "states": ["AL", "GA", "NC", "TN"],
+    "seasons": [{ "startMonth": 3, "endMonth": 11, "label": "Pre-spawn through fall, deeper in summer" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Drop-shot worm", "Underspin with fluke", "Crankbait on points"], "notes": "Steep points and offshore humps; schoolier than largemouth." },
+      { "method": "jig", "lures": ["Spoon over deep schools", "Football jig"], "notes": "Deep summer water 25–45 ft." }
+    ],
+    "notes": "Recognized species since 2008. Invasive in some NC + GA reservoirs where it outcompetes natives."
+  },
+  {
+    "id": "pumpkinseed",
+    "name": "Pumpkinseed",
+    "scientific": "Lepomis gibbosus",
+    "waterTypes": ["lake", "pond", "freestone"],
+    "states": ["MI", "IN", "NC"],
+    "seasons": [{ "startMonth": 5, "endMonth": 9, "label": "Spawn beds visible May–July" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Garden worm on small hook", "Tiny jig + waxworm"], "notes": "Shallow vegetated bays, drop a worm and watch the float." },
+      { "method": "fly", "lures": ["Black ant", "Small popper", "Foam beetle"], "notes": "Cast tight to lily pad edges." }
+    ],
+    "notes": "Bright orange-and-blue-cheeked panfish of cool, clear MI lakes. Closely tied with bluegill in mixed populations."
+  },
+  {
+    "id": "green-sunfish",
+    "name": "Green sunfish",
+    "scientific": "Lepomis cyanellus",
+    "waterTypes": ["lake", "pond", "freestone"],
+    "states": ["MI", "TN", "IN", "NC", "GA", "AL", "FL"],
+    "seasons": [{ "startMonth": 4, "endMonth": 10, "label": "Warm months" }],
+    "tactics": [
+      { "method": "cast", "lures": ["1/32 oz tube jig", "Small inline spinner", "Worm on small hook"], "notes": "Crashes any small lure thrown near cover. Cattle ponds, ditches, anywhere wet." }
+    ],
+    "notes": "Aggressive, tolerates poor water — survives where everything else dies. Often the only fish in farm ponds."
+  },
+  {
+    "id": "longear-sunfish",
+    "name": "Longear sunfish",
+    "scientific": "Lepomis megalotis",
+    "waterTypes": ["freestone"],
+    "states": ["TN", "IN", "NC", "GA", "AL"],
+    "seasons": [{ "startMonth": 5, "endMonth": 9, "label": "Warm months in clear streams" }],
+    "tactics": [
+      { "method": "fly", "lures": ["Black ant", "Small wooly bugger", "Foam beetle"], "notes": "Sight-fish on gravel runs." },
+      { "method": "cast", "lures": ["Tiny inline spinner", "1/64 oz hair jig"], "notes": "Pocket water in small streams." }
+    ],
+    "notes": "Maybe the prettiest freshwater fish in North America — emerald with orange and indigo markings. Small but eager."
+  },
+  {
+    "id": "warmouth",
+    "name": "Warmouth (stumpknocker)",
+    "scientific": "Lepomis gulosus",
+    "waterTypes": ["lake", "pond", "freestone"],
+    "states": ["TN", "IN", "NC", "GA", "AL", "FL"],
+    "seasons": [{ "startMonth": 4, "endMonth": 10, "label": "Warm months" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Live cricket on float", "Small jig", "Garden worm"], "notes": "Stumps, lily pads, weedy backwaters." }
+    ],
+    "notes": "Sneaky ambush panfish — looks like a small bass with a goggle-eye. Backwater specialist."
+  },
+  {
+    "id": "spotted-sunfish",
+    "name": "Spotted sunfish (stumpknocker)",
+    "scientific": "Lepomis punctatus",
+    "waterTypes": ["freestone", "pond"],
+    "states": ["FL", "GA", "AL"],
+    "seasons": [{ "startMonth": 4, "endMonth": 10, "label": "Warm months in FL/GA backwaters" }],
+    "tactics": [
+      { "method": "fly", "lures": ["Small popper", "Foam beetle", "Wooly worm"], "notes": "Cypress knees and overhanging brush." },
+      { "method": "cast", "lures": ["Cricket under float", "Tiny jig"], "notes": "Tight to tree-root cover." }
+    ],
+    "notes": "FL/GA backwater favorite. Small but everywhere — tannin streams and floodplain swamps."
+  },
+  {
+    "id": "flier",
+    "name": "Flier",
+    "scientific": "Centrarchus macropterus",
+    "waterTypes": ["freestone", "pond"],
+    "states": ["FL", "GA", "NC", "AL"],
+    "seasons": [{ "startMonth": 3, "endMonth": 10, "label": "Warm months" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Small cricket on float", "1/64 oz jig"], "notes": "Slow blackwater swamps and tannin creeks." }
+    ],
+    "notes": "Small disc-shaped sunfish; bycatch in southeastern coastal-plain swamps."
+  },
+
+  {
+    "id": "chain-pickerel",
+    "name": "Chain pickerel",
+    "scientific": "Esox niger",
+    "waterTypes": ["lake", "pond", "freestone"],
+    "states": ["MI", "IN", "NC", "GA", "AL", "FL"],
+    "seasons": [{ "startMonth": 10, "endMonth": 4, "label": "Cold-water aggressive — fall through spring" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Inline spinnerbait", "Mepps Black Fury", "Soft jerkbait", "Rapala X-Rap"], "notes": "Weed edges and grass points — fast retrieve. Steel leader." },
+      { "method": "fly", "lures": ["Large white streamer", "Pike-sized clouser"], "notes": "Strip fast along weed edges." }
+    ],
+    "notes": "AKA 'jackfish'. Cold-water aggressor — bite is on when bass shut down. Wire bite tippet recommended."
+  },
+  {
+    "id": "grass-pickerel",
+    "name": "Grass pickerel",
+    "scientific": "Esox americanus vermiculatus",
+    "waterTypes": ["lake", "pond", "freestone"],
+    "states": ["MI", "IN", "AL", "GA", "NC"],
+    "seasons": [{ "startMonth": 4, "endMonth": 10, "label": "Open water — chronic bycatch panfishing" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Small inline spinner", "Tube jig", "Live minnow"], "notes": "Vegetated backwaters; light tackle." }
+    ],
+    "notes": "Smallest pickerel — 10–14 in typical. Usually caught by accident on a panfish bait."
+  },
+  {
+    "id": "redfin-pickerel",
+    "name": "Redfin pickerel",
+    "scientific": "Esox americanus americanus",
+    "waterTypes": ["freestone", "pond"],
+    "states": ["NC", "FL", "GA", "AL"],
+    "seasons": [{ "startMonth": 3, "endMonth": 11, "label": "Warm months in blackwater" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Beetle Spin", "Small minnow plug", "Inline spinner"], "notes": "Tannin streams and blackwater swamps; sight-cast along edges." }
+    ],
+    "notes": "Tiny southeastern pickerel — vivid red fins. Blackwater specialty species."
+  },
+
+  {
+    "id": "brown-bullhead",
+    "name": "Brown bullhead",
+    "scientific": "Ameiurus nebulosus",
+    "waterTypes": ["lake", "pond", "freestone"],
+    "states": ["MI", "IN", "NC", "GA"],
+    "seasons": [{ "startMonth": 5, "endMonth": 10, "label": "Warm months, peak at night" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Nightcrawler on bottom rig", "Chicken liver", "Cut shad chunk"], "notes": "Soft-bottom holes after dark." }
+    ],
+    "notes": "Cousin of yellow bullhead. MI / Great Lakes drainages — solid eating fish in cold months."
+  },
+  {
+    "id": "black-bullhead",
+    "name": "Black bullhead",
+    "scientific": "Ameiurus melas",
+    "waterTypes": ["pond", "lake", "freestone"],
+    "states": ["MI", "IN", "TN", "AL", "GA"],
+    "seasons": [{ "startMonth": 4, "endMonth": 10, "label": "Warm months" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Worms on bottom", "Doughball", "Chicken liver"], "notes": "Stagnant, muddy water — they love it." }
+    ],
+    "notes": "More tolerant of poor water than channel cats; common in farm-pond stunting populations."
+  },
+  {
+    "id": "white-catfish",
+    "name": "White catfish",
+    "scientific": "Ameiurus catus",
+    "waterTypes": ["freestone", "saltwater"],
+    "states": ["NC", "GA", "AL", "FL"],
+    "seasons": [{ "startMonth": 4, "endMonth": 10, "label": "Warm months in tidal rivers" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Cut shrimp on bottom rig", "Cut menhaden", "Nightcrawler"], "notes": "Brackish tidal creeks and coastal river mouths." }
+    ],
+    "notes": "Brackish-tolerant catfish of southeastern coastal rivers."
+  },
+
+  {
+    "id": "smallmouth-buffalo",
+    "name": "Smallmouth buffalo",
+    "scientific": "Ictiobus bubalus",
+    "waterTypes": ["lake", "reservoir", "freestone", "tailwater"],
+    "states": ["TN", "IN", "AL"],
+    "seasons": [{ "startMonth": 4, "endMonth": 10, "label": "Open water" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Corn or doughball on bottom", "Worms on small hook"], "notes": "Bottom-feeders in slow current. Snag-fishing is legal in some TN tailwaters." }
+    ],
+    "notes": "Big — 30–50 lb common in TN River reservoirs. Pulls like a truck on light tackle."
+  },
+  {
+    "id": "bigmouth-buffalo",
+    "name": "Bigmouth buffalo",
+    "scientific": "Ictiobus cyprinellus",
+    "waterTypes": ["lake", "reservoir", "freestone"],
+    "states": ["TN", "IN", "AL"],
+    "seasons": [{ "startMonth": 4, "endMonth": 10, "label": "Open water" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Boilies", "Sweetcorn on hair rig", "Doughball"], "notes": "Hair rig + method ball — same approach as for carp." }
+    ],
+    "notes": "Largest sucker species. Some live 100+ years. Often caught by carp anglers."
+  },
+  {
+    "id": "northern-hog-sucker",
+    "name": "Northern hog sucker",
+    "scientific": "Hypentelium nigricans",
+    "waterTypes": ["freestone"],
+    "states": ["MI", "TN", "NC", "IN"],
+    "seasons": [{ "startMonth": 4, "endMonth": 9, "label": "Warm months in clear, gravelly streams" }],
+    "tactics": [
+      { "method": "fly", "lures": ["Hare's ear nymph", "Worm pattern"], "notes": "Dead-drift on the bottom — they're vacuum cleaners." },
+      { "method": "cast", "lures": ["Garden worm on small hook + split shot"], "notes": "Same drift, just heavier." }
+    ],
+    "notes": "Smallmouth bycatch species. Bizarre forward-mounted mouth for vacuuming gravel."
+  },
+  {
+    "id": "black-redhorse",
+    "name": "Black redhorse",
+    "scientific": "Moxostoma duquesnei",
+    "waterTypes": ["freestone"],
+    "states": ["TN", "NC", "GA", "AL", "MI"],
+    "seasons": [{ "startMonth": 3, "endMonth": 5, "label": "Spring spawning run" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Garden worm on small hook", "Tiny jig + grub"], "notes": "Spring spawners stack up below riffles." }
+    ],
+    "notes": "Spring sucker run in clear streams. Underrated light-tackle fight."
+  },
+  {
+    "id": "golden-redhorse",
+    "name": "Golden redhorse",
+    "scientific": "Moxostoma erythrurum",
+    "waterTypes": ["freestone"],
+    "states": ["MI", "TN", "IN", "NC", "GA", "AL"],
+    "seasons": [{ "startMonth": 3, "endMonth": 5, "label": "Spring spawning run" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Garden worm on small hook"], "notes": "Same as black redhorse — riffle tails on spring runs." }
+    ],
+    "notes": "Larger cousin to black redhorse. Spring spawning runs in Midwest + southern rivers."
+  },
+
+  {
+    "id": "spotted-gar",
+    "name": "Spotted gar",
+    "scientific": "Lepisosteus oculatus",
+    "waterTypes": ["lake", "freestone", "pond"],
+    "states": ["FL", "AL", "GA", "TN", "IN"],
+    "seasons": [{ "startMonth": 4, "endMonth": 10, "label": "Warm months — surface basking" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Nylon rope fly (no hook)", "Small live shiner"], "notes": "Backwaters, oxbows, swamp pockets." }
+    ],
+    "notes": "Smaller cousin of longnose gar with distinctive dark spots. FL panhandle and southern oxbows."
+  },
+  {
+    "id": "florida-gar",
+    "name": "Florida gar",
+    "scientific": "Lepisosteus platyrhincus",
+    "waterTypes": ["lake", "freestone", "pond"],
+    "states": ["FL"],
+    "seasons": [{ "startMonth": 1, "endMonth": 12, "label": "Year-round in FL" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Rope fly", "Live shiner"], "notes": "Surface-basking in clear FL lakes — sight cast." }
+    ],
+    "notes": "FL-endemic; smaller and more colorful than longnose. Everglades, Lake Okeechobee, central FL lakes."
+  },
+  {
+    "id": "shortnose-gar",
+    "name": "Shortnose gar",
+    "scientific": "Lepisosteus platostomus",
+    "waterTypes": ["freestone", "reservoir"],
+    "states": ["TN", "IN", "AL"],
+    "seasons": [{ "startMonth": 4, "endMonth": 10, "label": "Warm months" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Rope fly", "Small live shad"], "notes": "TN River chain backwaters and tributary mouths." }
+    ],
+    "notes": "Smaller cousin to longnose — short, broad snout. Common in TN/AL/IN river systems."
+  },
+
+  {
+    "id": "american-shad",
+    "name": "American shad",
+    "scientific": "Alosa sapidissima",
+    "waterTypes": ["freestone"],
+    "states": ["NC", "GA", "FL"],
+    "seasons": [{ "startMonth": 2, "endMonth": 5, "label": "Spring spawning run on Atlantic-coast rivers" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Shad dart (chartreuse / pink)", "Small spoon", "Crappie jig"], "notes": "Tandem rig of two shad darts — bounce through current seams below shoals." },
+      { "method": "fly", "lures": ["Bead-head shad fly", "Crazy Charlie variant"], "notes": "Sinking line, short strips in current." }
+    ],
+    "notes": "Spring run on the Roanoke, Cape Fear, Neuse, Savannah, St. Johns. 'Poor man's tarpon' — flashy, jumping fight."
+  },
+  {
+    "id": "hickory-shad",
+    "name": "Hickory shad",
+    "scientific": "Alosa mediocris",
+    "waterTypes": ["freestone"],
+    "states": ["NC", "GA", "FL"],
+    "seasons": [{ "startMonth": 2, "endMonth": 5, "label": "Spring run, slightly ahead of American shad" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Crappie jig (1/16 oz)", "Small spoon"], "notes": "Same rivers, often co-mingled with American shad." }
+    ],
+    "notes": "Smaller cousin of American shad. Schools heavily on Carolina coastal-plain rivers."
+  },
+  {
+    "id": "american-eel",
+    "name": "American eel",
+    "scientific": "Anguilla rostrata",
+    "waterTypes": ["freestone", "saltwater"],
+    "states": ["NC", "GA", "AL", "FL"],
+    "seasons": [{ "startMonth": 4, "endMonth": 10, "label": "Warm months, nocturnal" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Nightcrawler on bottom", "Cut fish chunk"], "notes": "Set lines overnight in brackish or tidal-river holes." }
+    ],
+    "notes": "Catadromous — born in Sargasso Sea, spawns there too. Strong fight; commonly used as striper bait."
+  },
+  {
+    "id": "white-perch",
+    "name": "White perch",
+    "scientific": "Morone americana",
+    "waterTypes": ["saltwater", "freestone"],
+    "states": ["NC"],
+    "seasons": [{ "startMonth": 3, "endMonth": 11, "label": "Spring spawn in brackish water" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Bloodworm", "Small jig + minnow", "Sabiki rig"], "notes": "Currituck Sound and tidal tributaries — schoolies stack thick." }
+    ],
+    "notes": "Brackish-water resident; smaller cousin of striped bass. NC sound country specialty."
+  },
+  {
+    "id": "yellow-bass",
+    "name": "Yellow bass",
+    "scientific": "Morone mississippiensis",
+    "waterTypes": ["lake", "reservoir", "freestone"],
+    "states": ["TN", "IN", "AL"],
+    "seasons": [{ "startMonth": 3, "endMonth": 5, "label": "Spring tributary run" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Small inline spinner", "Roostertail", "1/16 oz jig"], "notes": "Mixed schools with whites and hybrids during the run." }
+    ],
+    "notes": "Smaller cousin of white bass — bright yellow flanks with dark lateral lines. Excellent panfish on light tackle."
+  },
+  {
+    "id": "saugeye",
+    "name": "Saugeye",
+    "scientific": "Sander canadensis × S. vitreus",
+    "waterTypes": ["lake", "reservoir", "tailwater"],
+    "states": ["TN", "IN"],
+    "seasons": [{ "startMonth": 3, "endMonth": 11, "label": "Open water; ice fishing too" }],
+    "tactics": [
+      { "method": "jig", "lures": ["1/4 oz jig + minnow", "Blade bait", "Vibe"], "notes": "Vertical jig in tailwater eddies and reservoir points." },
+      { "method": "troll", "lures": ["Crawler harness", "Husky Jerk"], "notes": "Contour breaks at dusk." }
+    ],
+    "notes": "Sterile sauger × walleye stocked hybrid. Tolerates muddier water than walleye, harder fighting."
+  },
+  {
+    "id": "tiger-trout",
+    "name": "Tiger trout",
+    "scientific": "Salmo trutta × Salvelinus fontinalis",
+    "waterTypes": ["lake", "freestone"],
+    "states": ["MI"],
+    "seasons": [{ "startMonth": 4, "endMonth": 10, "label": "Open water in stocked lakes" }],
+    "tactics": [
+      { "method": "fly", "lures": ["Streamer", "Wooly bugger", "Mouse pattern"], "notes": "Aggressive predator — strip streamers fast." },
+      { "method": "cast", "lures": ["Small spoon", "Inline spinner"], "notes": "Same as brown trout but more aggressive." }
+    ],
+    "notes": "Brown × brook sterile hybrid; striking vermiculated pattern. Stocked in a handful of MI lakes."
+  },
+
+  {
+    "id": "blacktip-shark",
+    "name": "Blacktip shark",
+    "scientific": "Carcharhinus limbatus",
+    "waterTypes": ["saltwater"],
+    "states": ["FL", "GA", "AL", "NC"],
+    "seasons": [{ "startMonth": 4, "endMonth": 10, "label": "Warm-water inshore + nearshore migration" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Live mullet on wire", "Cut ladyfish chunk on circle hook"], "notes": "Cast or drift live bait at the edge of bait blitzes. 12 in of wire leader minimum." }
+    ],
+    "notes": "Acrobatic — bigger blacktips clear the surface entirely. Beach + sound fishing classic."
+  },
+  {
+    "id": "bull-shark",
+    "name": "Bull shark",
+    "scientific": "Carcharhinus leucas",
+    "waterTypes": ["saltwater", "freestone"],
+    "states": ["FL", "AL", "NC", "GA"],
+    "seasons": [{ "startMonth": 4, "endMonth": 11, "label": "Warm months inshore + far up rivers" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Whole cut bonita on wire", "Live mullet"], "notes": "Heavy gear (80+ lb braid). Found in brackish AND fresh rivers — sometimes 100+ mi inland." }
+    ],
+    "notes": "Aggressive, fresh-water tolerant. Hard, sustained fight. Common in coastal-plain river systems."
+  },
+  {
+    "id": "bonnethead-shark",
+    "name": "Bonnethead shark",
+    "scientific": "Sphyrna tiburo",
+    "waterTypes": ["saltwater"],
+    "states": ["FL", "GA", "AL", "NC"],
+    "seasons": [{ "startMonth": 4, "endMonth": 10, "label": "Warm-water flats + bays" }],
+    "tactics": [
+      { "method": "fly", "lures": ["Crab pattern", "Shrimp fly", "Clouser minnow"], "notes": "Sight-cast tailing fish on shallow grass flats." },
+      { "method": "cast", "lures": ["Live shrimp on light tackle", "Cut crab"], "notes": "Flats and intracoastal grass beds." }
+    ],
+    "notes": "Mini-hammerhead, 2–4 ft typical. Sight-fishing flats target on light tackle — a real treat on fly."
+  },
+  {
+    "id": "spinner-shark",
+    "name": "Spinner shark",
+    "scientific": "Carcharhinus brevipinna",
+    "waterTypes": ["saltwater"],
+    "states": ["FL", "GA", "AL", "NC"],
+    "seasons": [{ "startMonth": 1, "endMonth": 4, "label": "Winter inshore migration off Atlantic coast" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Live mullet on wire", "Cut bonito chunk"], "notes": "Cast into bait blitzes during the FL East Coast winter migration." }
+    ],
+    "notes": "Famous for spiraling clear of the water in pursuit of bait. FL East Coast 'shark blitz' in Jan–Mar is legendary."
+  },
+  {
+    "id": "lemon-shark",
+    "name": "Lemon shark",
+    "scientific": "Negaprion brevirostris",
+    "waterTypes": ["saltwater"],
+    "states": ["FL"],
+    "seasons": [{ "startMonth": 1, "endMonth": 12, "label": "Year-round in FL waters" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Live ladyfish or jack on wire", "Whole bonita chunk"], "notes": "Bridges, inlets, and channel edges. Heavy gear." }
+    ],
+    "notes": "FL flats + inshore resident. Yellow-hued, deliberate, hard-fighting. Catch-and-release tradition."
+  },
+  {
+    "id": "great-hammerhead",
+    "name": "Great hammerhead",
+    "scientific": "Sphyrna mokarran",
+    "waterTypes": ["saltwater"],
+    "states": ["FL"],
+    "seasons": [{ "startMonth": 4, "endMonth": 8, "label": "Tarpon-season parallel — they follow the tarpon" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Whole live jack on heavy wire", "Tarpon corpse drift"], "notes": "Bridges + passes following tarpon schools. 130+ lb braid." }
+    ],
+    "notes": "Catch & release only (protected). Most often hooked while tarpon fishing in FL Keys + Biscayne passes."
+  },
+  {
+    "id": "sandbar-shark",
+    "name": "Sandbar shark",
+    "scientific": "Carcharhinus plumbeus",
+    "waterTypes": ["saltwater"],
+    "states": ["FL", "GA", "NC", "AL"],
+    "seasons": [{ "startMonth": 5, "endMonth": 10, "label": "Warm months nearshore" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Cut bait on circle hook + wire", "Whole fish chunk"], "notes": "Beach + pier fishing in 20–50 ft. Bottom rig with shock leader." }
+    ],
+    "notes": "'Brown shark' — workhorse of the surf-shark fishery. Carolinas pier favorite."
+  },
+  {
+    "id": "nurse-shark",
+    "name": "Nurse shark",
+    "scientific": "Ginglymostoma cirratum",
+    "waterTypes": ["saltwater"],
+    "states": ["FL"],
+    "seasons": [{ "startMonth": 1, "endMonth": 12, "label": "Year-round, bottom-dwelling" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Cut bonito or barracuda chunk on bottom", "Live pinfish"], "notes": "Anchored over reef ledges, around bridge pilings." }
+    ],
+    "notes": "Slow, bulldog fights. Often hooked while bottom-fishing for snapper/grouper. Catch & release."
+  },
+  {
+    "id": "blacknose-shark",
+    "name": "Blacknose shark",
+    "scientific": "Carcharhinus acronotus",
+    "waterTypes": ["saltwater"],
+    "states": ["FL", "GA", "AL", "NC"],
+    "seasons": [{ "startMonth": 4, "endMonth": 10, "label": "Warm-water inshore" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Cut shrimp or squid on wire leader", "Live finger mullet"], "notes": "Surf, sound + nearshore in 10–40 ft." }
+    ],
+    "notes": "Small shark (3–5 ft) with distinctive dark snout. Common surf/pier catch."
+  },
+
+  {
+    "id": "mutton-snapper",
+    "name": "Mutton snapper",
+    "scientific": "Lutjanus analis",
+    "waterTypes": ["saltwater"],
+    "states": ["FL"],
+    "seasons": [{ "startMonth": 5, "endMonth": 8, "label": "Summer spawning aggregations on reefs" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Live ballyhoo on knocker rig", "Whole live pinfish", "Bucktail jig + pink-tail strip"], "notes": "Drop on patch reefs in 30–80 ft. Chum + light leader." }
+    ],
+    "notes": "FL Keys + Atlantic reefs. Larger, smarter cousin of mangrove snapper. Excellent table."
+  },
+  {
+    "id": "lane-snapper",
+    "name": "Lane snapper",
+    "scientific": "Lutjanus synagris",
+    "waterTypes": ["saltwater"],
+    "states": ["FL"],
+    "seasons": [{ "startMonth": 1, "endMonth": 12, "label": "Year-round on shallow reefs" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Live shrimp on knocker rig", "Cut squid", "Small jig + ballyhoo strip"], "notes": "Patch reefs in 15–80 ft. Use small hooks." }
+    ],
+    "notes": "Pink + yellow striped snapper. Smaller (1–3 lb), abundant on Atlantic + Gulf patch reefs."
+  },
+  {
+    "id": "vermilion-snapper",
+    "name": "Vermilion snapper (beeliner)",
+    "scientific": "Rhomboplites aurorubens",
+    "waterTypes": ["saltwater"],
+    "states": ["FL", "AL", "GA", "NC"],
+    "seasons": [{ "startMonth": 1, "endMonth": 12, "label": "Year-round on deep reefs" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Cut squid on Sabiki rig", "Small jig"], "notes": "Drop to deep reefs in 120–250 ft. Multi-hook rigs for limits." }
+    ],
+    "notes": "Smaller red-snapper cousin in deeper water. Less regulated; year-round target."
+  },
+  {
+    "id": "cubera-snapper",
+    "name": "Cubera snapper",
+    "scientific": "Lutjanus cyanopterus",
+    "waterTypes": ["saltwater"],
+    "states": ["FL"],
+    "seasons": [{ "startMonth": 6, "endMonth": 8, "label": "Summer full-moon spawn aggregations" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Live blue runner or ladyfish on heavy circle hook", "Live lobster (where legal)"], "notes": "Wrecks + bridges. 80+ lb braid, heavy fluoro." }
+    ],
+    "notes": "Trophy snapper, 30–80 lb common. FL Keys + south FL wrecks; full-moon June/July is the bite."
+  },
+  {
+    "id": "schoolmaster-snapper",
+    "name": "Schoolmaster snapper",
+    "scientific": "Lutjanus apodus",
+    "waterTypes": ["saltwater"],
+    "states": ["FL"],
+    "seasons": [{ "startMonth": 1, "endMonth": 12, "label": "Year-round in Keys" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Live shrimp", "Small glass-minnow fly"], "notes": "Mangrove roots + bridge pilings in FL Keys." }
+    ],
+    "notes": "Yellow-finned small snapper of the Keys. Aggressive on light tackle."
+  },
+
+  {
+    "id": "black-grouper",
+    "name": "Black grouper",
+    "scientific": "Mycteroperca bonaci",
+    "waterTypes": ["saltwater"],
+    "states": ["FL", "AL"],
+    "seasons": [{ "startMonth": 5, "endMonth": 12, "label": "Federal season varies — usually summer–fall" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Live pinfish on heavy jig head", "Whole live cigar minnow", "Large bucktail bounced bottom"], "notes": "Reefs + wrecks in 60–250 ft. Lock the drag." }
+    ],
+    "notes": "Largest of the shallow groupers — 60+ lb possible. Verify federal season + size limit."
+  },
+  {
+    "id": "scamp",
+    "name": "Scamp",
+    "scientific": "Mycteroperca phenax",
+    "waterTypes": ["saltwater"],
+    "states": ["FL", "AL", "GA", "NC"],
+    "seasons": [{ "startMonth": 5, "endMonth": 11, "label": "Federal grouper season" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Cut squid on knocker rig", "Live cigar minnow"], "notes": "Deep ledges and live-bottom in 100–250 ft." }
+    ],
+    "notes": "Considered the best-eating grouper of the Atlantic + Gulf. Smaller (5–15 lb) than gag/black."
+  },
+  {
+    "id": "snowy-grouper",
+    "name": "Snowy grouper",
+    "scientific": "Hyporthodus niveatus",
+    "waterTypes": ["saltwater"],
+    "states": ["FL", "GA", "NC"],
+    "seasons": [{ "startMonth": 5, "endMonth": 8, "label": "Federal deep-water season — usually May–Aug" }],
+    "tactics": [
+      { "method": "other", "lures": ["Electric reel + cut squid at 500–900 ft", "Whole bonita strip on deep-drop rig"], "notes": "Bait, weight, push the button." }
+    ],
+    "notes": "Deep-drop trophy. Atlantic outer shelf. Catch-and-release for fish over 36 in often required."
+  },
+  {
+    "id": "warsaw-grouper",
+    "name": "Warsaw grouper",
+    "scientific": "Hyporthodus nigritus",
+    "waterTypes": ["saltwater"],
+    "states": ["FL", "GA", "NC"],
+    "seasons": [{ "startMonth": 1, "endMonth": 12, "label": "Year-round in 400+ ft" }],
+    "tactics": [
+      { "method": "other", "lures": ["Electric reel + whole bonita", "Deep-drop swordfish-style rig"], "notes": "300–800 ft. Heavy current; lots of weight." }
+    ],
+    "notes": "200+ lb possible. Single-fish-per-vessel rule federally — true trophy. Catch & release if you want more."
+  },
+
+  {
+    "id": "african-pompano",
+    "name": "African pompano",
+    "scientific": "Alectis ciliaris",
+    "waterTypes": ["saltwater"],
+    "states": ["FL"],
+    "seasons": [{ "startMonth": 4, "endMonth": 10, "label": "Warm-water nearshore wrecks" }],
+    "tactics": [
+      { "method": "jig", "lures": ["Large slow-pitch jig (300–500 g)", "Live pinfish on heavy jig head"], "notes": "Drop on nearshore wrecks in 80–200 ft." }
+    ],
+    "notes": "Big-eyed, silver-disced jack. Schools around wrecks; strong sustained runs."
+  },
+  {
+    "id": "almaco-jack",
+    "name": "Almaco jack",
+    "scientific": "Seriola rivoliana",
+    "waterTypes": ["saltwater"],
+    "states": ["FL", "NC"],
+    "seasons": [{ "startMonth": 4, "endMonth": 11, "label": "Warm-water months on wrecks" }],
+    "tactics": [
+      { "method": "jig", "lures": ["Heavy speed jig 250–400 g", "Live blue runner on circle hook"], "notes": "Drop to wrecks 100–250 ft. Crank fast." }
+    ],
+    "notes": "Cousin of amberjack — same wreck habitat, often co-mingled. Excellent table fare (better than AJ)."
+  },
+  {
+    "id": "lookdown",
+    "name": "Lookdown",
+    "scientific": "Selene vomer",
+    "waterTypes": ["saltwater"],
+    "states": ["FL", "GA", "AL", "NC"],
+    "seasons": [{ "startMonth": 4, "endMonth": 10, "label": "Warm months under dock lights and bridges" }],
+    "tactics": [
+      { "method": "fly", "lures": ["Small flash fly (size 4)", "Glass-minnow imitation"], "notes": "Dock lights at night — perfectly clear water." },
+      { "method": "cast", "lures": ["1/16 oz tiny jig + glass minnow"], "notes": "Soft mouths — keep tension light." }
+    ],
+    "notes": "Bizarre flat-bodied jack — looks like an aluminum coin. Sight-fishing favorite under dock lights."
+  },
+  {
+    "id": "yellow-jack",
+    "name": "Yellow jack",
+    "scientific": "Carangoides bartholomaei",
+    "waterTypes": ["saltwater"],
+    "states": ["FL"],
+    "seasons": [{ "startMonth": 4, "endMonth": 10, "label": "Warm months on flats and patch reefs" }],
+    "tactics": [
+      { "method": "fly", "lures": ["Small Clouser (chartreuse/white)", "Glass-minnow pattern"], "notes": "Cruising flats and channel edges in clear water." },
+      { "method": "cast", "lures": ["1/4 oz jig", "Live shrimp"], "notes": "Same areas — light tackle." }
+    ],
+    "notes": "Pretty yellow-tailed small jack of the Keys + south FL. Light-tackle bonus species."
+  },
+  {
+    "id": "banded-rudderfish",
+    "name": "Banded rudderfish",
+    "scientific": "Seriola zonata",
+    "waterTypes": ["saltwater"],
+    "states": ["FL", "GA", "AL", "NC"],
+    "seasons": [{ "startMonth": 4, "endMonth": 10, "label": "Warm months around nearshore structure" }],
+    "tactics": [
+      { "method": "jig", "lures": ["Small speed jig (100–200 g)", "Bucktail near wrecks"], "notes": "Nearshore reefs in 40–120 ft." }
+    ],
+    "notes": "Small amberjack cousin — banded pattern. Underrated as table fare; aggressive on light gear."
+  },
+  {
+    "id": "lesser-amberjack",
+    "name": "Lesser amberjack",
+    "scientific": "Seriola fasciata",
+    "waterTypes": ["saltwater"],
+    "states": ["FL", "AL", "GA"],
+    "seasons": [{ "startMonth": 1, "endMonth": 12, "label": "Federal season open in winter when greater AJ closed" }],
+    "tactics": [
+      { "method": "jig", "lures": ["Mid-size speed jig", "Live bait on wrecks"], "notes": "Deep wrecks 150–300 ft." }
+    ],
+    "notes": "Distinct from greater AJ — smaller, deeper. Federally regulated separately."
+  },
+
+  {
+    "id": "cero-mackerel",
+    "name": "Cero mackerel",
+    "scientific": "Scomberomorus regalis",
+    "waterTypes": ["saltwater"],
+    "states": ["FL"],
+    "seasons": [{ "startMonth": 1, "endMonth": 12, "label": "Year-round in FL Keys + south FL" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Small Clark spoon", "Gotcha plug", "Glass-minnow fly"], "notes": "Reef edges + nearshore patches. Wire leader recommended." }
+    ],
+    "notes": "Keys + south FL cousin of Spanish — larger, with distinctive yellow line down the side. Strong table."
+  },
+  {
+    "id": "blue-marlin",
+    "name": "Blue marlin",
+    "scientific": "Makaira nigricans",
+    "waterTypes": ["saltwater"],
+    "states": ["FL", "NC", "AL"],
+    "seasons": [{ "startMonth": 5, "endMonth": 10, "label": "Warm-water Gulf Stream + Gulf of Mexico runs" }],
+    "tactics": [
+      { "method": "troll", "lures": ["Large skirted lure 8–14 in (chrome/black, dark/dark)", "Whole-rigged horse ballyhoo"], "notes": "High-speed troll 7–9 kts in Gulf Stream. 80+ lb tackle minimum." }
+    ],
+    "notes": "Bucket-list pelagic. NC OBX summer + FL Gulf Stream + AL Gulf hold them. Catch & release standard."
+  },
+  {
+    "id": "white-marlin",
+    "name": "White marlin",
+    "scientific": "Kajikia albida",
+    "waterTypes": ["saltwater"],
+    "states": ["FL", "NC"],
+    "seasons": [{ "startMonth": 6, "endMonth": 9, "label": "Summer Gulf Stream / continental shelf" }],
+    "tactics": [
+      { "method": "troll", "lures": ["Small skirted lure 4–6 in", "Rigged ballyhoo on circle hook"], "notes": "Slower troll (6 kts) with smaller spread than blue marlin." }
+    ],
+    "notes": "Smaller (40–80 lb) than blue marlin but more numerous. OBX summer bite is legendary."
+  },
+  {
+    "id": "yellowfin-tuna",
+    "name": "Yellowfin tuna",
+    "scientific": "Thunnus albacares",
+    "waterTypes": ["saltwater"],
+    "states": ["NC", "FL", "AL"],
+    "seasons": [{ "startMonth": 4, "endMonth": 11, "label": "Warm-water months on the Gulf Stream / oil rigs" }],
+    "tactics": [
+      { "method": "troll", "lures": ["Skirted ballyhoo on circle hook (6 kts)", "Cedar plug"], "notes": "Run-and-gun on bait schools or rip lines. 50–80 lb tackle." },
+      { "method": "jig", "lures": ["Vertical jig at first light over oil rigs"], "notes": "Sit over markings; drop and crank." }
+    ],
+    "notes": "Premier offshore tuna — fast, hard fight, exceptional sushi. AL/LA oil rigs hold them year-round."
+  },
+  {
+    "id": "skipjack-tuna",
+    "name": "Skipjack tuna",
+    "scientific": "Katsuwonus pelamis",
+    "waterTypes": ["saltwater"],
+    "states": ["NC", "FL"],
+    "seasons": [{ "startMonth": 5, "endMonth": 10, "label": "Warm months offshore" }],
+    "tactics": [
+      { "method": "troll", "lures": ["Cedar plug at 6 kts", "Small skirted lure"], "notes": "Often mixed with mahi schools." }
+    ],
+    "notes": "Smaller tuna (5–15 lb), schooling. Excellent as bonito-style table fish and as live bait for marlin."
+  },
+  {
+    "id": "atlantic-bonito",
+    "name": "Atlantic bonito",
+    "scientific": "Sarda sarda",
+    "waterTypes": ["saltwater"],
+    "states": ["NC", "FL"],
+    "seasons": [{ "startMonth": 4, "endMonth": 6, "label": "Spring run along Atlantic coast" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Hopkins spoon", "Epoxy jig (Hogy)", "Diamond jig"], "notes": "Cast through diving birds on bait blitzes." }
+    ],
+    "notes": "Spring 'tunny' run on Carolina coast. Hard, fast fight; stronger fishy flavor than albacore."
+  },
+
+  {
+    "id": "weakfish",
+    "name": "Weakfish (gray trout)",
+    "scientific": "Cynoscion regalis",
+    "waterTypes": ["saltwater"],
+    "states": ["NC"],
+    "seasons": [{ "startMonth": 4, "endMonth": 11, "label": "Spring + fall in NC sounds" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Gulp shrimp under popping cork", "Small swimbait on jig head", "Bloodworm-tipped jig"], "notes": "Sound country and inlets on a moving tide." }
+    ],
+    "notes": "NC sound country specialty — population recovering after decades of decline. Soft mouth, hence 'weakfish'."
+  },
+  {
+    "id": "sand-seatrout",
+    "name": "Sand seatrout",
+    "scientific": "Cynoscion arenarius",
+    "waterTypes": ["saltwater"],
+    "states": ["FL", "AL", "GA"],
+    "seasons": [{ "startMonth": 3, "endMonth": 11, "label": "Warm months in Gulf bays" }],
+    "tactics": [
+      { "method": "cast", "lures": ["MirrOdine", "Gulp shrimp under popping cork"], "notes": "Sandy-bottom grass beds in Gulf bays." }
+    ],
+    "notes": "Gulf cousin of spotted sea trout — paler, more silver. Common bycatch in AL/FL bay fishing."
+  },
+  {
+    "id": "gulf-flounder",
+    "name": "Gulf flounder",
+    "scientific": "Paralichthys albigutta",
+    "waterTypes": ["saltwater"],
+    "states": ["FL", "AL"],
+    "seasons": [{ "startMonth": 4, "endMonth": 11, "label": "Warm months in Gulf bays" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Live mud minnow on jig head", "Berkley Gulp shrimp on bottom"], "notes": "Slow drag across sandy bay bottom near oyster bars." }
+    ],
+    "notes": "FL/AL Gulf cousin of southern flounder. Three eye-spots on the back is the visual cue."
+  },
+  {
+    "id": "summer-flounder-fluke",
+    "name": "Summer flounder (fluke)",
+    "scientific": "Paralichthys dentatus",
+    "waterTypes": ["saltwater"],
+    "states": ["NC"],
+    "seasons": [{ "startMonth": 5, "endMonth": 10, "label": "Late spring through fall in NC ocean + sounds" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Bucktail + Gulp swimming mullet", "Live mummichog on fluke rig"], "notes": "Drift over sandy bottom 20–80 ft." }
+    ],
+    "notes": "NC northern flatfish — distinct from southern flounder. Larger eyes, more teeth, more aggressive."
+  },
+  {
+    "id": "striped-mullet",
+    "name": "Striped mullet",
+    "scientific": "Mugil cephalus",
+    "waterTypes": ["saltwater"],
+    "states": ["FL", "GA", "AL", "NC"],
+    "seasons": [{ "startMonth": 1, "endMonth": 12, "label": "Year-round resident; fall 'mullet run' Oct–Nov" }],
+    "tactics": [
+      { "method": "fly", "lures": ["Small bead-head fly (size 12)", "Algae imitator"], "notes": "Sight-cast — they're herbivores, presentation matters more than pattern." },
+      { "method": "cast", "lures": ["Tiny dough ball", "Sabiki rig for snagging"], "notes": "Cast net is more efficient; rod is for sport." }
+    ],
+    "notes": "Largely bait, but the FL fall mullet run (Oct–Nov) is THE event that drives the entire predator chain inshore."
+  },
+
+  {
+    "id": "white-grunt",
+    "name": "White grunt",
+    "scientific": "Haemulon plumieri",
+    "waterTypes": ["saltwater"],
+    "states": ["FL", "GA", "AL", "NC"],
+    "seasons": [{ "startMonth": 1, "endMonth": 12, "label": "Year-round on shallow reefs" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Cut squid on small circle hook", "Live shrimp on knocker rig"], "notes": "Reefs in 30–120 ft — drop straight down with a chum bag." }
+    ],
+    "notes": "Schools heavily on Atlantic + Gulf reefs. Fillet-and-fry favorite — known as the 'pig fish' for its grunting sound."
+  },
+  {
+    "id": "atlantic-spadefish",
+    "name": "Atlantic spadefish",
+    "scientific": "Chaetodipterus faber",
+    "waterTypes": ["saltwater"],
+    "states": ["FL", "GA", "AL", "NC"],
+    "seasons": [{ "startMonth": 4, "endMonth": 10, "label": "Warm months around nearshore wrecks + buoys" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Small piece of cannonball jellyfish on a hook", "Tiny clear bead-head fly"], "notes": "Sight-cast schools around nearshore structure." }
+    ],
+    "notes": "Beautiful disc-shaped fish — saltwater bluegill. Schools 50+ over buoys and nearshore wrecks."
+  },
+  {
+    "id": "knobbed-porgy",
+    "name": "Knobbed porgy",
+    "scientific": "Calamus nodosus",
+    "waterTypes": ["saltwater"],
+    "states": ["FL", "GA", "NC"],
+    "seasons": [{ "startMonth": 1, "endMonth": 12, "label": "Year-round on Atlantic reefs" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Cut squid on bottom rig", "Small jig + shrimp"], "notes": "Drop on live-bottom reefs in 60–150 ft." }
+    ],
+    "notes": "Pink-toned reef porgy — common bottom-fishing catch. Excellent table."
+  },
+  {
+    "id": "tomtate",
+    "name": "Tomtate",
+    "scientific": "Haemulon aurolineatum",
+    "waterTypes": ["saltwater"],
+    "states": ["NC", "FL", "GA", "AL"],
+    "seasons": [{ "startMonth": 1, "endMonth": 12, "label": "Year-round in NC + Atlantic surf + reefs" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Cut squid on tiny hook", "Bloodworm on double-drop"], "notes": "Pier + surf + jetty fishing on light tackle." }
+    ],
+    "notes": "Small grunt — abundant in NC pier and surf. Tasty pan-fried whole."
+  },
+  {
+    "id": "pinfish",
+    "name": "Pinfish",
+    "scientific": "Lagodon rhomboides",
+    "waterTypes": ["saltwater"],
+    "states": ["FL", "GA", "AL", "NC"],
+    "seasons": [{ "startMonth": 1, "endMonth": 12, "label": "Year-round inshore" }],
+    "tactics": [
+      { "method": "cast", "lures": ["Cut shrimp on tiny hook", "Sabiki rig"], "notes": "Grass flats, jetties, dock pilings — easy fish." }
+    ],
+    "notes": "Mostly used as live bait for snook, grouper, big trout — but a fun panfish for kids on its own."
+  },
+
+  {
+    "id": "golden-tilefish",
+    "name": "Golden tilefish",
+    "scientific": "Lopholatilus chamaeleonticeps",
+    "waterTypes": ["saltwater"],
+    "states": ["FL", "GA", "NC"],
+    "seasons": [{ "startMonth": 1, "endMonth": 12, "label": "Year-round in 600+ ft" }],
+    "tactics": [
+      { "method": "other", "lures": ["Electric reel + cut squid + bonita strip", "Deep-drop multi-hook rig with glow beads"], "notes": "Mud bottoms 600–900 ft along the continental shelf." }
+    ],
+    "notes": "Deep-drop trophy with excellent table fare — sweet, lobster-like. Strict bag limit + slot."
+  },
+  {
+    "id": "blueline-tilefish",
+    "name": "Blueline tilefish",
+    "scientific": "Caulolatilus microps",
+    "waterTypes": ["saltwater"],
+    "states": ["FL", "GA", "NC"],
+    "seasons": [{ "startMonth": 5, "endMonth": 8, "label": "Federal season usually summer" }],
+    "tactics": [
+      { "method": "other", "lures": ["Electric reel + cut squid at 200–400 ft", "Sliding-sinker bottom rig"], "notes": "Mid-shelf hard bottoms." }
+    ],
+    "notes": "Shallower cousin of golden tilefish — easier reach, still deep-drop gear. Atlantic ledge species."
+  },
+  {
+    "id": "swordfish",
+    "name": "Swordfish",
+    "scientific": "Xiphias gladius",
+    "waterTypes": ["saltwater"],
+    "states": ["FL", "NC"],
+    "seasons": [{ "startMonth": 1, "endMonth": 12, "label": "Year-round in Gulf Stream — daytime + nighttime fisheries" }],
+    "tactics": [
+      { "method": "other", "lures": ["Squid bait on daytime deep-drop rig (1500–1800 ft)", "Strip bait under glow stick at night near surface"], "notes": "Two completely different fisheries: daytime electric-reel deep + nighttime drift in 600 ft." }
+    ],
+    "notes": "Premier blue-water target. FL Keys daytime + NC summer night drift. 300+ lb possible."
+  },
+  {
+    "id": "bigeye-tuna",
+    "name": "Bigeye tuna",
+    "scientific": "Thunnus obesus",
+    "waterTypes": ["saltwater"],
+    "states": ["NC", "FL"],
+    "seasons": [{ "startMonth": 6, "endMonth": 10, "label": "Summer Gulf Stream + offshore canyon edges" }],
+    "tactics": [
+      { "method": "troll", "lures": ["Black bart skirted lure", "Deep-line ballyhoo at first light", "Naked horse ballyhoo on circle"], "notes": "Predawn troll along the canyons. 80+ lb tackle." }
+    ],
+    "notes": "Cousin of yellowfin — runs deeper, fights harder. NC canyon edges in summer; FL Gulf Stream year-round."
   }
 ]
