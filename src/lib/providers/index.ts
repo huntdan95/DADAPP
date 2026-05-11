@@ -10,6 +10,8 @@ import type {
   DamScheduleReading,
   FlowProvider,
   FlowReading,
+  LakeDataProvider,
+  LakeReading,
   Location,
   TidesProvider,
   TidesReading,
@@ -27,6 +29,8 @@ import { consumersEnergyFetchSchedule } from './damSchedule/consumersEnergy';
 import { manualFetchSchedule } from './damSchedule/manual';
 import { autoFetchSchedule } from './damSchedule/auto';
 import { noaaFetchTides } from './tides/noaa';
+import { ndbcFetchLake } from './lakeData/ndbc';
+import { usgsLakeFetch } from './lakeData/usgsLake';
 
 export function fetchWeather(
   provider: WeatherProvider,
@@ -74,9 +78,21 @@ export function fetchTides(provider: TidesProvider): Promise<TidesReading> {
   }
 }
 
+export function fetchLakeData(
+  provider: LakeDataProvider
+): Promise<LakeReading> {
+  switch (provider.kind) {
+    case 'usgs-lake':
+      return usgsLakeFetch(provider.siteId);
+    case 'noaa-buoy':
+      return ndbcFetchLake(provider.stationId);
+  }
+}
+
 export type {
   WeatherReading,
   FlowReading,
   DamScheduleReading,
   TidesReading,
+  LakeReading,
 } from './types';

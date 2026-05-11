@@ -6,6 +6,7 @@ import { Crosshair, Loader2 } from 'lucide-react';
 import type {
   DamScheduleProvider,
   FlowProvider,
+  LakeDataProvider,
   Location,
   WaterType,
 } from '@/lib/providers/types';
@@ -24,6 +25,10 @@ import {
   nearestTideStations,
   type NearbyTideStation,
 } from '@/lib/geo/nearestTideStations';
+import {
+  nearestNdbcStations,
+  type NearbyNdbcStation,
+} from '@/lib/geo/nearestNdbcStations';
 import { lookupTailwater } from '@/lib/geo/tailwaterLookup';
 
 const WATER_TYPES: WaterType[] = [
@@ -156,6 +161,27 @@ export function LocationForm({
   );
   const [tideOptions, setTideOptions] = useState<NearbyTideStation[]>([]);
 
+  /**
+   * Lake-data provider state. Mirrors flow / tides:
+   *   - `lakeKind` ('' | 'noaa-buoy' | 'usgs-lake')
+   *   - `lakeId`   (station id / site id depending on kind)
+   *   - `lakeOptions` list of nearby NDBC buoys to pick from
+   *
+   * Distinct from `flow` because many lakes have a USGS gauge for
+   * elevation+temp but no discharge — that doesn't fit FlowProvider.
+   */
+  const [lakeKind, setLakeKind] = useState<'' | 'noaa-buoy' | 'usgs-lake'>(
+    (initialProviders?.lakeData?.kind ?? '') as '' | 'noaa-buoy' | 'usgs-lake'
+  );
+  const [lakeId, setLakeId] = useState(
+    initialProviders?.lakeData?.kind === 'noaa-buoy'
+      ? initialProviders.lakeData.stationId
+      : initialProviders?.lakeData?.kind === 'usgs-lake'
+      ? initialProviders.lakeData.siteId
+      : ''
+  );
+  const [lakeOptions, setLakeOptions] = useState<NearbyNdbcStation[]>([]);
+
   const [error, setError] = useState<string | null>(null);
   const [autoFilling, setAutoFilling] = useState(false);
   const [autoStatus, setAutoStatus] = useState<string | null>(null);
@@ -214,11 +240,14 @@ export function LocationForm({
       setAutoStatus(null);
       const parts: string[] = [];
       try {
-        const [geo, gauges, tides] = await Promise.all([
+        const [geo, gauges, tides, buoys] = await Promise.all([
           reverseGeocode(lat, lng).catch(() => null),
           nearestUsgsGauges(lat, lng, 3).catch(() => [] as NearbyGauge[]),
           nearestTideStations(lat, lng, 3, 50).catch(
             () => [] as NearbyTideStation[]
+          ),
+          nearestNdbcStations(lat, lng, 3, 40).catch(
+            () => [] as NearbyNdbcStation[]
           ),
         ]);
         if (cancelled) return;
@@ -307,6 +336,36 @@ export function LocationForm({
           parts.push(`NOAA ${tides[0].stationId}`);
         }
 
+        // Lake-data auto-pick: prefer NDBC for great_lakes / coastal
+        // spots, fall through to a USGS lake gauge for inland
+        // reservoirs / lakes. Only sets the provider when the user
+        // hasn't picked one — manual choices stay sticky.
+        if (buoys.length > 0) {
+          setLakeOptions(buoys);
+          if (!lakeKind) {
+            setLakeKind('noaa-buoy');
+            setLakeId(buoys[0].stationId);
+          }
+          parts.push(`NDBC ${buoys[0].stationId}`);
+        } else if (gauges.length > 0 && !lakeKind) {
+          // No buoy nearby. If the spot's a stillwater type and the
+          // nearest gauge has water temp (likely a reservoir/lake
+          // gauge), wire it as `usgs-lake`. Doesn't conflict with
+          // `flow` — both can coexist on the same gauge id.
+          const stillwater =
+            type === 'lake' ||
+            type === 'reservoir' ||
+            type === 'pond' ||
+            type === 'great_lakes';
+          if (stillwater) {
+            const pick =
+              gauges.find((g) => g.hasWaterTemp) ?? gauges[0];
+            setLakeKind('usgs-lake');
+            setLakeId(pick.siteId);
+            parts.push(`USGS-lake ${pick.siteId}`);
+          }
+        }
+
         setAutoStatus(parts.length > 0 ? parts.join(' · ') : null);
       } catch (e) {
         if (!cancelled) setAutoStatus(friendlyError(e));
@@ -334,6 +393,7 @@ export function LocationForm({
     const tides = tideStationId.trim()
       ? { kind: 'noaa' as const, stationId: tideStationId.trim() }
       : null;
+    const lakeData = makeLakeProvider(lakeKind, lakeId.trim());
 
     if (flowKind && flow == null) return setError('Flow site ID is required');
     if ((damKind === 'tva' || damKind === 'consumers-energy') && !damName)
@@ -357,6 +417,7 @@ export function LocationForm({
         ...(flow ? { flow } : {}),
         ...(damSchedule ? { damSchedule } : {}),
         ...(tides ? { tides } : {}),
+        ...(lakeData ? { lakeData } : {}),
       },
     };
     onSave(loc);
@@ -619,6 +680,85 @@ export function LocationForm({
           </div>
         )}
 
+        {(type === 'lake' ||
+          type === 'reservoir' ||
+          type === 'pond' ||
+          type === 'great_lakes' ||
+          lakeOptions.length > 0 ||
+          lakeKind) && (
+          <div className="mt-3">
+            <div className="grid grid-cols-2 gap-3">
+              <Field
+                label="Lake data source"
+                hint={
+                  lakeKind === 'noaa-buoy'
+                    ? 'NDBC buoy — surface temp, waves, wind.'
+                    : lakeKind === 'usgs-lake'
+                    ? 'USGS lake gauge — temp + elevation.'
+                    : undefined
+                }
+              >
+                <Select
+                  value={lakeKind}
+                  onChange={(e) =>
+                    setLakeKind(
+                      e.target.value as '' | 'noaa-buoy' | 'usgs-lake'
+                    )
+                  }
+                >
+                  <option value="">none</option>
+                  <option value="noaa-buoy">NOAA NDBC buoy</option>
+                  <option value="usgs-lake">USGS lake gauge</option>
+                </Select>
+              </Field>
+              {lakeKind && (
+                <Field label="Station / site ID">
+                  <Input
+                    value={lakeId}
+                    onChange={(e) => setLakeId(e.target.value)}
+                    placeholder={lakeKind === 'noaa-buoy' ? '45007' : '03413000'}
+                  />
+                </Field>
+              )}
+            </div>
+            {lakeOptions.length > 0 && (
+              <div className="mt-2">
+                <div className="text-[11px] uppercase tracking-wider text-muted mb-1">
+                  Nearby NDBC buoys — pick one
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  {lakeOptions.map((s) => {
+                    const selected =
+                      lakeKind === 'noaa-buoy' && lakeId === s.stationId;
+                    return (
+                      <button
+                        key={s.stationId}
+                        type="button"
+                        onClick={() => {
+                          setLakeKind('noaa-buoy');
+                          setLakeId(s.stationId);
+                        }}
+                        className={
+                          'text-left px-3 py-2 rounded-lg border text-xs transition ' +
+                          (selected
+                            ? 'bg-accent/15 border-accent text-text'
+                            : 'bg-surface-2 border-border text-muted hover:border-accent/40')
+                        }
+                      >
+                        <div className="font-medium text-text">{s.name}</div>
+                        <div className="num">
+                          {s.stationId} · {s.distanceMiles.toFixed(1)} mi ·{' '}
+                          {s.region.replace('_', ' ')}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         <div className="grid grid-cols-2 gap-3 mt-3">
           <Field
             label="Dam schedule"
@@ -702,6 +842,17 @@ function makeFlowProvider(kind: FlowKind, value: string): FlowProvider | null {
   if (kind === 'usgs') return { kind: 'usgs', siteId: value };
   if (kind === 'env-canada') return { kind: 'env-canada', stationId: value };
   if (kind === 'uk-ea') return { kind: 'uk-ea', stationRef: value };
+  return null;
+}
+
+function makeLakeProvider(
+  kind: '' | 'noaa-buoy' | 'usgs-lake',
+  id: string
+): LakeDataProvider | null {
+  if (!kind) return null;
+  if (!id) return null;
+  if (kind === 'noaa-buoy') return { kind: 'noaa-buoy', stationId: id };
+  if (kind === 'usgs-lake') return { kind: 'usgs-lake', siteId: id };
   return null;
 }
 

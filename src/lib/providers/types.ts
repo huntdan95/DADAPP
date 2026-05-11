@@ -120,11 +120,28 @@ export interface TidesReading {
 }
 
 export interface LakeReading {
+  /** Human-readable station name, e.g. "South Lake Michigan (45007)". */
   siteName: string;
+  /** ISO timestamp of the most recent observation, or empty if unknown. */
   observedAt: string;
+  /** Water surface temp in Fahrenheit. */
   surfaceTempF: number | null;
+  /** Significant wave height (relevant for lake / coastal buoys). */
   waveHeightFt: number | null;
+  /** Sustained wind at the station in mph. */
   windMph: number | null;
+  /**
+   * Reservoir / lake surface elevation in feet, when the provider
+   * publishes one. USGS-lake gauges expose this; NDBC buoys do not.
+   */
+  elevationFt?: number | null;
+  /**
+   * Authority label for the data attribution in the UI: 'NDBC' for
+   * buoys, 'USGS' for lake gauges.
+   */
+  authority: 'NDBC' | 'USGS';
+  /** Optional free-text note (e.g., "no recent observation"). */
+  notes?: string;
 }
 
 export interface SolunarReading {

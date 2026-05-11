@@ -2,6 +2,7 @@ import { Card, CardHeader, CardSubtitle, CardTitle } from '@/components/ui/Card'
 import type { Location } from '@/lib/providers/types';
 import { WeatherSection } from './WeatherSection';
 import { FlowSection } from './FlowSection';
+import { LakeSection } from './LakeSection';
 import { DamSection } from './DamSection';
 import { SolunarSection } from './SolunarSection';
 import { HatchSection } from './HatchSection';
@@ -60,6 +61,9 @@ export function ConditionsCard({ location }: { location: Location }) {
 
       <WeatherSection provider={dataProviders.weather} location={location} />
       {dataProviders.flow && <FlowSection provider={dataProviders.flow} />}
+      {dataProviders.lakeData && (
+        <LakeSection provider={dataProviders.lakeData} />
+      )}
       {dataProviders.damSchedule && (
         <DamSection provider={dataProviders.damSchedule} location={location} />
       )}
