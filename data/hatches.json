@@ -12,7 +12,9 @@
       "TN",
       "NC",
       "GA",
-      "KY"
+      "KY",
+      "PA",
+      "AR"
     ],
     "rivers": [
       "South Holston",
@@ -53,7 +55,9 @@
       "GA",
       "AL",
       "FL",
-      "KY"
+      "KY",
+      "PA",
+      "AR"
     ],
     "rivers": [],
     "startMonth": 3,
@@ -87,7 +91,9 @@
       "NC",
       "GA",
       "AL",
-      "KY"
+      "KY",
+      "PA",
+      "AR"
     ],
     "rivers": [],
     "startMonth": 9,
@@ -117,7 +123,8 @@
     ],
     "states": [
       "MI",
-      "IN"
+      "IN",
+      "PA"
     ],
     "rivers": [
       "Au Sable",
@@ -153,7 +160,8 @@
       "IN",
       "NC",
       "GA",
-      "KY"
+      "KY",
+      "PA"
     ],
     "rivers": [],
     "startMonth": 5,
@@ -186,7 +194,8 @@
       "NC",
       "GA",
       "AL",
-      "KY"
+      "KY",
+      "PA"
     ],
     "rivers": [],
     "startMonth": 4,
@@ -220,7 +229,9 @@
       "NC",
       "GA",
       "AL",
-      "KY"
+      "KY",
+      "PA",
+      "AR"
     ],
     "rivers": [],
     "startMonth": 5,
@@ -253,7 +264,8 @@
       "NC",
       "GA",
       "AL",
-      "KY"
+      "KY",
+      "PA"
     ],
     "rivers": [],
     "startMonth": 5,
@@ -282,7 +294,8 @@
     "states": [
       "TN",
       "NC",
-      "KY"
+      "KY",
+      "PA"
     ],
     "rivers": [
       "Watauga",
@@ -320,7 +333,9 @@
       "NC",
       "GA",
       "AL",
-      "KY"
+      "KY",
+      "PA",
+      "AR"
     ],
     "rivers": [
       "South Holston",
@@ -352,7 +367,9 @@
     ],
     "states": [
       "MI",
-      "IN"
+      "IN",
+      "PA",
+      "IL"
     ],
     "rivers": [
       "Big Manistee",
@@ -390,7 +407,12 @@
       "NC",
       "GA",
       "AL",
-      "KY"
+      "KY",
+      "PA",
+      "AR",
+      "OK",
+      "MS",
+      "IL"
     ],
     "rivers": [],
     "startMonth": 7,
@@ -424,7 +446,12 @@
       "GA",
       "AL",
       "FL",
-      "KY"
+      "KY",
+      "PA",
+      "AR",
+      "OK",
+      "MS",
+      "IL"
     ],
     "rivers": [],
     "startMonth": 1,
@@ -459,7 +486,12 @@
       "GA",
       "AL",
       "FL",
-      "KY"
+      "KY",
+      "PA",
+      "AR",
+      "OK",
+      "MS",
+      "IL"
     ],
     "rivers": [],
     "startMonth": 6,
@@ -487,22 +519,39 @@
       "Rockies",
       "Pacific NW"
     ],
-    "states": [],
-    "rivers": [],
+    "states": [
+      "MT",
+      "ID",
+      "UT",
+      "CO"
+    ],
+    "rivers": [
+      "Madison",
+      "Big Hole",
+      "Yellowstone",
+      "Henry's Fork",
+      "Gunnison",
+      "Colorado",
+      "Green"
+    ],
     "startMonth": 5,
     "endMonth": 7,
     "waterTempMinF": 50,
     "waterTempMaxF": 60,
     "timeOfDay": "all day",
     "stages": [
-      "adult"
+      "adult",
+      "nymph"
     ],
     "flies": [
-      "Size 4-6 stimulator or chubby"
+      "Size 4-6 Chubby Chernobyl (orange/black)",
+      "Size 4 stonefly nymph (Pat's Rubber Legs)",
+      "Sofa Pillow",
+      "Henneberry Hopper"
     ],
     "searchTerm": "salmonfly Pteronarcys californica",
     "wikipediaSlug": "Pteronarcys_californica",
-    "notes": "Western tailwaters and freestones. Listed for future West-region expansion."
+    "notes": "The biggest mayfly hatch in the West — the 'salmonfly' is actually a stonefly, 3 in long. Hatch moves upstream like a wave; trout key in for 7-10 days. Big Hole + Madison + Yellowstone are the legendary salmonfly waters."
   },
   {
     "id": "pmd",
@@ -512,22 +561,307 @@
       "Rockies",
       "Pacific NW"
     ],
-    "states": [],
-    "rivers": [],
+    "states": [
+      "MT",
+      "ID",
+      "UT",
+      "CO"
+    ],
+    "rivers": [
+      "Henry's Fork",
+      "Missouri",
+      "Bighorn",
+      "Madison",
+      "Green",
+      "South Fork Snake",
+      "South Platte"
+    ],
+    "startMonth": 6,
+    "endMonth": 8,
+    "waterTempMinF": 52,
+    "waterTempMaxF": 65,
+    "timeOfDay": "morning",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 16-18 PMD parachute",
+      "PMD cripple",
+      "Sparkle dun PMD",
+      "Rusty spinner size 16"
+    ],
+    "searchTerm": "pale morning dun PMD Ephemerella excrucians",
+    "wikipediaSlug": "Ephemerella",
+    "notes": "Pale Morning Dun — the iconic Western mayfly. Henry's Fork PMD blanket hatch is bucket-list. Mornings, fish slowly on long leaders + 6X tippet."
+  },
+  {
+    "id": "golden-stone",
+    "name": "Golden Stone (Western)",
+    "scientific": "Hesperoperla pacifica",
+    "regions": [
+      "Rockies",
+      "Pacific NW"
+    ],
+    "states": [
+      "MT",
+      "ID",
+      "UT",
+      "CO"
+    ],
+    "rivers": [
+      "Madison",
+      "Big Hole",
+      "Yellowstone",
+      "Henry's Fork",
+      "Gunnison",
+      "Roaring Fork"
+    ],
     "startMonth": 6,
     "endMonth": 8,
     "waterTempMinF": 55,
     "waterTempMaxF": 65,
+    "timeOfDay": "all day",
+    "stages": [
+      "adult",
+      "nymph"
+    ],
+    "flies": [
+      "Size 6-10 Yellow Stimulator",
+      "Golden stone chubby",
+      "Pat's Rubber Legs (yellow/brown)",
+      "Stimulator (size 8)"
+    ],
+    "searchTerm": "golden stone Hesperoperla pacifica",
+    "wikipediaSlug": "Hesperoperla",
+    "notes": "Trails the salmonfly hatch by ~2 weeks and overlaps with PMDs. Big dry-fly opportunity all summer; nymphs work year-round."
+  },
+  {
+    "id": "callibaetis",
+    "name": "Callibaetis (Western stillwater)",
+    "scientific": "Callibaetis americanus",
+    "regions": [
+      "Rockies",
+      "Pacific NW",
+      "West"
+    ],
+    "states": [
+      "MT",
+      "ID",
+      "UT",
+      "CO"
+    ],
+    "rivers": [
+      "Hebgen",
+      "Henry's Lake",
+      "Strawberry",
+      "Spinney",
+      "11 Mile"
+    ],
+    "startMonth": 5,
+    "endMonth": 9,
+    "waterTempMinF": 55,
+    "waterTempMaxF": 68,
+    "timeOfDay": "morning",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 14-16 Callibaetis parachute",
+      "Sparkle dun size 14",
+      "Callibaetis nymph",
+      "Rusty spinner size 14"
+    ],
+    "searchTerm": "callibaetis speckle-winged dun stillwater mayfly",
+    "wikipediaSlug": "Callibaetis",
+    "notes": "Western stillwater mayfly. Mornings on calm reservoirs and spring creeks. Henry's Lake + Hebgen + Strawberry are textbook callibaetis water."
+  },
+  {
+    "id": "skwala-stonefly",
+    "name": "Skwala Stonefly (Western)",
+    "scientific": "Skwala americana",
+    "regions": [
+      "Rockies"
+    ],
+    "states": [
+      "MT",
+      "ID"
+    ],
+    "rivers": [
+      "Bitterroot",
+      "Clark Fork",
+      "Yellowstone"
+    ],
+    "startMonth": 3,
+    "endMonth": 4,
+    "waterTempMinF": 42,
+    "waterTempMaxF": 50,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "adult"
+    ],
+    "flies": [
+      "Size 8-10 olive Stimulator",
+      "Skwala chubby olive",
+      "Rubber-leg foam stone"
+    ],
+    "searchTerm": "skwala stonefly Skwala americana",
+    "wikipediaSlug": "Skwala",
+    "notes": "Early-season Western hatch — late March / early April on the Bitterroot is the signature. Smaller olive cousin of salmonfly; trout get drowned-out aggressive on the first warm afternoons."
+  },
+  {
+    "id": "mahogany-dun",
+    "name": "Mahogany Dun (Western)",
+    "scientific": "Paraleptophlebia spp.",
+    "regions": [
+      "Rockies",
+      "Pacific NW"
+    ],
+    "states": [
+      "MT",
+      "ID",
+      "UT",
+      "CO"
+    ],
+    "rivers": [
+      "Henry's Fork",
+      "Missouri",
+      "Madison",
+      "South Platte"
+    ],
+    "startMonth": 9,
+    "endMonth": 10,
+    "waterTempMinF": 48,
+    "waterTempMaxF": 58,
     "timeOfDay": "afternoon",
     "stages": [
       "dun",
       "spinner"
     ],
     "flies": [
-      "Size 16-18 PMD parachute"
+      "Size 16 mahogany dun parachute",
+      "Size 16 cripple",
+      "Mahogany spinner"
     ],
-    "searchTerm": "pale morning dun PMD Ephemerella excrucians",
-    "wikipediaSlug": "Ephemerella",
-    "notes": "Pale Morning Dun — western analog of the Sulfur. Future West-region expansion."
+    "searchTerm": "mahogany dun Paraleptophlebia",
+    "wikipediaSlug": "Paraleptophlebia",
+    "notes": "Fall Western mayfly — overlaps with BWOs. Dark cinnamon body; trout key on them on overcast Sept/Oct afternoons."
+  },
+  {
+    "id": "green-drake-western",
+    "name": "Green Drake (Western)",
+    "scientific": "Drunella grandis / doddsii",
+    "regions": [
+      "Rockies",
+      "Pacific NW"
+    ],
+    "states": [
+      "MT",
+      "ID",
+      "UT",
+      "CO"
+    ],
+    "rivers": [
+      "Henry's Fork",
+      "Madison",
+      "Big Hole",
+      "Animas"
+    ],
+    "startMonth": 6,
+    "endMonth": 7,
+    "waterTempMinF": 50,
+    "waterTempMaxF": 62,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "dun",
+      "spinner"
+    ],
+    "flies": [
+      "Size 10-12 Green Drake parachute",
+      "Lawson's Cripple",
+      "Hair-wing dun"
+    ],
+    "searchTerm": "western green drake Drunella grandis",
+    "wikipediaSlug": "Drunella",
+    "notes": "Henry's Fork green drake hatch is one of fly fishing's iconic events. Big mayfly — trout move for it. Late June into July, afternoons."
+  },
+  {
+    "id": "october-caddis",
+    "name": "October Caddis (Western)",
+    "scientific": "Dicosmoecus spp.",
+    "regions": [
+      "Rockies",
+      "Pacific NW"
+    ],
+    "states": [
+      "MT",
+      "ID",
+      "UT",
+      "CO"
+    ],
+    "rivers": [
+      "Yellowstone",
+      "Madison",
+      "Gallatin",
+      "Henry's Fork"
+    ],
+    "startMonth": 9,
+    "endMonth": 10,
+    "waterTempMinF": 45,
+    "waterTempMaxF": 55,
+    "timeOfDay": "evening",
+    "stages": [
+      "adult",
+      "pupa"
+    ],
+    "flies": [
+      "Size 6-8 orange Stimulator",
+      "October caddis pupa",
+      "Goddard-style adult"
+    ],
+    "searchTerm": "october caddis Dicosmoecus",
+    "wikipediaSlug": "Dicosmoecus",
+    "notes": "Last big dry-fly opportunity of the year. Late-September into mid-October — fall colors + big orange caddis on the surface. Big browns key on them before the spawn."
+  },
+  {
+    "id": "trico-western",
+    "name": "Trico (Western tailwaters)",
+    "scientific": "Tricorythodes minutus",
+    "regions": [
+      "Rockies",
+      "Pacific NW"
+    ],
+    "states": [
+      "MT",
+      "ID",
+      "UT",
+      "CO"
+    ],
+    "rivers": [
+      "Missouri",
+      "Bighorn",
+      "Green",
+      "South Platte"
+    ],
+    "startMonth": 7,
+    "endMonth": 9,
+    "waterTempMinF": 55,
+    "waterTempMaxF": 68,
+    "timeOfDay": "morning",
+    "stages": [
+      "dun",
+      "spinner"
+    ],
+    "flies": [
+      "Size 20-22 Trico spinner",
+      "Trico parachute",
+      "Griffith's Gnat"
+    ],
+    "searchTerm": "trico Tricorythodes mayfly",
+    "wikipediaSlug": "Tricorythodes",
+    "notes": "Tailwater trico hatch — Missouri below Holter, Bighorn below Afterbay. Morning spinner falls; 7X tippet, picky fish. Same insect as Eastern trico, more reliable on Western tailwaters."
   }
 ]
