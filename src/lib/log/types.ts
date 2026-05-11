@@ -57,6 +57,13 @@ export interface LogEntry {
 
   notes?: string;
 
+  /**
+   * Tag set when the entry was created during an active trip. Used by
+   * the trip detail view to group entries; nullable so non-trip
+   * logging stays simple.
+   */
+  tripId?: string | null;
+
   /** Auto-snapshot weather + solunar at log time. */
   conditions: ConditionsSnapshot;
   /** Auto-snapshot from the nearest gauge if we found one. */

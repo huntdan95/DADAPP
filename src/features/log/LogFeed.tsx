@@ -8,7 +8,9 @@ import { watchLogEntries } from '@/lib/log/store';
 import type { LogEntry } from '@/lib/log/types';
 import { QuickLog } from './QuickLog';
 import { LogEntryDetail } from './LogEntryDetail';
+import { TripControls } from './TripControls';
 import { AskClaude } from '@/features/journal/AskClaude';
+import type { Trip } from '@/lib/trips/types';
 
 /**
  * The Log tab. Replaces the previous Trip/Catch UI with a single flat
@@ -28,6 +30,7 @@ export function LogFeed({
   const [entries, setEntries] = useState<LogEntry[]>([]);
   const [quickLogOpen, setQuickLogOpen] = useState(false);
   const [selectedEntry, setSelectedEntry] = useState<LogEntry | null>(null);
+  const [activeTrip, setActiveTrip] = useState<Trip | null>(null);
 
   useEffect(() => {
     if (!isFirebaseConfigured) return;
@@ -52,6 +55,8 @@ export function LogFeed({
         <Plus className="w-5 h-5" />
         New log entry
       </Button>
+
+      <TripControls locations={locations} onTripChange={setActiveTrip} />
 
       {entries.length >= 3 && <AskClaude />}
 
@@ -79,6 +84,7 @@ export function LogFeed({
         {quickLogOpen && (
           <QuickLog
             locations={locations}
+            activeTripId={activeTrip?.id}
             onClose={() => setQuickLogOpen(false)}
             onSaved={() => setQuickLogOpen(false)}
           />

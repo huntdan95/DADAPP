@@ -59,10 +59,13 @@ type Phase = 'pick' | 'loading' | 'preview';
 
 export function QuickLog({
   locations,
+  activeTripId,
   onClose,
   onSaved,
 }: {
   locations: Location[];
+  /** If a trip is active, new entries get tagged with its id. */
+  activeTripId?: string;
   onClose: () => void;
   onSaved: (entry: LogEntry) => void;
 }) {
@@ -247,6 +250,10 @@ export function QuickLog({
         ...(draft as LogEntry),
         kind,
         userId: '',         // store fills this in
+        // Tag with the active trip so the post-trip summary can count
+        // this entry. Null-safe — falls back to undefined when not on
+        // a trip.
+        tripId: activeTripId ?? undefined,
       };
       if (online) {
         await saveLogEntry(entry);
@@ -300,6 +307,12 @@ export function QuickLog({
                 for now.
               </div>
             </div>
+          </div>
+        )}
+
+        {activeTripId && (
+          <div className="rounded-xl border border-accent/40 bg-accent/10 px-3 py-2 text-xs text-muted">
+            This log will be tagged with your active trip.
           </div>
         )}
 
