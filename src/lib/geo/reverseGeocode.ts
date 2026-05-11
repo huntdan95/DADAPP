@@ -222,33 +222,36 @@ export async function forwardGeocode(
       country_code?: string;
     };
   }>;
-  return rows
-    .map((r) => {
-      const lat = parseFloat(r.lat);
-      const lng = parseFloat(r.lon);
-      if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
-      const bbox = r.boundingbox
-        ? ([
-            parseFloat(r.boundingbox[0]),
-            parseFloat(r.boundingbox[1]),
-            parseFloat(r.boundingbox[2]),
-            parseFloat(r.boundingbox[3]),
-          ] as [number, number, number, number])
-        : undefined;
-      return {
-        lat,
-        lng,
-        bbox: bbox && bbox.every(Number.isFinite) ? bbox : undefined,
-        display: r.display_name ?? q,
-        category: r.category,
-        type: r.type,
-        country: r.address?.country_code?.toUpperCase(),
-        state: r.address?.state
-          ? STATE_NAME_TO_USPS[r.address.state]
-          : undefined,
-      } satisfies ForwardGeocodeResult;
-    })
-    .filter((r): r is ForwardGeocodeResult => r != null);
+  const out: ForwardGeocodeResult[] = [];
+  for (const r of rows) {
+    const lat = parseFloat(r.lat);
+    const lng = parseFloat(r.lon);
+    if (!Number.isFinite(lat) || !Number.isFinite(lng)) continue;
+    const bbox = r.boundingbox
+      ? ([
+          parseFloat(r.boundingbox[0]),
+          parseFloat(r.boundingbox[1]),
+          parseFloat(r.boundingbox[2]),
+          parseFloat(r.boundingbox[3]),
+        ] as [number, number, number, number])
+      : undefined;
+    const result: ForwardGeocodeResult = {
+      lat,
+      lng,
+      display: r.display_name ?? q,
+    };
+    if (bbox && bbox.every(Number.isFinite)) result.bbox = bbox;
+    if (r.category) result.category = r.category;
+    if (r.type) result.type = r.type;
+    const country = r.address?.country_code?.toUpperCase();
+    if (country) result.country = country;
+    if (r.address?.state) {
+      const usps = STATE_NAME_TO_USPS[r.address.state];
+      if (usps) result.state = usps;
+    }
+    out.push(result);
+  }
+  return out;
 }
 
 /** Default IANA timezone for a USPS state code. */
