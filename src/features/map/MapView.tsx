@@ -218,7 +218,15 @@ export function MapView({ locations }: { locations: Location[] }) {
       </MapContainer>
 
       <BasemapSwitcher current={basemap} onChange={setBasemap} />
-      <MapLegend open={legendOpen} onToggle={() => setLegendOpen((v) => !v)} />
+      <MapLegend
+        open={legendOpen}
+        onToggle={() => setLegendOpen((v) => !v)}
+        launchesLoaded={launchesLoaded}
+        launchCount={allLaunches.length}
+        onRefresh={loadLaunches}
+        refreshing={seeding}
+        refreshError={seedError}
+      />
 
       <div className="absolute top-2 left-2 z-[1000] flex flex-col gap-2">
         <button
@@ -371,14 +379,24 @@ function RecenterOn({
 function MapLegend({
   open,
   onToggle,
+  launchesLoaded,
+  launchCount,
+  onRefresh,
+  refreshing,
+  refreshError,
 }: {
   open: boolean;
   onToggle: () => void;
+  launchesLoaded: boolean;
+  launchCount: number;
+  onRefresh: () => void;
+  refreshing: boolean;
+  refreshError: string | null;
 }) {
   return (
     <div className="absolute top-12 right-2 z-[1000]">
       {open ? (
-        <div className="bg-surface/95 backdrop-blur border border-border rounded-xl p-3 shadow w-56 text-xs">
+        <div className="bg-surface/95 backdrop-blur border border-border rounded-xl p-3 shadow w-64 text-xs">
           <div className="flex items-center justify-between mb-2">
             <span className="text-muted uppercase tracking-wider text-[10px]">
               Legend
@@ -396,19 +414,41 @@ function MapLegend({
             <LegendRow color="#fbbf24" label="Spot — mixed signals" />
             <LegendRow color="#ef4444" label="Spot — likely tough" />
             <LegendRow color="#7a857a" label="Spot — no data yet" />
-            <li className="flex items-center gap-2">
-              <span className="inline-block w-3 h-3 relative">
-                <svg viewBox="0 0 14 14" className="w-full h-full">
-                  <polygon points="7,2 13,12 1,12" fill="#60a5fa" stroke="#0a0e0a" strokeWidth="1.5" />
-                </svg>
-              </span>
-              Boat launch
+            <li className="text-[10px] text-muted uppercase tracking-wider pt-1">
+              Launches
             </li>
-            <li className="flex items-center gap-2">
+            <LaunchLegendRow color="#60a5fa" label="Boat ramp" />
+            <LaunchLegendRow color="#2dd4bf" label="Canoe / kayak put-in" />
+            <LaunchLegendRow color="#22d3ee" label="Pier" />
+            <LaunchLegendRow color="#818cf8" label="Marina" />
+            <LaunchLegendRow color="#9ca3af" label="Former / disused" />
+            <LaunchLegendRow color="#4ade80" label="Added by you" />
+            <li className="flex items-center gap-2 pt-1">
               <span className="inline-block w-3 h-3 rounded-full bg-[#3b82f6] border-2 border-white" />
               You are here
             </li>
           </ul>
+          <div className="border-t border-border mt-3 pt-2.5 flex flex-col gap-1.5">
+            <button
+              type="button"
+              onClick={onRefresh}
+              disabled={refreshing}
+              className="text-[11px] text-info hover:text-accent transition disabled:opacity-50 inline-flex items-center gap-1.5 text-left"
+            >
+              {refreshing && <Loader2 className="w-3 h-3 animate-spin" />}
+              {refreshing
+                ? 'Refreshing — takes ~2 min…'
+                : 'Refresh launches from sources'}
+            </button>
+            {launchesLoaded && (
+              <div className="text-[10px] text-muted/80">
+                {launchCount.toLocaleString()} launches loaded
+              </div>
+            )}
+            {refreshError && (
+              <div className="text-[10px] text-danger">{refreshError}</div>
+            )}
+          </div>
         </div>
       ) : (
         <button
@@ -431,6 +471,24 @@ function LegendRow({ color, label }: { color: string; label: string }) {
         className="inline-block w-3 h-3 rounded-sm"
         style={{ backgroundColor: color }}
       />
+      {label}
+    </li>
+  );
+}
+
+function LaunchLegendRow({ color, label }: { color: string; label: string }) {
+  return (
+    <li className="flex items-center gap-2">
+      <span className="inline-block w-3 h-3 relative">
+        <svg viewBox="0 0 14 14" className="w-full h-full">
+          <polygon
+            points="7,2 13,12 1,12"
+            fill={color}
+            stroke="#0a0e0a"
+            strokeWidth="1.5"
+          />
+        </svg>
+      </span>
       {label}
     </li>
   );

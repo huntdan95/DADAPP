@@ -18,12 +18,13 @@ export interface BoatLaunch {
   /**
    * 'ramp' = motorboat slipway. 'put-in' = canoe/kayak access (Tree Farm,
    * Hole in the Wall, etc). 'pier' = dock with explicit boat=yes tag.
-   * 'rental' = boat rental.
+   * 'rental' = boat rental. 'marina' = full marina. 'historic' = disused
+   * or abandoned slipway tag.
    *
    * Older docs predate this classification — they store the raw OSM tag
    * ('slipway') and we coerce that to 'ramp' at read time below.
    */
-  type: 'ramp' | 'put-in' | 'pier' | 'rental' | string;
+  type: 'ramp' | 'put-in' | 'pier' | 'rental' | 'marina' | 'historic' | string;
   source: 'osm' | 'user';
 }
 

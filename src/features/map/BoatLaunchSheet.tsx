@@ -161,6 +161,10 @@ function launchTypeLabel(type: string): string {
       return 'Pier';
     case 'rental':
       return 'Boat rental';
+    case 'marina':
+      return 'Marina';
+    case 'historic':
+      return 'Former launch (disused)';
     default:
       return type;
   }

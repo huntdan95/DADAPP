@@ -98,6 +98,10 @@ function colorForLaunch(launch: BoatLaunch): string {
       return '#2dd4bf';   // teal
     case 'pier':
       return '#22d3ee';   // cyan
+    case 'marina':
+      return '#818cf8';   // indigo — distinct from plain ramps
+    case 'historic':
+      return '#9ca3af';   // muted grey for disused/abandoned
     case 'rental':
     case 'ramp':
     default:

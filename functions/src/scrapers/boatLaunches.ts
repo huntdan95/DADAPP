@@ -25,8 +25,11 @@ interface BoatLaunch {
    *   - 'put-in' = canoe/kayak access (no trailer launch)
    *   - 'pier' = dock or pier with explicit boat access
    *   - 'rental' = boat rental — often near a usable launch
+   *   - 'marina' = full marina (typically has a ramp + slips)
+   *   - 'historic' = disused / abandoned slipway, useful as a known
+   *     access point even if no longer maintained
    */
-  type: 'ramp' | 'put-in' | 'pier' | 'rental';
+  type: 'ramp' | 'put-in' | 'pier' | 'rental' | 'marina' | 'historic';
   source: 'osm';
 }
 
@@ -55,7 +58,16 @@ const OVERPASS = 'https://overpass-api.de/api/interpreter';
  * doesn't show up as three pins on top of each other.
  */
 async function fetchStateLaunches(state: string): Promise<BoatLaunch[]> {
-  const query = `[out:json][timeout:120];
+  // The name-regex sweep catches launches OSM contributors named but
+  // didn't tag with one of the canonical access tags. "Hole in the
+  // Wall Launch", "Tree Farm Canoe Access", "Smith Bridge River
+  // Access" — all common on MI/TN rivers but not tagged
+  // leisure=slipway. Same idea for marinas and disused/historic
+  // slipways which the previous query skipped entirely.
+  const nameRegex =
+    'boat launch|boat ramp|canoe (launch|access)|kayak (launch|access)|river access|fishing access|put.?in|take.?out|public access';
+
+  const query = `[out:json][timeout:160];
 area["ISO3166-2"="US-${state}"][admin_level=4]->.a;
 (
   node["leisure"="slipway"](area.a);
@@ -71,6 +83,14 @@ area["ISO3166-2"="US-${state}"][admin_level=4]->.a;
   way["amenity"="boat_rental"](area.a);
   node["man_made"="pier"]["boat"="yes"](area.a);
   way["man_made"="pier"]["boat"="yes"](area.a);
+  node["leisure"="marina"](area.a);
+  way["leisure"="marina"](area.a);
+  node["disused:leisure"="slipway"](area.a);
+  way["disused:leisure"="slipway"](area.a);
+  node["abandoned:leisure"="slipway"](area.a);
+  way["abandoned:leisure"="slipway"](area.a);
+  node[name~"${nameRegex}",i](area.a);
+  way[name~"${nameRegex}",i](area.a);
 );
 out center tags;`;
 
@@ -127,11 +147,20 @@ out center tags;`;
 
 /**
  * Pick a single coarse `type` from however the OSM contributor tagged
- * the feature. Order matters — a ramp tag wins over a put-in tag at
- * the same node (the ramp use case is broader).
+ * the feature. Order matters — historic / disused tags first so they
+ * stay distinct; then ramp > marina > pier > rental > put-in. If no
+ * specific access tag is present but the name matched our regex, we
+ * fall through to ramp (most generic).
  */
 function classifyType(tags: Record<string, string>): BoatLaunch['type'] {
+  if (
+    tags['disused:leisure'] === 'slipway' ||
+    tags['abandoned:leisure'] === 'slipway'
+  ) {
+    return 'historic';
+  }
   if (tags.leisure === 'slipway') return 'ramp';
+  if (tags.leisure === 'marina') return 'marina';
   if (tags.amenity === 'boat_rental') return 'rental';
   if (tags.man_made === 'pier') return 'pier';
   if (
@@ -142,6 +171,14 @@ function classifyType(tags: Record<string, string>): BoatLaunch['type'] {
     tags.kayak === 'put_in' ||
     tags.waterway === 'access_point' ||
     tags.waterway === 'put_in'
+  ) {
+    return 'put-in';
+  }
+  // Name-regex match without an access tag → assume ramp.
+  const name = (tags.name ?? '').toLowerCase();
+  if (
+    /canoe|kayak|put.?in|take.?out/.test(name) &&
+    !/ramp|launch/.test(name)
   ) {
     return 'put-in';
   }
@@ -158,6 +195,10 @@ function defaultNameForType(type: BoatLaunch['type']): string {
       return 'Pier';
     case 'rental':
       return 'Boat rental';
+    case 'marina':
+      return 'Marina';
+    case 'historic':
+      return 'Former launch';
   }
 }
 
@@ -169,11 +210,17 @@ function defaultNameForType(type: BoatLaunch['type']): string {
  * type — ramp > pier > rental > put-in.
  */
 function dedupeNearby(list: BoatLaunch[]): BoatLaunch[] {
+  // Higher rank wins when two entries collide. Marinas and ramps both
+  // top because they describe motorized-access points; historic sits
+  // lowest so a still-active feature beats a disused tag at the same
+  // location.
   const rank: Record<BoatLaunch['type'], number> = {
-    ramp: 3,
-    pier: 2,
-    rental: 2,
-    'put-in': 1,
+    marina: 4,
+    ramp: 4,
+    pier: 3,
+    rental: 3,
+    'put-in': 2,
+    historic: 1,
   };
   // Bucket by 0.0005° lat/lng cells (~50 m).
   const cellKey = (l: BoatLaunch) =>
@@ -209,29 +256,41 @@ function dedupeNearby(list: BoatLaunch[]): BoatLaunch[] {
 
 async function seedAll(): Promise<{ state: string; count: number }[]> {
   const db = getFirestore();
-  const results: { state: string; count: number }[] = [];
 
-  for (const state of STATES) {
-    try {
+  // Run all states in parallel. Overpass-api.de tolerates a small
+  // number of concurrent queries from one IP; with only 7 states this
+  // is well inside their fair-use envelope. Sequential with delays
+  // was costing us 9+ minutes (near the function timeout) once the
+  // query expanded; parallel finishes in ~120-180 s end-to-end.
+  const settled = await Promise.allSettled(
+    STATES.map(async (state) => {
       logger.info('fetching launches', { state });
       const launches = await fetchStateLaunches(state);
-      const set: Omit<BoatLaunchSet, 'fetchedAt'> = {
-        state,
-        launches,
-        count: launches.length,
-        source: 'osm',
-      };
-      await db.collection('boatLaunchSets').doc(state).set({
-        ...set,
-        fetchedAt: FieldValue.serverTimestamp(),
-      });
-      results.push({ state, count: launches.length });
-      // Rate-limit Overpass — 3 s between states.
-      await new Promise((r) => setTimeout(r, 3000));
-    } catch (e) {
-      logger.error('seed failed', { state, error: String(e) });
+      return { state, launches };
+    })
+  );
+
+  const results: { state: string; count: number }[] = [];
+  for (let i = 0; i < settled.length; i++) {
+    const state = STATES[i];
+    const s = settled[i];
+    if (s.status === 'rejected') {
+      logger.error('seed failed', { state, error: String(s.reason) });
       results.push({ state, count: -1 });
+      continue;
     }
+    const { launches } = s.value;
+    const set: Omit<BoatLaunchSet, 'fetchedAt'> = {
+      state,
+      launches,
+      count: launches.length,
+      source: 'osm',
+    };
+    await db.collection('boatLaunchSets').doc(state).set({
+      ...set,
+      fetchedAt: FieldValue.serverTimestamp(),
+    });
+    results.push({ state, count: launches.length });
   }
   return results;
 }
