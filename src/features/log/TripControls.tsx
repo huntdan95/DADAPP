@@ -11,6 +11,7 @@ import {
 import type { Trip } from '@/lib/trips/types';
 import type { Location } from '@/lib/providers/types';
 import { friendlyError } from '@/lib/errors';
+import { sortLocationsForPicker } from '@/lib/locations/sort';
 
 /**
  * Trip start/stop pill for the Log tab. Subscribes to the active trip
@@ -183,9 +184,9 @@ function StartTripForm({
             onChange={(e) => setLocationId(e.target.value)}
           >
             <option value="">— none —</option>
-            {locations.map((l) => (
+            {sortLocationsForPicker(locations).map((l) => (
               <option key={l.id} value={l.id}>
-                {l.name}
+                [{l.state}] {l.name}
               </option>
             ))}
           </Select>

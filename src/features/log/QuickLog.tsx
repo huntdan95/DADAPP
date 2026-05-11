@@ -39,6 +39,7 @@ import {
   type FishingMethod,
 } from '@/lib/journal/types';
 import { friendlyError } from '@/lib/errors';
+import { sortLocationsForPicker } from '@/lib/locations/sort';
 
 /**
  * Photo-first log entry. Three entry points:
@@ -443,9 +444,9 @@ export function QuickLog({
             onChange={(e) => setConditionsSource(e.target.value)}
           >
             <option value="gps">📍 Use my current location</option>
-            {locations.map((l) => (
+            {sortLocationsForPicker(locations).map((l) => (
               <option key={l.id} value={l.id}>
-                🎣 {l.name}
+                🎣 [{l.state}] {l.name}
               </option>
             ))}
           </Select>
