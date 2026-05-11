@@ -3184,5 +3184,417 @@
     "searchTerm": "Trichoptera caddis fly fishing",
     "wikipediaSlug": null,
     "notes": "Michigan-specific hatch. Afternoons/Evenings"
+  },
+  {
+    "id": "eastern-tiny-winter-bwo",
+    "name": "Tiny Winter BWO",
+    "scientific": "Baetis sp.",
+    "regions": [
+      "Southern Appalachia",
+      "Mid-Atlantic"
+    ],
+    "states": [
+      "TN"
+    ],
+    "rivers": [
+      "Smokies",
+      "South Holston"
+    ],
+    "startMonth": 1,
+    "endMonth": 3,
+    "waterTempMinF": 42,
+    "waterTempMaxF": 54,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 18-22 Tiny Winter BWO parachute",
+      "Size 18-22 Tiny Winter BWO Compara-dun",
+      "Size 18-22 Tiny Winter BWO cripple",
+      "Size 18-22 Tiny Winter BWO CDC emerger",
+      "Size 18-22 Tiny Winter BWO rusty spinner",
+      "Size 18-22 pheasant-tail nymph"
+    ],
+    "searchTerm": "Baetis sp. mayfly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Peak: Feb-Mar overcast days. Best waters: Tailwaters and Smokies. Cloudy/drizzly afternoons are best"
+  },
+  {
+    "id": "eastern-early-black-stonefly",
+    "name": "Early Black Stonefly",
+    "scientific": "Capniidae/Taeniopteryx",
+    "regions": [
+      "Southern Appalachia",
+      "Mid-Atlantic"
+    ],
+    "states": [
+      "TN",
+      "GA",
+      "NC",
+      "KY"
+    ],
+    "rivers": [
+      "Smokies",
+      "Little River",
+      "Hiwassee River"
+    ],
+    "startMonth": 1,
+    "endMonth": 3,
+    "waterTempMinF": 38,
+    "waterTempMaxF": 50,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "adult",
+      "nymph"
+    ],
+    "flies": [
+      "Size 16-18 Early Black Stonefly adult (Stimulator-style)",
+      "Size 16-18 Early Black Stonefly nymph (Pat's rubber-legs)",
+      "Size 16-18 dark stone nymph"
+    ],
+    "searchTerm": "Capniidae stonefly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Peak: Feb-Mar. Best waters: Smokies freestones and tailwaters. Hookers Fly Shop lists in January"
+  },
+  {
+    "id": "eastern-little-black-caddis",
+    "name": "Little Black Caddis",
+    "scientific": "Chimarra aterrima",
+    "regions": [
+      "Southern Appalachia",
+      "Mid-Atlantic"
+    ],
+    "states": [
+      "TN",
+      "NC",
+      "KY",
+      "GA"
+    ],
+    "rivers": [
+      "South Holston",
+      "Watauga"
+    ],
+    "startMonth": 3,
+    "endMonth": 4,
+    "waterTempMinF": 42,
+    "waterTempMaxF": 55,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "adult",
+      "pupa",
+      "larva"
+    ],
+    "flies": [
+      "Size 16-20 elk-hair caddis",
+      "Size 16-20 LaFontaine emergent sparkle pupa",
+      "Size 16-20 X-caddis",
+      "Size 16-20 caddis larva (green rock-worm)"
+    ],
+    "searchTerm": "Chimarra aterrima caddis fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Peak: Mid-March-mid-April. Best waters: South Holston and Watauga. Strong Watauga hatch 3/15-4/15"
+  },
+  {
+    "id": "eastern-blue-quill",
+    "name": "Blue Quill",
+    "scientific": "Paraleptophlebia adoptiva",
+    "regions": [
+      "Southern Appalachia",
+      "Mid-Atlantic"
+    ],
+    "states": [
+      "TN",
+      "GA",
+      "NC",
+      "KY"
+    ],
+    "rivers": [
+      "Little River",
+      "Tellico River",
+      "Noontootla Creek"
+    ],
+    "startMonth": 3,
+    "endMonth": 4,
+    "waterTempMinF": 42,
+    "waterTempMaxF": 54,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 16-18 Blue Quill parachute",
+      "Size 16-18 Blue Quill Compara-dun",
+      "Size 16-18 Blue Quill cripple",
+      "Size 16-18 Blue Quill CDC emerger",
+      "Size 16-18 Blue Quill rusty spinner",
+      "Size 16-18 pheasant-tail nymph"
+    ],
+    "searchTerm": "Paraleptophlebia adoptiva mayfly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Peak: April. Best waters: Smokies and freestones. Often overlaps with Quill Gordon"
+  },
+  {
+    "id": "eastern-giant-black-stonefly",
+    "name": "Giant Black Stonefly",
+    "scientific": "Pteronarcys dorsata",
+    "regions": [
+      "Southern Appalachia",
+      "Mid-Atlantic"
+    ],
+    "states": [
+      "TN",
+      "GA",
+      "NC",
+      "KY"
+    ],
+    "rivers": [
+      "Smokies",
+      "Little River",
+      "Tellico River",
+      "Noontootla Creek"
+    ],
+    "startMonth": 4,
+    "endMonth": 5,
+    "waterTempMinF": 48,
+    "waterTempMaxF": 60,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "adult",
+      "nymph"
+    ],
+    "flies": [
+      "Size 4-8 Giant Black Stonefly adult (Stimulator-style)",
+      "Size 4-8 Giant Black Stonefly nymph (Pat's rubber-legs)",
+      "Size 4-8 dark stone nymph"
+    ],
+    "searchTerm": "Pteronarcys dorsata stonefly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Peak: May. Best waters: Smokies. Evening emergence on warm days"
+  },
+  {
+    "id": "eastern-green-drake",
+    "name": "Eastern Green Drake",
+    "scientific": "Ephemera guttulata",
+    "regions": [
+      "Southern Appalachia",
+      "Mid-Atlantic"
+    ],
+    "states": [
+      "TN",
+      "GA",
+      "NC",
+      "KY",
+      "PA"
+    ],
+    "rivers": [
+      "Hiwassee River",
+      "Little River",
+      "Penns Creek"
+    ],
+    "startMonth": 4,
+    "endMonth": 5,
+    "waterTempMinF": 50,
+    "waterTempMaxF": 62,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 8-12 Eastern Green Drake parachute",
+      "Size 8-12 Eastern Green Drake Compara-dun",
+      "Size 8-12 Eastern Green Drake cripple",
+      "Size 8-12 Eastern Green Drake CDC emerger",
+      "Size 8-12 Eastern Green Drake rusty spinner",
+      "Size 8-12 pheasant-tail nymph"
+    ],
+    "searchTerm": "Ephemera guttulata mayfly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Peak: Early-mid May. Best waters: Smokies and Hiwassee. Biggest mayfly of the year in the park"
+  },
+  {
+    "id": "tn-cicadas-periodic",
+    "name": "Cicadas (periodic)",
+    "scientific": "Magicicada spp.",
+    "regions": [
+      "Southern Appalachia",
+      "Mid-Atlantic"
+    ],
+    "states": [
+      "TN"
+    ],
+    "rivers": [
+      "Caney Fork",
+      "Cumberland Plateau"
+    ],
+    "startMonth": 5,
+    "endMonth": 6,
+    "waterTempMinF": 58,
+    "waterTempMaxF": 78,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "adult"
+    ],
+    "flies": [
+      "Size 4-8 foam cicada (black/orange)",
+      "Size 6 Chubby Chernobyl (cicada colors)",
+      "Size 4 Project Hopper (cicada)"
+    ],
+    "searchTerm": "Magicicada spp. terrestrial fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Peak: Cicada years only. Best waters: Cumberland Plateau and East TN. Brood years produce huge surface eats"
+  },
+  {
+    "id": "eastern-inchworms",
+    "name": "Inchworms",
+    "scientific": "Lepidoptera larvae",
+    "regions": [
+      "Southern Appalachia",
+      "Mid-Atlantic"
+    ],
+    "states": [
+      "TN",
+      "GA",
+      "NC",
+      "KY",
+      "PA"
+    ],
+    "rivers": [
+      "Smokies",
+      "Noontootla Creek",
+      "Mountain freestones"
+    ],
+    "startMonth": 5,
+    "endMonth": 6,
+    "waterTempMinF": 58,
+    "waterTempMaxF": 78,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "adult"
+    ],
+    "flies": [
+      "Size 12-14 green inchworm (chenille)",
+      "Size 12 foam inchworm",
+      "Size 14 green Mop fly"
+    ],
+    "searchTerm": "Lepidoptera larvae terrestrial fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Peak: Late May-June. Best waters: Smokies and freestones. Green inchworm patterns"
+  },
+  {
+    "id": "eastern-october-caddis-neophylax",
+    "name": "Autumn Sedge / October Caddis",
+    "scientific": "Neophylax sp.",
+    "regions": [
+      "Southern Appalachia",
+      "Mid-Atlantic"
+    ],
+    "states": [
+      "TN",
+      "NC",
+      "KY",
+      "PA",
+      "GA"
+    ],
+    "rivers": [
+      "South Holston",
+      "Watauga",
+      "Caney Fork"
+    ],
+    "startMonth": 9,
+    "endMonth": 11,
+    "waterTempMinF": 48,
+    "waterTempMaxF": 62,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "adult",
+      "pupa",
+      "larva"
+    ],
+    "flies": [
+      "Size 12-16 elk-hair caddis",
+      "Size 12-16 LaFontaine emergent sparkle pupa",
+      "Size 12-16 X-caddis",
+      "Size 12-16 caddis larva (green rock-worm)"
+    ],
+    "searchTerm": "Neophylax sp. caddis fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Peak: October. Best waters: All tailwaters and freestones. Orange-bodied; extends dry fly season"
+  },
+  {
+    "id": "ga-shad-hatch",
+    "name": "Shad Hatch (forage event)",
+    "scientific": "Alosa sp.",
+    "regions": [
+      "Southern Appalachia",
+      "Mid-Atlantic"
+    ],
+    "states": [
+      "GA"
+    ],
+    "rivers": [
+      "Chattahoochee River"
+    ],
+    "startMonth": 1,
+    "endMonth": 2,
+    "waterTempMinF": 38,
+    "waterTempMaxF": 55,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "run-pattern"
+    ],
+    "flies": [
+      "Size 4-6 white/silver Clouser minnow",
+      "Size 4 articulated shad pattern",
+      "Size 6 Mickey Finn streamer",
+      "Size 4 flesh fly (cream)"
+    ],
+    "searchTerm": "Alosa sp. forage fish fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Peak: January-February. Best waters: Chattahoochee below Buford Dam. White/silver streamers when shad pass through dam"
+  },
+  {
+    "id": "eastern-yellow-drake",
+    "name": "Yellow Drake",
+    "scientific": "Ephemera varia",
+    "regions": [
+      "Southern Appalachia",
+      "Mid-Atlantic"
+    ],
+    "states": [
+      "GA",
+      "NC",
+      "TN"
+    ],
+    "rivers": [
+      "Toccoa River"
+    ],
+    "startMonth": 6,
+    "endMonth": 8,
+    "waterTempMinF": 54,
+    "waterTempMaxF": 68,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "dun",
+      "spinner",
+      "emerger"
+    ],
+    "flies": [
+      "Size 10-12 Yellow Drake parachute",
+      "Size 10-12 Yellow Drake Compara-dun",
+      "Size 10-12 Yellow Drake cripple",
+      "Size 10-12 Yellow Drake CDC emerger",
+      "Size 10-12 Yellow Drake rusty spinner",
+      "Size 10-12 pheasant-tail nymph"
+    ],
+    "searchTerm": "Ephemera varia mayfly fly fishing",
+    "wikipediaSlug": null,
+    "notes": "Peak: Summer. Best waters: Toccoa and freestones."
   }
 ]
