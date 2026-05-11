@@ -162,6 +162,11 @@ function LogRow({
             className="w-14 h-14 object-cover rounded-lg shrink-0 border border-border"
             loading="lazy"
           />
+        ) : entry.photoQueued ? (
+          <div className="w-14 h-14 rounded-lg bg-info/10 border border-info/40 flex flex-col items-center justify-center shrink-0 text-info text-[9px] text-center px-1">
+            <span>photo</span>
+            <span>syncing</span>
+          </div>
         ) : (
           <div className="w-14 h-14 rounded-lg bg-surface-2 border border-border flex items-center justify-center shrink-0">
             <Icon className={`w-6 h-6 ${iconColor}`} />

@@ -37,6 +37,12 @@ export interface LogEntry {
   photoUrl?: string;
   /** Storage path (for delete on entry removal). */
   photoPath?: string;
+  /**
+   * True when the photo blob is stashed in the IndexedDB upload queue
+   * (saved offline). A background worker drains the queue on
+   * reconnect, uploads the blob to Storage, and clears this flag.
+   */
+  photoQueued?: boolean;
 
   // ---- kind === 'catch' ----
   species?: string;

@@ -24,6 +24,7 @@ import {
   saveLogEntry,
   uploadLogPhoto,
 } from '@/lib/log/store';
+import { enqueuePhoto } from '@/lib/log/photoQueue';
 import {
   getDeviceGps,
   nearestSavedLocation,
@@ -147,6 +148,34 @@ export function QuickLog({
     try {
       const thumbUrl = await makeThumbnailDataUrl(file);
       setThumb(thumbUrl);
+
+      if (!online) {
+        // Offline path: stash the photo in the IndexedDB queue, capture
+        // conditions, skip Claude vision (no network → no API). The
+        // background worker will upload the blob + clear photoQueued
+        // when connectivity returns.
+        setLoadingStatus('Stashing photo for later upload…');
+        await enqueuePhoto(logId, file).catch((e) => {
+          console.warn('enqueuePhoto failed', e);
+        });
+        const ctx = await resolveConditionsContext();
+        const { gps, matchedLoc, snap } = ctx;
+        setKind('catch');                                  // best guess; user can change
+        setDraft({
+          id: logId,
+          kind: 'catch',
+          time: new Date().toISOString(),
+          gps: gps ?? undefined,
+          locationId: matchedLoc?.id,
+          locationName: matchedLoc?.name,
+          photoQueued: true,
+          // photoUrl + photoPath get filled in by the drain worker.
+          conditions: snap.conditions,
+          flowReading: snap.flowReading,
+        });
+        setPhase('preview');
+        return;
+      }
 
       setLoadingStatus(
         conditionsSource === 'gps'
@@ -302,9 +331,9 @@ export function QuickLog({
             <div>
               <div className="text-warn font-medium">You're offline</div>
               <div className="text-xs text-muted mt-0.5">
-                Notes save locally and will sync when you're back online. Photo
-                logging is paused until you have a connection — use "Note only"
-                for now.
+                Logs save locally and sync when you're back. Photos are
+                stashed and uploaded automatically once you have a
+                connection — fish ID is delayed until then.
               </div>
             </div>
           </div>
@@ -349,22 +378,20 @@ export function QuickLog({
           hint={
             online
               ? 'Claude will figure out fish or hatch and snap conditions.'
-              : 'Photo upload requires a connection — try Note only.'
+              : 'Photo stashed for upload — fish ID happens when you reconnect.'
           }
           icon={Camera}
           onClick={pickFromCamera}
-          disabled={!online}
         />
         <BigChoice
           label="Choose from library"
           hint={
             online
               ? 'Same as above, but pick an existing photo.'
-              : 'Photo upload requires a connection — try Note only.'
+              : 'Photo stashed for upload — fish ID happens when you reconnect.'
           }
           icon={ImageIcon}
           onClick={pickFromLibrary}
-          disabled={!online}
         />
         <BigChoice
           label="Note only"

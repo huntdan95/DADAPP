@@ -25,6 +25,7 @@ import { signOutCurrent } from '@/lib/firebase';
 import { seedLocations } from '@/seedLocations';
 import { prefetchConditionsForSpots } from '@/lib/prefetch';
 import { useOnline } from '@/lib/useOnline';
+import { drainPhotoQueue, pendingPhotoCount } from '@/lib/log/photoQueue';
 
 // Heavy features are lazy-loaded — Map drags in Leaflet (~150KB), Journal
 // drags in Firebase Storage and image compression. Conditions tab is the
@@ -118,6 +119,31 @@ export default function App() {
     prefetchConditionsForSpots(locations).catch(() => undefined);
   }, [locations]);
 
+  // Drain the offline photo-upload queue whenever we're online — on
+  // app startup AND on every transition from offline → online. The
+  // function is cheap when the queue is empty.
+  const [pendingPhotos, setPendingPhotos] = useState(0);
+  useEffect(() => {
+    if (auth.kind !== 'signed-in' || !online) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const summary = await drainPhotoQueue();
+        if (cancelled) return;
+        if (summary.processed > 0 || summary.failed > 0) {
+          console.info('photo queue drained', summary);
+        }
+        const remaining = await pendingPhotoCount();
+        if (!cancelled) setPendingPhotos(remaining);
+      } catch (e) {
+        console.warn('photo queue drain error', e);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [auth.kind, online]);
+
   // Keep the Conditions-tab selection valid as the locations list changes.
   // First load picks the first spot; if the selected spot gets deleted we
   // fall back to the first available.
@@ -167,6 +193,15 @@ export default function App() {
               >
                 <CloudOff className="w-3 h-3" />
                 Offline
+              </span>
+            )}
+            {pendingPhotos > 0 && online && (
+              <span
+                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-info/15 border border-info/40 text-info text-[10px] font-medium"
+                title="Photos stashed offline are being uploaded in the background."
+              >
+                <Loader2 className="w-3 h-3 animate-spin" />
+                {pendingPhotos} syncing
               </span>
             )}
             {tab === 'conditions' && (
