@@ -1,16 +1,21 @@
 import type { Waterbody } from '../registry';
 
 /**
- * Tennessee waters. Heavy on TVA tailwaters + reservoirs.
+ * Tennessee waters. Heavy on TVA reservoirs + their cold-tailwater
+ * trout rivers. Species lists per body are tuned to actual fishing
+ * reality — Reelfoot is a crappie / catfish lake (no trout); the
+ * Clinch below Norris is a world-class trout tailwater (no bass).
+ * The Smokies streams are Southern Appalachian native brookies +
+ * stockers.
  */
 export const TN_WATERBODIES: Waterbody[] = [
+  // ---------- Tailwaters (cold, trout) ------------------------------
   {
     id: 'tn-caney-fork',
     name: 'Caney Fork River',
     aliases: ['Caney Fork', 'Center Hill Tailwater'],
     states: ['TN'],
     type: 'tailwater',
-    // Center Hill Dam → confluence with Cumberland River
     bbox: [35.95, -85.95, 36.30, -85.55],
     centroid: { lat: 36.10, lng: -85.83 },
     dataProviders: {
@@ -50,7 +55,7 @@ export const TN_WATERBODIES: Waterbody[] = [
       'Streamers in tailout pools',
     ],
     accessNotes:
-      'One of America\'s best wild brown trout fisheries. Sulfur hatch April-August is the marquee event. Wading-and-weir dam pulses are critical to track.',
+      "One of America's best wild brown trout fisheries. Sulfur hatch April-August is the marquee event. Wading-and-weir dam pulses are critical to track.",
   },
   {
     id: 'tn-watauga-river',
@@ -70,6 +75,101 @@ export const TN_WATERBODIES: Waterbody[] = [
     accessNotes:
       'Year-round tailwater, big browns. Wilbur Dam pulses the schedule. Wading limited to slack-flow windows.',
   },
+  {
+    id: 'tn-clinch-river',
+    name: 'Clinch River (below Norris Dam)',
+    aliases: ['Clinch', 'Norris Tailwater'],
+    states: ['TN'],
+    type: 'tailwater',
+    // Norris Dam → confluence with Tennessee River
+    bbox: [35.95, -84.30, 36.25, -83.95],
+    centroid: { lat: 36.10, lng: -84.12 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      flow: { kind: 'usgs', siteId: '03533500' },
+      damSchedule: { kind: 'tva', dam: 'Norris' },
+    },
+    species: ['Brown Trout', 'Rainbow Trout', 'Brook Trout'],
+    hatchTags: ['midge', 'sulfur', 'bwo', 'caddis'],
+    popularLures: [
+      'Size 18-22 zebra midge',
+      'Sulfur emerger May-June',
+      'Articulated streamers for trophy browns',
+    ],
+    accessNotes:
+      "Trophy brown trout fishery — many believe THE best in the East. Special-regs section Miller Island → Massengill Bridge (catch + release; barbless single hooks). Generation = no wading.",
+  },
+  {
+    id: 'tn-elk-river',
+    name: 'Elk River (below Tims Ford)',
+    aliases: ['Elk River Tailwater', 'Tims Ford Tailwater'],
+    states: ['TN'],
+    type: 'tailwater',
+    bbox: [35.20, -86.30, 35.40, -85.95],
+    centroid: { lat: 35.30, lng: -86.12 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      flow: { kind: 'usgs', siteId: '03578000' },
+      damSchedule: { kind: 'tva', dam: 'Tims Ford' },
+    },
+    species: ['Brown Trout', 'Rainbow Trout'],
+    hatchTags: ['sulfur', 'midge', 'caddis', 'bwo'],
+    accessNotes:
+      'Below Tims Ford Dam. Stocked rainbow + wild brown trout fishery. Wading windows tight; check TVA schedule.',
+  },
+  {
+    id: 'tn-hiwassee-river-tailwater',
+    name: 'Hiwassee River',
+    aliases: ['Hiwassee Tailwater'],
+    states: ['TN'],
+    type: 'tailwater',
+    bbox: [35.15, -84.55, 35.30, -84.30],
+    centroid: { lat: 35.22, lng: -84.42 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      flow: { kind: 'usgs', siteId: '03565500' },
+      damSchedule: { kind: 'tva', dam: 'Apalachia' },
+    },
+    species: ['Brown Trout', 'Rainbow Trout'],
+    hatchTags: ['caddis', 'sulfur', 'midge', 'bwo', 'isonychia'],
+    accessNotes:
+      'Apalachia Powerhouse → Reliance, TN. Caddis hatch May-June is legendary. Big water — Spring Creek + tributary mouths produce the biggest browns.',
+  },
+  {
+    id: 'tn-tellico-river',
+    name: 'Tellico River',
+    states: ['TN'],
+    type: 'freestone',
+    bbox: [35.35, -84.20, 35.55, -84.00],
+    centroid: { lat: 35.45, lng: -84.10 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      flow: { kind: 'usgs', siteId: '03519500' },
+    },
+    species: ['Brook Trout', 'Brown Trout', 'Rainbow Trout'],
+    hatchTags: ['caddis', 'sulfur', 'bwo', 'march-brown'],
+    accessNotes:
+      'Cherokee National Forest. Stocked rainbows lower; wild brookies in headwater feeders. Catch-and-release section above Bald River Falls.',
+  },
+  {
+    id: 'tn-little-river-smokies',
+    name: 'Little River (GSMNP)',
+    aliases: ['Little River Smokies'],
+    states: ['TN'],
+    type: 'freestone',
+    bbox: [35.60, -83.85, 35.75, -83.55],
+    centroid: { lat: 35.67, lng: -83.70 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      flow: { kind: 'usgs', siteId: '03497300' },
+    },
+    species: ['Brook Trout', 'Brown Trout', 'Rainbow Trout'],
+    hatchTags: ['caddis', 'sulfur', 'march-brown', 'quill-gordon'],
+    accessNotes:
+      'Great Smoky Mountains National Park. Wild Southern Appalachian brookies in upper-elevation feeders (Lynn Camp Prong, Tremont). Bigger browns + rainbows in the lower river.',
+  },
+
+  // ---------- Cold + cool reservoirs (mixed bag) --------------------
   {
     id: 'tn-norris-lake',
     name: 'Norris Lake',
@@ -139,10 +239,270 @@ export const TN_WATERBODIES: Waterbody[] = [
       'Rainbow Trout',
       'Lake Trout',
       'Crappie',
-      'Muskie',
+      'Muskellunge',
     ],
     accessNotes:
       'World-record smallmouth (11 lb 15 oz, 1955) came from here. Clear water, deep structure. Lake trout fishery is unusual for the South.',
+  },
+  {
+    id: 'tn-tims-ford-lake',
+    name: 'Tims Ford Lake',
+    states: ['TN'],
+    type: 'reservoir',
+    bbox: [35.20, -86.35, 35.40, -86.05],
+    centroid: { lat: 35.30, lng: -86.20 },
+    surfaceAreaAcres: 10_700,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'estimated' },
+    },
+    species: [
+      'Smallmouth Bass',
+      'Largemouth Bass',
+      'Walleye',
+      'Striped Bass',
+      'Crappie',
+      'Bluegill',
+    ],
+    accessNotes:
+      'TVA on Elk River. Smallmouth + walleye fishery. Striped bass stocked. Less pressure than Tellico/Watts Bar.',
+  },
+  {
+    id: 'tn-cherokee-lake',
+    name: 'Cherokee Lake',
+    aliases: ['Cherokee Reservoir'],
+    states: ['TN'],
+    type: 'reservoir',
+    bbox: [36.20, -83.90, 36.50, -83.20],
+    centroid: { lat: 36.35, lng: -83.55 },
+    surfaceAreaAcres: 28_780,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'estimated' },
+    },
+    species: [
+      'Striped Bass',
+      'Largemouth Bass',
+      'Smallmouth Bass',
+      'Crappie',
+      'Walleye',
+      'Sauger',
+      'Channel Catfish',
+    ],
+    accessNotes:
+      'TVA on the Holston. World-class striper fishery — record fish over 60 lb. Walleye + sauger run up the river in winter.',
+  },
+  {
+    id: 'tn-douglas-lake',
+    name: 'Douglas Lake',
+    aliases: ['Douglas Reservoir'],
+    states: ['TN'],
+    type: 'reservoir',
+    bbox: [35.85, -83.65, 36.10, -83.10],
+    centroid: { lat: 35.97, lng: -83.40 },
+    surfaceAreaAcres: 28_420,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'estimated' },
+    },
+    species: [
+      'Largemouth Bass',
+      'Smallmouth Bass',
+      'Crappie',
+      'Channel Catfish',
+      'Blue Catfish',
+      'Striped Bass',
+      'White Bass',
+    ],
+    accessNotes:
+      'TVA. Big crappie + catfish numbers; bass fishing turns on in late spring. Heavily fluctuating water levels.',
+  },
+  {
+    id: 'tn-fort-loudoun-lake',
+    name: 'Fort Loudoun Lake',
+    aliases: ['Loudoun Reservoir', 'Loudon Lake'],
+    states: ['TN'],
+    type: 'reservoir',
+    bbox: [35.75, -84.40, 35.95, -83.95],
+    centroid: { lat: 35.85, lng: -84.17 },
+    surfaceAreaAcres: 14_600,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'estimated' },
+    },
+    species: [
+      'Smallmouth Bass',
+      'Largemouth Bass',
+      'Striped Bass',
+      'Sauger',
+      'Crappie',
+      'Catfish',
+    ],
+    accessNotes:
+      'TVA on Tennessee River through Knoxville. Smallmouth fishery solid year-round. Sauger run from Watts Bar Dam in winter.',
+  },
+  {
+    id: 'tn-tellico-lake',
+    name: 'Tellico Lake',
+    states: ['TN'],
+    type: 'reservoir',
+    bbox: [35.55, -84.35, 35.78, -84.10],
+    centroid: { lat: 35.67, lng: -84.22 },
+    surfaceAreaAcres: 15_860,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'estimated' },
+    },
+    species: [
+      'Smallmouth Bass',
+      'Walleye',
+      'Largemouth Bass',
+      'Striped Bass',
+      'White Bass',
+      'Crappie',
+    ],
+    accessNotes:
+      'TVA on Little Tennessee River. Walleye introduction successful — spring spawning run. Smallmouth on river-channel breaks.',
+  },
+  {
+    id: 'tn-watts-bar-lake',
+    name: 'Watts Bar Lake',
+    states: ['TN'],
+    type: 'reservoir',
+    bbox: [35.45, -85.05, 35.92, -84.40],
+    centroid: { lat: 35.65, lng: -84.72 },
+    surfaceAreaAcres: 39_000,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'estimated' },
+    },
+    species: [
+      'Striped Bass',
+      'Largemouth Bass',
+      'Smallmouth Bass',
+      'Crappie',
+      'Sauger',
+      'Catfish',
+    ],
+    accessNotes:
+      'TVA. Big striper fishery in summer. Crappie on standing timber. Bass on the rocky points.',
+  },
+  {
+    id: 'tn-chickamauga-lake',
+    name: 'Chickamauga Lake',
+    aliases: ['Chickamauga Reservoir', 'Lake Chickamauga'],
+    states: ['TN'],
+    type: 'reservoir',
+    bbox: [35.10, -85.30, 35.55, -84.85],
+    centroid: { lat: 35.30, lng: -85.07 },
+    surfaceAreaAcres: 36_240,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'estimated' },
+    },
+    species: [
+      'Largemouth Bass',
+      'Smallmouth Bass',
+      'Striped Bass',
+      'Crappie',
+      'Bluegill',
+      'Catfish',
+    ],
+    accessNotes:
+      'TVA. Trophy largemouth lake — many 10+ lb fish each spring. Florida-strain genetics. Hydrilla / milfoil grass beds dominate the bite.',
+  },
+  {
+    id: 'tn-nickajack-lake',
+    name: 'Nickajack Lake',
+    states: ['TN'],
+    type: 'reservoir',
+    bbox: [34.95, -85.85, 35.10, -85.25],
+    centroid: { lat: 35.02, lng: -85.55 },
+    surfaceAreaAcres: 10_370,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'estimated' },
+    },
+    species: [
+      'Largemouth Bass',
+      'Smallmouth Bass',
+      'Striped Bass',
+      'Sauger',
+      'Catfish',
+    ],
+    accessNotes:
+      'TVA on Tennessee River. Small run-of-river lake. Strong striper + sauger fishery on Chickamauga Dam tailwater.',
+  },
+  {
+    id: 'tn-pickwick-lake',
+    name: 'Pickwick Lake',
+    states: ['TN', 'AL', 'MS'],
+    type: 'reservoir',
+    bbox: [34.95, -88.40, 35.20, -87.80],
+    centroid: { lat: 35.07, lng: -88.10 },
+    surfaceAreaAcres: 43_100,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'estimated' },
+    },
+    species: [
+      'Smallmouth Bass',
+      'Largemouth Bass',
+      'Striped Bass',
+      'Sauger',
+      'White Bass',
+      'Catfish',
+    ],
+    accessNotes:
+      'TVA. One of the best smallmouth lakes in the country — current breaks at Wilson Dam tailwater. Sauger run in winter.',
+  },
+  {
+    id: 'tn-kentucky-lake',
+    name: 'Kentucky Lake',
+    aliases: ['KY Lake', 'Kentucky Reservoir'],
+    states: ['TN', 'KY'],
+    type: 'reservoir',
+    bbox: [36.00, -88.40, 37.10, -87.80],
+    centroid: { lat: 36.55, lng: -88.10 },
+    surfaceAreaAcres: 160_300,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'estimated' },
+    },
+    species: [
+      'Largemouth Bass',
+      'Smallmouth Bass',
+      'Crappie',
+      'Striped Bass',
+      'White Bass',
+      'Sauger',
+      'Channel Catfish',
+      'Blue Catfish',
+    ],
+    accessNotes:
+      'Largest reservoir east of the Mississippi. Crappie capital of the South — Apr-May spawning run. Big blue cat fishery on the channel ledges.',
+  },
+  {
+    id: 'tn-reelfoot-lake',
+    name: 'Reelfoot Lake',
+    states: ['TN'],
+    type: 'lake',
+    bbox: [36.30, -89.45, 36.50, -89.20],
+    centroid: { lat: 36.40, lng: -89.32 },
+    surfaceAreaAcres: 15_000,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'estimated' },
+    },
+    species: [
+      'Crappie',
+      'Bluegill',
+      'Largemouth Bass',
+      'Channel Catfish',
+      'Yellow Bass',
+    ],
+    accessNotes:
+      'Earthquake lake (1811-12 New Madrid). Cypress + tupelo trees in the water. Premier crappie fishery March-May. Eagle wintering ground.',
   },
   {
     id: 'tn-old-hickory-lake',
@@ -167,5 +527,97 @@ export const TN_WATERBODIES: Waterbody[] = [
     ],
     accessNotes:
       'USACE Cumberland River impoundment. Big striper fishery in spring. Top-water explosions for whites + stripers in summer.',
+  },
+  {
+    id: 'tn-percy-priest-lake',
+    name: 'J. Percy Priest Lake',
+    aliases: ['Percy Priest', 'Priest Lake'],
+    states: ['TN'],
+    type: 'reservoir',
+    bbox: [36.05, -86.65, 36.20, -86.30],
+    centroid: { lat: 36.12, lng: -86.48 },
+    surfaceAreaAcres: 14_200,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'estimated' },
+    },
+    species: [
+      'Largemouth Bass',
+      'Smallmouth Bass',
+      'Striped Bass',
+      'White Bass',
+      'Crappie',
+      'Channel Catfish',
+    ],
+    accessNotes:
+      'USACE just east of Nashville. Striper fishery world-class. Smallmouth on the rocky points; largemouth on bridge piers + docks.',
+  },
+  {
+    id: 'tn-cordell-hull-lake',
+    name: 'Cordell Hull Lake',
+    states: ['TN'],
+    type: 'reservoir',
+    bbox: [36.25, -85.95, 36.40, -85.55],
+    centroid: { lat: 36.32, lng: -85.72 },
+    surfaceAreaAcres: 11_960,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'estimated' },
+    },
+    species: [
+      'Smallmouth Bass',
+      'Largemouth Bass',
+      'Crappie',
+      'Sauger',
+      'Striped Bass',
+      'Catfish',
+    ],
+    accessNotes:
+      'USACE on Cumberland River. Riverine reservoir — current-loving fish. Sauger run in winter; smallmouth on the rocky banks.',
+  },
+  {
+    id: 'tn-cheatham-lake',
+    name: 'Cheatham Lake',
+    states: ['TN'],
+    type: 'reservoir',
+    bbox: [36.20, -87.30, 36.40, -86.95],
+    centroid: { lat: 36.30, lng: -87.15 },
+    surfaceAreaAcres: 7_450,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'estimated' },
+    },
+    species: [
+      'Catfish',
+      'Crappie',
+      'Largemouth Bass',
+      'Striped Bass',
+      'Sauger',
+    ],
+    accessNotes:
+      'USACE on Cumberland River below Nashville. Heavy boat traffic. Catfish fishery on the channel + sandbars.',
+  },
+  {
+    id: 'tn-boone-lake',
+    name: 'Boone Lake',
+    aliases: ['Boone Reservoir'],
+    states: ['TN'],
+    type: 'reservoir',
+    bbox: [36.40, -82.45, 36.55, -82.20],
+    centroid: { lat: 36.47, lng: -82.32 },
+    surfaceAreaAcres: 4_310,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'estimated' },
+    },
+    species: [
+      'Smallmouth Bass',
+      'Largemouth Bass',
+      'Crappie',
+      'Walleye',
+      'Bluegill',
+    ],
+    accessNotes:
+      'TVA at confluence of South Holston + Watauga rivers. Smallmouth + walleye fishery. Clear water in upper reaches.',
   },
 ];

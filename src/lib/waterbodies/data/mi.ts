@@ -1,17 +1,720 @@
 import type { Waterbody } from '../registry';
 
 /**
- * Michigan inland waters. Great Lakes + Lake St. Clair are in
- * `greatLakes.ts` since they're cross-state.
+ * Michigan waters. The 5 Great Lakes + Lake St. Clair (cross-state)
+ * live in `greatLakes.ts`. THIS file covers:
+ *   - Great Lakes BAYS that need their own bbox (East/West Grand
+ *     Traverse, Saginaw, Little Traverse, etc.) so a Traverse Bay pin
+ *     doesn't get the generic Lake Michigan defaults.
+ *   - Inland MI lakes — Higgins, Torch, Crystal, etc.
+ *   - Trout / salmon / steelhead rivers.
+ *
+ * Species lists are intentionally specific to each water. East Grand
+ * Traverse Bay gets salmon + lake trout (it does); Houghton Lake does
+ * not (it's warm, shallow, walleye-and-perch). Add cautiously — leave
+ * species blank for waters you're not 100% sure about rather than
+ * polluting downstream filters with wrong data.
  */
 export const MI_WATERBODIES: Waterbody[] = [
+  // ---------- Great Lakes bays (MI shoreline) -----------------------
+  {
+    id: 'mi-grand-traverse-bay-east',
+    name: 'East Grand Traverse Bay',
+    aliases: ['East Bay', 'East Arm Grand Traverse'],
+    states: ['MI'],
+    type: 'great_lakes',
+    bbox: [44.78, -85.62, 45.20, -85.40],
+    centroid: { lat: 45.00, lng: -85.52 },
+    surfaceAreaAcres: 38_000,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'noaa-buoy', stationId: '45002' },
+    },
+    species: [
+      'Lake Trout',
+      'Chinook Salmon',
+      'Coho Salmon',
+      'Atlantic Salmon',
+      'Brown Trout',
+      'Steelhead',
+      'Smallmouth Bass',
+      'Lake Whitefish',
+      'Yellow Perch',
+      'Cisco',
+    ],
+    popularLures: [
+      'Spoons on copper / leadcore for kings',
+      'Cowbells + flutter spoons deep for lakers',
+      'Tubes + drop-shot on rocky humps for smallies',
+    ],
+    accessNotes:
+      "Cold deep open water of Lake Michigan. Salmon trolling May-Oct. Lake trout fishery year-round (ice fishing on the bays' east shore Feb). Trophy smallmouth in 12-30 ft on rocky points in June.",
+  },
+  {
+    id: 'mi-grand-traverse-bay-west',
+    name: 'West Grand Traverse Bay',
+    aliases: ['West Bay', 'West Arm Grand Traverse'],
+    states: ['MI'],
+    type: 'great_lakes',
+    bbox: [44.75, -85.85, 45.20, -85.62],
+    centroid: { lat: 44.96, lng: -85.72 },
+    surfaceAreaAcres: 41_000,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'noaa-buoy', stationId: '45002' },
+    },
+    species: [
+      'Lake Trout',
+      'Chinook Salmon',
+      'Coho Salmon',
+      'Brown Trout',
+      'Steelhead',
+      'Smallmouth Bass',
+      'Lake Whitefish',
+      'Yellow Perch',
+      'Cisco',
+    ],
+    accessNotes:
+      'Deeper than East Bay (~600 ft max). Charter fleet runs from Elmwood + Suttons Bay. Smallmouth fishery world-class along Old Mission Peninsula.',
+  },
+  {
+    id: 'mi-little-traverse-bay',
+    name: 'Little Traverse Bay',
+    states: ['MI'],
+    type: 'great_lakes',
+    bbox: [45.32, -85.10, 45.45, -84.85],
+    centroid: { lat: 45.38, lng: -84.97 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'noaa-buoy', stationId: '45002' },
+    },
+    species: [
+      'Lake Trout',
+      'Chinook Salmon',
+      'Coho Salmon',
+      'Steelhead',
+      'Brown Trout',
+      'Smallmouth Bass',
+      'Yellow Perch',
+    ],
+    accessNotes:
+      'Petoskey / Harbor Springs. Late-summer kings stage off Bay Harbor before the Bear River run. Bay views from the bluff.',
+  },
+  {
+    id: 'mi-saginaw-bay',
+    name: 'Saginaw Bay',
+    states: ['MI'],
+    type: 'great_lakes',
+    bbox: [43.55, -84.10, 44.10, -83.20],
+    centroid: { lat: 43.85, lng: -83.65 },
+    surfaceAreaAcres: 700_000,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'noaa-buoy', stationId: '45008' },
+    },
+    species: [
+      'Walleye',
+      'Yellow Perch',
+      'Smallmouth Bass',
+      'Largemouth Bass',
+      'Northern Pike',
+      'Channel Catfish',
+      'White Bass',
+    ],
+    popularLures: [
+      'Crawler harnesses on bottom-bouncers for walleye',
+      'Body baits trolled 1.5-2.0 mph (Reef Runners, Husky Jerks)',
+      'Perch spreaders with live minnows',
+    ],
+    accessNotes:
+      'Premier walleye fishery in MI — May-June "walleye chop" in 8-14 ft. Pinconning, Linwood, Caseville ports. Watch the sudden west winds on this shallow bay.',
+  },
+  {
+    id: 'mi-whitefish-bay',
+    name: 'Whitefish Bay',
+    aliases: ['Whitefish Bay Lake Superior'],
+    states: ['MI'],
+    type: 'great_lakes',
+    bbox: [46.35, -85.20, 46.78, -84.50],
+    centroid: { lat: 46.55, lng: -84.85 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'noaa-buoy', stationId: '45004' },
+    },
+    species: [
+      'Lake Trout',
+      'Lake Whitefish',
+      'Chinook Salmon',
+      'Coho Salmon',
+      'Pink Salmon',
+      'Steelhead',
+      'Atlantic Salmon',
+    ],
+    accessNotes:
+      'East end of Lake Superior, before the St. Marys River. Cold-water salmon and trout fishery. Limited shore access; charter or boat required.',
+  },
+  {
+    id: 'mi-keweenaw-bay',
+    name: 'Keweenaw Bay',
+    states: ['MI'],
+    type: 'great_lakes',
+    bbox: [46.65, -88.65, 47.20, -88.10],
+    centroid: { lat: 46.92, lng: -88.40 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'noaa-buoy', stationId: '45006' },
+    },
+    species: [
+      'Lake Trout',
+      'Lake Whitefish',
+      'Coho Salmon',
+      'Chinook Salmon',
+      'Brook Trout (coaster)',
+      'Walleye',
+      'Smallmouth Bass',
+    ],
+    accessNotes:
+      "L'Anse + Baraga. Coaster brook trout in tributary streams. Lake trout fishery + winter herring run.",
+  },
+  {
+    id: 'mi-anchor-bay',
+    name: 'Anchor Bay',
+    aliases: ['Anchor Bay St Clair'],
+    states: ['MI'],
+    type: 'lake',
+    bbox: [42.62, -82.85, 42.78, -82.65],
+    centroid: { lat: 42.71, lng: -82.75 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'noaa-coops', stationId: '9034052' },
+    },
+    species: [
+      'Largemouth Bass',
+      'Smallmouth Bass',
+      'Muskellunge',
+      'Northern Pike',
+      'Walleye',
+      'Yellow Perch',
+      'Bluegill',
+      'Crappie',
+    ],
+    accessNotes:
+      'Shallow north end of Lake St. Clair. Best muskie water in the system in June + September. Heavy weed beds — punch jigs through pad lines for pike.',
+  },
+
+  // ---------- Inland lakes -----------------------------------------
+  {
+    id: 'mi-higgins-lake',
+    name: 'Higgins Lake',
+    states: ['MI'],
+    type: 'lake',
+    bbox: [44.41, -84.78, 44.52, -84.65],
+    centroid: { lat: 44.46, lng: -84.72 },
+    surfaceAreaAcres: 9_600,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'estimated' },
+    },
+    species: [
+      'Lake Trout',
+      'Smallmouth Bass',
+      'Lake Whitefish',
+      'Yellow Perch',
+      'Cisco',
+      'Walleye',
+      'Rock Bass',
+    ],
+    accessNotes:
+      "One of the deepest + clearest lakes in MI (max ~135 ft). Stocked lake trout fishery — downriggers in 60-100 ft. Whitefish through the ice in winter. World's most beautiful lake by some accounts.",
+  },
+  {
+    id: 'mi-torch-lake',
+    name: 'Torch Lake',
+    states: ['MI'],
+    type: 'lake',
+    bbox: [44.92, -85.35, 45.10, -85.22],
+    centroid: { lat: 45.02, lng: -85.30 },
+    surfaceAreaAcres: 18_770,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'estimated' },
+    },
+    species: [
+      'Smallmouth Bass',
+      'Lake Trout',
+      'Lake Whitefish',
+      'Yellow Perch',
+      'Cisco',
+      'Rock Bass',
+    ],
+    accessNotes:
+      "Second-deepest inland lake in MI (~285 ft) and longest. Caribbean-blue water. Smallmouth fishery on north + south rocky shoals. Lake trout deep year-round.",
+  },
+  {
+    id: 'mi-crystal-lake',
+    name: 'Crystal Lake (Benzie)',
+    aliases: ['Crystal Lake Frankfort'],
+    states: ['MI'],
+    type: 'lake',
+    bbox: [44.62, -86.20, 44.70, -86.05],
+    centroid: { lat: 44.66, lng: -86.12 },
+    surfaceAreaAcres: 9_711,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'estimated' },
+    },
+    species: [
+      'Lake Trout',
+      'Smallmouth Bass',
+      'Brown Trout',
+      'Yellow Perch',
+      'Lake Whitefish',
+      'Rock Bass',
+    ],
+    accessNotes:
+      'Glacial lake near Frankfort. Stocked lake trout + brown trout. Smallmouth on the gravel + rock points. Clear water; light line + finesse.',
+  },
+  {
+    id: 'mi-glen-lake',
+    name: 'Glen Lake',
+    aliases: ['Big Glen Lake', 'Little Glen Lake'],
+    states: ['MI'],
+    type: 'lake',
+    bbox: [44.85, -86.05, 44.92, -85.92],
+    centroid: { lat: 44.88, lng: -85.98 },
+    surfaceAreaAcres: 4_871,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'estimated' },
+    },
+    species: [
+      'Smallmouth Bass',
+      'Lake Trout',
+      'Yellow Perch',
+      'Walleye',
+      'Rock Bass',
+      'Northern Pike',
+    ],
+    accessNotes:
+      'In Sleeping Bear Dunes National Lakeshore. Two-basin lake; deep clear water. Smallmouth + lake trout fishery.',
+  },
+  {
+    id: 'mi-lake-charlevoix',
+    name: 'Lake Charlevoix',
+    states: ['MI'],
+    type: 'lake',
+    bbox: [45.18, -85.40, 45.32, -84.95],
+    centroid: { lat: 45.25, lng: -85.20 },
+    surfaceAreaAcres: 17_260,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'estimated' },
+    },
+    species: [
+      'Smallmouth Bass',
+      'Lake Trout',
+      'Chinook Salmon',
+      'Coho Salmon',
+      'Brown Trout',
+      'Steelhead',
+      'Walleye',
+      'Yellow Perch',
+      'Northern Pike',
+    ],
+    accessNotes:
+      'Connects to Lake Michigan via Pine River channel — salmon + steelhead run through. Premier smallmouth fishery in 10-25 ft on the rocks.',
+  },
+  {
+    id: 'mi-walloon-lake',
+    name: 'Walloon Lake',
+    states: ['MI'],
+    type: 'lake',
+    bbox: [45.25, -84.95, 45.32, -84.80],
+    centroid: { lat: 45.28, lng: -84.87 },
+    surfaceAreaAcres: 4_343,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'estimated' },
+    },
+    species: [
+      'Smallmouth Bass',
+      'Largemouth Bass',
+      'Yellow Perch',
+      'Rock Bass',
+      'Northern Pike',
+      'Bluegill',
+    ],
+    accessNotes:
+      'Three-armed lake. Hemingway summered here. Smallmouth + perch fishery. Less developed than Charlevoix.',
+  },
+  {
+    id: 'mi-lake-leelanau',
+    name: 'Lake Leelanau',
+    states: ['MI'],
+    type: 'lake',
+    bbox: [44.92, -85.78, 45.20, -85.68],
+    centroid: { lat: 45.05, lng: -85.73 },
+    surfaceAreaAcres: 8_320,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'estimated' },
+    },
+    species: [
+      'Smallmouth Bass',
+      'Largemouth Bass',
+      'Northern Pike',
+      'Yellow Perch',
+      'Walleye',
+      'Bluegill',
+      'Rock Bass',
+    ],
+    accessNotes:
+      'Long narrow two-basin lake. Connected to Lake Michigan via short river. Largemouth in weedy north basin; smallmouth deeper south.',
+  },
+  {
+    id: 'mi-cadillac-mitchell',
+    name: 'Lake Cadillac + Lake Mitchell',
+    aliases: ['Lake Cadillac', 'Lake Mitchell'],
+    states: ['MI'],
+    type: 'lake',
+    bbox: [44.23, -85.50, 44.30, -85.40],
+    centroid: { lat: 44.26, lng: -85.45 },
+    surfaceAreaAcres: 4_350,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'estimated' },
+    },
+    species: [
+      'Largemouth Bass',
+      'Smallmouth Bass',
+      'Walleye',
+      'Northern Pike',
+      'Yellow Perch',
+      'Bluegill',
+      'Crappie',
+    ],
+    accessNotes:
+      'Connected via canal. Walleye + bass mixed-bag. Heavy ice-fishing pressure in winter.',
+  },
+  {
+    id: 'mi-hamlin-lake',
+    name: 'Hamlin Lake',
+    states: ['MI'],
+    type: 'lake',
+    bbox: [44.00, -86.42, 44.13, -86.30],
+    centroid: { lat: 44.06, lng: -86.36 },
+    surfaceAreaAcres: 4_990,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'estimated' },
+    },
+    species: [
+      'Largemouth Bass',
+      'Smallmouth Bass',
+      'Northern Pike',
+      'Walleye',
+      'Yellow Perch',
+      'Bluegill',
+      'Crappie',
+    ],
+    accessNotes:
+      'Just north of Ludington. Hardwood Lake (upper) shallow; Big Hamlin (lower) deeper. Pike + bass in pads, perch in the channels.',
+  },
+  {
+    id: 'mi-hubbard-lake',
+    name: 'Hubbard Lake',
+    states: ['MI'],
+    type: 'lake',
+    bbox: [44.78, -83.62, 44.92, -83.50],
+    centroid: { lat: 44.85, lng: -83.56 },
+    surfaceAreaAcres: 8_850,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'estimated' },
+    },
+    species: [
+      'Smallmouth Bass',
+      'Largemouth Bass',
+      'Walleye',
+      'Northern Pike',
+      'Yellow Perch',
+      'Cisco',
+    ],
+    accessNotes:
+      'Alpena County. Walleye stocked annually. Smallmouth on the rocky humps. Cisco in deep water year-round.',
+  },
+  {
+    id: 'mi-black-lake-cheboygan',
+    name: 'Black Lake (Cheboygan)',
+    states: ['MI'],
+    type: 'lake',
+    bbox: [45.42, -84.30, 45.52, -84.12],
+    centroid: { lat: 45.47, lng: -84.20 },
+    surfaceAreaAcres: 10_130,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'estimated' },
+    },
+    species: [
+      'Lake Sturgeon',
+      'Walleye',
+      'Smallmouth Bass',
+      'Northern Pike',
+      'Yellow Perch',
+      'Bluegill',
+    ],
+    accessNotes:
+      'MI lake sturgeon spear-fishing here — a few-days season every winter, the rarest of MI fisheries. Walleye + smallmouth the rest of the year.',
+  },
+  {
+    id: 'mi-lake-gogebic',
+    name: 'Lake Gogebic',
+    states: ['MI'],
+    type: 'lake',
+    bbox: [46.40, -89.62, 46.62, -89.45],
+    centroid: { lat: 46.50, lng: -89.55 },
+    surfaceAreaAcres: 12_960,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'estimated' },
+    },
+    species: [
+      'Walleye',
+      'Smallmouth Bass',
+      'Northern Pike',
+      'Yellow Perch',
+      'Whitefish',
+    ],
+    accessNotes:
+      'Largest inland lake in the UP. Premier walleye + smallmouth water. Stained water with structure-rich bottom.',
+  },
+  {
+    id: 'mi-manistique-lake',
+    name: 'Big Manistique Lake',
+    aliases: ['Manistique Lake'],
+    states: ['MI'],
+    type: 'lake',
+    bbox: [46.18, -85.85, 46.30, -85.65],
+    centroid: { lat: 46.24, lng: -85.75 },
+    surfaceAreaAcres: 10_130,
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      lakeData: { kind: 'estimated' },
+    },
+    species: [
+      'Walleye',
+      'Northern Pike',
+      'Smallmouth Bass',
+      'Yellow Perch',
+      'Muskellunge',
+    ],
+    accessNotes:
+      'UP. Walleye + pike. Muskie in adjacent Big + Little Manistique chain.',
+  },
+
+  // ---------- Rivers (besides Manistee already listed) -------------
+  {
+    id: 'mi-muskegon-river',
+    name: 'Muskegon River',
+    aliases: ['Muskegon'],
+    states: ['MI'],
+    type: 'tailwater',
+    // Croton Dam → Muskegon Lake. Long thin bbox follows river.
+    bbox: [43.20, -86.30, 43.50, -85.55],
+    centroid: { lat: 43.32, lng: -85.92 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      flow: { kind: 'usgs', siteId: '04121970' },
+    },
+    species: [
+      'Chinook Salmon',
+      'Coho Salmon',
+      'Steelhead',
+      'Brown Trout',
+      'Smallmouth Bass',
+      'Walleye',
+    ],
+    accessNotes:
+      'Below Croton Dam. Premier salmon + steelhead river. Newaygo + Hardy Pond stretches. Salmon mid-Sept through mid-Oct.',
+  },
+  {
+    id: 'mi-boardman-river',
+    name: 'Boardman River',
+    aliases: ['Boardman'],
+    states: ['MI'],
+    type: 'freestone',
+    bbox: [44.65, -85.65, 44.78, -85.35],
+    centroid: { lat: 44.72, lng: -85.50 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      flow: { kind: 'usgs', siteId: '04126970' },
+    },
+    species: ['Brown Trout', 'Brook Trout', 'Steelhead', 'Chinook Salmon'],
+    hatchTags: ['sulfur', 'hex', 'caddis', 'bwo'],
+    accessNotes:
+      'Designated trout stream above Brown Bridge Dam removal. Lower river runs salmon + steelhead from West Bay. Wading + light gear.',
+  },
+  {
+    id: 'mi-jordan-river',
+    name: 'Jordan River',
+    states: ['MI'],
+    type: 'freestone',
+    bbox: [45.05, -85.10, 45.25, -84.90],
+    centroid: { lat: 45.15, lng: -85.00 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      flow: { kind: 'usgs', siteId: '04127800' },
+    },
+    species: ['Brook Trout', 'Brown Trout', 'Rainbow Trout'],
+    hatchTags: ['sulfur', 'bwo', 'caddis', 'isonychia'],
+    accessNotes:
+      "MI's first designated Wild + Scenic river. Catch-and-release flies-only sections. Brookies + browns in cold spring-fed water.",
+  },
+  {
+    id: 'mi-pere-marquette-river-extended',
+    name: 'Pere Marquette Headwaters',
+    aliases: ['Upper Pere Marquette', 'PM Headwaters'],
+    states: ['MI'],
+    type: 'freestone',
+    bbox: [43.90, -85.85, 44.05, -85.50],
+    centroid: { lat: 43.97, lng: -85.65 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      flow: { kind: 'usgs', siteId: '04122500' },
+    },
+    species: ['Brown Trout', 'Brook Trout', 'Rainbow Trout'],
+    hatchTags: ['hex', 'sulfur', 'caddis'],
+    accessNotes:
+      'Above the flies-only section. Brown trout + brook trout. Hex hatch on the headwater stretches.',
+  },
+  {
+    id: 'mi-big-two-hearted',
+    name: 'Two Hearted River',
+    aliases: ['Big Two Hearted', 'Two Hearted'],
+    states: ['MI'],
+    type: 'freestone',
+    bbox: [46.55, -85.50, 46.85, -85.05],
+    centroid: { lat: 46.70, lng: -85.28 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      flow: { kind: 'usgs', siteId: '04036000' },
+    },
+    species: ['Brook Trout', 'Coaster Brook Trout', 'Steelhead'],
+    accessNotes:
+      "Hemingway's river. Remote UP brook trout water. Lower river runs steelhead from Lake Superior.",
+  },
+  {
+    id: 'mi-fox-river',
+    name: 'Fox River',
+    states: ['MI'],
+    type: 'freestone',
+    bbox: [46.20, -86.10, 46.55, -85.85],
+    centroid: { lat: 46.38, lng: -85.97 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      flow: { kind: 'usgs', siteId: '04055500' },
+    },
+    species: ['Brook Trout'],
+    accessNotes:
+      "Hemingway's actual Big Two Hearted (literary). Pristine brook trout water in Seney refuge.",
+  },
+  {
+    id: 'mi-sturgeon-river-up',
+    name: 'Sturgeon River (UP)',
+    states: ['MI'],
+    type: 'freestone',
+    bbox: [46.45, -88.85, 46.95, -88.40],
+    centroid: { lat: 46.70, lng: -88.62 },
+    species: ['Brook Trout', 'Brown Trout', 'Steelhead'],
+    accessNotes:
+      'Houghton County. Deep canyon section + tributaries. Big browns possible.',
+  },
+  {
+    id: 'mi-pigeon-river',
+    name: 'Pigeon River',
+    states: ['MI'],
+    type: 'freestone',
+    bbox: [44.95, -84.55, 45.30, -84.30],
+    centroid: { lat: 45.12, lng: -84.42 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      flow: { kind: 'usgs', siteId: '04127918' },
+    },
+    species: ['Brook Trout', 'Brown Trout', 'Rainbow Trout'],
+    hatchTags: ['sulfur', 'caddis', 'bwo'],
+    accessNotes:
+      'Pigeon River Country State Forest. Brook trout headwaters; bigger browns lower river.',
+  },
+  {
+    id: 'mi-st-joseph-river',
+    name: 'St. Joseph River',
+    aliases: ['St Joe', 'Saint Joseph River'],
+    states: ['MI', 'IN'],
+    type: 'tailwater',
+    bbox: [41.45, -86.50, 42.10, -85.10],
+    centroid: { lat: 41.75, lng: -85.80 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      flow: { kind: 'usgs', siteId: '04101500' },
+    },
+    species: [
+      'Steelhead',
+      'Chinook Salmon',
+      'Brown Trout',
+      'Smallmouth Bass',
+      'Walleye',
+      'Channel Catfish',
+    ],
+    accessNotes:
+      'Steelhead river — fall + spring runs from Lake Michigan to Berrien Springs. Smallmouth above the dams. Highly regulated wing-dam fishery.',
+  },
+  {
+    id: 'mi-grand-river',
+    name: 'Grand River',
+    states: ['MI'],
+    type: 'freestone',
+    bbox: [42.85, -85.80, 43.05, -84.60],
+    centroid: { lat: 42.95, lng: -85.20 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      flow: { kind: 'usgs', siteId: '04119000' },
+    },
+    species: [
+      'Steelhead',
+      'Chinook Salmon',
+      'Walleye',
+      'Smallmouth Bass',
+      'Channel Catfish',
+      'White Bass',
+    ],
+    accessNotes:
+      "Longest river in MI. Sixth Street Dam (Grand Rapids) is the highest barrier — steelhead + salmon stage there. Sturgeon population recovering.",
+  },
+  {
+    id: 'mi-au-sable-river-south',
+    name: 'South Branch Au Sable',
+    aliases: ['South Branch'],
+    states: ['MI'],
+    type: 'freestone',
+    bbox: [44.55, -84.45, 44.75, -84.15],
+    centroid: { lat: 44.65, lng: -84.32 },
+    dataProviders: {
+      weather: { kind: 'open-meteo' },
+      flow: { kind: 'usgs', siteId: '04135700' },
+    },
+    species: ['Brown Trout', 'Brook Trout', 'Rainbow Trout'],
+    hatchTags: ['hex', 'sulfur', 'bwo', 'caddis', 'isonychia'],
+    accessNotes:
+      'Premier MI mayfly water. Mason Tract is the marquee stretch. Hex hatch the highlight; bring big stimulators.',
+  },
+
+  // ---------- Existing curated MI river entries (already wired) -----
   {
     id: 'mi-manistee-river-lower',
     name: 'Big Manistee River',
     aliases: ['Manistee River', 'Lower Manistee'],
     states: ['MI'],
     type: 'tailwater',
-    // Tippy Dam → Lake Michigan stretch. Long thin bbox follows river.
     bbox: [44.10, -86.40, 44.40, -85.65],
     centroid: { lat: 44.24, lng: -85.99 },
     dataProviders: {
@@ -52,11 +755,6 @@ export const MI_WATERBODIES: Waterbody[] = [
     },
     species: ['Brown Trout', 'Brook Trout', 'Rainbow Trout', 'Smallmouth Bass'],
     hatchTags: ['hex', 'sulfur', 'caddis', 'bwo', 'march-brown', 'isonychia'],
-    popularLures: [
-      'Hopper / dropper rigs',
-      'Nymph + indicator on long runs',
-      'Hex dun on dark July nights',
-    ],
     accessNotes:
       'Designated Blue Ribbon trout water above CCC Bridge. Year-round flies-only between M-72 and CCC Bridge. Hex hatch the highlight.',
   },
@@ -66,7 +764,6 @@ export const MI_WATERBODIES: Waterbody[] = [
     aliases: ['AuSable', 'Au Sable'],
     states: ['MI'],
     type: 'freestone',
-    // Holy Water + South Branch stretches
     bbox: [44.45, -84.80, 44.90, -83.90],
     centroid: { lat: 44.66, lng: -84.30 },
     dataProviders: {
@@ -76,7 +773,7 @@ export const MI_WATERBODIES: Waterbody[] = [
     species: ['Brown Trout', 'Brook Trout', 'Rainbow Trout'],
     hatchTags: ['hex', 'sulfur', 'bwo', 'isonychia', 'march-brown', 'caddis'],
     accessNotes:
-      'Holy Water (Burton\'s → Wakeley) is fly-only catch-and-release. South Branch the most famous Hex hatch in MI. Trico mornings in August.',
+      "Holy Water (Burton's → Wakeley) is fly-only catch-and-release. South Branch the most famous Hex hatch in MI. Trico mornings in August.",
   },
   {
     id: 'mi-pere-marquette',
@@ -93,7 +790,7 @@ export const MI_WATERBODIES: Waterbody[] = [
     species: ['Chinook Salmon', 'Steelhead', 'Brown Trout', 'Rainbow Trout'],
     hatchTags: ['hex', 'sulfur', 'caddis', 'isonychia'],
     accessNotes:
-      'Flies-only stretch from M-37 → Gleason\'s Landing. Premier MI steelhead and salmon river. Hex hatch in late June.',
+      "Flies-only stretch from M-37 → Gleason's Landing. Premier MI steelhead and salmon river. Hex hatch in late June.",
   },
   {
     id: 'mi-houghton-lake',
@@ -105,11 +802,16 @@ export const MI_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 20_044,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      // No NDBC/CO-OPS in range — estimator is the right default
-      // for this big inland lake.
       lakeData: { kind: 'estimated' },
     },
-    species: ['Walleye', 'Yellow Perch', 'Northern Pike', 'Bluegill', 'Largemouth Bass', 'Crappie'],
+    species: [
+      'Walleye',
+      'Yellow Perch',
+      'Northern Pike',
+      'Bluegill',
+      'Largemouth Bass',
+      'Crappie',
+    ],
     accessNotes:
       'Largest inland lake in MI. Tip-up walleye fishery in winter. Drop-shot perch deeper in summer. Big pike off weedlines.',
   },
