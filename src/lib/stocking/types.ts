@@ -31,7 +31,25 @@ export interface StockingEvent {
   /** Free-text notes — bonus details from the contributor or scraper. */
   notes?: string;
 
-  source: 'manual' | 'twra' | 'mi-dnr' | 'nc-wrc' | 'ga-dnr' | 'fwc' | 'in-dnr' | 'al-dcnr' | 'ky-dfwr';
+  source:
+    | 'manual'
+    | 'twra'
+    | 'mi-dnr'
+    | 'nc-wrc'
+    | 'ga-dnr'
+    | 'fwc'
+    | 'in-dnr'
+    | 'al-dcnr'
+    | 'ky-dfwr'
+    | 'pa-fbc'
+    | 'mt-fwp'
+    | 'id-fg'
+    | 'co-cpw'
+    | 'ut-dwr'
+    | 'ar-agfc'
+    | 'ok-odwc'
+    | 'ms-mdwfp'
+    | 'il-dnr';
   contributorEmail?: string;
   createdAt: Timestamp | null;
 }

@@ -36,7 +36,16 @@ export type StockingSource =
   | 'fwc'
   | 'in-dnr'
   | 'al-dcnr'
-  | 'ky-dfwr';
+  | 'ky-dfwr'
+  | 'pa-fbc'
+  | 'mt-fwp'
+  | 'id-fg'
+  | 'co-cpw'
+  | 'ut-dwr'
+  | 'ar-agfc'
+  | 'ok-odwc'
+  | 'ms-mdwfp'
+  | 'il-dnr';
 
 /**
  * Stable id for a stocking record so re-scrapes don't double-write.

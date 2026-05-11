@@ -11,6 +11,15 @@ import { scrape as scrapeIn } from './inDnr';
 import { scrape as scrapeFwc } from './fwc';
 import { scrape as scrapeAl } from './alDcnr';
 import { scrape as scrapeKy } from './kyDfwr';
+import { scrape as scrapePa } from './paFbc';
+import { scrape as scrapeMt } from './mtFwp';
+import { scrape as scrapeIdF } from './idFg';
+import { scrape as scrapeCo } from './coCpw';
+import { scrape as scrapeUt } from './utDwr';
+import { scrape as scrapeAr } from './arAgfc';
+import { scrape as scrapeOk } from './okOdwc';
+import { scrape as scrapeMs } from './msMdwfp';
+import { scrape as scrapeIl } from './ilDnr';
 
 /**
  * Orchestrator for state-DNR stocking scrapers.
@@ -36,6 +45,15 @@ const SCRAPERS: Array<{
   { source: 'fwc', run: scrapeFwc },
   { source: 'al-dcnr', run: scrapeAl },
   { source: 'ky-dfwr', run: scrapeKy },
+  { source: 'pa-fbc', run: scrapePa },
+  { source: 'mt-fwp', run: scrapeMt },
+  { source: 'id-fg', run: scrapeIdF },
+  { source: 'co-cpw', run: scrapeCo },
+  { source: 'ut-dwr', run: scrapeUt },
+  { source: 'ar-agfc', run: scrapeAr },
+  { source: 'ok-odwc', run: scrapeOk },
+  { source: 'ms-mdwfp', run: scrapeMs },
+  { source: 'il-dnr', run: scrapeIl },
 ];
 
 async function runAll(): Promise<
@@ -146,6 +164,15 @@ async function pruneOldAutoEvents(): Promise<void> {
     'fwc',
     'al-dcnr',
     'ky-dfwr',
+    'pa-fbc',
+    'mt-fwp',
+    'id-fg',
+    'co-cpw',
+    'ut-dwr',
+    'ar-agfc',
+    'ok-odwc',
+    'ms-mdwfp',
+    'il-dnr',
   ];
   for (const src of autoSources) {
     const snap = await db

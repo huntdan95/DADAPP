@@ -199,6 +199,24 @@ function labelFor(sourceCode: string): string {
       return 'AL';
     case 'ky-dfwr':
       return 'KY';
+    case 'pa-fbc':
+      return 'PA';
+    case 'mt-fwp':
+      return 'MT';
+    case 'id-fg':
+      return 'ID';
+    case 'co-cpw':
+      return 'CO';
+    case 'ut-dwr':
+      return 'UT';
+    case 'ar-agfc':
+      return 'AR';
+    case 'ok-odwc':
+      return 'OK';
+    case 'ms-mdwfp':
+      return 'MS';
+    case 'il-dnr':
+      return 'IL';
     default:
       return sourceCode;
   }
@@ -222,6 +240,24 @@ function sourceLabel(source: StockingEvent['source']): string {
       return 'AL DCNR';
     case 'ky-dfwr':
       return 'KDFWR';
+    case 'pa-fbc':
+      return 'PFBC';
+    case 'mt-fwp':
+      return 'MT FWP';
+    case 'id-fg':
+      return 'IDFG';
+    case 'co-cpw':
+      return 'CPW';
+    case 'ut-dwr':
+      return 'UDWR';
+    case 'ar-agfc':
+      return 'AGFC';
+    case 'ok-odwc':
+      return 'ODWC';
+    case 'ms-mdwfp':
+      return 'MDWFP';
+    case 'il-dnr':
+      return 'IL DNR';
     default:
       return 'reported';
   }
