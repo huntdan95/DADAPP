@@ -162,6 +162,95 @@ export async function reverseGeocode(
   };
 }
 
+export interface ForwardGeocodeResult {
+  /** Center latitude. */
+  lat: number;
+  /** Center longitude. */
+  lng: number;
+  /** Bounding box [south, north, west, east] in decimal degrees, if Nominatim returned one. */
+  bbox?: [number, number, number, number];
+  /** Free-text label Nominatim uses for the result. */
+  display: string;
+  /**
+   * 'town', 'lake', 'river', 'address', etc — Nominatim's coarse
+   * category. Useful for showing an icon next to the result in the UI.
+   */
+  category?: string;
+  /** Same as category for ranking — surfaces "city" / "lake" / "river". */
+  type?: string;
+  /** ISO-3166 alpha-2. */
+  country?: string;
+  /** USPS state code, if the result is in the US. */
+  state?: string;
+}
+
+/**
+ * Forward-geocode a free-text query (place name, lake, river, address,
+ * etc.) into one or more matching coordinates. Backed by Nominatim,
+ * which is fine for occasional UI typeahead use — don't loop over it.
+ *
+ * The returned `bbox` is used by callers to fit the map to the result
+ * (a lake or river is a stretched area, not a single point).
+ */
+export async function forwardGeocode(
+  query: string,
+  limit = 6
+): Promise<ForwardGeocodeResult[]> {
+  const q = query.trim();
+  if (!q) return [];
+  const url = new URL('https://nominatim.openstreetmap.org/search');
+  url.searchParams.set('q', q);
+  url.searchParams.set('format', 'json');
+  url.searchParams.set('addressdetails', '1');
+  url.searchParams.set('limit', String(limit));
+
+  const res = await fetch(url.toString(), {
+    headers: { Accept: 'application/json' },
+  });
+  if (!res.ok) {
+    throw new Error(`forward-geocode HTTP ${res.status}`);
+  }
+  const rows = (await res.json()) as Array<{
+    lat: string;
+    lon: string;
+    display_name?: string;
+    boundingbox?: [string, string, string, string];
+    category?: string;
+    type?: string;
+    address?: {
+      state?: string;
+      country_code?: string;
+    };
+  }>;
+  return rows
+    .map((r) => {
+      const lat = parseFloat(r.lat);
+      const lng = parseFloat(r.lon);
+      if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+      const bbox = r.boundingbox
+        ? ([
+            parseFloat(r.boundingbox[0]),
+            parseFloat(r.boundingbox[1]),
+            parseFloat(r.boundingbox[2]),
+            parseFloat(r.boundingbox[3]),
+          ] as [number, number, number, number])
+        : undefined;
+      return {
+        lat,
+        lng,
+        bbox: bbox && bbox.every(Number.isFinite) ? bbox : undefined,
+        display: r.display_name ?? q,
+        category: r.category,
+        type: r.type,
+        country: r.address?.country_code?.toUpperCase(),
+        state: r.address?.state
+          ? STATE_NAME_TO_USPS[r.address.state]
+          : undefined,
+      } satisfies ForwardGeocodeResult;
+    })
+    .filter((r): r is ForwardGeocodeResult => r != null);
+}
+
 /** Default IANA timezone for a USPS state code. */
 export function timezoneForState(state: string | undefined): string {
   if (!state) return 'America/New_York';

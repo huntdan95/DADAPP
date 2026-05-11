@@ -15,6 +15,7 @@ import { MapMarker } from './MapMarker';
 import { BoatLaunchLayer } from './BoatLaunchLayer';
 import { BoatLaunchSheet } from './BoatLaunchSheet';
 import { AddLaunchForm } from './AddLaunchForm';
+import { MapSearch } from './MapSearch';
 import type { Location } from '@/lib/providers/types';
 import { ConditionsCard } from '@/features/conditions/ConditionsCard';
 import { ProgressBar } from '@/components/ui/ProgressBar';
@@ -62,6 +63,28 @@ export function MapView({ locations }: { locations: Location[] }) {
   const [recenterTo, setRecenterTo] = useState<
     { lat: number; lng: number; zoom: number } | null
   >(null);
+  /**
+   * Bounds-based recenter (search results that have a bbox — lakes,
+   * rivers, towns). The map fits the whole extent rather than zooming
+   * to a single point. Versioned via a key so re-picking the same
+   * result still moves the map.
+   */
+  const [fitBoundsTarget, setFitBoundsTarget] = useState<{
+    south: number;
+    north: number;
+    west: number;
+    east: number;
+    key: number;
+  } | null>(null);
+  /**
+   * Temporary "you searched for this" pin. Cleared via the X button
+   * on its popup. Distinct from spot markers and launch markers.
+   */
+  const [searchPin, setSearchPin] = useState<{
+    lat: number;
+    lng: number;
+    label: string;
+  } | null>(null);
   const [selectedLaunch, setSelectedLaunch] = useState<BoatLaunch | null>(null);
   /** Device geolocation — captured on mount, displayed as a blue dot. Independent of the launch-ranking flow. */
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
@@ -253,6 +276,7 @@ export function MapView({ locations }: { locations: Location[] }) {
         />
         <FitToLocations locations={locations} />
         <RecenterOn target={recenterTo} />
+        <FitBoundsOn target={fitBoundsTarget} />
 
         {locations.map((loc) => (
           <MapMarker key={loc.id} location={loc} onClick={(l) => setSelected(l)} />
@@ -270,9 +294,52 @@ export function MapView({ locations }: { locations: Location[] }) {
             <Popup>You are here</Popup>
           </Marker>
         )}
+
+        {searchPin && (
+          <Marker
+            position={[searchPin.lat, searchPin.lng]}
+            icon={searchPinIcon}
+          >
+            <Popup>
+              <div className="flex items-center gap-2">
+                <span>{searchPin.label}</span>
+                <button
+                  type="button"
+                  onClick={() => setSearchPin(null)}
+                  className="text-xs text-muted hover:text-text underline"
+                >
+                  clear
+                </button>
+              </div>
+            </Popup>
+          </Marker>
+        )}
       </MapContainer>
 
       <BasemapSwitcher current={basemap} onChange={setBasemap} />
+
+      <div className="absolute top-2 left-1/2 -translate-x-1/2 z-[1000]">
+        <MapSearch
+          onPick={(r) => {
+            if (r.bbox) {
+              setFitBoundsTarget({
+                south: r.bbox[0],
+                north: r.bbox[1],
+                west: r.bbox[2],
+                east: r.bbox[3],
+                key: Date.now(),
+              });
+            } else {
+              setRecenterTo({ lat: r.lat, lng: r.lng, zoom: 13 });
+            }
+            setSearchPin({
+              lat: r.lat,
+              lng: r.lng,
+              label: r.display.split(',').slice(0, 2).join(',').trim(),
+            });
+          }}
+        />
+      </div>
       <MapLegend
         open={legendOpen}
         onToggle={() => setLegendOpen((v) => !v)}
@@ -457,6 +524,36 @@ function RecenterOn({
   const map = useMap();
   useEffect(() => {
     if (target) map.setView([target.lat, target.lng], target.zoom);
+  }, [target, map]);
+  return null;
+}
+
+/**
+ * Fit-bounds wrapper for search results that span a region (a lake or
+ * a river). The `key` field forces a re-fit when the user picks the
+ * same result twice (same coords, but they want the map to snap back).
+ */
+function FitBoundsOn({
+  target,
+}: {
+  target: {
+    south: number;
+    north: number;
+    west: number;
+    east: number;
+    key: number;
+  } | null;
+}) {
+  const map = useMap();
+  useEffect(() => {
+    if (!target) return;
+    map.fitBounds(
+      [
+        [target.south, target.west],
+        [target.north, target.east],
+      ],
+      { padding: [40, 40], maxZoom: 14 }
+    );
   }, [target, map]);
   return null;
 }
@@ -705,4 +802,23 @@ const youIcon = L.divIcon({
   className: '',
   iconSize: [18, 18],
   iconAnchor: [9, 9],
+});
+
+/**
+ * Temporary "I searched for this" pin. Yellow/amber so it's visually
+ * distinct from spot markers (green/yellow/red status colors) and
+ * boat launch markers (blue/teal). Animated subtle bounce on insert
+ * via CSS keyframes so the user sees where the map jumped to.
+ */
+const searchPinIcon = L.divIcon({
+  html: `<div style="position:relative;width:22px;height:28px;transform:translateY(-14px)">
+    <svg viewBox="0 0 22 28" width="22" height="28" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11 1 C5 1 1 5 1 10 C1 16 11 27 11 27 C11 27 21 16 21 10 C21 5 17 1 11 1 Z"
+            fill="#fbbf24" stroke="#0a0e0a" stroke-width="1.5"/>
+      <circle cx="11" cy="10" r="3" fill="#0a0e0a"/>
+    </svg>
+  </div>`,
+  className: '',
+  iconSize: [22, 28],
+  iconAnchor: [11, 28],
 });

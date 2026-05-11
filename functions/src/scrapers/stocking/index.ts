@@ -2,7 +2,14 @@ import { onSchedule } from 'firebase-functions/v2/scheduler';
 import { onCall, HttpsError } from 'firebase-functions/v2/https';
 import { logger } from 'firebase-functions';
 import { FieldValue, getFirestore, Timestamp } from 'firebase-admin/firestore';
-import { deriveStockingId, type StockingDoc, type StockingScrapeRecord, type StockingSource } from './types';
+import {
+  deriveStockingId,
+  type StockingDoc,
+  type StockingScrapeDiagnostic,
+  type StockingScrapeRecord,
+  type StockingSource,
+} from './types';
+import { withFetchTrace } from './fetch';
 import { scrape as scrapeTwra } from './twra';
 import { scrape as scrapeGa } from './gaDnr';
 import { scrape as scrapeNc } from './ncWrc';
@@ -56,89 +63,158 @@ const SCRAPERS: Array<{
   { source: 'il-dnr', run: scrapeIl },
 ];
 
-async function runAll(): Promise<
-  Array<{ source: StockingSource; added: number; total: number; error?: string }>
-> {
+/**
+ * Per-source classification: pure stubs we know don't fetch anything,
+ * tagged so the diagnostic shows 'stub' instead of 'empty' (which would
+ * imply the scraper tried and failed to find rows).
+ */
+const STUB_SOURCES: ReadonlySet<StockingSource> = new Set([
+  'in-dnr',
+  'fwc',
+  'al-dcnr',
+]);
+
+interface ScraperResult {
+  source: StockingSource;
+  added: number;
+  total: number;
+  error?: string;
+}
+
+async function runAll(): Promise<{
+  results: ScraperResult[];
+  diagnostics: StockingScrapeDiagnostic[];
+}> {
   const db = getFirestore();
-  const results: Array<{
-    source: StockingSource;
-    added: number;
-    total: number;
-    error?: string;
-  }> = [];
+  const results: ScraperResult[] = [];
+  const diagnostics: StockingScrapeDiagnostic[] = [];
 
   for (const { source, run } of SCRAPERS) {
+    let records: StockingScrapeRecord[] = [];
+    let runError: string | undefined;
+    let trace: Awaited<ReturnType<typeof withFetchTrace>>['trace'] = {};
+
     try {
-      const records = await run();
-      let added = 0;
-      let skipped = 0;
-
-      // Sample logging: dump the first parsed record so we can verify
-      // the parser is reading the right page after a deploy. The
-      // record itself is small (no html blob).
-      if (records.length > 0) {
-        logger.info('stocking.scrape.sample', {
-          source,
-          sample: records[0],
-          totalParsed: records.length,
-        });
-      } else {
-        logger.warn('stocking.scrape.empty', {
-          source,
-          hint:
-            'Parser returned 0 records. Either the source page has no current entries or the layout changed and selectors need tuning.',
-        });
-      }
-
-      // Batch writes for efficiency; only set docs that don't already
-      // exist so re-runs don't churn createdAt timestamps.
-      const chunked: StockingScrapeRecord[][] = [];
-      for (let i = 0; i < records.length; i += 400) {
-        chunked.push(records.slice(i, i + 400));
-      }
-      for (const chunk of chunked) {
-        const batch = db.batch();
-        for (const rec of chunk) {
-          const id = deriveStockingId(source, rec);
-          const ref = db.collection('stockingEvents').doc(id);
-          const existing = await ref.get();
-          if (existing.exists) {
-            skipped++;
-            continue;
-          }
-          const doc: Omit<StockingDoc, 'createdAt'> & {
-            createdAt: FirebaseFirestore.FieldValue;
-          } = stripUndefined({
-            id,
-            date: rec.date,
-            locationName: rec.locationName,
-            state: rec.state,
-            species: rec.species,
-            count: rec.count,
-            size: rec.size,
-            lat: rec.lat,
-            lng: rec.lng,
-            notes: rec.notes,
-            source,
-            createdAt: FieldValue.serverTimestamp(),
-          });
-          batch.set(ref, doc);
-          added++;
-        }
-        await batch.commit();
-      }
-
-      results.push({ source, added, total: records.length });
-      logger.info('stocking.scrape.complete', {
-        source,
-        added,
-        skipped,
-        total: records.length,
-      });
+      const wrapped = await withFetchTrace(() => run());
+      records = wrapped.result;
+      trace = wrapped.trace;
     } catch (e) {
-      logger.error('stocking.scrape.failed', { source, error: String(e) });
-      results.push({ source, added: 0, total: 0, error: String(e) });
+      runError = String(e);
+      logger.error('stocking.scrape.failed', { source, error: runError });
     }
+
+    // Build the user-facing diagnostic. Order matters:
+    //   stub        → known no-op scraper
+    //   fetch_failed → fetch threw / non-2xx
+    //   parse_failed → fetched OK but 0 rows
+    //   ok          → at least 1 record parsed
+    //   empty       → catch-all (e.g., no fetch happened, no error)
+    let status: StockingScrapeDiagnostic['status'];
+    let message: string | undefined;
+    if (STUB_SOURCES.has(source)) {
+      status = 'stub';
+      message = 'No live scraper for this source yet.';
+    } else if (runError) {
+      status = 'fetch_failed';
+      message = runError;
+    } else if (records.length === 0 && trace.httpStatus && trace.httpStatus >= 400) {
+      status = 'fetch_failed';
+      message = trace.errorMessage ?? `HTTP ${trace.httpStatus}`;
+    } else if (records.length === 0 && trace.url) {
+      status = 'parse_failed';
+      message =
+        'Page fetched but the parser found 0 rows — likely a layout change or JS-rendered content.';
+    } else if (records.length === 0) {
+      status = 'empty';
+      message = 'Scraper returned 0 records and made no HTTP request.';
+    } else {
+      status = 'ok';
+    }
+
+    diagnostics.push(
+      stripUndefined({
+        source,
+        status,
+        url: trace.url ?? '',
+        httpStatus: trace.httpStatus,
+        bodySnippet: trace.bodySnippet,
+        message,
+      }) as StockingScrapeDiagnostic
+    );
+
+    if (runError) {
+      results.push({ source, added: 0, total: 0, error: runError });
+      continue;
+    }
+
+    let added = 0;
+    let skipped = 0;
+
+    // Sample logging: dump the first parsed record so we can verify
+    // the parser is reading the right page after a deploy. The
+    // record itself is small (no html blob).
+    if (records.length > 0) {
+      logger.info('stocking.scrape.sample', {
+        source,
+        sample: records[0],
+        totalParsed: records.length,
+      });
+    } else {
+      logger.warn('stocking.scrape.empty', {
+        source,
+        url: trace.url,
+        httpStatus: trace.httpStatus,
+        bodySnippet: trace.bodySnippet,
+        hint:
+          'Parser returned 0 records. Either the source page has no current entries or the layout changed and selectors need tuning.',
+      });
+    }
+
+    // Batch writes for efficiency; only set docs that don't already
+    // exist so re-runs don't churn createdAt timestamps.
+    const chunked: StockingScrapeRecord[][] = [];
+    for (let i = 0; i < records.length; i += 400) {
+      chunked.push(records.slice(i, i + 400));
+    }
+    for (const chunk of chunked) {
+      const batch = db.batch();
+      for (const rec of chunk) {
+        const id = deriveStockingId(source, rec);
+        const ref = db.collection('stockingEvents').doc(id);
+        const existing = await ref.get();
+        if (existing.exists) {
+          skipped++;
+          continue;
+        }
+        const doc: Omit<StockingDoc, 'createdAt'> & {
+          createdAt: FirebaseFirestore.FieldValue;
+        } = stripUndefined({
+          id,
+          date: rec.date,
+          locationName: rec.locationName,
+          state: rec.state,
+          species: rec.species,
+          count: rec.count,
+          size: rec.size,
+          lat: rec.lat,
+          lng: rec.lng,
+          notes: rec.notes,
+          source,
+          createdAt: FieldValue.serverTimestamp(),
+        });
+        batch.set(ref, doc);
+        added++;
+      }
+      await batch.commit();
+    }
+
+    results.push({ source, added, total: records.length });
+    logger.info('stocking.scrape.complete', {
+      source,
+      added,
+      skipped,
+      total: records.length,
+    });
   }
 
   // Prune events older than 60 days to keep the collection bounded.
@@ -147,7 +223,7 @@ async function runAll(): Promise<
     logger.error('stocking.prune.failed', { error: String(e) })
   );
 
-  return results;
+  return { results, diagnostics };
 }
 
 async function pruneOldAutoEvents(): Promise<void> {
@@ -211,8 +287,8 @@ export const scrapeStocking = onSchedule(
     timeoutSeconds: 540,
   },
   async () => {
-    const results = await runAll();
-    logger.info('stocking.scrape.summary', { results });
+    const { results, diagnostics } = await runAll();
+    logger.info('stocking.scrape.summary', { results, diagnostics });
   }
 );
 
@@ -232,7 +308,11 @@ export const triggerStockingScrape = onCall(
     if (!request.auth) {
       throw new HttpsError('unauthenticated', 'Must be signed in');
     }
-    const results = await runAll();
-    return { results, ranAt: Timestamp.now().toMillis() };
+    const { results, diagnostics } = await runAll();
+    return {
+      results,
+      diagnostics,
+      ranAt: Timestamp.now().toMillis(),
+    };
   }
 );

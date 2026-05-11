@@ -79,3 +79,17 @@ export interface StockingDoc {
   source: StockingSource;
   createdAt: Timestamp;
 }
+
+/**
+ * Diagnostic info per scrape attempt. Surfaces in System Health so
+ * the user can see what each state DNR page actually returned without
+ * digging through Firebase logs.
+ */
+export interface StockingScrapeDiagnostic {
+  source: StockingSource;
+  status: 'ok' | 'empty' | 'fetch_failed' | 'parse_failed' | 'stub';
+  url: string;
+  httpStatus?: number;
+  bodySnippet?: string;          // first ~240 chars of the page
+  message?: string;
+}

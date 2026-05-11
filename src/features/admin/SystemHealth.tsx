@@ -19,7 +19,10 @@ import { Card, CardHeader, CardSubtitle, CardTitle } from '@/components/ui/Card'
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { getFirebaseApp, getFirebaseAuth } from '@/lib/firebase';
 import { pendingPhotoCount } from '@/lib/log/photoQueue';
-import { triggerStockingScrape } from '@/lib/stocking/trigger';
+import {
+  triggerStockingScrape,
+  type StockingScrapeDiagnostic,
+} from '@/lib/stocking/trigger';
 import { callSeedBoatLaunches, STATES as LAUNCH_STATES } from '@/lib/boatLaunches/store';
 import { Button } from '@/components/ui/Button';
 import { friendlyError } from '@/lib/errors';
@@ -51,6 +54,10 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
   const [photoQueue, setPhotoQueue] = useState<number>(0);
 
   const [scrapingStocking, setScrapingStocking] = useState(false);
+  const [stockingDiagnostics, setStockingDiagnostics] = useState<
+    StockingScrapeDiagnostic[] | null
+  >(null);
+  const [showDiagnostics, setShowDiagnostics] = useState(false);
   const [seedingLaunches, setSeedingLaunches] = useState(false);
   const [seedingMissing, setSeedingMissing] = useState(false);
   const [seedProgress, setSeedProgress] = useState<{
@@ -58,6 +65,13 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
     label: string;
     etaSeconds: number | null;
   } | null>(null);
+  /**
+   * Which single state is currently being re-seeded, if any. Used to
+   * disable other state-level scrub buttons while one is running.
+   * Distinct from `seedingLaunches` (all-state) and `seedingMissing`
+   * (subset re-seed) so the per-row spinner only spins on that row.
+   */
+  const [singleState, setSingleState] = useState<string | null>(null);
 
   async function load() {
     setLoading(true);
@@ -88,7 +102,12 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
   async function refreshStocking() {
     setScrapingStocking(true);
     try {
-      await triggerStockingScrape();
+      const res = await triggerStockingScrape();
+      setStockingDiagnostics(res.diagnostics ?? []);
+      // Auto-expand the diagnostics panel if any source didn't return
+      // 'ok' — that's exactly when the user needs to see why.
+      const anyTrouble = (res.diagnostics ?? []).some((d) => d.status !== 'ok');
+      if (anyTrouble) setShowDiagnostics(true);
       await load();
     } catch (e) {
       setError(friendlyError(e));
@@ -122,6 +141,28 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
       setError(friendlyError(e));
     } finally {
       setSeedingLaunches(false);
+      setSeedProgress(null);
+    }
+  }
+
+  /**
+   * Re-seed a single state on demand. Lets the user fix one stale
+   * row without waiting for a full 17-state refresh. The progress
+   * bar still uses the chunked-progress component since the scrape
+   * Cloud Function reports chunk-of-1 internally — the bar just
+   * fills to 100% on completion.
+   */
+  async function refreshOneState(state: string) {
+    if (singleState || seedingLaunches || seedingMissing) return;
+    setSingleState(state);
+    setSeedProgress({ pct: 0, label: `Scraping ${state}…`, etaSeconds: null });
+    try {
+      await runWithProgress([state]);
+      await load();
+    } catch (e) {
+      setError(friendlyError(e));
+    } finally {
+      setSingleState(null);
       setSeedProgress(null);
     }
   }
@@ -174,11 +215,14 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
             <div className="flex flex-col gap-1.5">
               {launchSets.map((row) => {
                 const isMissing = row.count === 0 || row.fetchedAtMs == null;
+                const busyThisRow = singleState === row.state;
+                const busyAny =
+                  seedingLaunches || seedingMissing || singleState != null;
                 return (
                   <div
                     key={row.state}
                     className={
-                      'flex items-center justify-between text-sm ' +
+                      'flex items-center justify-between gap-2 text-sm ' +
                       (isMissing ? 'text-warn' : '')
                     }
                   >
@@ -195,6 +239,20 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
                     >
                       {isMissing ? 'never scraped' : formatAge(row.fetchedAtMs)}
                     </div>
+                    <button
+                      type="button"
+                      onClick={() => refreshOneState(row.state)}
+                      disabled={busyAny}
+                      title={`Scrape ${row.state} launches`}
+                      aria-label={`Scrape ${row.state} launches`}
+                      className="text-muted hover:text-info disabled:opacity-30 disabled:cursor-not-allowed transition flex-none"
+                    >
+                      {busyThisRow ? (
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      ) : (
+                        <RefreshCcw className="w-3.5 h-3.5" />
+                      )}
+                    </button>
                   </div>
                 );
               })}
@@ -215,7 +273,7 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
               size="sm"
               variant="secondary"
               onClick={refreshLaunches}
-              disabled={seedingLaunches || seedingMissing}
+              disabled={seedingLaunches || seedingMissing || singleState != null}
             >
               {seedingLaunches ? (
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -231,7 +289,9 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
                 size="sm"
                 variant="secondary"
                 onClick={refreshMissingLaunches}
-                disabled={seedingMissing || seedingLaunches}
+                disabled={
+                  seedingMissing || seedingLaunches || singleState != null
+                }
               >
                 {seedingMissing ? (
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -294,7 +354,7 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
               )}
             </div>
           )}
-          <div className="mt-3">
+          <div className="mt-3 flex flex-wrap gap-2 items-center">
             <Button
               size="sm"
               variant="secondary"
@@ -308,7 +368,19 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
               )}
               {scrapingStocking ? 'Pulling DNRs…' : 'Refresh from DNRs'}
             </Button>
+            {stockingDiagnostics && stockingDiagnostics.length > 0 && (
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => setShowDiagnostics((s) => !s)}
+              >
+                {showDiagnostics ? 'Hide' : 'Show'} per-source diagnostics
+              </Button>
+            )}
           </div>
+          {stockingDiagnostics && showDiagnostics && (
+            <DiagnosticsPanel diagnostics={stockingDiagnostics} />
+          )}
         </div>
       </Card>
 
@@ -545,6 +617,124 @@ function AiRow({
       </div>
     </div>
   );
+}
+
+/**
+ * Per-source diagnostic panel. Shows what each state-DNR scraper
+ * actually fetched and why it might have returned 0 records. Color-
+ * codes by status — green ok, yellow stub, red fetch/parse failures.
+ *
+ * The body snippet is intentionally short (~240 chars from the
+ * server) and stripped of HTML tags so it's readable in a phone
+ * viewport. Long enough to tell whether the page returned a real
+ * stocking table, a redirect notice, a 404 page, or a JS-rendered
+ * shell with no content.
+ */
+function DiagnosticsPanel({
+  diagnostics,
+}: {
+  diagnostics: StockingScrapeDiagnostic[];
+}) {
+  const order: StockingScrapeDiagnostic['status'][] = [
+    'fetch_failed',
+    'parse_failed',
+    'empty',
+    'stub',
+    'ok',
+  ];
+  const sorted = [...diagnostics].sort(
+    (a, b) =>
+      order.indexOf(a.status) - order.indexOf(b.status) ||
+      a.source.localeCompare(b.source)
+  );
+  return (
+    <div className="mt-3 flex flex-col gap-2">
+      <div className="text-[11px] text-muted">
+        For each source: status, URL fetched, HTTP status, and a snippet
+        of the body. Tap a URL to open the DNR page in a new tab.
+      </div>
+      {sorted.map((d) => (
+        <DiagnosticRow key={d.source} d={d} />
+      ))}
+    </div>
+  );
+}
+
+function DiagnosticRow({ d }: { d: StockingScrapeDiagnostic }) {
+  const tone = statusTone(d.status);
+  return (
+    <div className={`rounded border ${tone.border} ${tone.bg} p-2`}>
+      <div className="flex items-center justify-between text-xs">
+        <span className={`font-mono ${tone.text}`}>
+          {d.source}
+        </span>
+        <span className={`font-mono ${tone.text}`}>
+          {d.status}
+          {d.httpStatus ? ` · HTTP ${d.httpStatus}` : ''}
+        </span>
+      </div>
+      {d.url && (
+        <div className="mt-1">
+          <a
+            href={d.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[11px] text-info underline break-all"
+          >
+            {d.url}
+          </a>
+        </div>
+      )}
+      {d.message && (
+        <div className="mt-1 text-[11px] text-muted">{d.message}</div>
+      )}
+      {d.bodySnippet && (
+        <div className="mt-1 text-[11px] text-muted font-mono break-words whitespace-pre-wrap">
+          {d.bodySnippet}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function statusTone(status: StockingScrapeDiagnostic['status']): {
+  border: string;
+  bg: string;
+  text: string;
+} {
+  switch (status) {
+    case 'ok':
+      return {
+        border: 'border-accent/30',
+        bg: 'bg-accent/5',
+        text: 'text-accent',
+      };
+    case 'stub':
+      return {
+        border: 'border-info/30',
+        bg: 'bg-info/5',
+        text: 'text-info',
+      };
+    case 'parse_failed':
+      return {
+        border: 'border-warn/40',
+        bg: 'bg-warn/5',
+        text: 'text-warn',
+      };
+    case 'fetch_failed':
+      return {
+        border: 'border-danger/40',
+        bg: 'bg-danger/5',
+        text: 'text-danger',
+      };
+    case 'empty':
+    default:
+      return {
+        border: 'border-white/10',
+        bg: 'bg-surface-2',
+        text: 'text-muted',
+      };
+  }
 }
 
 function formatAge(ms: number | null): string {

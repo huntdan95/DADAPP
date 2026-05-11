@@ -12,6 +12,7 @@ import type {
 import { Button } from '@/components/ui/Button';
 import { Field, Input, Select } from '@/components/ui/Input';
 import { BASEMAPS } from '@/features/map/basemaps';
+import { MapSearch } from '@/features/map/MapSearch';
 import { friendlyError } from '@/lib/errors';
 import {
   nearestUsgsGauges,
@@ -435,7 +436,7 @@ export function LocationForm({
             {locating ? 'Locating…' : 'Use my location'}
           </Button>
         </div>
-        <div className="h-56 rounded-xl overflow-hidden border border-border">
+        <div className="relative h-56 rounded-xl overflow-hidden border border-border">
           <MapContainer
             center={initialCenter}
             zoom={initial ? 11 : 4}
@@ -449,6 +450,26 @@ export function LocationForm({
             }} />
             <RecenterOnTarget target={recenterTarget} key={recenterKey} />
           </MapContainer>
+          {/* Search bar floats over the map. Picking a result moves
+              the pin to the result's center — that triggers the same
+              auto-detect chain a tap would (state / county / nearest
+              USGS gauge / nearest tide station). */}
+          <div className="absolute top-2 left-2 right-2 z-[1000]">
+            <MapSearch
+              className="w-full max-w-none"
+              placeholder="Search a town, river, lake, address…"
+              onPick={(r) => {
+                setLat(r.lat);
+                setLng(r.lng);
+                setRecenterTarget({
+                  lat: r.lat,
+                  lng: r.lng,
+                  zoom: r.bbox ? 12 : 13,
+                });
+                setRecenterKey((k) => k + 1);
+              }}
+            />
+          </div>
         </div>
         <div className="flex items-center justify-between gap-2 mt-1 min-h-[18px]">
           <div className="text-xs text-muted num">
