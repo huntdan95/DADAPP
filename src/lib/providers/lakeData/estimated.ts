@@ -1,4 +1,6 @@
 import type { LakeReading } from '../types';
+import { nearestUsgsLakeSites } from '@/lib/geo/reverseGeocode';
+import { usgsLakeFetch } from './usgsLake';
 
 /**
  * Estimated lake surface temperature derived from recent air
@@ -114,20 +116,94 @@ export async function estimatedFetchLake(
   // Clamp to plausible inland-lake surface range. Below 33°F
   // implies ice (the model can't really speak to that); above 90°F
   // would be a model failure.
-  const surfaceTempF = clamp(raw, 33, 90);
+  const modeled = clamp(raw, 33, 90);
+
+  // Calibrate against the nearest real water-temp gauge if one is
+  // reachable. Distance-weighted blend: a gauge 5 mi away anchors
+  // the estimate hard (90 % gauge), a gauge 45 mi away barely
+  // nudges it (10 % gauge). Nothing within 50 mi → fall back to
+  // pure model.
+  const calibration = await calibrateAgainstGauge(lat, lng, modeled).catch(
+    () => null
+  );
+  const surfaceTempF = calibration?.surfaceTempF ?? modeled;
+  const notesBase = 'Modeled from 14-day air temp + seasonal offset.';
+  const notes = calibration
+    ? `${notesBase} Calibrated against USGS ${calibration.siteId} ` +
+      `(${calibration.distanceMiles.toFixed(0)} mi away — ` +
+      `gauge ${calibration.gaugeF.toFixed(1)}°F, ` +
+      `model ${modeled.toFixed(1)}°F).`
+    : `${notesBase} No nearby USGS water-temp gauge within 50 mi; ` +
+      'model is uncalibrated.';
 
   return {
-    siteName: 'Estimated · air-temp model',
+    siteName: calibration
+      ? `Estimated · calibrated to USGS ${calibration.siteId}`
+      : 'Estimated · air-temp model',
     observedAt: now.toISOString(),
     surfaceTempF: Math.round(surfaceTempF * 10) / 10,
     waveHeightFt: null,
     windMph: null,
     authority: 'estimated',
     isEstimated: true,
-    notes:
-      'Modeled from 14-day air temp + seasonal offset. ' +
-      'Accuracy ±3°F vs. measured lake gauges in fishing season.',
+    notes,
   };
+}
+
+/**
+ * Pulls the nearest USGS lake gauge with current water-temp data
+ * and blends it with the model output. If no gauge is reachable
+ * within 50 miles or the gauge has no recent reading, returns
+ * null and the caller uses the pure-model estimate.
+ *
+ * Weighting: linear distance taper.
+ *   - 5 mi  → 90 % gauge
+ *   - 25 mi → 50 / 50
+ *   - 45 mi → 10 % gauge
+ *   - 50+ mi → not used
+ *
+ * Water temp typically varies slowly across a region, so even a
+ * 30-mile-away reading is a strong calibration anchor. The taper
+ * just keeps remote readings from dominating when the spot is
+ * clearly its own water mass.
+ */
+async function calibrateAgainstGauge(
+  lat: number,
+  lng: number,
+  modeled: number
+): Promise<{
+  surfaceTempF: number;
+  siteId: string;
+  distanceMiles: number;
+  gaugeF: number;
+} | null> {
+  // Search up to ~0.75° (~52 mi) for a USGS lake-type gauge that
+  // publishes water temp. Cheap NWIS site-search; one HTTP call.
+  const sites = await nearestUsgsLakeSites(lat, lng, 5, 0.75).catch(
+    () => []
+  );
+  if (sites.length === 0) return null;
+
+  // Try each candidate in distance order until one returns a
+  // valid water temp. Most spots only need the first.
+  for (const site of sites) {
+    if (site.distanceMiles > 50) break;
+    const reading = await usgsLakeFetch(site.siteId).catch(() => null);
+    if (!reading || reading.surfaceTempF == null) continue;
+    // Sanity: ignore wildly out-of-range readings (sensor errors).
+    if (reading.surfaceTempF < 30 || reading.surfaceTempF > 95) continue;
+
+    // Linear distance taper: weight = 1 at 0 mi, 0 at 50 mi.
+    const weight = Math.max(0, 1 - site.distanceMiles / 50);
+    const blended = modeled * (1 - weight) + reading.surfaceTempF * weight;
+    return {
+      surfaceTempF: blended,
+      siteId: site.siteId,
+      distanceMiles: site.distanceMiles,
+      gaugeF: reading.surfaceTempF,
+    };
+  }
+  return null;
 }
 
 /**

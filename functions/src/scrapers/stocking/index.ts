@@ -177,49 +177,63 @@ async function runAll(): Promise<{
       continue;
     }
 
-    // AI fallback: if the HTML scraper returned 0 records (including
-    // stub sources), ask Claude w/ web_search to find recent stocking
-    // events for the state. This is far more robust than fighting
-    // ASP.NET PostBack pages and brittle table layouts. Cost: ~$0.05
-    // per state per run; bounded by the weekly cron.
-    //
-    // Seed with focusWaters[state] — the named fisheries that show
-    // up in our waterbody registry — so Claude prioritizes events
-    // on specific waters the user is likely to have a spot on,
-    // instead of returning generic "Statewide stocking" summaries.
+    // AI fallback: if the HTML scraper returned 0 records, ask
+    // Claude w/ web_search to find recent stocking events for the
+    // state. Costs ~$0.05 per state per run; we cap that by
+    // checking Firestore for recent events FROM THIS SAME SOURCE
+    // before spending tokens. If we have fresh data (<7 days old)
+    // we skip Claude entirely and rely on the existing records.
     if (records.length === 0) {
       const state = SOURCE_TO_STATE[source];
       if (state) {
-        const focusWaters = FOCUS_WATERS[state];
-        logger.info('stocking.ai.fallback', {
-          source,
-          state,
-          focusWaterCount: focusWaters?.length ?? 0,
-        });
-        try {
-          const ai = await aiExtractStocking({
-            state,
+        const recentCount = await countRecentEventsForSource(source, 7);
+        if (recentCount > 0) {
+          logger.info('stocking.ai.skipped_recent', {
             source,
-            lookbackDays: 90,
-            focusWaters,
+            state,
+            recentCount,
+            reason: 'Recent AI-extracted events already in Firestore — skipping Claude call to save tokens.',
           });
-          if (ai.events.length > 0) {
-            records = ai.events;
-            const idx = diagnostics.findIndex((d) => d.source === source);
-            if (idx >= 0) {
-              diagnostics[idx] = {
-                ...diagnostics[idx],
-                status: 'ok',
-                message: `AI-extracted ${ai.events.length} events via web search (focused on ${focusWaters?.length ?? 0} named waters).`,
-              };
-            }
+          const idx = diagnostics.findIndex((d) => d.source === source);
+          if (idx >= 0) {
+            diagnostics[idx] = {
+              ...diagnostics[idx],
+              status: 'ok',
+              message: `Using ${recentCount} cached events from the last 7 days (Claude skipped to save tokens).`,
+            };
           }
-        } catch (e) {
-          logger.error('stocking.ai.fallback_failed', {
+        } else {
+          const focusWaters = FOCUS_WATERS[state];
+          logger.info('stocking.ai.fallback', {
             source,
             state,
-            error: String(e),
+            focusWaterCount: focusWaters?.length ?? 0,
           });
+          try {
+            const ai = await aiExtractStocking({
+              state,
+              source,
+              lookbackDays: 90,
+              focusWaters,
+            });
+            if (ai.events.length > 0) {
+              records = ai.events;
+              const idx = diagnostics.findIndex((d) => d.source === source);
+              if (idx >= 0) {
+                diagnostics[idx] = {
+                  ...diagnostics[idx],
+                  status: 'ok',
+                  message: `AI-extracted ${ai.events.length} events via web search (focused on ${focusWaters?.length ?? 0} named waters).`,
+                };
+              }
+            }
+          } catch (e) {
+            logger.error('stocking.ai.fallback_failed', {
+              source,
+              state,
+              error: String(e),
+            });
+          }
         }
       }
     }
@@ -352,6 +366,44 @@ function stripUndefined<T extends Record<string, unknown>>(value: T): T {
     if (v !== undefined) out[k] = v;
   }
   return out as T;
+}
+
+/**
+ * Counts stocking events from `source` whose `createdAt` is within
+ * the last `daysFresh` days. Used by the AI-fallback gate so we
+ * skip the (~$0.05) Claude call when we already have recent data
+ * — typical pattern: weekly cron writes events on Monday, manual
+ * refresh on Tuesday reads the cache instead of re-spending tokens.
+ *
+ * NOTE: we filter by `source` rather than `state` because TWRA in
+ * TN, FWC in FL, etc. are state-specific. One Firestore query per
+ * source per run is cheap.
+ */
+async function countRecentEventsForSource(
+  source: StockingSource,
+  daysFresh: number
+): Promise<number> {
+  const db = getFirestore();
+  const cutoffMs = Date.now() - daysFresh * 24 * 60 * 60 * 1000;
+  const cutoff = Timestamp.fromMillis(cutoffMs);
+  try {
+    const snap = await db
+      .collection('stockingEvents')
+      .where('source', '==', source)
+      .where('createdAt', '>=', cutoff)
+      .limit(1)
+      .get();
+    // We don't need an exact count — just whether anything fresh
+    // exists. Bail out at 1 to avoid a full-collection scan.
+    return snap.size;
+  } catch (e) {
+    logger.warn('stocking.countRecent.failed', {
+      source,
+      error: String(e),
+    });
+    // Fail-open: if we can't query, let the Claude call proceed.
+    return 0;
+  }
 }
 
 /**
