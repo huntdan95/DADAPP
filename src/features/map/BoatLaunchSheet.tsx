@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Apple, Loader2, MapPin, Navigation } from 'lucide-react';
+import { Apple, Loader2, MapPin, Navigation, Plus } from 'lucide-react';
 import { BottomSheet } from '@/components/ui/BottomSheet';
 import { Button } from '@/components/ui/Button';
 import { Field } from '@/components/ui/Input';
@@ -24,10 +24,17 @@ export function BoatLaunchSheet({
   launch,
   userLocation,
   onClose,
+  onSaveAsSpot,
 }: {
   launch: BoatLaunch | null;
   userLocation: { lat: number; lng: number } | null;
   onClose: () => void;
+  /**
+   * Called when the user taps "Save as fishing spot". Parent should
+   * close this sheet and open the LocationForm seeded with the
+   * launch's coords + name.
+   */
+  onSaveAsSpot?: (launch: BoatLaunch) => void;
 }) {
   const [note, setNote] = useState('');
   const [loading, setLoading] = useState(false);
@@ -107,6 +114,17 @@ export function BoatLaunchSheet({
             <div className="text-xs text-muted">
               Tip: on iOS, Apple Maps opens in the native app.
             </div>
+          )}
+
+          {onSaveAsSpot && (
+            <Button
+              variant="secondary"
+              onClick={() => onSaveAsSpot(launch)}
+              className="w-full"
+            >
+              <Plus className="w-4 h-4" />
+              Save as a fishing spot
+            </Button>
           )}
 
           <Field label="Your notes">

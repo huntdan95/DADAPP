@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import {
   MapContainer,
   TileLayer,
@@ -17,6 +17,11 @@ import { BoatLaunchSheet } from './BoatLaunchSheet';
 import { AddLaunchForm } from './AddLaunchForm';
 import type { Location } from '@/lib/providers/types';
 import { ConditionsCard } from '@/features/conditions/ConditionsCard';
+import { getLocationStore } from '@/lib/store';
+
+const LocationForm = lazy(() =>
+  import('@/features/locations/LocationForm').then((m) => ({ default: m.LocationForm }))
+);
 import { BottomSheet } from '@/components/ui/BottomSheet';
 import {
   type BoatLaunch,
@@ -37,6 +42,8 @@ export function MapView({ locations }: { locations: Location[] }) {
   const [userLaunches, setUserLaunches] = useState<BoatLaunch[]>([]);
   const [addLaunchOpen, setAddLaunchOpen] = useState(false);
   const [launchesLoaded, setLaunchesLoaded] = useState(false);
+  /** Set when the user taps "Save as fishing spot" on a launch sheet. */
+  const [seedFromLaunch, setSeedFromLaunch] = useState<Partial<Location> | null>(null);
   const [findingLocation, setFindingLocation] = useState(false);
   const [nearest, setNearest] = useState<{
     user: { lat: number; lng: number };
@@ -326,6 +333,18 @@ export function MapView({ locations }: { locations: Location[] }) {
         launch={selectedLaunch}
         userLocation={nearest?.user ?? null}
         onClose={() => setSelectedLaunch(null)}
+        onSaveAsSpot={(launch) => {
+          // Close the launch sheet, open the add-spot sheet seeded
+          // with the launch's name + coords. Auto-detect picks up the
+          // state / county / timezone / providers from the pin.
+          setSelectedLaunch(null);
+          setSeedFromLaunch({
+            name: launch.name,
+            lat: launch.lat,
+            lng: launch.lng,
+            state: launch.state,
+          });
+        }}
       />
 
       <BottomSheet
@@ -339,6 +358,25 @@ export function MapView({ locations }: { locations: Location[] }) {
             onCancel={() => setAddLaunchOpen(false)}
             onSaved={() => setAddLaunchOpen(false)}
           />
+        )}
+      </BottomSheet>
+
+      <BottomSheet
+        open={seedFromLaunch != null}
+        onClose={() => setSeedFromLaunch(null)}
+        title="Add a spot"
+      >
+        {seedFromLaunch && (
+          <Suspense fallback={<div className="text-muted text-sm p-2">Loading…</div>}>
+            <LocationForm
+              initial={seedFromLaunch}
+              onCancel={() => setSeedFromLaunch(null)}
+              onSave={async (loc) => {
+                await getLocationStore().upsert(loc);
+                setSeedFromLaunch(null);
+              }}
+            />
+          </Suspense>
         )}
       </BottomSheet>
 

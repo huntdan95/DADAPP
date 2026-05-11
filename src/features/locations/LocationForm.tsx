@@ -23,6 +23,7 @@ import {
   nearestTideStations,
   type NearbyTideStation,
 } from '@/lib/geo/nearestTideStations';
+import { lookupTailwater } from '@/lib/geo/tailwaterLookup';
 
 const WATER_TYPES: WaterType[] = [
   'tailwater',
@@ -49,7 +50,14 @@ export function LocationForm({
   onSave,
   onCancel,
 }: {
-  initial?: Location;
+  /**
+   * Either a full Location (editing existing) or a partial
+   * seed — e.g. when converting a boat launch into a spot we pass
+   * { name, lat, lng } and the auto-detect chain fills the rest.
+   * The form distinguishes "real edit" from "seed" by `initial.id`
+   * being present.
+   */
+  initial?: Partial<Location>;
   onSave: (loc: Location) => void;
   onCancel: () => void;
 }) {
@@ -64,8 +72,12 @@ export function LocationForm({
    */
   const [county, setCounty] = useState<string | undefined>(initial?.county);
   const [type, setType] = useState<WaterType>(initial?.type ?? 'tailwater');
-  /** True if the user has manually changed the water type — locks our auto-detection. */
-  const [typeUserSet, setTypeUserSet] = useState<boolean>(initial != null);
+  /**
+   * True if the user has manually changed the water type, OR if we're
+   * editing an existing spot (full id present). When seeding from a
+   * boat launch or fresh add, type stays auto-detectable.
+   */
+  const [typeUserSet, setTypeUserSet] = useState<boolean>(Boolean(initial?.id));
   const [timezone, setTimezone] = useState(
     initial?.timezone ?? 'America/New_York'
   );
@@ -74,27 +86,61 @@ export function LocationForm({
   /** Suggested spot name from reverse-geocode (river + nearest landmark). */
   const [nameSuggestion, setNameSuggestion] = useState<string | null>(null);
 
+  /**
+   * When opening the form for a NEW spot (no `initial`) and no pin
+   * dropped yet, fire the GPS resolver automatically. Saves the
+   * user a tap — most of the time they're adding a spot they're
+   * standing at or near. They can still drag the pin if they
+   * intended somewhere else.
+   */
+  useEffect(() => {
+    if (initial?.id) return;             // editing — leave pin where it was
+    if (lat != null || lng != null) return;
+    if (!('geolocation' in navigator)) return;
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setLat(pos.coords.latitude);
+        setLng(pos.coords.longitude);
+        setRecenterTarget({
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+          zoom: 14,
+        });
+        setRecenterKey((k) => k + 1);
+      },
+      () => {
+        // Silently fail — user can still tap or use the button.
+      },
+      { enableHighAccuracy: false, timeout: 6000, maximumAge: 60_000 }
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // dataProviders is optional on Partial<Location> — pull a local ref
+  // for cleaner conditional reads below.
+  const initialProviders = initial?.dataProviders;
+
   const [flowKind, setFlowKind] = useState<FlowKind>(
-    (initial?.dataProviders.flow?.kind ?? '') as FlowKind
+    (initialProviders?.flow?.kind ?? '') as FlowKind
   );
   const [flowSiteId, setFlowSiteId] = useState(
-    initial?.dataProviders.flow?.kind === 'usgs'
-      ? initial.dataProviders.flow.siteId
-      : initial?.dataProviders.flow?.kind === 'env-canada'
-      ? initial.dataProviders.flow.stationId
-      : initial?.dataProviders.flow?.kind === 'uk-ea'
-      ? initial.dataProviders.flow.stationRef
+    initialProviders?.flow?.kind === 'usgs'
+      ? initialProviders.flow.siteId
+      : initialProviders?.flow?.kind === 'env-canada'
+      ? initialProviders.flow.stationId
+      : initialProviders?.flow?.kind === 'uk-ea'
+      ? initialProviders.flow.stationRef
       : ''
   );
 
   const [damKind, setDamKind] = useState<DamKind>(
-    (initial?.dataProviders.damSchedule?.kind ?? '') as DamKind
+    (initialProviders?.damSchedule?.kind ?? '') as DamKind
   );
   const [damName, setDamName] = useState(
-    initial?.dataProviders.damSchedule?.kind === 'tva'
-      ? initial.dataProviders.damSchedule.dam
-      : initial?.dataProviders.damSchedule?.kind === 'consumers-energy'
-      ? initial.dataProviders.damSchedule.dam
+    initialProviders?.damSchedule?.kind === 'tva'
+      ? initialProviders.damSchedule.dam
+      : initialProviders?.damSchedule?.kind === 'consumers-energy'
+      ? initialProviders.damSchedule.dam
       : ''
   );
 
@@ -105,7 +151,7 @@ export function LocationForm({
    */
   const [flowOptions, setFlowOptions] = useState<NearbyGauge[]>([]);
   const [tideStationId, setTideStationId] = useState<string>(
-    initial?.dataProviders.tides?.stationId ?? ''
+    initialProviders?.tides?.stationId ?? ''
   );
   const [tideOptions, setTideOptions] = useState<NearbyTideStation[]>([]);
 
@@ -222,7 +268,31 @@ export function LocationForm({
             setFlowSiteId(pick.siteId);
           }
           parts.push(`USGS ${pick.siteId}`);
-          if (
+
+          // Known-tailwater detection. If the picked gauge is in our
+          // curated lookup (Center Hill / Tippy / Wolf Creek / Bull
+          // Shoals / Flaming Gorge / etc.) we automatically flip the
+          // type to tailwater AND wire up the right dam-schedule
+          // provider. Only applies when the user hasn't manually
+          // overridden these — manual choice is sticky.
+          const known = lookupTailwater(pick.siteId);
+          if (known) {
+            if (!typeUserSet) setType('tailwater');
+            if (damKind === '' || damKind === 'manual') {
+              if (known.authority === 'tva') {
+                setDamKind('tva');
+                setDamName(known.damName);
+              } else if (known.authority === 'consumers-energy') {
+                setDamKind('consumers-energy');
+                setDamName(known.damName);
+              } else {
+                // USACE / reclamation / auto → derive status from
+                // the flow gauge itself.
+                setDamKind('auto');
+              }
+            }
+            parts.push(`${known.damName} tailwater`);
+          } else if (
             (type === 'tailwater' || (!typeUserSet && geo?.river)) &&
             (damKind === '' || damKind === 'manual')
           ) {
