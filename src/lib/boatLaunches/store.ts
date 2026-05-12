@@ -51,6 +51,8 @@ export const STATES = [
   'MI', 'TN', 'IN', 'NC', 'FL', 'GA', 'AL', 'KY',
   'MS', 'AR', 'OK', 'IL', 'PA',
   'MT', 'ID', 'UT', 'CO',
+  // Western expansion — added with the Out West push
+  'WY', 'NM', 'AZ', 'NV', 'CA', 'OR', 'WA',
 ];
 const CACHE_KEY = 'dad-fishing.boatLaunchesCache.v2';
 /** Cache validity. Boat-launch dataset only changes when someone re-seeds. */

@@ -58,6 +58,8 @@ const STATES = [
   'MS', 'AR', 'OK', 'IL', 'PA',
   // Rocky Mountain West
   'MT', 'ID', 'UT', 'CO',
+  // Out West expansion — Wyoming, Mountain Southwest, Great Basin, Pacific Coast
+  'WY', 'NM', 'AZ', 'NV', 'CA', 'OR', 'WA',
 ];
 
 const OVERPASS = 'https://overpass-api.de/api/interpreter';
