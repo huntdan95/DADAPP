@@ -8,7 +8,7 @@ import {
   where,
   limit as fsLimit,
 } from 'firebase/firestore';
-import { Fish, Loader2, Plus, RefreshCcw } from 'lucide-react';
+import { ChevronRight, Fish, Loader2, MapPin, Plus, RefreshCcw } from 'lucide-react';
 import type { Location } from '@/lib/providers/types';
 import {
   filterStockingForLocation,
@@ -17,6 +17,7 @@ import {
 import type { StockingEvent } from '@/lib/stocking/types';
 import { BottomSheet } from '@/components/ui/BottomSheet';
 import { StockingForm } from '@/features/stocking/StockingForm';
+import { StockingEventSheet } from './StockingEventSheet';
 import { getFirebaseApp } from '@/lib/firebase';
 import { friendlyError } from '@/lib/errors';
 
@@ -35,6 +36,14 @@ export function StockingBanner({ location }: { location: Location }) {
   const [checking, setChecking] = useState(false);
   const [checkError, setCheckError] = useState<string | null>(null);
   const [lastCheckSummary, setLastCheckSummary] = useState<string | null>(null);
+  /**
+   * The event the user tapped — opens the detail sheet with embedded
+   * map. null = sheet closed. Used by both the top-3 preview list AND
+   * the expanded "Show all" filtered-out list below.
+   */
+  const [selectedEvent, setSelectedEvent] = useState<StockingEvent | null>(
+    null
+  );
 
   useEffect(() => {
     // 90 days back + 90 days forward. Tight enough to keep the
@@ -195,26 +204,43 @@ export function StockingBanner({ location }: { location: Location }) {
               Nothing scheduled in the next 90 days — last reported events:
             </div>
           )}
-          <ul className="flex flex-col gap-1.5 mt-1">
+          {/* Top-3 preview — each row is a tap target that opens the
+              event detail sheet (full record + embedded map pin). */}
+          <ul className="flex flex-col gap-1 mt-1">
             {displayed.slice(0, 3).map((ev) => (
-              <li key={ev.id} className="text-xs flex items-start gap-2">
-                <span className="text-muted num shrink-0">
-                  {formatDate(ev.date, todayLocal)}
-                </span>
-                <span className="flex-1">
-                  <b>{ev.locationName}</b> ·{' '}
-                  {ev.count
-                    ? `${ev.count.toLocaleString()} ${ev.species.toLowerCase()}`
-                    : ev.species.toLowerCase()}
-                  {ev.size && ` (${ev.size})`}
-                  {ev.source !== 'manual' && (
-                    <span className="text-muted ml-1">· {sourceLabel(ev.source)}</span>
+              <li key={ev.id}>
+                <button
+                  type="button"
+                  onClick={() => setSelectedEvent(ev)}
+                  className="w-full text-xs flex items-start gap-2 text-left rounded-md px-1 py-0.5 hover:bg-accent/10 active:bg-accent/15 transition"
+                >
+                  <span className="text-muted num shrink-0">
+                    {formatDate(ev.date, todayLocal)}
+                  </span>
+                  <span className="flex-1">
+                    <b>{ev.locationName}</b> ·{' '}
+                    {ev.count
+                      ? `${ev.count.toLocaleString()} ${ev.species.toLowerCase()}`
+                      : ev.species.toLowerCase()}
+                    {ev.size && ` (${ev.size})`}
+                    {ev.source !== 'manual' && (
+                      <span className="text-muted ml-1">· {sourceLabel(ev.source)}</span>
+                    )}
+                  </span>
+                  {/* Pin icon hint when the record already has coords;
+                      omitted when we'd need to fall back to geocoding,
+                      so the icon means "definitely mappable from the
+                      DNR record." */}
+                  {ev.lat != null && ev.lng != null ? (
+                    <MapPin className="w-3 h-3 text-accent mt-0.5 flex-none" />
+                  ) : (
+                    <ChevronRight className="w-3 h-3 text-muted mt-0.5 flex-none" />
                   )}
-                </span>
+                </button>
               </li>
             ))}
             {displayed.length > 3 && (
-              <li className="text-[11px] text-muted">
+              <li className="text-[11px] text-muted px-1">
                 + {displayed.length - 3}{overflowLabel}
               </li>
             )}
@@ -280,25 +306,39 @@ export function StockingBanner({ location }: { location: Location }) {
           <div className="text-[10px] text-muted uppercase tracking-wider mb-1">
             Other {location.state} events ({filteredOut.length})
           </div>
-          <ul className="flex flex-col gap-1 text-[11px]">
+          {/* Same per-row tap-to-open behavior as the matched list —
+              the user might want to look at a far-away water they're
+              about to drive to, or check what's around the corner. */}
+          <ul className="flex flex-col gap-0.5 text-[11px]">
             {filteredOut.slice(0, 50).map((ev) => (
-              <li key={ev.id} className="flex items-start gap-2">
-                <span className="text-muted num shrink-0">
-                  {formatDate(ev.date, todayLocal)}
-                </span>
-                <span className="flex-1 text-text/80">
-                  {ev.locationName}
-                  <span className="text-muted ml-1">
-                    · {ev.species.toLowerCase()}
-                    {ev.count ? ` × ${ev.count.toLocaleString()}` : ''}
-                    {' · '}
-                    {sourceLabel(ev.source)}
+              <li key={ev.id}>
+                <button
+                  type="button"
+                  onClick={() => setSelectedEvent(ev)}
+                  className="w-full flex items-start gap-2 text-left rounded-md px-1 py-0.5 hover:bg-accent/10 active:bg-accent/15 transition"
+                >
+                  <span className="text-muted num shrink-0">
+                    {formatDate(ev.date, todayLocal)}
                   </span>
-                </span>
+                  <span className="flex-1 text-text/80">
+                    {ev.locationName}
+                    <span className="text-muted ml-1">
+                      · {ev.species.toLowerCase()}
+                      {ev.count ? ` × ${ev.count.toLocaleString()}` : ''}
+                      {' · '}
+                      {sourceLabel(ev.source)}
+                    </span>
+                  </span>
+                  {ev.lat != null && ev.lng != null ? (
+                    <MapPin className="w-3 h-3 text-accent/70 mt-0.5 flex-none" />
+                  ) : (
+                    <ChevronRight className="w-3 h-3 text-muted mt-0.5 flex-none" />
+                  )}
+                </button>
               </li>
             ))}
             {filteredOut.length > 50 && (
-              <li className="text-[10px] text-muted">
+              <li className="text-[10px] text-muted px-1">
                 + {filteredOut.length - 50} more not shown
               </li>
             )}
@@ -331,6 +371,15 @@ export function StockingBanner({ location }: { location: Location }) {
           />
         )}
       </BottomSheet>
+
+      {/* Per-event detail sheet with embedded mini-map. Mounted at the
+          bottom so it sits above the in-condition card. The geocoding
+          lookup inside the sheet only fires when an event is selected
+          AND it doesn't already have lat/lng — no fan-out on render. */}
+      <StockingEventSheet
+        event={selectedEvent}
+        onClose={() => setSelectedEvent(null)}
+      />
     </>
   );
 }
