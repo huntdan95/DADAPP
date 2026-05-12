@@ -46,6 +46,15 @@ export function WatersGuide({
 }) {
   // Available states (those with any waterbody data).
   const stateOptions = useMemo(() => statesWithWaterbodies(), []);
+  // Total waterbody count across all states — used as a build-version
+  // tell so users can confirm at a glance whether the new bundle is
+  // loaded. If you see a tiny "n=4,162" pill but the screen still
+  // only shows 4 states, that means the bundle IS new and the bug is
+  // elsewhere; if you see the OLD number, your PWA is on a stale
+  // service-worker cache (close + reopen the app to refresh).
+  const totalCount = useMemo(() => {
+    return stateOptions.reduce((acc, s) => acc + waterbodiesForState(s).length, 0);
+  }, [stateOptions]);
   // Default: first overlap between user's spots and available data,
   // else the first available state.
   const defaultState = useMemo(() => {
@@ -119,6 +128,14 @@ export function WatersGuide({
     <>
       <BottomSheet open={open} onClose={onClose} title="Waters Guide">
         <div className="flex flex-col gap-3">
+          {/* Build-version tell. Drop this once the new bundle is
+              confirmed to be in everyone's cache. */}
+          <div className="flex items-center justify-between gap-2 text-[11px] text-muted">
+            <span>
+              {stateOptions.length} states · {totalCount.toLocaleString()} waters
+            </span>
+          </div>
+
           {/* State filter — only show if multiple states have data */}
           {stateOptions.length > 1 && (
             <div className="flex items-center gap-2 text-xs flex-wrap">
