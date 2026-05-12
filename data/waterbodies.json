@@ -6627,5 +6627,2593 @@
       "Mouth at Lake Huron"
     ],
     "notes": "The Au Sable's lower 12 miles below Foote Dam is salmon + walleye water. Distinct from the Holy Water (upper Au Sable trout system)."
+  },
+  {
+    "id": "tn-river-south-holston",
+    "name": "South Holston River (below SoHo Dam)",
+    "state": "TN",
+    "region": "East TN tailwaters",
+    "type": "tailwater",
+    "county": "Sullivan",
+    "river": "South Holston River",
+    "lat": 36.498,
+    "lng": -82.084,
+    "signatureSpecies": "Brown trout, rainbow trout",
+    "species": [
+      {
+        "name": "Brown trout",
+        "importance": "signature",
+        "size": "12-20 in, occasional 24+",
+        "notes": "Premier trophy brown trout tailwater in the Southeast — possibly in the country. Heavy class fish are common, 24+ in regular."
+      },
+      {
+        "name": "Rainbow trout",
+        "importance": "signature",
+        "size": "10-16 in, occasional 20+",
+        "notes": "Wild + stocked. Very strong population."
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "good",
+        "size": "Lower river, warm water below the trout zone."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Sulfur hatch dry-fly window",
+        "target": "Brown + rainbow trout",
+        "when": "May-September, evenings (peak 7-9 PM)",
+        "technique": "Size 16-18 sulfur emerger + dun; CDC sulfur cripple; long-fine leaders 6X-7X",
+        "where": "Throughout the 14-mi tailwater; classic riffle-to-pool transitions",
+        "details": "The SoHo sulfur hatch is the signature dry-fly event in TN. Fish rise selectively — match emerger vs. dun vs. cripple. The brown trout get genuinely picky. Dam generation schedule matters — fish during wadeable low-flow windows."
+      },
+      {
+        "title": "Midge dry + emerger fishing",
+        "target": "Brown + rainbow trout",
+        "when": "Year-round, peak November-March",
+        "technique": "Size 22-26 zebra midge nymph; size 24-26 midge dry (Griffith's gnat cluster); RS-2 emerger",
+        "where": "Slow flat water + tailouts",
+        "details": "When generation is OFF and water is clear, SoHo trout sip midges in unprecedented numbers. 7X tippet, perfect drift. The most technical small-fly fishery in TN."
+      },
+      {
+        "title": "Streamer fishing trophy browns",
+        "target": "Brown trout",
+        "when": "October-March (post-spawn through pre-spawn)",
+        "technique": "Galloup's Sex Dungeon, Boogie Man, Sculpzilla; smaller patterns when water is low + clear",
+        "where": "Deep banks + log jams + tailwater current seams",
+        "details": "SoHo browns hit articulated meat hardest in cold low-light periods. Wading + drift-boat both work. 7-8 wt rod for the trophy class."
+      },
+      {
+        "title": "Scud + sowbug nymphing (year-round)",
+        "target": "Brown + rainbow trout",
+        "when": "Year-round, especially during generation",
+        "technique": "Size 14-18 grey/pink scud; size 14-16 sowbug; under indicator",
+        "where": "Throughout the tailwater on any moving water",
+        "details": "Scuds + sowbugs are the year-round food forms in TN tailwaters. When you don't know what they're on, drift these. Pink scud is the SoHo specialty."
+      },
+      {
+        "title": "Dam generation timing",
+        "target": "Brown + rainbow trout",
+        "when": "Daily — generation schedule rules everything",
+        "technique": "Fish low-flow windows for wade fishing; high-flow windows for drift boats",
+        "where": "TVA posts schedule daily at tva.com/lakes/Generation-Schedules",
+        "details": "TVA generates South Holston Dam for hydropower. When generation is on, the river rises 3-4 ft + becomes float-only. Wade-fishing windows are critical — check schedule before driving. Generation timing also drives bug activity."
+      }
+    ],
+    "access": [
+      "Webb Bridge",
+      "River Ridge",
+      "Hickory Tree Bridge",
+      "TVA Recreation Area",
+      "Big Springs",
+      "Bluff City"
+    ],
+    "regulations": "Slot limit on brown trout: protect 16-22 in. 7-fish daily creel. Catch-and-release zones in the trophy area.",
+    "managementProgram": [
+      "TWRA wild brown trout management — slot limit",
+      "TVA South Holston Dam discharge"
+    ],
+    "notes": "The South Holston is THE Southern brown trout tailwater. 14 miles below SoHo Dam in Sullivan County. The brown trout slot limit (protecting 16-22 in fish) is the foundation of the trophy fishery."
+  },
+  {
+    "id": "tn-river-watauga",
+    "name": "Watauga River (below Wilbur Dam)",
+    "state": "TN",
+    "region": "East TN tailwaters",
+    "type": "tailwater",
+    "county": "Carter",
+    "river": "Watauga River",
+    "lat": 36.32,
+    "lng": -82.18,
+    "signatureSpecies": "Brown trout, rainbow trout",
+    "species": [
+      {
+        "name": "Brown trout",
+        "importance": "signature",
+        "size": "12-20 in, occasional 24+",
+        "notes": "Like the SoHo — trophy brown water with strict regs."
+      },
+      {
+        "name": "Rainbow trout",
+        "importance": "signature",
+        "size": "10-16 in"
+      },
+      {
+        "name": "Brook trout",
+        "importance": "good",
+        "size": "8-12 in",
+        "notes": "TWRA stocked."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Sulfur hatch (same as SoHo but slightly different timing)",
+        "target": "Brown + rainbow trout",
+        "when": "May-September, evenings",
+        "technique": "Size 16-18 sulfur emerger + dun",
+        "where": "Throughout the tailwater",
+        "details": "Watauga sulfur hatch is on the same schedule as the SoHo. Same technical match-the-hatch fishery."
+      },
+      {
+        "title": "Streamer browns + slot-protection",
+        "target": "Brown trout",
+        "when": "October-March",
+        "technique": "Articulated streamers; smaller patterns than the SoHo in tight water",
+        "where": "Below Wilbur Dam"
+      },
+      {
+        "title": "Midge + scud nymphing",
+        "target": "Brown + rainbow trout",
+        "when": "Year-round",
+        "technique": "Zebra midge + scud + sowbug under indicator",
+        "where": "Throughout"
+      }
+    ],
+    "access": [
+      "Smalling Bridge",
+      "TVA Recreation Area",
+      "Hunter Bridge",
+      "Siam"
+    ],
+    "regulations": "Brown trout slot limit (protect 16-22 in). 7-fish creel.",
+    "managementProgram": [
+      "TWRA wild brown trout management",
+      "TVA Wilbur Dam discharge"
+    ],
+    "notes": "The Watauga is the SoHo's twin — same fishery character, same regs, similar fish. Less crowded but every bit as good."
+  },
+  {
+    "id": "tn-river-clinch",
+    "name": "Clinch River (below Norris Dam)",
+    "state": "TN",
+    "region": "East TN tailwaters",
+    "type": "tailwater",
+    "county": "Anderson",
+    "river": "Clinch River",
+    "lat": 36.22,
+    "lng": -84.1,
+    "signatureSpecies": "Rainbow trout, brown trout",
+    "species": [
+      {
+        "name": "Rainbow trout",
+        "importance": "signature",
+        "size": "10-16 in, occasional 20+",
+        "notes": "TWRA stocked + holdover wild fish."
+      },
+      {
+        "name": "Brown trout",
+        "importance": "signature",
+        "size": "12-22 in, occasional 30+",
+        "notes": "Trophy class — Clinch is famous for very large browns when conditions align."
+      },
+      {
+        "name": "Brook trout",
+        "importance": "good"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "good",
+        "notes": "Lower river warm zone."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Midge nymphing (the Clinch signature)",
+        "target": "Brown + rainbow trout",
+        "when": "Year-round (essential winter)",
+        "technique": "Size 20-26 zebra midge (black, red, olive); UV2-Pheasant tail tiny; under indicator with split-shot",
+        "where": "Throughout the 13-mi tailwater",
+        "details": "The Clinch is a midge-fishery. Generations limited periods of midge clouds. 7X tippet, indicator nymphing, multiple-flies rig with weight. The most technical small-fly TN tailwater."
+      },
+      {
+        "title": "Sulfur evening dry fly",
+        "target": "Rainbow + brown trout",
+        "when": "May-September evenings",
+        "technique": "Size 16-18 sulfur emerger + dun",
+        "where": "Throughout"
+      },
+      {
+        "title": "Streamer big browns",
+        "target": "Brown trout",
+        "when": "October-March",
+        "technique": "Articulated streamers; smaller patterns when low/clear",
+        "where": "Deep banks + below structure",
+        "details": "Clinch browns get truly large (30+ in documented). Pre-spawn fall fish are the prize."
+      },
+      {
+        "title": "Wooly Bugger for wading anglers",
+        "target": "Rainbow + brown trout",
+        "when": "Year-round",
+        "technique": "Olive Wooly Bugger size 8-10 stripped or swung",
+        "where": "Throughout — works for wading anglers without fly gear depth",
+        "details": "When in doubt, throw an olive Wooly Bugger on the Clinch. Even very large trout will eat it."
+      }
+    ],
+    "access": [
+      "Miller Island",
+      "Peach Orchard",
+      "Massengale Bridge",
+      "Sherman Bridge",
+      "Norris Dam Marina"
+    ],
+    "regulations": "Slot limit + 7-fish creel.",
+    "managementProgram": [
+      "TWRA wild trout + stocked rainbow",
+      "TVA Norris Dam discharge"
+    ],
+    "notes": "Most-fished TN tailwater for its proximity to Knoxville. 13 miles of cold tailwater below Norris Dam."
+  },
+  {
+    "id": "tn-river-caney-fork",
+    "name": "Caney Fork River (below Center Hill Dam)",
+    "state": "TN",
+    "region": "Middle TN tailwaters",
+    "type": "tailwater",
+    "county": "DeKalb / Smith",
+    "river": "Caney Fork River",
+    "lat": 36.103,
+    "lng": -85.831,
+    "signatureSpecies": "Rainbow trout, brown trout",
+    "species": [
+      {
+        "name": "Rainbow trout",
+        "importance": "signature",
+        "size": "10-16 in, occasional 20+",
+        "notes": "Heavily stocked TWRA + wild reproduction."
+      },
+      {
+        "name": "Brown trout",
+        "importance": "signature",
+        "size": "12-22 in, occasional 28+",
+        "notes": "Trophy class — Caney browns are famous, especially in the upper tailwater zone."
+      },
+      {
+        "name": "Brook trout",
+        "importance": "good"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "good",
+        "notes": "Below the trout zone toward Carthage; warmwater character."
+      },
+      {
+        "name": "Striped bass",
+        "importance": "good",
+        "size": "Lower river above Cumberland confluence",
+        "notes": "Migrate up from the Cumberland."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Year-round midge + scud nymphing",
+        "target": "Rainbow + brown trout",
+        "when": "Year-round (heaviest October-April)",
+        "technique": "Size 20-22 zebra midge; size 14-16 scud (pink, olive); under indicator",
+        "where": "Throughout the 28-mi tailwater",
+        "details": "Caney Fork is a year-round nymph fishery. The cold dam discharges keep trout active all season. Pink scud is a regional standout — TVA dam discharge color-shifts the natural scuds."
+      },
+      {
+        "title": "Caddis + sulfur dry-fly hatches",
+        "target": "Rainbow + brown trout",
+        "when": "April-July",
+        "technique": "Size 14-18 caddis (Elk Hair Caddis, X-Caddis); sulfur emerger + dun in late spring",
+        "where": "Riffle-to-pool transitions in the upper tailwater"
+      },
+      {
+        "title": "Streamer fishing trophy browns",
+        "target": "Brown trout",
+        "when": "October-March",
+        "technique": "Galloup's Sex Dungeon, Boogie Man, Kreelex (flashabou attractor)",
+        "where": "Deep banks below the dam; the trophy zone above Happy Hollow",
+        "details": "Caney browns key off shad + sculpin forage. Kreelex (Chuck Kraft, regional) is the flashabou pattern that catches everything on this water."
+      },
+      {
+        "title": "Junk-fly drift for stocked rainbows",
+        "target": "Rainbow trout (recently-stocked)",
+        "when": "After TWRA stocking trucks visit",
+        "technique": "Mop Fly, Squirmy Wormy, Y2K, San Juan Worm",
+        "where": "Throughout — but especially the public-access points",
+        "details": "TWRA stocks the Caney heavily through the year. Junk flies clean up on fresh stockers."
+      },
+      {
+        "title": "Center Hill Dam generation timing",
+        "target": "All",
+        "when": "Daily",
+        "technique": "Watch the TVA generation schedule",
+        "where": "tva.com/Energy/Our-Power-System/Hydroelectric/Center-Hill",
+        "details": "Center Hill Dam runs unpredictably. Best wade-fishing windows are early morning before generation kicks in + late summer afternoons when load drops. Always check the schedule + listen for the dam siren."
+      }
+    ],
+    "access": [
+      "Happy Hollow",
+      "Long Branch",
+      "Big Bottom",
+      "Belt Creek",
+      "Stonewall",
+      "TWRA Center Hill Tailwater Access"
+    ],
+    "regulations": "Slot limit + 7-fish creel. Some catch-and-release zones above Happy Hollow.",
+    "managementProgram": [
+      "TWRA wild trout management",
+      "TVA Center Hill Dam discharge",
+      "Tailwater Trout Project"
+    ],
+    "notes": "The Caney Fork is Middle Tennessee's flagship tailwater. 28 miles of cold water below Center Hill Dam. Drains to the Cumberland near Carthage."
+  },
+  {
+    "id": "tn-river-hiwassee",
+    "name": "Hiwassee River (below Apalachia Powerhouse)",
+    "state": "TN",
+    "region": "East TN tailwaters",
+    "type": "tailwater",
+    "county": "Polk",
+    "river": "Hiwassee River",
+    "lat": 35.18,
+    "lng": -84.42,
+    "signatureSpecies": "Rainbow trout, brown trout, smallmouth bass",
+    "species": [
+      {
+        "name": "Rainbow trout",
+        "importance": "signature",
+        "size": "10-16 in",
+        "notes": "Stocked + reproducing."
+      },
+      {
+        "name": "Brown trout",
+        "importance": "signature",
+        "size": "12-20 in"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "strong",
+        "size": "1-3 lb",
+        "notes": "Lower river + warm zone — unusual to have both trout + bass."
+      },
+      {
+        "name": "Striped bass",
+        "importance": "good",
+        "size": "Below the trout zone",
+        "notes": "Spring run from Chickamauga Lake."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Yellow jacket bank-fishing summer dry",
+        "target": "Rainbow + brown trout",
+        "when": "June-September afternoons",
+        "technique": "Size 12-14 Yellow Jacket pattern (foam, yellow-and-black banded)",
+        "where": "Bank-side wherever overhanging trees + flowers attract bees",
+        "details": "The Hiwassee's yellow jacket bite is genuinely unique to this water. Bees fall off bankside flowers + bushes in midsummer afternoons. Fish rise to them like terrestrials. Bank-slap technique."
+      },
+      {
+        "title": "Streamer + dry-dropper through the rapids",
+        "target": "Rainbow + brown trout",
+        "when": "May-October",
+        "technique": "Articulated white streamer (fall/winter delayed harvest); dry-dropper with Stimulator + caddis dropper",
+        "where": "The Hiwassee's class II-III rapids",
+        "details": "The Hiwassee is unique among TN tailwaters — it has serious whitewater. Float by kayak or raft. Fall delayed-harvest is the most-celebrated window for big browns."
+      },
+      {
+        "title": "Smallmouth in the lower river",
+        "target": "Smallmouth bass",
+        "when": "June-September",
+        "technique": "Tubes, Ned rigs, in-line spinners, surface poppers",
+        "where": "Below the cold-water zone toward Reliance + Etowah"
+      }
+    ],
+    "access": [
+      "Towee Creek",
+      "Big Bend (Reliance)",
+      "Webb Brothers",
+      "Apalachia Powerhouse"
+    ],
+    "regulations": "Standard trout regs. Delayed-harvest section October-March.",
+    "managementProgram": [
+      "TWRA Hiwassee Delayed Harvest",
+      "TVA Apalachia Powerhouse discharge"
+    ],
+    "notes": "The Hiwassee is a hybrid trout/smallmouth/whitewater river. Most-paddled trout water in the Southeast. The fall + winter delayed-harvest is a destination season."
+  },
+  {
+    "id": "tn-river-holston",
+    "name": "Holston River (below Cherokee Dam)",
+    "state": "TN",
+    "region": "East TN tailwaters",
+    "type": "tailwater",
+    "county": "Grainger / Jefferson",
+    "river": "Holston River",
+    "lat": 36.1,
+    "lng": -83.49,
+    "signatureSpecies": "Rainbow trout, brown trout, striped bass",
+    "species": [
+      {
+        "name": "Rainbow trout",
+        "importance": "signature",
+        "size": "10-16 in",
+        "notes": "TWRA stocked."
+      },
+      {
+        "name": "Brown trout",
+        "importance": "strong",
+        "size": "12-20 in"
+      },
+      {
+        "name": "Striped bass",
+        "importance": "signature",
+        "size": "15-30+ lb",
+        "notes": "Migrate up from Cherokee Lake in summer for cool tailwater discharge. World-record class fishery for stripers in trout water."
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Summer striped bass on flies",
+        "target": "Striped bass",
+        "when": "June-August",
+        "technique": "Big white streamers (Lefty's Deceiver, Half and Half, Bob Popovics Hollow Fleye); 9-10 wt rod with sink tip",
+        "where": "Cool tailwater pools below Cherokee Dam where stripers stage during summer thermal-refuge migration",
+        "details": "World-class warmwater fly fishing — the trout-water stripers of the Holston are an East TN specialty. 25-40 lb fish hit articulated baitfish in 60-65°F water while everyone else is dredging deep lake holes."
+      },
+      {
+        "title": "Trout nymphing + dry-fly",
+        "target": "Rainbow + brown trout",
+        "when": "Year-round (peak Apr-Oct)",
+        "technique": "Midge nymphs + scud + sulfur dry-fly in season",
+        "where": "Upper tailwater immediately below Cherokee Dam"
+      }
+    ],
+    "access": [
+      "Cherokee Dam tailwater",
+      "Highway 92 bridge",
+      "Black Oak Park"
+    ],
+    "regulations": "Striped bass with TN reciprocity license + trout stamp where applicable.",
+    "notes": "The Holston is the rare tailwater with both trout AND world-class striped bass — driven by thermal refuge migration from Cherokee Lake in summer."
+  },
+  {
+    "id": "tn-river-elk",
+    "name": "Elk River (below Tims Ford Dam)",
+    "state": "TN",
+    "region": "Middle TN tailwaters",
+    "type": "tailwater",
+    "county": "Franklin",
+    "river": "Elk River",
+    "lat": 35.21,
+    "lng": -86.25,
+    "signatureSpecies": "Rainbow trout, brown trout",
+    "species": [
+      {
+        "name": "Rainbow trout",
+        "importance": "signature",
+        "size": "10-15 in"
+      },
+      {
+        "name": "Brown trout",
+        "importance": "signature",
+        "size": "12-22 in",
+        "notes": "Strong wild brown population — Elk browns are quality."
+      },
+      {
+        "name": "Brook trout",
+        "importance": "good"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "good",
+        "notes": "Lower river warm zone."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Sulfur dry + emerger",
+        "target": "Brown + rainbow trout",
+        "when": "May-September evenings",
+        "technique": "Sulfur emerger + dun size 16-18",
+        "where": "Throughout the tailwater"
+      },
+      {
+        "title": "Wading scud + midge nymphing",
+        "target": "Brown + rainbow trout",
+        "when": "Year-round",
+        "technique": "Size 14-16 scud + size 20-22 midge under indicator",
+        "where": "Wadeable stretches below the dam"
+      }
+    ],
+    "access": [
+      "Estill Springs",
+      "Tims Ford Dam tailwater",
+      "Old Stone Fort"
+    ],
+    "notes": "Less-crowded Middle TN tailwater. Quality fishery for those willing to drive past Caney Fork. Tims Ford Dam discharge."
+  },
+  {
+    "id": "tn-river-obey",
+    "name": "Obey River (below Dale Hollow Dam)",
+    "state": "TN",
+    "region": "Middle TN tailwaters",
+    "type": "tailwater",
+    "county": "Pickett / Clay",
+    "river": "Obey River",
+    "lat": 36.55,
+    "lng": -85.07,
+    "signatureSpecies": "Brown trout, rainbow trout",
+    "species": [
+      {
+        "name": "Brown trout",
+        "importance": "signature",
+        "size": "12-22 in, occasional 28+",
+        "notes": "World-record class historically — Dale Hollow Lake holds the IGFA world-record smallmouth, and the Obey tailwater browns are part of the same cold-water system."
+      },
+      {
+        "name": "Rainbow trout",
+        "importance": "signature",
+        "size": "10-15 in"
+      },
+      {
+        "name": "Brook trout",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Streamer trophy browns",
+        "target": "Brown trout",
+        "when": "October-March",
+        "technique": "Articulated streamers",
+        "where": "Deep pools below Dale Hollow Dam"
+      },
+      {
+        "title": "Sulfur evening hatch",
+        "target": "Rainbow + brown trout",
+        "when": "May-September",
+        "technique": "Sulfur emerger + dun",
+        "where": "Throughout"
+      }
+    ],
+    "access": [
+      "Dale Hollow Dam tailwater",
+      "Lillydale"
+    ],
+    "notes": "Possibly the most-isolated TN tailwater — 90+ mi from any major city. Trophy browns + low pressure."
+  },
+  {
+    "id": "tn-lake-norris",
+    "name": "Norris Lake",
+    "state": "TN",
+    "region": "East TN TVA reservoirs",
+    "type": "reservoir",
+    "county": "Anderson / Campbell / Claiborne / Grainger / Union",
+    "acres": 34200,
+    "maxDepthFt": 295,
+    "lat": 36.24,
+    "lng": -83.91,
+    "signatureSpecies": "Striped bass, smallmouth bass, walleye, lake trout",
+    "species": [
+      {
+        "name": "Striped bass",
+        "importance": "signature",
+        "size": "15-30 lb, 40+ lb possible",
+        "notes": "World-class striper fishery — Norris produces TN's largest stripers."
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "signature",
+        "size": "2-5 lb, 6+ lb possible",
+        "notes": "Clear deep TVA reservoir = trophy smallmouth habitat."
+      },
+      {
+        "name": "Walleye",
+        "importance": "signature",
+        "size": "14-22 in, 10+ lb documented",
+        "notes": "Norris held the TN walleye record. Spring spawn run up the Powell + Clinch arms."
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong",
+        "size": "2-4 lb"
+      },
+      {
+        "name": "Lake trout",
+        "importance": "good",
+        "size": "5-15 lb",
+        "notes": "Stocked by TWRA — rare in the Southeast."
+      },
+      {
+        "name": "Black crappie",
+        "importance": "good"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Summer striper schooling",
+        "target": "Striped bass",
+        "when": "June-September",
+        "technique": "Live shad on planer boards + downlines; topwater pencil poppers at dawn; casting Jigging Rapalas into surface boils",
+        "where": "Main lake basin off Big Creek + Cove Creek; the river channels",
+        "details": "Norris stripers gorge on summer threadfin shad. Schools blow up on the surface at dawn + dusk. Charter scene is robust."
+      },
+      {
+        "title": "Spring + fall smallmouth on rocky points",
+        "target": "Smallmouth bass",
+        "when": "March-May + October-November",
+        "technique": "Float-n-fly with hair jigs; Ned rigs; suspending jerkbaits",
+        "where": "Rocky points + bluffs throughout the lake; spring transitions",
+        "details": "Norris smallmouth are clear-water finicky. Float-n-fly with 1/8 oz hair jig is the Tennessee method. Cold-water months are best."
+      },
+      {
+        "title": "Walleye spring spawn run",
+        "target": "Walleye",
+        "when": "March-April",
+        "technique": "Jig + minnow at 1/4-3/8 oz; small swimbaits; trolling Reef Runners",
+        "where": "Powell + Clinch river arms; pre-spawn staging",
+        "details": "Norris is the rare TN reservoir with serious walleye. Spring run up the river arms is the destination."
+      }
+    ],
+    "access": [
+      "Norris Dam State Park",
+      "Cove Creek",
+      "Big Creek",
+      "Lonesome Pine",
+      "Stardust Marina"
+    ],
+    "managementProgram": [
+      "TWRA striped bass stocking",
+      "TWRA walleye management",
+      "TWRA lake trout introduction"
+    ],
+    "notes": "East TN's premier deep-clear reservoir. 34,200 acres + 295 ft max depth. The most multi-species reservoir in TN."
+  },
+  {
+    "id": "tn-lake-cherokee",
+    "name": "Cherokee Lake",
+    "state": "TN",
+    "region": "East TN TVA reservoirs",
+    "type": "reservoir",
+    "county": "Grainger / Hamblen / Jefferson",
+    "acres": 30200,
+    "maxDepthFt": 130,
+    "lat": 36.2,
+    "lng": -83.45,
+    "signatureSpecies": "Striped bass, smallmouth bass, walleye",
+    "species": [
+      {
+        "name": "Striped bass",
+        "importance": "signature",
+        "size": "15-30 lb",
+        "notes": "Strong striper fishery. Summer thermal-refuge migration to Holston tailwater."
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "strong",
+        "size": "2-4 lb"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Walleye",
+        "importance": "strong",
+        "size": "14-22 in"
+      },
+      {
+        "name": "Crappie",
+        "importance": "strong",
+        "size": "9-12 in"
+      },
+      {
+        "name": "White bass",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Striper trolling + planer boards",
+        "target": "Striped bass",
+        "when": "April-October",
+        "technique": "Live shad on planer boards; downlines in summer thermocline; trolling umbrella rigs in spring",
+        "where": "Main lake + the Holston River arm",
+        "details": "Summer stripers chase the Holston tailwater cool water — see the Holston River entry for the fly fishery they create."
+      },
+      {
+        "title": "Spring crappie spawn",
+        "target": "Crappie",
+        "when": "April-May",
+        "technique": "Jig + minnow under bobber",
+        "where": "Brush + dock pilings in spawning coves"
+      }
+    ],
+    "access": [
+      "Cherokee Dam Tailwater Access",
+      "Jefferson City",
+      "Talbott",
+      "Panther Creek State Park"
+    ],
+    "managementProgram": [
+      "TWRA striper stocking"
+    ],
+    "notes": "Cherokee + Douglas + Boone are the Holston-system reservoirs. Cherokee is the largest of the three."
+  },
+  {
+    "id": "tn-lake-douglas",
+    "name": "Douglas Lake",
+    "state": "TN",
+    "region": "East TN TVA reservoirs",
+    "type": "reservoir",
+    "county": "Cocke / Jefferson / Sevier",
+    "acres": 30400,
+    "maxDepthFt": 150,
+    "lat": 35.99,
+    "lng": -83.5,
+    "signatureSpecies": "Largemouth bass, crappie, white bass",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "2-5 lb, 7+ lb possible",
+        "notes": "Strong largemouth fishery — host of major bass tournaments."
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "strong",
+        "size": "2-4 lb"
+      },
+      {
+        "name": "Crappie",
+        "importance": "signature",
+        "size": "9-13 in"
+      },
+      {
+        "name": "White bass",
+        "importance": "strong",
+        "size": "10-14 in",
+        "notes": "Spring run up the French Broad."
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Spring white bass French Broad run",
+        "target": "White bass",
+        "when": "March-April",
+        "technique": "Jigs + small swimbaits + in-line spinners",
+        "where": "French Broad River arm above the lake",
+        "details": "Massive spring schooling event. White bass push miles up the French Broad to spawn."
+      },
+      {
+        "title": "Spawn-season largemouth",
+        "target": "Largemouth bass",
+        "when": "April-May",
+        "technique": "Senkos + lizards on beds; chatterbaits on pre-spawn flats",
+        "where": "Flooded buckbrush + the upper-lake river channel arms"
+      }
+    ],
+    "access": [
+      "Dandridge Marina",
+      "Douglas Dam",
+      "Swann's Marina"
+    ],
+    "notes": "Sevier County's big bass reservoir. Massive shoreline + heavy timber. Bass tournament destination."
+  },
+  {
+    "id": "tn-lake-watauga",
+    "name": "Watauga Lake",
+    "state": "TN",
+    "region": "East TN TVA reservoirs",
+    "type": "reservoir",
+    "county": "Carter / Johnson",
+    "acres": 6430,
+    "maxDepthFt": 265,
+    "lat": 36.32,
+    "lng": -82.05,
+    "signatureSpecies": "Smallmouth bass, walleye, lake trout, kokanee salmon",
+    "species": [
+      {
+        "name": "Smallmouth bass",
+        "importance": "signature",
+        "size": "2-5 lb"
+      },
+      {
+        "name": "Walleye",
+        "importance": "signature",
+        "size": "14-25 in",
+        "notes": "Watauga Lake held the IGFA all-tackle walleye record at one point (25 lb in 1960)."
+      },
+      {
+        "name": "Lake trout",
+        "importance": "strong",
+        "size": "5-15 lb",
+        "notes": "One of the very few Southern lake-trout waters."
+      },
+      {
+        "name": "Kokanee salmon",
+        "importance": "good",
+        "size": "12-18 in",
+        "notes": "Stocked — rare Southern kokanee fishery."
+      },
+      {
+        "name": "Brown trout",
+        "importance": "good",
+        "size": "Stocked + run up tribs."
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Walleye deep summer trolling",
+        "target": "Walleye",
+        "when": "May-October",
+        "technique": "Lead-core or downrigger trolling; crawler harnesses; deep cranks",
+        "where": "Main basin 30-80 ft",
+        "details": "Watauga walleye orient to deep cool water in summer. The historical world record came from here."
+      },
+      {
+        "title": "Lake trout + kokanee deep jigging",
+        "target": "Lake trout, kokanee",
+        "when": "June-September",
+        "technique": "White tubes + small jigging spoons; jigging shad for kokanee",
+        "where": "Deep basin 80-150 ft",
+        "details": "One of very few Southern waters where you can target lake trout + kokanee. Unique fishery for TN."
+      }
+    ],
+    "access": [
+      "Pioneer Landing",
+      "Shook Branch",
+      "Watauga Point",
+      "Cardens Bluff"
+    ],
+    "managementProgram": [
+      "TWRA walleye + lake trout + kokanee stocking"
+    ],
+    "notes": "High-elevation deep-clear reservoir. The closest thing to a Western lake in the South. Famous for the historical walleye world record."
+  },
+  {
+    "id": "tn-lake-south-holston",
+    "name": "South Holston Lake",
+    "state": "TN",
+    "region": "East TN TVA reservoirs",
+    "type": "reservoir",
+    "county": "Sullivan",
+    "acres": 7580,
+    "maxDepthFt": 250,
+    "lat": 36.5,
+    "lng": -82.05,
+    "signatureSpecies": "Walleye, smallmouth bass, lake trout",
+    "species": [
+      {
+        "name": "Walleye",
+        "importance": "signature",
+        "size": "14-22 in"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "signature",
+        "size": "2-5 lb"
+      },
+      {
+        "name": "Lake trout",
+        "importance": "strong",
+        "size": "4-12 lb",
+        "notes": "Stocked."
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Black crappie",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Float-n-fly smallmouth",
+        "target": "Smallmouth bass",
+        "when": "November-March",
+        "technique": "1/8 oz hair jig under foam float; ultra-light line",
+        "where": "Bluff banks + rocky points; cold-water suspended fish",
+        "details": "The float-n-fly is a TN signature winter smallmouth technique. SoHo Lake is the home water for this method."
+      },
+      {
+        "title": "Walleye spring spawn run",
+        "target": "Walleye",
+        "when": "March-April",
+        "technique": "Jig + minnow",
+        "where": "Watauga River arm pre-spawn"
+      }
+    ],
+    "access": [
+      "Washington County Park",
+      "TVA Public Access",
+      "Holston Vista Marina"
+    ],
+    "notes": "Sits above South Holston Dam — discharges feed the famous SoHo tailwater downstream."
+  },
+  {
+    "id": "tn-lake-boone",
+    "name": "Boone Lake",
+    "state": "TN",
+    "region": "East TN TVA reservoirs",
+    "type": "reservoir",
+    "county": "Sullivan / Washington",
+    "acres": 4520,
+    "maxDepthFt": 130,
+    "signatureSpecies": "Largemouth bass, smallmouth bass, crappie, walleye",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Walleye",
+        "importance": "strong"
+      },
+      {
+        "name": "Crappie",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Mixed bag spring crappie + bass",
+        "target": "Crappie + bass",
+        "when": "April-May",
+        "technique": "Crappie jigs; spinnerbaits + plastic worms for bass",
+        "where": "Coves + brush across the lake"
+      }
+    ],
+    "access": [
+      "Boone Dam",
+      "Pickens Bridge",
+      "TVA Public Access"
+    ],
+    "notes": "Tri-cities reservoir (Bristol / Johnson City / Kingsport). Multi-species generalist fishery."
+  },
+  {
+    "id": "tn-lake-fort-loudoun",
+    "name": "Fort Loudoun Lake",
+    "state": "TN",
+    "region": "East TN TVA reservoirs",
+    "type": "reservoir",
+    "county": "Knox / Blount / Loudon",
+    "acres": 14600,
+    "maxDepthFt": 90,
+    "lat": 35.83,
+    "lng": -84.2,
+    "signatureSpecies": "Largemouth bass, striped bass, crappie",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "2-5 lb"
+      },
+      {
+        "name": "Striped bass",
+        "importance": "strong",
+        "size": "10-25 lb"
+      },
+      {
+        "name": "Crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "good"
+      },
+      {
+        "name": "Channel + flathead catfish",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Striper trolling downtown Knoxville",
+        "target": "Striped bass",
+        "when": "May-October",
+        "technique": "Trolling planer boards; downlines in summer",
+        "where": "Main channel through Knoxville"
+      }
+    ],
+    "access": [
+      "Fort Loudoun Marina",
+      "Concord Park (Knoxville)",
+      "Volunteer Landing"
+    ],
+    "notes": "The Knoxville-metro reservoir. Tennessee River through downtown."
+  },
+  {
+    "id": "tn-lake-tellico",
+    "name": "Tellico Lake",
+    "state": "TN",
+    "region": "East TN TVA reservoirs",
+    "type": "reservoir",
+    "county": "Loudon / Monroe",
+    "acres": 16500,
+    "maxDepthFt": 110,
+    "signatureSpecies": "Largemouth bass, walleye, crappie, striped bass",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "2-5 lb"
+      },
+      {
+        "name": "Walleye",
+        "importance": "signature",
+        "size": "14-22 in",
+        "notes": "TWRA stocked — strong populations."
+      },
+      {
+        "name": "Crappie",
+        "importance": "strong",
+        "size": "9-13 in"
+      },
+      {
+        "name": "Striped bass",
+        "importance": "strong",
+        "size": "10-25 lb"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Walleye on rocky points",
+        "target": "Walleye",
+        "when": "April-October",
+        "technique": "Crawler harnesses + jig + minnow",
+        "where": "Main-lake points + river channel edges"
+      }
+    ],
+    "access": [
+      "Tellico Marina",
+      "Tellico Dam",
+      "Notchey Creek"
+    ],
+    "notes": "Adjacent to Fort Loudoun (they share a canal). Strong multi-species fishery."
+  },
+  {
+    "id": "tn-lake-watts-bar",
+    "name": "Watts Bar Lake",
+    "state": "TN",
+    "region": "Middle TN TVA reservoirs",
+    "type": "reservoir",
+    "county": "Loudon / Meigs / Rhea / Roane",
+    "acres": 39000,
+    "maxDepthFt": 95,
+    "lat": 35.66,
+    "lng": -84.65,
+    "signatureSpecies": "Largemouth bass, striped bass, crappie",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature"
+      },
+      {
+        "name": "Striped bass",
+        "importance": "signature",
+        "size": "15-30 lb"
+      },
+      {
+        "name": "Crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "good"
+      },
+      {
+        "name": "Sauger",
+        "importance": "good",
+        "notes": "Fall/winter run up Clinch + Tennessee arms."
+      },
+      {
+        "name": "Channel + flathead catfish",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Striper trolling main channel",
+        "target": "Striped bass",
+        "when": "April-October",
+        "technique": "Planer boards + downlines",
+        "where": "Main Tennessee River channel"
+      },
+      {
+        "title": "Sauger fall + winter",
+        "target": "Sauger",
+        "when": "November-February",
+        "technique": "Jig + minnow on current breaks",
+        "where": "Below the Clinch + Emory confluences"
+      }
+    ],
+    "access": [
+      "Watts Bar Dam",
+      "Caney Creek",
+      "Kingston",
+      "Spring City"
+    ],
+    "notes": "Confluence of the Tennessee + Clinch + Emory. Massive 39,000-acre reservoir."
+  },
+  {
+    "id": "tn-lake-chickamauga",
+    "name": "Chickamauga Lake",
+    "state": "TN",
+    "region": "Middle TN TVA reservoirs",
+    "type": "reservoir",
+    "county": "Hamilton / Meigs / Rhea",
+    "acres": 36240,
+    "maxDepthFt": 110,
+    "lat": 35.3,
+    "lng": -85.1,
+    "signatureSpecies": "Largemouth bass, striped bass, crappie, sauger",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "3-7 lb, 10+ lb possible",
+        "notes": "Chickamauga produces the largest largemouths in TN — multiple state records. Florida-strain stocking + grass."
+      },
+      {
+        "name": "Striped bass",
+        "importance": "signature",
+        "size": "15-30 lb"
+      },
+      {
+        "name": "Crappie",
+        "importance": "strong",
+        "size": "9-14 in"
+      },
+      {
+        "name": "Sauger",
+        "importance": "strong",
+        "notes": "Winter run."
+      },
+      {
+        "name": "Bluegill + redear",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Grass-mat largemouth (Chickamauga signature)",
+        "target": "Largemouth bass",
+        "when": "March-October",
+        "technique": "Frog fishing over hydrilla + milfoil; punching heavy weights; chatterbaits on edges",
+        "where": "Hydrilla flats throughout the lake — Sale Creek, Soddy-Daisy, Possum Creek",
+        "details": "Chickamauga is THE Florida-strain largemouth destination in TN. The hydrilla beds produce 8-12 lb fish regularly. Bassmaster Elite + MLF tours visit. Frog bite is legendary."
+      },
+      {
+        "title": "Winter sauger run",
+        "target": "Sauger",
+        "when": "November-February",
+        "technique": "Jig + minnow on current breaks",
+        "where": "Below the Watts Bar Dam tailwater area"
+      }
+    ],
+    "access": [
+      "Chester Frost Park",
+      "Sale Creek",
+      "Soddy-Daisy",
+      "Booker T. Washington State Park"
+    ],
+    "regulations": "Largemouth slot limit 15-18 in (varies — confirm current TWRA regs).",
+    "managementProgram": [
+      "TWRA Florida-strain largemouth stocking",
+      "Aquatic vegetation management"
+    ],
+    "notes": "TN's premier trophy largemouth water. Two new TN state records have come from here in the past decade."
+  },
+  {
+    "id": "tn-lake-nickajack",
+    "name": "Nickajack Lake",
+    "state": "TN",
+    "region": "Middle TN TVA reservoirs",
+    "type": "reservoir",
+    "county": "Hamilton / Marion",
+    "acres": 10370,
+    "maxDepthFt": 80,
+    "signatureSpecies": "Striped bass, largemouth bass, sauger, crappie",
+    "species": [
+      {
+        "name": "Striped bass",
+        "importance": "signature",
+        "size": "15-25 lb"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Sauger",
+        "importance": "strong",
+        "notes": "Below Chickamauga Dam tailwater."
+      },
+      {
+        "name": "Crappie",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Chickamauga Dam tailwater sauger",
+        "target": "Sauger",
+        "when": "November-February",
+        "technique": "Jig + minnow vertically",
+        "where": "Immediately below Chickamauga Dam in the Nickajack headwaters"
+      }
+    ],
+    "access": [
+      "Nickajack Dam",
+      "Marion Memorial",
+      "Hales Bar"
+    ],
+    "notes": "Smaller link in the Tennessee River chain. Tailwater sauger fishery below Chickamauga Dam is the signature event."
+  },
+  {
+    "id": "tn-lake-tims-ford",
+    "name": "Tims Ford Lake",
+    "state": "TN",
+    "region": "Middle TN TVA reservoirs",
+    "type": "reservoir",
+    "county": "Franklin / Moore",
+    "acres": 10600,
+    "maxDepthFt": 150,
+    "signatureSpecies": "Smallmouth bass, walleye, striped bass",
+    "species": [
+      {
+        "name": "Smallmouth bass",
+        "importance": "signature",
+        "size": "2-5 lb",
+        "notes": "One of the best smallmouth waters in Middle TN."
+      },
+      {
+        "name": "Walleye",
+        "importance": "signature",
+        "size": "14-22 in"
+      },
+      {
+        "name": "Striped bass",
+        "importance": "strong",
+        "size": "10-25 lb"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Crappie",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Float-n-fly smallmouth",
+        "target": "Smallmouth bass",
+        "when": "November-March",
+        "technique": "1/8 oz hair jig under foam float",
+        "where": "Bluff banks + rocky points"
+      }
+    ],
+    "access": [
+      "Tims Ford State Park",
+      "Holiday Landing"
+    ],
+    "notes": "Feeds the Elk River tailwater. Clear deep reservoir, good multi-species."
+  },
+  {
+    "id": "tn-lake-center-hill",
+    "name": "Center Hill Lake",
+    "state": "TN",
+    "region": "Middle TN — Cumberland system",
+    "type": "reservoir",
+    "county": "DeKalb / Putnam / White / Warren",
+    "acres": 18220,
+    "maxDepthFt": 190,
+    "lat": 36.03,
+    "lng": -85.83,
+    "signatureSpecies": "Striped bass, smallmouth bass, walleye",
+    "species": [
+      {
+        "name": "Striped bass",
+        "importance": "signature",
+        "size": "15-30 lb",
+        "notes": "World-class — Center Hill stripers run with the largest in the South."
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "signature",
+        "size": "2-5 lb"
+      },
+      {
+        "name": "Walleye",
+        "importance": "strong",
+        "size": "14-22 in"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Crappie",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Summer striper schooling",
+        "target": "Striped bass",
+        "when": "June-September",
+        "technique": "Live shad downlines + planer boards; topwater pencils at dawn",
+        "where": "Main lake basin off Cookeville + Sligo"
+      },
+      {
+        "title": "Float-n-fly smallmouth",
+        "target": "Smallmouth bass",
+        "when": "November-March",
+        "technique": "1/8 oz hair jig under foam float",
+        "where": "Bluff banks"
+      }
+    ],
+    "access": [
+      "Sligo",
+      "Holmes Creek",
+      "Edgar Evins State Park",
+      "Hurricane Marina"
+    ],
+    "managementProgram": [
+      "TWRA striped bass stocking"
+    ],
+    "notes": "Sits above Center Hill Dam — discharges feed the Caney Fork tailwater. Premier striper + smallmouth combo."
+  },
+  {
+    "id": "tn-lake-dale-hollow",
+    "name": "Dale Hollow Lake",
+    "state": "TN",
+    "region": "Middle TN — Cumberland system",
+    "type": "reservoir",
+    "county": "Clay / Pickett / Overton (TN) + KY",
+    "acres": 27700,
+    "maxDepthFt": 165,
+    "lat": 36.58,
+    "lng": -85.2,
+    "signatureSpecies": "Smallmouth bass, walleye, lake trout",
+    "species": [
+      {
+        "name": "Smallmouth bass",
+        "importance": "signature",
+        "size": "3-6 lb, 8+ lb possible",
+        "notes": "Dale Hollow holds the IGFA all-tackle world record smallmouth bass (11 lb 15 oz, 1955). Still produces 6+ lb fish."
+      },
+      {
+        "name": "Walleye",
+        "importance": "strong",
+        "size": "14-22 in"
+      },
+      {
+        "name": "Lake trout",
+        "importance": "strong",
+        "size": "4-12 lb",
+        "notes": "One of the rare Southern lake trout fisheries."
+      },
+      {
+        "name": "Striped bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "World-record smallmouth water",
+        "target": "Smallmouth bass",
+        "when": "Year-round (peak Mar-May + Oct-Nov)",
+        "technique": "Float-n-fly in cold months; jerkbaits + tubes + Ned in warmer months; live shiner traditional approach",
+        "where": "Bluff walls + rocky points throughout the lake",
+        "details": "Dale Hollow is the SMALLMOUTH lake — David Hayes' 11 lb 15 oz fish from 1955 still stands as the IGFA all-tackle record. Quality smallmouth fishing year-round."
+      }
+    ],
+    "access": [
+      "Cedar Hill",
+      "Dale Hollow Dam",
+      "Sunset Marina",
+      "East Port Marina"
+    ],
+    "managementProgram": [
+      "TWRA + KY DFWR cooperative management",
+      "IGFA world-record smallmouth designation"
+    ],
+    "notes": "The smallmouth lake of America. Spans TN + KY. Clear deep TVA reservoir + native bass forage = world-class fish."
+  },
+  {
+    "id": "tn-lake-old-hickory",
+    "name": "Old Hickory Lake",
+    "state": "TN",
+    "region": "Middle TN — Cumberland system",
+    "type": "reservoir",
+    "county": "Davidson / Sumner / Trousdale / Wilson / Smith",
+    "acres": 22500,
+    "maxDepthFt": 80,
+    "lat": 36.3,
+    "lng": -86.65,
+    "signatureSpecies": "Striped bass, largemouth bass, crappie, white bass",
+    "species": [
+      {
+        "name": "Striped bass",
+        "importance": "signature",
+        "size": "15-25 lb"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "White bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Hybrid striped bass",
+        "importance": "good"
+      },
+      {
+        "name": "Sauger",
+        "importance": "good",
+        "notes": "Below the dam in fall/winter."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Striper trolling Cumberland channel",
+        "target": "Striped bass",
+        "when": "April-October",
+        "technique": "Planer boards + downlines with live shad",
+        "where": "Main Cumberland River channel"
+      },
+      {
+        "title": "Spring white bass run",
+        "target": "White bass",
+        "when": "March-April",
+        "technique": "Jigs + spinners",
+        "where": "Upper-lake tributary arms"
+      }
+    ],
+    "access": [
+      "Cedar Creek",
+      "Old Hickory Dam tailwater",
+      "Hendersonville",
+      "Gallatin"
+    ],
+    "notes": "Nashville-metro reservoir on the Cumberland River. Most-fished by middle TN urban anglers."
+  },
+  {
+    "id": "tn-lake-percy-priest",
+    "name": "J. Percy Priest Lake",
+    "state": "TN",
+    "region": "Middle TN — Cumberland system",
+    "type": "reservoir",
+    "county": "Davidson / Rutherford / Wilson",
+    "acres": 14200,
+    "maxDepthFt": 87,
+    "lat": 36.1,
+    "lng": -86.6,
+    "signatureSpecies": "Hybrid striped bass, largemouth bass, crappie",
+    "species": [
+      {
+        "name": "Hybrid striped bass",
+        "importance": "signature",
+        "size": "4-10 lb, 15+ lb possible",
+        "notes": "Percy Priest is the premier hybrid striper water in TN."
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "signature"
+      },
+      {
+        "name": "Crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Striped bass",
+        "importance": "strong"
+      },
+      {
+        "name": "White bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Summer hybrid schooling",
+        "target": "Hybrid striped bass",
+        "when": "June-September",
+        "technique": "Casting Jigging Rapalas + spoons into surface boils; pencil poppers at dawn",
+        "where": "Main lake basin off Hamilton Creek + Stewarts Ferry",
+        "details": "Percy Priest is the closest big-water reservoir to Nashville. Hybrid stripers school heavily in summer — birds working bait surface action."
+      }
+    ],
+    "access": [
+      "Hamilton Creek Recreation Area",
+      "Stewarts Ferry",
+      "Long Hunter State Park",
+      "Percy Priest Dam tailwater"
+    ],
+    "managementProgram": [
+      "TWRA hybrid striped bass stocking"
+    ],
+    "notes": "Nashville's home reservoir. 14,200 acres just SE of downtown. Hybrid striper destination."
+  },
+  {
+    "id": "tn-lake-cordell-hull",
+    "name": "Cordell Hull Lake",
+    "state": "TN",
+    "region": "Middle TN — Cumberland system",
+    "type": "reservoir",
+    "county": "Jackson / Smith",
+    "acres": 11960,
+    "maxDepthFt": 100,
+    "signatureSpecies": "Smallmouth bass, walleye, largemouth bass, striped bass",
+    "species": [
+      {
+        "name": "Smallmouth bass",
+        "importance": "signature",
+        "size": "2-5 lb"
+      },
+      {
+        "name": "Walleye",
+        "importance": "strong",
+        "size": "14-22 in"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Striped bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Crappie",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Smallmouth on rocky points",
+        "target": "Smallmouth bass",
+        "when": "March-November",
+        "technique": "Tubes + Ned rigs + jerkbaits",
+        "where": "Main-lake points + bluff edges"
+      }
+    ],
+    "access": [
+      "Defeated Creek",
+      "Cordell Hull Dam"
+    ],
+    "notes": "Cumberland River reservoir between Center Hill + Old Hickory. Underrated multi-species water."
+  },
+  {
+    "id": "tn-lake-kentucky-tn",
+    "name": "Kentucky Lake (TN portion)",
+    "state": "TN",
+    "region": "West TN big lakes",
+    "type": "reservoir",
+    "county": "Henry / Benton / Humphreys / Houston",
+    "acres": 110000,
+    "maxDepthFt": 60,
+    "lat": 36.4,
+    "lng": -88,
+    "signatureSpecies": "Crappie, largemouth bass, catfish, sauger",
+    "species": [
+      {
+        "name": "Crappie",
+        "importance": "signature",
+        "size": "9-13 in, 15+ in possible",
+        "notes": "Kentucky Lake is the BEST crappie water in America by most measures. Tournaments + guide industry built around it."
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "2-5 lb"
+      },
+      {
+        "name": "Blue catfish",
+        "importance": "signature",
+        "size": "20-60 lb, 100+ lb documented",
+        "notes": "World-class trophy blue cat fishery. Multiple state records."
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Flathead catfish",
+        "importance": "strong",
+        "size": "20-50 lb"
+      },
+      {
+        "name": "Sauger",
+        "importance": "strong",
+        "notes": "Winter run."
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "good"
+      },
+      {
+        "name": "Striped bass",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Spring crappie spawn",
+        "target": "Crappie",
+        "when": "April-May",
+        "technique": "Jig + minnow under bobber; long-pole spider rigging",
+        "where": "Brush + flooded timber in spawning coves; the Big Sandy + Eagle Creek arms",
+        "details": "Kentucky Lake crappie spawn is one of the most-fished events in American freshwater. Spider-rigging with 8 rods is the local method. Limits of 1+ lb fish are routine."
+      },
+      {
+        "title": "Trophy blue catfish",
+        "target": "Blue catfish",
+        "when": "Year-round (peak winter + spring)",
+        "technique": "Cut shad / skipjack on big circle hooks; suspend or anchor in deep current breaks",
+        "where": "Main river channel; below Kentucky Dam",
+        "details": "Kentucky Lake produces 80+ lb blue cats every year. Cut bait on heavy gear. Charter scene is robust."
+      },
+      {
+        "title": "Winter sauger run",
+        "target": "Sauger",
+        "when": "November-February",
+        "technique": "Jig + minnow vertical",
+        "where": "Below Pickwick Dam + the river channel"
+      }
+    ],
+    "access": [
+      "Paris Landing State Park",
+      "Birdsong Marina",
+      "New Johnsonville",
+      "Big Sandy"
+    ],
+    "managementProgram": [
+      "TWRA + KY DFWR cooperative management"
+    ],
+    "notes": "America's premier crappie water. 110,000 acres on the TN side (the lake is huge, spanning TN + KY). Crappie + catfish + bass — everything."
+  },
+  {
+    "id": "tn-lake-pickwick",
+    "name": "Pickwick Lake (TN portion)",
+    "state": "TN",
+    "region": "West TN big lakes",
+    "type": "reservoir",
+    "county": "Hardin (TN) + MS + AL",
+    "acres": 43100,
+    "maxDepthFt": 90,
+    "signatureSpecies": "Smallmouth bass, largemouth bass, crappie, catfish",
+    "species": [
+      {
+        "name": "Smallmouth bass",
+        "importance": "signature",
+        "size": "3-6 lb, 7+ lb possible",
+        "notes": "One of the best trophy smallmouth waters in the South."
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Catfish (channel + blue + flathead)",
+        "importance": "strong"
+      },
+      {
+        "name": "Sauger",
+        "importance": "strong",
+        "notes": "Winter run."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Pickwick smallmouth",
+        "target": "Smallmouth bass",
+        "when": "March-November",
+        "technique": "Jerkbaits, swimbaits, Ned rigs, drop-shot",
+        "where": "Bluff walls + main-river channel points",
+        "details": "Pickwick rivals Dale Hollow for trophy smallmouth in the South. Pickwick fish run shorter + heavier than Dale Hollow fish."
+      }
+    ],
+    "access": [
+      "Pickwick Landing State Park",
+      "Pickwick Dam tailwater"
+    ],
+    "notes": "Spans TN + MS + AL. The Tennessee River makes its big southward bend here. World-class smallmouth water."
+  },
+  {
+    "id": "tn-little-river-smokies",
+    "name": "Little River (Smokies)",
+    "state": "TN",
+    "region": "Great Smoky Mountains streams",
+    "type": "river",
+    "county": "Sevier / Blount",
+    "river": "Little River",
+    "lat": 35.65,
+    "lng": -83.55,
+    "signatureSpecies": "Rainbow trout, brown trout, brook trout",
+    "species": [
+      {
+        "name": "Rainbow trout",
+        "importance": "signature",
+        "size": "7-11 in, occasional 14+",
+        "notes": "Wild + native-feel — these are stream-bred fish, not stocked."
+      },
+      {
+        "name": "Brown trout",
+        "importance": "strong",
+        "size": "8-14 in, 18+ in lower river",
+        "notes": "Wild population — bigger fish are downstream."
+      },
+      {
+        "name": "Brook trout",
+        "importance": "good",
+        "size": "5-9 in",
+        "notes": "Native specks above 3,000 ft elevation in headwaters."
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "good",
+        "size": "Lower river outside the park boundary"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Yellow Stimulator + Adams dry-fly pocket water",
+        "target": "Rainbow + brown trout",
+        "when": "April-October",
+        "technique": "Size 12-16 Yellow Stimulator + size 14-18 Adams parachute; dry-dropper with small nymph below",
+        "where": "Pocket water + plunge pools throughout the river",
+        "details": "The Smokies dry-fly fishery is the most-accessible wild-trout fishing in the South. Yellow Stim is the universal searching dry. Short casts, drift the seams, hit every pocket. Fish are small but wild + plentiful."
+      },
+      {
+        "title": "Yallarhammer + Tellico Nymph wets",
+        "target": "Rainbow + brown trout",
+        "when": "Year-round",
+        "technique": "Yallerhammer (size 12-14) + Tellico Nymph (size 12-14) swung downstream",
+        "where": "Plunge pool tails + deeper runs",
+        "details": "The Yallerhammer + Tellico Nymph are the regional wet-fly canon. Cherokee origin — fish like they've been fished here forever."
+      },
+      {
+        "title": "Headwater brook trout",
+        "target": "Brook trout",
+        "when": "May-September",
+        "technique": "Small dries (#14-18); small streamers — small nymphs",
+        "where": "Above 3,000 ft elevation; small headwater tributaries",
+        "details": "Native Southern Appalachian brook trout — protected. Catch + release in most stretches. Fish are 5-9 in but breathtakingly colored."
+      }
+    ],
+    "access": [
+      "Townsend Y",
+      "Tremont",
+      "Elkmont Campground"
+    ],
+    "regulations": "Smokies single-hook + barbless requirements. Catch-and-release for native brook trout in many stretches. National Park fishing license + TN trout stamp.",
+    "notes": "The most-fished Smokies stream. Townsend entrance to Great Smoky Mountains National Park. Wild + native-feel fishery."
+  },
+  {
+    "id": "tn-little-pigeon-west-prong",
+    "name": "Little Pigeon River — West Prong",
+    "state": "TN",
+    "region": "Great Smoky Mountains streams",
+    "type": "river",
+    "county": "Sevier",
+    "river": "Little Pigeon River",
+    "signatureSpecies": "Rainbow trout, brown trout",
+    "species": [
+      {
+        "name": "Rainbow trout",
+        "importance": "signature",
+        "size": "7-11 in"
+      },
+      {
+        "name": "Brown trout",
+        "importance": "strong",
+        "size": "8-14 in"
+      },
+      {
+        "name": "Brook trout",
+        "importance": "good",
+        "notes": "Headwaters."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Smokies dry-fly pocket water",
+        "target": "Rainbow + brown trout",
+        "when": "April-October",
+        "technique": "Yellow Stim, Adams, Royal Wulff in size 14-16",
+        "where": "Pocket water throughout"
+      }
+    ],
+    "access": [
+      "Gatlinburg",
+      "Greenbrier"
+    ],
+    "notes": "Flows through Gatlinburg — busiest tourist gateway into the Smokies. Park stretch above town is the fishing water."
+  },
+  {
+    "id": "tn-abrams-creek",
+    "name": "Abrams Creek",
+    "state": "TN",
+    "region": "Great Smoky Mountains streams",
+    "type": "river",
+    "county": "Blount",
+    "river": "Abrams Creek",
+    "signatureSpecies": "Rainbow trout, brown trout, smallmouth bass",
+    "species": [
+      {
+        "name": "Rainbow trout",
+        "importance": "signature",
+        "size": "7-11 in"
+      },
+      {
+        "name": "Brown trout",
+        "importance": "strong",
+        "size": "10-16 in, occasional 20+",
+        "notes": "Abrams browns are the largest wild fish in the Smokies — limestone water + abundant forage."
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "good",
+        "notes": "Lower stretch + Chilhowee Lake."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Limestone-influenced brown trout",
+        "target": "Brown trout",
+        "when": "April-October",
+        "technique": "Streamers + Tellico nymph + Adams dry",
+        "where": "Cades Cove section + below",
+        "details": "Abrams Creek flows through Cades Cove — limestone influence makes it nutrient-rich + brown trout grow larger here than anywhere else in the Smokies."
+      }
+    ],
+    "access": [
+      "Cades Cove",
+      "Abrams Falls trailhead"
+    ],
+    "notes": "Cades Cove's spring-fed limestone-influenced creek. Bigger browns than any other Smokies water."
+  },
+  {
+    "id": "tn-tellico-river",
+    "name": "Tellico River",
+    "state": "TN",
+    "region": "East TN Appalachian streams",
+    "type": "river",
+    "county": "Monroe",
+    "river": "Tellico River",
+    "lat": 35.4,
+    "lng": -84.21,
+    "signatureSpecies": "Rainbow trout, brown trout",
+    "species": [
+      {
+        "name": "Rainbow trout",
+        "importance": "signature",
+        "size": "8-12 in",
+        "notes": "TWRA stocked weekly during the season."
+      },
+      {
+        "name": "Brown trout",
+        "importance": "strong",
+        "size": "10-16 in, occasional 20+"
+      },
+      {
+        "name": "Brook trout",
+        "importance": "good",
+        "notes": "Headwaters in Tellico Plains area."
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "good",
+        "notes": "Lower river."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Tellico Nymph (the namesake fly)",
+        "target": "Rainbow + brown trout",
+        "when": "Year-round",
+        "technique": "Size 12-14 Tellico Nymph swung or dead-drifted; #14-16 versions for shyer fish",
+        "where": "Throughout — riffles, plunge pools, deep runs",
+        "details": "The Tellico Nymph was born on this river. It's a golden stonefly imitation that works year-round. The most distinctly TN fly pattern."
+      },
+      {
+        "title": "Dry-fly pocket water",
+        "target": "Rainbow + brown trout",
+        "when": "April-October",
+        "technique": "Yellow Stim, Adams, Royal Wulff",
+        "where": "Pocket water in the upper river"
+      }
+    ],
+    "access": [
+      "Tellico Plains",
+      "Cherohala Skyway",
+      "Bald River Falls"
+    ],
+    "regulations": "TN trout license + stamp. Weekly stocking during the season.",
+    "managementProgram": [
+      "TWRA weekly stocking",
+      "Cherokee National Forest cooperation"
+    ],
+    "notes": "The Tellico Nymph's home water. Cherokee National Forest. Stocked + wild combination."
+  },
+  {
+    "id": "tn-bald-river",
+    "name": "Bald River",
+    "state": "TN",
+    "region": "East TN Appalachian streams",
+    "type": "river",
+    "county": "Monroe",
+    "river": "Bald River",
+    "signatureSpecies": "Brook trout, rainbow trout",
+    "species": [
+      {
+        "name": "Brook trout",
+        "importance": "signature",
+        "size": "5-9 in",
+        "notes": "Native Southern Appalachian brookies."
+      },
+      {
+        "name": "Rainbow trout",
+        "importance": "strong",
+        "size": "7-11 in"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Headwater brook trout",
+        "target": "Brook trout",
+        "when": "May-September",
+        "technique": "Small dries (#14-18 Adams, Yellow Stim)",
+        "where": "Above the falls"
+      }
+    ],
+    "access": [
+      "Bald River Falls",
+      "Cherohala Skyway"
+    ],
+    "notes": "Tellico River tributary. Brookie water above the falls."
+  },
+  {
+    "id": "tn-river-duck",
+    "name": "Duck River",
+    "state": "TN",
+    "region": "Middle TN warmwater rivers",
+    "type": "river",
+    "county": "Multiple — Manchester to Columbia",
+    "river": "Duck River",
+    "lat": 35.62,
+    "lng": -86.92,
+    "signatureSpecies": "Smallmouth bass, channel catfish, flathead catfish",
+    "species": [
+      {
+        "name": "Smallmouth bass",
+        "importance": "signature",
+        "size": "1-4 lb, 5+ possible",
+        "notes": "TN's longest river fully in the state. Premier smallmouth water."
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "good"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong",
+        "size": "3-15 lb"
+      },
+      {
+        "name": "Flathead catfish",
+        "importance": "strong",
+        "size": "10-40 lb"
+      },
+      {
+        "name": "Rock bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Bluegill + longear sunfish",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Float-trip wading smallmouth",
+        "target": "Smallmouth bass",
+        "when": "April-October",
+        "technique": "Tubes, Ned rigs, in-line spinners, soft jerkbaits; topwater poppers at dawn",
+        "where": "Riffle-to-pool transitions; gravel runs",
+        "details": "The Duck is Middle TN's wading smallmouth river. Float-trip from access to access; canoes + kayaks."
+      },
+      {
+        "title": "Trophy flathead night fishing",
+        "target": "Flathead catfish",
+        "when": "May-September evenings",
+        "technique": "Live bluegill on heavy circle hooks",
+        "where": "Deep outside bends + log jams",
+        "details": "Duck River flatheads run 20-40 lb regularly."
+      }
+    ],
+    "access": [
+      "Henry Horton State Park",
+      "Columbia",
+      "Yanahli WMA",
+      "Lillard's Mill"
+    ],
+    "notes": "The longest river entirely in TN — 284 miles. Premier smallmouth + flathead wading water."
+  },
+  {
+    "id": "tn-river-buffalo",
+    "name": "Buffalo River",
+    "state": "TN",
+    "region": "Middle TN warmwater rivers",
+    "type": "river",
+    "county": "Hickman / Lawrence / Lewis / Perry",
+    "river": "Buffalo River",
+    "signatureSpecies": "Smallmouth bass, channel catfish, rock bass",
+    "species": [
+      {
+        "name": "Smallmouth bass",
+        "importance": "signature",
+        "size": "1-3 lb, 4+ possible"
+      },
+      {
+        "name": "Rock bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "good"
+      },
+      {
+        "name": "Bluegill + longear sunfish",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Wade-fishing smallmouth + rock bass",
+        "target": "Smallmouth + rock bass",
+        "when": "April-October",
+        "technique": "Tubes, Ned rigs, in-line spinners, small topwater",
+        "where": "Gravel + rock structure throughout"
+      }
+    ],
+    "access": [
+      "Flatwoods",
+      "Linden",
+      "Lobelville",
+      "Mousetail Landing State Park"
+    ],
+    "notes": "TN's longest free-flowing (undammed) river. Pristine middle TN wade-fishing classic."
+  },
+  {
+    "id": "tn-river-harpeth",
+    "name": "Harpeth River",
+    "state": "TN",
+    "region": "Middle TN warmwater rivers",
+    "type": "river",
+    "county": "Cheatham / Dickson / Williamson",
+    "river": "Harpeth River",
+    "signatureSpecies": "Smallmouth bass, channel catfish",
+    "species": [
+      {
+        "name": "Smallmouth bass",
+        "importance": "signature",
+        "size": "1-3 lb"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "good"
+      },
+      {
+        "name": "Rock bass",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Float-and-wade smallmouth",
+        "target": "Smallmouth bass",
+        "when": "April-October",
+        "technique": "Tubes, Ned, poppers at dawn",
+        "where": "Below Newsom's Mill + the Bell's Bend stretch"
+      }
+    ],
+    "access": [
+      "Narrows of the Harpeth State Park",
+      "Pinkerton Park (Franklin)",
+      "Newsoms Station"
+    ],
+    "notes": "Nashville-metro smallmouth river. Quiet wade-and-float water through Williamson County."
+  },
+  {
+    "id": "tn-river-stones",
+    "name": "Stones River",
+    "state": "TN",
+    "region": "Middle TN warmwater rivers",
+    "type": "river",
+    "county": "Rutherford / Davidson",
+    "river": "Stones River",
+    "signatureSpecies": "Smallmouth bass, largemouth bass, channel catfish",
+    "species": [
+      {
+        "name": "Smallmouth bass",
+        "importance": "strong",
+        "size": "1-3 lb"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "White bass",
+        "importance": "good",
+        "notes": "Spring run from Percy Priest."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Below Percy Priest tailwater + lower river",
+        "target": "Smallmouth + largemouth bass",
+        "when": "April-October",
+        "technique": "Tubes, Ned, spinnerbaits",
+        "where": "Below Percy Priest Dam; West + Middle Forks"
+      }
+    ],
+    "access": [
+      "Walter Hill",
+      "Stones River National Battlefield",
+      "Donelson area"
+    ],
+    "notes": "Suburban Murfreesboro / Nashville river. Three forks (West, Middle, East) join + form Percy Priest reservoir."
+  },
+  {
+    "id": "tn-big-south-fork",
+    "name": "Big South Fork (Cumberland River)",
+    "state": "TN",
+    "region": "Plateau rivers",
+    "type": "river",
+    "county": "Scott / Fentress / Pickett",
+    "river": "Big South Fork of the Cumberland",
+    "lat": 36.5,
+    "lng": -84.7,
+    "signatureSpecies": "Smallmouth bass, muskellunge, rainbow trout",
+    "species": [
+      {
+        "name": "Smallmouth bass",
+        "importance": "signature",
+        "size": "1-3 lb, 4+ possible"
+      },
+      {
+        "name": "Muskellunge",
+        "importance": "good",
+        "size": "30-44 in",
+        "notes": "Wild musky in the upper river — rare TN musky water."
+      },
+      {
+        "name": "Rainbow trout",
+        "importance": "good",
+        "notes": "Stocked in select stretches."
+      },
+      {
+        "name": "Walleye",
+        "importance": "good"
+      },
+      {
+        "name": "Rock bass",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Wilderness wading smallmouth",
+        "target": "Smallmouth bass",
+        "when": "May-October",
+        "technique": "Tubes, Ned rigs, poppers",
+        "where": "Through the Big South Fork National River + Recreation Area"
+      }
+    ],
+    "access": [
+      "Bandy Creek",
+      "Charit Creek Lodge",
+      "Honey Creek"
+    ],
+    "notes": "Big South Fork NRRA — protected wilderness river through Plateau country. Wild musky population is rare for TN."
+  },
+  {
+    "id": "tn-obed-emory",
+    "name": "Obed-Emory River System",
+    "state": "TN",
+    "region": "Plateau rivers",
+    "type": "river",
+    "county": "Cumberland / Morgan",
+    "river": "Obed + Emory + Clear Creek",
+    "signatureSpecies": "Smallmouth bass, muskellunge",
+    "species": [
+      {
+        "name": "Smallmouth bass",
+        "importance": "signature",
+        "size": "1-3 lb"
+      },
+      {
+        "name": "Muskellunge",
+        "importance": "good",
+        "size": "30-40 in"
+      },
+      {
+        "name": "Rock bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Walleye",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Plateau-canyon smallmouth wading",
+        "target": "Smallmouth bass",
+        "when": "May-October",
+        "technique": "Tubes, Ned, poppers",
+        "where": "Throughout the Obed + Emory; canyon-river character"
+      }
+    ],
+    "access": [
+      "Obed Wild + Scenic River",
+      "Lilly Bridge"
+    ],
+    "notes": "Federally-designated Wild + Scenic River. Plateau canyon character + smallmouth + rare wild musky."
+  },
+  {
+    "id": "tn-sequatchie-river",
+    "name": "Sequatchie River",
+    "state": "TN",
+    "region": "Plateau rivers",
+    "type": "river",
+    "county": "Bledsoe / Sequatchie / Marion",
+    "river": "Sequatchie River",
+    "signatureSpecies": "Smallmouth bass, channel catfish",
+    "species": [
+      {
+        "name": "Smallmouth bass",
+        "importance": "signature",
+        "size": "1-3 lb"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "good"
+      },
+      {
+        "name": "Rock bass",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Sequatchie Valley smallmouth",
+        "target": "Smallmouth bass",
+        "when": "April-October",
+        "technique": "Tubes, Ned, in-line spinners",
+        "where": "Throughout the valley"
+      }
+    ],
+    "access": [
+      "Dunlap",
+      "Whitwell",
+      "Jasper"
+    ],
+    "notes": "Picturesque Sequatchie Valley between the Cumberland + Walden plateaus. Quality smallmouth water."
+  },
+  {
+    "id": "tn-reelfoot-lake",
+    "name": "Reelfoot Lake",
+    "state": "TN",
+    "region": "West TN big lakes",
+    "type": "natural-lake",
+    "county": "Lake / Obion",
+    "acres": 15000,
+    "maxDepthFt": 18,
+    "lat": 36.39,
+    "lng": -89.4,
+    "signatureSpecies": "Bluegill, crappie, bass, channel catfish",
+    "species": [
+      {
+        "name": "Bluegill",
+        "importance": "signature",
+        "size": "7-10 in, jumbo possible",
+        "notes": "World-class bluegill. Cypress-shadow habitat = giant bream."
+      },
+      {
+        "name": "Crappie",
+        "importance": "signature",
+        "size": "9-13 in",
+        "notes": "Spring spawn destination — boats + dipping pots."
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong",
+        "size": "2-5 lb"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Yellow bass",
+        "importance": "good",
+        "notes": "Schooling in the open lake."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Bluegill in cypress shadows",
+        "target": "Bluegill",
+        "when": "May-September",
+        "technique": "Cricket + bobber; small jigs; flyrod popping bugs",
+        "where": "Cypress tree shadows + stump fields throughout the lake",
+        "details": "Reelfoot bluegill are stupid + huge. The cypress-forest habitat is unique in the South. Use stealth."
+      },
+      {
+        "title": "Spring crappie",
+        "target": "Crappie",
+        "when": "March-May",
+        "technique": "Jig + minnow; spider rigging",
+        "where": "Cypress trunks + flooded brush"
+      }
+    ],
+    "access": [
+      "Reelfoot Lake State Park",
+      "Tiptonville",
+      "Samburg"
+    ],
+    "regulations": "Yo-yo rigs allowed for crappie (TN unique to Reelfoot). Bluegill management — generous limits but big fish are everywhere.",
+    "notes": "TN's only natural lake. Formed by the 1812 New Madrid earthquake — submerged a hardwood forest, the cypress + stumps create unique habitat. Genuinely one-of-a-kind fishery."
+  },
+  {
+    "id": "tn-mississippi-river",
+    "name": "Mississippi River (TN waters)",
+    "state": "TN",
+    "region": "West TN big rivers",
+    "type": "river",
+    "county": "Lake / Lauderdale / Tipton / Shelby",
+    "river": "Mississippi River",
+    "signatureSpecies": "Blue catfish, flathead catfish, channel catfish",
+    "species": [
+      {
+        "name": "Blue catfish",
+        "importance": "signature",
+        "size": "20-80 lb, 100+ lb documented",
+        "notes": "World-class trophy blue cat fishery."
+      },
+      {
+        "name": "Flathead catfish",
+        "importance": "signature",
+        "size": "20-60 lb"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "good",
+        "notes": "Backwater oxbows."
+      },
+      {
+        "name": "Crappie",
+        "importance": "good",
+        "notes": "Backwater sloughs."
+      },
+      {
+        "name": "Drum (sheepshead)",
+        "importance": "good"
+      },
+      {
+        "name": "Bowfin",
+        "importance": "good"
+      },
+      {
+        "name": "Alligator gar",
+        "importance": "good",
+        "size": "4-7 ft",
+        "notes": "Bowfishing + targeted angling."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Trophy blue catfish drift",
+        "target": "Blue catfish",
+        "when": "Year-round (peak winter)",
+        "technique": "Cut shad / skipjack on big circle hooks; suspend or anchor in deep current breaks",
+        "where": "Below river bends; wing dams; deep holes",
+        "details": "The Mississippi gives up 80+ lb blue cats every year. Charter scene is robust around Memphis."
+      },
+      {
+        "title": "Backwater oxbow largemouth + crappie",
+        "target": "Largemouth bass, crappie",
+        "when": "May-October",
+        "technique": "Soft plastics + spinnerbaits for bass; jig + minnow for crappie",
+        "where": "Reelfoot-area oxbows; Loosahatchie + Wolf River mouths"
+      }
+    ],
+    "access": [
+      "Mud Island (Memphis)",
+      "Tom Sawyer State Park",
+      "Tipton County ramps",
+      "Reelfoot area oxbows"
+    ],
+    "notes": "The big-water TN catfish destination. Trophy blue cat capital. Backwater sloughs hold a different (warmwater) fishery."
+  },
+  {
+    "id": "tn-river-wolf",
+    "name": "Wolf River (West TN)",
+    "state": "TN",
+    "region": "West TN warmwater rivers",
+    "type": "river",
+    "county": "Fayette / Shelby",
+    "river": "Wolf River",
+    "signatureSpecies": "Smallmouth bass, channel catfish, crappie",
+    "species": [
+      {
+        "name": "Smallmouth bass",
+        "importance": "strong",
+        "size": "1-3 lb"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Crappie",
+        "importance": "good"
+      },
+      {
+        "name": "Spotted bass",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Float-trip smallmouth",
+        "target": "Smallmouth bass",
+        "when": "April-October",
+        "technique": "Tubes, Ned, in-line spinners",
+        "where": "Above Memphis through Wolf River WMA"
+      }
+    ],
+    "access": [
+      "Wolf River WMA",
+      "Collierville",
+      "Germantown"
+    ],
+    "notes": "West TN smallmouth water. Drains into the Mississippi at Memphis."
+  },
+  {
+    "id": "tn-river-hatchie",
+    "name": "Hatchie River",
+    "state": "TN",
+    "region": "West TN warmwater rivers",
+    "type": "river",
+    "county": "Hardeman / Haywood / Tipton / Lauderdale",
+    "river": "Hatchie River",
+    "signatureSpecies": "Largemouth bass, crappie, catfish",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature"
+      },
+      {
+        "name": "Crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Flathead catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Spotted bass",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Slow-water bass + crappie",
+        "target": "Largemouth + crappie",
+        "when": "May-October",
+        "technique": "Senkos, spinnerbaits, jig + minnow for crappie",
+        "where": "Slough banks + cypress structure"
+      }
+    ],
+    "access": [
+      "Hatchie NWR",
+      "Brownsville",
+      "Bolivar"
+    ],
+    "notes": "Designated TN State Scenic River. Slow blackwater bottomland — unique West TN character."
   }
 ]

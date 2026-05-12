@@ -1,0 +1,542 @@
+/**
+ * Tennessee Waters Guide — Volume 3: Smokies streams + plateau
+ * + middle/west TN rivers + Reelfoot.
+ *
+ * Run: node scripts/add-tn-waters-vol3.cjs
+ */
+
+const fs = require('node:fs');
+const path = require('node:path');
+
+const FILE = path.join(__dirname, '..', 'data', 'waterbodies.json');
+
+const NEW_ENTRIES = [
+  // ============================================================
+  // GREAT SMOKY MOUNTAINS STREAMS
+  // ============================================================
+  {
+    id: 'tn-little-river-smokies',
+    name: 'Little River (Smokies)',
+    state: 'TN',
+    region: 'Great Smoky Mountains streams',
+    type: 'river',
+    county: 'Sevier / Blount',
+    river: 'Little River',
+    lat: 35.65,
+    lng: -83.55,
+    signatureSpecies: 'Rainbow trout, brown trout, brook trout',
+    species: [
+      { name: 'Rainbow trout', importance: 'signature', size: '7-11 in, occasional 14+', notes: 'Wild + native-feel — these are stream-bred fish, not stocked.' },
+      { name: 'Brown trout', importance: 'strong', size: '8-14 in, 18+ in lower river', notes: 'Wild population — bigger fish are downstream.' },
+      { name: 'Brook trout', importance: 'good', size: '5-9 in', notes: 'Native specks above 3,000 ft elevation in headwaters.' },
+      { name: 'Smallmouth bass', importance: 'good', size: 'Lower river outside the park boundary' },
+    ],
+    patterns: [
+      {
+        title: 'Yellow Stimulator + Adams dry-fly pocket water',
+        target: 'Rainbow + brown trout',
+        when: 'April-October',
+        technique: 'Size 12-16 Yellow Stimulator + size 14-18 Adams parachute; dry-dropper with small nymph below',
+        where: 'Pocket water + plunge pools throughout the river',
+        details: 'The Smokies dry-fly fishery is the most-accessible wild-trout fishing in the South. Yellow Stim is the universal searching dry. Short casts, drift the seams, hit every pocket. Fish are small but wild + plentiful.',
+      },
+      {
+        title: 'Yallarhammer + Tellico Nymph wets',
+        target: 'Rainbow + brown trout',
+        when: 'Year-round',
+        technique: 'Yallerhammer (size 12-14) + Tellico Nymph (size 12-14) swung downstream',
+        where: 'Plunge pool tails + deeper runs',
+        details: 'The Yallerhammer + Tellico Nymph are the regional wet-fly canon. Cherokee origin — fish like they\'ve been fished here forever.',
+      },
+      {
+        title: 'Headwater brook trout',
+        target: 'Brook trout',
+        when: 'May-September',
+        technique: 'Small dries (#14-18); small streamers — small nymphs',
+        where: 'Above 3,000 ft elevation; small headwater tributaries',
+        details: 'Native Southern Appalachian brook trout — protected. Catch + release in most stretches. Fish are 5-9 in but breathtakingly colored.',
+      },
+    ],
+    access: ['Townsend Y', 'Tremont', 'Elkmont Campground'],
+    regulations: 'Smokies single-hook + barbless requirements. Catch-and-release for native brook trout in many stretches. National Park fishing license + TN trout stamp.',
+    notes: 'The most-fished Smokies stream. Townsend entrance to Great Smoky Mountains National Park. Wild + native-feel fishery.',
+  },
+  {
+    id: 'tn-little-pigeon-west-prong',
+    name: 'Little Pigeon River — West Prong',
+    state: 'TN',
+    region: 'Great Smoky Mountains streams',
+    type: 'river',
+    county: 'Sevier',
+    river: 'Little Pigeon River',
+    signatureSpecies: 'Rainbow trout, brown trout',
+    species: [
+      { name: 'Rainbow trout', importance: 'signature', size: '7-11 in' },
+      { name: 'Brown trout', importance: 'strong', size: '8-14 in' },
+      { name: 'Brook trout', importance: 'good', notes: 'Headwaters.' },
+    ],
+    patterns: [
+      {
+        title: 'Smokies dry-fly pocket water',
+        target: 'Rainbow + brown trout',
+        when: 'April-October',
+        technique: 'Yellow Stim, Adams, Royal Wulff in size 14-16',
+        where: 'Pocket water throughout',
+      },
+    ],
+    access: ['Gatlinburg', 'Greenbrier'],
+    notes: 'Flows through Gatlinburg — busiest tourist gateway into the Smokies. Park stretch above town is the fishing water.',
+  },
+  {
+    id: 'tn-abrams-creek',
+    name: 'Abrams Creek',
+    state: 'TN',
+    region: 'Great Smoky Mountains streams',
+    type: 'river',
+    county: 'Blount',
+    river: 'Abrams Creek',
+    signatureSpecies: 'Rainbow trout, brown trout, smallmouth bass',
+    species: [
+      { name: 'Rainbow trout', importance: 'signature', size: '7-11 in' },
+      { name: 'Brown trout', importance: 'strong', size: '10-16 in, occasional 20+', notes: 'Abrams browns are the largest wild fish in the Smokies — limestone water + abundant forage.' },
+      { name: 'Smallmouth bass', importance: 'good', notes: 'Lower stretch + Chilhowee Lake.' },
+    ],
+    patterns: [
+      {
+        title: 'Limestone-influenced brown trout',
+        target: 'Brown trout',
+        when: 'April-October',
+        technique: 'Streamers + Tellico nymph + Adams dry',
+        where: 'Cades Cove section + below',
+        details: 'Abrams Creek flows through Cades Cove — limestone influence makes it nutrient-rich + brown trout grow larger here than anywhere else in the Smokies.',
+      },
+    ],
+    access: ['Cades Cove', 'Abrams Falls trailhead'],
+    notes: 'Cades Cove\'s spring-fed limestone-influenced creek. Bigger browns than any other Smokies water.',
+  },
+  {
+    id: 'tn-tellico-river',
+    name: 'Tellico River',
+    state: 'TN',
+    region: 'East TN Appalachian streams',
+    type: 'river',
+    county: 'Monroe',
+    river: 'Tellico River',
+    lat: 35.40,
+    lng: -84.21,
+    signatureSpecies: 'Rainbow trout, brown trout',
+    species: [
+      { name: 'Rainbow trout', importance: 'signature', size: '8-12 in', notes: 'TWRA stocked weekly during the season.' },
+      { name: 'Brown trout', importance: 'strong', size: '10-16 in, occasional 20+' },
+      { name: 'Brook trout', importance: 'good', notes: 'Headwaters in Tellico Plains area.' },
+      { name: 'Smallmouth bass', importance: 'good', notes: 'Lower river.' },
+    ],
+    patterns: [
+      {
+        title: 'Tellico Nymph (the namesake fly)',
+        target: 'Rainbow + brown trout',
+        when: 'Year-round',
+        technique: 'Size 12-14 Tellico Nymph swung or dead-drifted; #14-16 versions for shyer fish',
+        where: 'Throughout — riffles, plunge pools, deep runs',
+        details: 'The Tellico Nymph was born on this river. It\'s a golden stonefly imitation that works year-round. The most distinctly TN fly pattern.',
+      },
+      {
+        title: 'Dry-fly pocket water',
+        target: 'Rainbow + brown trout',
+        when: 'April-October',
+        technique: 'Yellow Stim, Adams, Royal Wulff',
+        where: 'Pocket water in the upper river',
+      },
+    ],
+    access: ['Tellico Plains', 'Cherohala Skyway', 'Bald River Falls'],
+    regulations: 'TN trout license + stamp. Weekly stocking during the season.',
+    managementProgram: ['TWRA weekly stocking', 'Cherokee National Forest cooperation'],
+    notes: 'The Tellico Nymph\'s home water. Cherokee National Forest. Stocked + wild combination.',
+  },
+  {
+    id: 'tn-bald-river',
+    name: 'Bald River',
+    state: 'TN',
+    region: 'East TN Appalachian streams',
+    type: 'river',
+    county: 'Monroe',
+    river: 'Bald River',
+    signatureSpecies: 'Brook trout, rainbow trout',
+    species: [
+      { name: 'Brook trout', importance: 'signature', size: '5-9 in', notes: 'Native Southern Appalachian brookies.' },
+      { name: 'Rainbow trout', importance: 'strong', size: '7-11 in' },
+    ],
+    patterns: [
+      {
+        title: 'Headwater brook trout',
+        target: 'Brook trout',
+        when: 'May-September',
+        technique: 'Small dries (#14-18 Adams, Yellow Stim)',
+        where: 'Above the falls',
+      },
+    ],
+    access: ['Bald River Falls', 'Cherohala Skyway'],
+    notes: 'Tellico River tributary. Brookie water above the falls.',
+  },
+
+  // ============================================================
+  // PLATEAU + MIDDLE TN RIVERS (warmwater)
+  // ============================================================
+  {
+    id: 'tn-river-duck',
+    name: 'Duck River',
+    state: 'TN',
+    region: 'Middle TN warmwater rivers',
+    type: 'river',
+    county: 'Multiple — Manchester to Columbia',
+    river: 'Duck River',
+    lat: 35.62,
+    lng: -86.92,
+    signatureSpecies: 'Smallmouth bass, channel catfish, flathead catfish',
+    species: [
+      { name: 'Smallmouth bass', importance: 'signature', size: '1-4 lb, 5+ possible', notes: 'TN\'s longest river fully in the state. Premier smallmouth water.' },
+      { name: 'Largemouth bass', importance: 'good' },
+      { name: 'Channel catfish', importance: 'strong', size: '3-15 lb' },
+      { name: 'Flathead catfish', importance: 'strong', size: '10-40 lb' },
+      { name: 'Rock bass', importance: 'strong' },
+      { name: 'Bluegill + longear sunfish', importance: 'strong' },
+    ],
+    patterns: [
+      {
+        title: 'Float-trip wading smallmouth',
+        target: 'Smallmouth bass',
+        when: 'April-October',
+        technique: 'Tubes, Ned rigs, in-line spinners, soft jerkbaits; topwater poppers at dawn',
+        where: 'Riffle-to-pool transitions; gravel runs',
+        details: 'The Duck is Middle TN\'s wading smallmouth river. Float-trip from access to access; canoes + kayaks.',
+      },
+      {
+        title: 'Trophy flathead night fishing',
+        target: 'Flathead catfish',
+        when: 'May-September evenings',
+        technique: 'Live bluegill on heavy circle hooks',
+        where: 'Deep outside bends + log jams',
+        details: 'Duck River flatheads run 20-40 lb regularly.',
+      },
+    ],
+    access: ['Henry Horton State Park', 'Columbia', 'Yanahli WMA', 'Lillard\'s Mill'],
+    notes: 'The longest river entirely in TN — 284 miles. Premier smallmouth + flathead wading water.',
+  },
+  {
+    id: 'tn-river-buffalo',
+    name: 'Buffalo River',
+    state: 'TN',
+    region: 'Middle TN warmwater rivers',
+    type: 'river',
+    county: 'Hickman / Lawrence / Lewis / Perry',
+    river: 'Buffalo River',
+    signatureSpecies: 'Smallmouth bass, channel catfish, rock bass',
+    species: [
+      { name: 'Smallmouth bass', importance: 'signature', size: '1-3 lb, 4+ possible' },
+      { name: 'Rock bass', importance: 'strong' },
+      { name: 'Channel catfish', importance: 'strong' },
+      { name: 'Largemouth bass', importance: 'good' },
+      { name: 'Bluegill + longear sunfish', importance: 'good' },
+    ],
+    patterns: [
+      {
+        title: 'Wade-fishing smallmouth + rock bass',
+        target: 'Smallmouth + rock bass',
+        when: 'April-October',
+        technique: 'Tubes, Ned rigs, in-line spinners, small topwater',
+        where: 'Gravel + rock structure throughout',
+      },
+    ],
+    access: ['Flatwoods', 'Linden', 'Lobelville', 'Mousetail Landing State Park'],
+    notes: 'TN\'s longest free-flowing (undammed) river. Pristine middle TN wade-fishing classic.',
+  },
+  {
+    id: 'tn-river-harpeth',
+    name: 'Harpeth River',
+    state: 'TN',
+    region: 'Middle TN warmwater rivers',
+    type: 'river',
+    county: 'Cheatham / Dickson / Williamson',
+    river: 'Harpeth River',
+    signatureSpecies: 'Smallmouth bass, channel catfish',
+    species: [
+      { name: 'Smallmouth bass', importance: 'signature', size: '1-3 lb' },
+      { name: 'Channel catfish', importance: 'strong' },
+      { name: 'Largemouth bass', importance: 'good' },
+      { name: 'Rock bass', importance: 'good' },
+    ],
+    patterns: [
+      {
+        title: 'Float-and-wade smallmouth',
+        target: 'Smallmouth bass',
+        when: 'April-October',
+        technique: 'Tubes, Ned, poppers at dawn',
+        where: 'Below Newsom\'s Mill + the Bell\'s Bend stretch',
+      },
+    ],
+    access: ['Narrows of the Harpeth State Park', 'Pinkerton Park (Franklin)', 'Newsoms Station'],
+    notes: 'Nashville-metro smallmouth river. Quiet wade-and-float water through Williamson County.',
+  },
+  {
+    id: 'tn-river-stones',
+    name: 'Stones River',
+    state: 'TN',
+    region: 'Middle TN warmwater rivers',
+    type: 'river',
+    county: 'Rutherford / Davidson',
+    river: 'Stones River',
+    signatureSpecies: 'Smallmouth bass, largemouth bass, channel catfish',
+    species: [
+      { name: 'Smallmouth bass', importance: 'strong', size: '1-3 lb' },
+      { name: 'Largemouth bass', importance: 'strong' },
+      { name: 'Channel catfish', importance: 'strong' },
+      { name: 'White bass', importance: 'good', notes: 'Spring run from Percy Priest.' },
+    ],
+    patterns: [
+      {
+        title: 'Below Percy Priest tailwater + lower river',
+        target: 'Smallmouth + largemouth bass',
+        when: 'April-October',
+        technique: 'Tubes, Ned, spinnerbaits',
+        where: 'Below Percy Priest Dam; West + Middle Forks',
+      },
+    ],
+    access: ['Walter Hill', 'Stones River National Battlefield', 'Donelson area'],
+    notes: 'Suburban Murfreesboro / Nashville river. Three forks (West, Middle, East) join + form Percy Priest reservoir.',
+  },
+  {
+    id: 'tn-big-south-fork',
+    name: 'Big South Fork (Cumberland River)',
+    state: 'TN',
+    region: 'Plateau rivers',
+    type: 'river',
+    county: 'Scott / Fentress / Pickett',
+    river: 'Big South Fork of the Cumberland',
+    lat: 36.50,
+    lng: -84.70,
+    signatureSpecies: 'Smallmouth bass, muskellunge, rainbow trout',
+    species: [
+      { name: 'Smallmouth bass', importance: 'signature', size: '1-3 lb, 4+ possible' },
+      { name: 'Muskellunge', importance: 'good', size: '30-44 in', notes: 'Wild musky in the upper river — rare TN musky water.' },
+      { name: 'Rainbow trout', importance: 'good', notes: 'Stocked in select stretches.' },
+      { name: 'Walleye', importance: 'good' },
+      { name: 'Rock bass', importance: 'strong' },
+    ],
+    patterns: [
+      {
+        title: 'Wilderness wading smallmouth',
+        target: 'Smallmouth bass',
+        when: 'May-October',
+        technique: 'Tubes, Ned rigs, poppers',
+        where: 'Through the Big South Fork National River + Recreation Area',
+      },
+    ],
+    access: ['Bandy Creek', 'Charit Creek Lodge', 'Honey Creek'],
+    notes: 'Big South Fork NRRA — protected wilderness river through Plateau country. Wild musky population is rare for TN.',
+  },
+  {
+    id: 'tn-obed-emory',
+    name: 'Obed-Emory River System',
+    state: 'TN',
+    region: 'Plateau rivers',
+    type: 'river',
+    county: 'Cumberland / Morgan',
+    river: 'Obed + Emory + Clear Creek',
+    signatureSpecies: 'Smallmouth bass, muskellunge',
+    species: [
+      { name: 'Smallmouth bass', importance: 'signature', size: '1-3 lb' },
+      { name: 'Muskellunge', importance: 'good', size: '30-40 in' },
+      { name: 'Rock bass', importance: 'strong' },
+      { name: 'Walleye', importance: 'good' },
+    ],
+    patterns: [
+      {
+        title: 'Plateau-canyon smallmouth wading',
+        target: 'Smallmouth bass',
+        when: 'May-October',
+        technique: 'Tubes, Ned, poppers',
+        where: 'Throughout the Obed + Emory; canyon-river character',
+      },
+    ],
+    access: ['Obed Wild + Scenic River', 'Lilly Bridge'],
+    notes: 'Federally-designated Wild + Scenic River. Plateau canyon character + smallmouth + rare wild musky.',
+  },
+  {
+    id: 'tn-sequatchie-river',
+    name: 'Sequatchie River',
+    state: 'TN',
+    region: 'Plateau rivers',
+    type: 'river',
+    county: 'Bledsoe / Sequatchie / Marion',
+    river: 'Sequatchie River',
+    signatureSpecies: 'Smallmouth bass, channel catfish',
+    species: [
+      { name: 'Smallmouth bass', importance: 'signature', size: '1-3 lb' },
+      { name: 'Channel catfish', importance: 'strong' },
+      { name: 'Largemouth bass', importance: 'good' },
+      { name: 'Rock bass', importance: 'good' },
+    ],
+    patterns: [
+      {
+        title: 'Sequatchie Valley smallmouth',
+        target: 'Smallmouth bass',
+        when: 'April-October',
+        technique: 'Tubes, Ned, in-line spinners',
+        where: 'Throughout the valley',
+      },
+    ],
+    access: ['Dunlap', 'Whitwell', 'Jasper'],
+    notes: 'Picturesque Sequatchie Valley between the Cumberland + Walden plateaus. Quality smallmouth water.',
+  },
+
+  // ============================================================
+  // WEST TN
+  // ============================================================
+  {
+    id: 'tn-reelfoot-lake',
+    name: 'Reelfoot Lake',
+    state: 'TN',
+    region: 'West TN big lakes',
+    type: 'natural-lake',
+    county: 'Lake / Obion',
+    acres: 15000,
+    maxDepthFt: 18,
+    lat: 36.39,
+    lng: -89.40,
+    signatureSpecies: 'Bluegill, crappie, bass, channel catfish',
+    species: [
+      { name: 'Bluegill', importance: 'signature', size: '7-10 in, jumbo possible', notes: 'World-class bluegill. Cypress-shadow habitat = giant bream.' },
+      { name: 'Crappie', importance: 'signature', size: '9-13 in', notes: 'Spring spawn destination — boats + dipping pots.' },
+      { name: 'Largemouth bass', importance: 'strong', size: '2-5 lb' },
+      { name: 'Channel catfish', importance: 'strong' },
+      { name: 'Yellow bass', importance: 'good', notes: 'Schooling in the open lake.' },
+    ],
+    patterns: [
+      {
+        title: 'Bluegill in cypress shadows',
+        target: 'Bluegill',
+        when: 'May-September',
+        technique: 'Cricket + bobber; small jigs; flyrod popping bugs',
+        where: 'Cypress tree shadows + stump fields throughout the lake',
+        details: 'Reelfoot bluegill are stupid + huge. The cypress-forest habitat is unique in the South. Use stealth.',
+      },
+      {
+        title: 'Spring crappie',
+        target: 'Crappie',
+        when: 'March-May',
+        technique: 'Jig + minnow; spider rigging',
+        where: 'Cypress trunks + flooded brush',
+      },
+    ],
+    access: ['Reelfoot Lake State Park', 'Tiptonville', 'Samburg'],
+    regulations: 'Yo-yo rigs allowed for crappie (TN unique to Reelfoot). Bluegill management — generous limits but big fish are everywhere.',
+    notes: 'TN\'s only natural lake. Formed by the 1812 New Madrid earthquake — submerged a hardwood forest, the cypress + stumps create unique habitat. Genuinely one-of-a-kind fishery.',
+  },
+  {
+    id: 'tn-mississippi-river',
+    name: 'Mississippi River (TN waters)',
+    state: 'TN',
+    region: 'West TN big rivers',
+    type: 'river',
+    county: 'Lake / Lauderdale / Tipton / Shelby',
+    river: 'Mississippi River',
+    signatureSpecies: 'Blue catfish, flathead catfish, channel catfish',
+    species: [
+      { name: 'Blue catfish', importance: 'signature', size: '20-80 lb, 100+ lb documented', notes: 'World-class trophy blue cat fishery.' },
+      { name: 'Flathead catfish', importance: 'signature', size: '20-60 lb' },
+      { name: 'Channel catfish', importance: 'strong' },
+      { name: 'Largemouth bass', importance: 'good', notes: 'Backwater oxbows.' },
+      { name: 'Crappie', importance: 'good', notes: 'Backwater sloughs.' },
+      { name: 'Drum (sheepshead)', importance: 'good' },
+      { name: 'Bowfin', importance: 'good' },
+      { name: 'Alligator gar', importance: 'good', size: '4-7 ft', notes: 'Bowfishing + targeted angling.' },
+    ],
+    patterns: [
+      {
+        title: 'Trophy blue catfish drift',
+        target: 'Blue catfish',
+        when: 'Year-round (peak winter)',
+        technique: 'Cut shad / skipjack on big circle hooks; suspend or anchor in deep current breaks',
+        where: 'Below river bends; wing dams; deep holes',
+        details: 'The Mississippi gives up 80+ lb blue cats every year. Charter scene is robust around Memphis.',
+      },
+      {
+        title: 'Backwater oxbow largemouth + crappie',
+        target: 'Largemouth bass, crappie',
+        when: 'May-October',
+        technique: 'Soft plastics + spinnerbaits for bass; jig + minnow for crappie',
+        where: 'Reelfoot-area oxbows; Loosahatchie + Wolf River mouths',
+      },
+    ],
+    access: ['Mud Island (Memphis)', 'Tom Sawyer State Park', 'Tipton County ramps', 'Reelfoot area oxbows'],
+    notes: 'The big-water TN catfish destination. Trophy blue cat capital. Backwater sloughs hold a different (warmwater) fishery.',
+  },
+  {
+    id: 'tn-river-wolf',
+    name: 'Wolf River (West TN)',
+    state: 'TN',
+    region: 'West TN warmwater rivers',
+    type: 'river',
+    county: 'Fayette / Shelby',
+    river: 'Wolf River',
+    signatureSpecies: 'Smallmouth bass, channel catfish, crappie',
+    species: [
+      { name: 'Smallmouth bass', importance: 'strong', size: '1-3 lb' },
+      { name: 'Largemouth bass', importance: 'strong' },
+      { name: 'Channel catfish', importance: 'strong' },
+      { name: 'Crappie', importance: 'good' },
+      { name: 'Spotted bass', importance: 'good' },
+    ],
+    patterns: [
+      {
+        title: 'Float-trip smallmouth',
+        target: 'Smallmouth bass',
+        when: 'April-October',
+        technique: 'Tubes, Ned, in-line spinners',
+        where: 'Above Memphis through Wolf River WMA',
+      },
+    ],
+    access: ['Wolf River WMA', 'Collierville', 'Germantown'],
+    notes: 'West TN smallmouth water. Drains into the Mississippi at Memphis.',
+  },
+  {
+    id: 'tn-river-hatchie',
+    name: 'Hatchie River',
+    state: 'TN',
+    region: 'West TN warmwater rivers',
+    type: 'river',
+    county: 'Hardeman / Haywood / Tipton / Lauderdale',
+    river: 'Hatchie River',
+    signatureSpecies: 'Largemouth bass, crappie, catfish',
+    species: [
+      { name: 'Largemouth bass', importance: 'signature' },
+      { name: 'Crappie', importance: 'strong' },
+      { name: 'Channel catfish', importance: 'strong' },
+      { name: 'Flathead catfish', importance: 'strong' },
+      { name: 'Spotted bass', importance: 'good' },
+    ],
+    patterns: [
+      {
+        title: 'Slow-water bass + crappie',
+        target: 'Largemouth + crappie',
+        when: 'May-October',
+        technique: 'Senkos, spinnerbaits, jig + minnow for crappie',
+        where: 'Slough banks + cypress structure',
+      },
+    ],
+    access: ['Hatchie NWR', 'Brownsville', 'Bolivar'],
+    notes: 'Designated TN State Scenic River. Slow blackwater bottomland — unique West TN character.',
+  },
+];
+
+const data = JSON.parse(fs.readFileSync(FILE, 'utf8'));
+const byId = new Map(data.map((w) => [w.id, w]));
+let appended = 0;
+for (const e of NEW_ENTRIES) {
+  if (byId.has(e.id)) { console.log(`  exists ${e.id}`); continue; }
+  data.push(e); byId.set(e.id, e);
+  console.log(`  + ${e.id} (${e.species.length} species · ${e.patterns.length} patterns)`);
+  appended++;
+}
+console.log(`\nAppended ${appended} entries. Total: ${data.length}`);
+fs.writeFileSync(FILE, JSON.stringify(data, null, 2) + '\n', 'utf8');

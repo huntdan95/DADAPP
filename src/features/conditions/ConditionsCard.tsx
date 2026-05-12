@@ -12,6 +12,7 @@ import { TidesSection } from './TidesSection';
 import { TidesSetupPrompt } from './TidesSetupPrompt';
 import { BriefingSection } from './BriefingSection';
 import { StockingBanner } from './StockingBanner';
+import { WatersGuideSection } from './WatersGuideSection';
 import { useAuth } from '@/lib/useAuth';
 import { activeHatchesForLocation } from '@/lib/hatches/store';
 
@@ -79,6 +80,12 @@ export function ConditionsCard({ location }: { location: Location }) {
         location.type === 'saltwater' && <TidesSetupPrompt location={location} />
       )}
       <SolunarSection location={location} />
+      {/* Matched Waters Guide entry — signature species + top patterns
+          + a tap-through to the full waterbody profile. Renders only
+          when the matcher finds a strong match (state + river/name
+          overlap + GPS proximity). Silent fallback when nothing
+          confidently matches. */}
+      <WatersGuideSection location={location} />
       {showHatches && <HatchSection location={location} />}
       {showSpecies && <SpeciesSection location={location} />}
       {/* Local fly box — non-hatch patterns (streamers, eggs, mysis,
