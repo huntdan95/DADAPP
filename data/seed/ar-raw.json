@@ -1,0 +1,7 @@
+[
+  {"date":"2026-04-16","water":"White River at Calico Rock","county":"Izard","species":"Rainbow Trout","count":2400,"size":"catchable","hatchery":"Jim Hinkle Spring River SFH","region":"North Arkansas"},
+  {"date":"2026-04-16","water":"White River at Chessmond Ferry","county":"Stone","species":"Rainbow Trout","count":2400,"size":"catchable","hatchery":"Jim Hinkle Spring River SFH","region":"North Arkansas"},
+  {"date":"2026-04-16","water":"White River at Calico Rock","county":"Izard","species":"Rainbow Trout","count":800,"size":"catchable","hatchery":"Norfork NFH","region":"North Arkansas"},
+  {"date":"2026-04-16","water":"White River at Sylamore Creek","county":"Stone","species":"Rainbow Trout","count":800,"size":"catchable","hatchery":"Norfork NFH","region":"North Arkansas"},
+  {"date":"2026-04-01","water":"Bull Shoals Tailwater","county":"Baxter","species":"Tiger Trout","count":200,"size":"catchable","notes":"Initial release; additional 3,000 planned for summer 2026","region":"North Arkansas"}
+]

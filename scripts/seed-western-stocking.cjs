@@ -1,17 +1,21 @@
 /**
- * One-shot seeder: pushes Western stocking events (UT/CO/ID) directly
- * into the production `stockingEvents` Firestore collection.
+ * One-shot seeder: pushes stocking events for AR/CO/ID/IL/UT directly
+ * into the production `stockingEvents` Firestore collection. (MS isn't
+ * here because MDWFP doesn't publish structured stocking data — the
+ * weekly cron will fall back to AI-extract once credits are topped up.)
  *
  * Why this exists: the weekly cron-driven AI extractor is the long-term
  * keep-fresh path, but state DNR HTML pages were 404'ing AND we wanted
- * to seed the database with current data before any user opens a Western
- * spot. Doing the research in a Claude Code session (not the app's
- * runtime) burns zero Anthropic credits on the user's account.
+ * to seed the database with current data before any user opens a spot
+ * in these states. Doing the research in a Claude Code session (not
+ * the app's runtime) burns zero Anthropic credits on the user's account.
  *
- * Reads three JSON files written by the research turn:
- *   data/seed/ut-raw.json  (UT DWR — 528 records, Jan–May 2026)
- *   data/seed/co-raw.json  (CO CPW — 70 records, May 2026)
- *   data/seed/id-raw.json  (IDFG   — 20 records, Feb + May 2026)
+ * Reads five JSON files written by the research turns:
+ *   data/seed/ut-raw.json  (UT DWR  — 528 records, Jan–May 2026)
+ *   data/seed/co-raw.json  (CO CPW  — 70 records, May 2026)
+ *   data/seed/id-raw.json  (IDFG    — 37 records, Feb + May 2026 across regions)
+ *   data/seed/ar-raw.json  (AGFC    — 5 records, April 2026 White River tailwater)
+ *   data/seed/il-raw.json  (IDNR    — 59 records, 2026 spring trout season)
  *
  * Each record is normalized into the same shape the scrapers emit and
  * given the same id rule (`auto-<source>-<date>-<water-slug>-<species-
@@ -25,7 +29,8 @@
  *
  * Run:  node scripts/seed-western-stocking.cjs
  *
- * Idempotent — re-runs no-op on already-existing ids.
+ * Idempotent — re-runs no-op on already-existing ids. Safe to run
+ * each time a new state's seed file is added.
  */
 
 const fs = require('node:fs');
@@ -181,6 +186,52 @@ function normalizeId() {
     }));
 }
 
+function normalizeAr() {
+  if (!fs.existsSync(path.join(__dirname, '..', 'data', 'seed', 'ar-raw.json'))) return [];
+  return loadJson('data/seed/ar-raw.json')
+    .filter((r) => r.water && r.date && /^\d{4}-\d{2}-\d{2}$/.test(r.date))
+    .map((r) => {
+      const water = r.water;
+      const locationName = r.county ? `${water} (${r.county} Co.)` : water;
+      const noteBits = ['Seeded from AGFC weekly fishing report.'];
+      if (r.hatchery) noteBits.push(`Hatchery: ${r.hatchery}.`);
+      if (r.notes) noteBits.push(r.notes);
+      return {
+        date: r.date,
+        locationName,
+        state: 'AR',
+        species: canonicalSpecies(r.species),
+        count: typeof r.count === 'number' ? r.count : undefined,
+        size: r.size,
+        source: 'ar-agfc',
+        notes: noteBits.join(' '),
+      };
+    });
+}
+
+function normalizeIl() {
+  if (!fs.existsSync(path.join(__dirname, '..', 'data', 'seed', 'il-raw.json'))) return [];
+  return loadJson('data/seed/il-raw.json')
+    .filter((r) => r.water && r.date && /^\d{4}-\d{2}-\d{2}$/.test(r.date))
+    .map((r) => {
+      const water = r.water;
+      const locationName = r.county ? `${water} (${r.county} Co.)` : water;
+      const noteBits = ['Seeded from IDNR spring trout stocking schedule.'];
+      if (r.region) noteBits.push(`Region: ${r.region}.`);
+      if (r.notes) noteBits.push(r.notes);
+      return {
+        date: r.date,
+        locationName,
+        state: 'IL',
+        species: canonicalSpecies(r.species ?? 'Rainbow Trout'),
+        count: typeof r.count === 'number' ? r.count : undefined,
+        size: r.size,
+        source: 'il-dnr',
+        notes: noteBits.join(' '),
+      };
+    });
+}
+
 // ---- Firestore REST helpers ------------------------------------------------
 
 /** Convert a JS value into Firestore's typed Value JSON. Handles only
@@ -252,8 +303,12 @@ async function writeIfMissing(accessToken, id, fields) {
   const ut = normalizeUt();
   const co = normalizeCo();
   const id = normalizeId();
-  const all = [...ut, ...co, ...id];
-  console.log(`Normalized: UT ${ut.length}, CO ${co.length}, ID ${id.length} = ${all.length} total`);
+  const ar = normalizeAr();
+  const il = normalizeIl();
+  const all = [...ut, ...co, ...id, ...ar, ...il];
+  console.log(
+    `Normalized: UT ${ut.length}, CO ${co.length}, ID ${id.length}, AR ${ar.length}, IL ${il.length} = ${all.length} total`
+  );
 
   let written = 0;
   let skipped = 0;
