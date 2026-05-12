@@ -99,19 +99,51 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  async function refreshStocking() {
+  /**
+   * Free refresh — re-reads the Firestore stockingEvents collection
+   * and re-computes the per-state summary. No Cloud Function call,
+   * no Anthropic credits. This is the button users tap when they
+   * want to see the current state of the database.
+   */
+  async function refreshView() {
     setScrapingStocking(true);
     try {
-      const res = await triggerStockingScrape();
+      await load();
+    } catch (e) {
+      setError(friendlyError(e));
+    } finally {
+      setScrapingStocking(false);
+    }
+  }
+
+  /**
+   * On-demand AI cron — triggers the full scrape with AI fallback
+   * enabled. Costs ~$0.75 in Anthropic credits per full run. Gated
+   * behind a confirmation prompt so it's an explicit decision.
+   * Once Anthropic credits are topped up this is how the user gets
+   * a fresh scrape without waiting for the Monday cron.
+   */
+  const [runningAi, setRunningAi] = useState(false);
+  async function runAiScrape() {
+    if (
+      !window.confirm(
+        'This runs the full DNR scrape with Claude AI fallback enabled. ' +
+          'Approx cost: $0.75 in Anthropic credits. Continue?'
+      )
+    )
+      return;
+    setRunningAi(true);
+    setScrapingStocking(true);
+    try {
+      const res = await triggerStockingScrape({ allowAi: true });
       setStockingDiagnostics(res.diagnostics ?? []);
-      // Auto-expand the diagnostics panel if any source didn't return
-      // 'ok' — that's exactly when the user needs to see why.
       const anyTrouble = (res.diagnostics ?? []).some((d) => d.status !== 'ok');
       if (anyTrouble) setShowDiagnostics(true);
       await load();
     } catch (e) {
       setError(friendlyError(e));
     } finally {
+      setRunningAi(false);
       setScrapingStocking(false);
     }
   }
@@ -376,15 +408,30 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
             <Button
               size="sm"
               variant="secondary"
-              onClick={refreshStocking}
+              onClick={refreshView}
               disabled={scrapingStocking}
+              title="Re-reads the Firestore database. Free — no Claude credits."
             >
-              {scrapingStocking ? (
+              {scrapingStocking && !runningAi ? (
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
               ) : (
                 <RefreshCcw className="w-3.5 h-3.5" />
               )}
-              {scrapingStocking ? 'Pulling DNRs…' : 'Refresh from DNRs'}
+              Refresh view
+            </Button>
+            <Button
+              size="sm"
+              variant="secondary"
+              onClick={runAiScrape}
+              disabled={scrapingStocking}
+              title="Runs full DNR scrape with Claude AI fallback. ~$0.75 in Anthropic credits."
+            >
+              {runningAi ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              ) : (
+                <Sparkles className="w-3.5 h-3.5" />
+              )}
+              {runningAi ? 'Running AI scrape…' : 'Run AI scrape now'}
             </Button>
             {stockingDiagnostics && stockingDiagnostics.length > 0 && (
               <Button
@@ -397,9 +444,10 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
             )}
           </div>
           <div className="mt-2 text-[10px] text-muted leading-snug">
-            Free CSV/HTML pulls only — AI extraction runs weekly via
-            the Monday cron (TN, MI, GA work today; other states fill
-            in once a week). Tapping this never spends Claude credits.
+            <b>Refresh view</b> — free Firestore re-read so you see the latest
+            data the cron / seed has written. <b>Run AI scrape now</b> — costs
+            ~$0.75 in Claude credits but pulls fresh records from every state
+            DNR's current data. Auto-runs every Monday 5 AM ET regardless.
           </div>
           {stockingDiagnostics && showDiagnostics && (
             <DiagnosticsPanel diagnostics={stockingDiagnostics} />

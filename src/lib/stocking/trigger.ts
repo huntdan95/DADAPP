@@ -39,14 +39,16 @@ export interface StockingScrapeResponse {
   ranAt: number;
 }
 
-export async function triggerStockingScrape(): Promise<StockingScrapeResponse> {
+export async function triggerStockingScrape(opts?: {
+  allowAi?: boolean;
+}): Promise<StockingScrapeResponse> {
   const app = getFirebaseApp();
   if (!app) throw new Error('Firebase not configured');
   const functions = getFunctions(app, 'us-central1');
-  const fn = httpsCallable<unknown, StockingScrapeResponse>(
+  const fn = httpsCallable<{ allowAi?: boolean }, StockingScrapeResponse>(
     functions,
     'triggerStockingScrape'
   );
-  const res = await fn({});
+  const res = await fn({ allowAi: opts?.allowAi === true });
   return res.data;
 }

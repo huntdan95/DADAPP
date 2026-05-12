@@ -496,17 +496,14 @@ export const scrapeStocking = onSchedule(
 
 /**
  * Callable — manual trigger so a user can poke a refresh from the
- * client (admin-style page or "refresh" button) and see results.
+ * client (System Health page) and see results.
  *
- * COST SAFETY: This callable explicitly disables AI fallback. Manual
- * clicks ONLY run the free CSV/HTML scrapers — TWRA, MI DNR, etc.
- * If the live scraper returns 0 records, we surface that as a
- * `parse_failed` / `fetch_failed` diagnostic instead of paying Claude.
- *
- * AI extraction is reserved for the once-weekly cron. If you really
- * want to force an AI pull on demand, do it via the Cloud Console
- * "Run now" on the `scrapeStocking` schedule — never wire that into
- * a button users can hammer.
+ * COST SAFETY: defaults to `allowAi: false` so a casual button tap
+ * runs only the free CSV/HTML scrapers. Pass `{ allowAi: true }` in
+ * the request data to explicitly enable Claude-backed extraction —
+ * costs ~$0.75 per full run, gated behind a separate UI button with
+ * a confirmation prompt. The anthropic key is bound so the AI path
+ * works when requested.
  */
 export const triggerStockingScrape = onCall(
   {
@@ -514,13 +511,16 @@ export const triggerStockingScrape = onCall(
     memory: '512MiB',
     timeoutSeconds: 540,
     invoker: 'public',
-    // No anthropic key — this path never calls Claude.
+    secrets: [anthropicApiKey],
   },
   async (request) => {
     if (!request.auth) {
       throw new HttpsError('unauthenticated', 'Must be signed in');
     }
-    const { results, diagnostics } = await runAll({ allowAi: false });
+    // Client opts into AI via `{ allowAi: true }`. Default false keeps
+    // the casual "refresh" button cost-free.
+    const allowAi = (request.data as { allowAi?: boolean })?.allowAi === true;
+    const { results, diagnostics } = await runAll({ allowAi });
     return {
       results,
       diagnostics,
