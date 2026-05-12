@@ -3,6 +3,7 @@ import { onCall, HttpsError } from 'firebase-functions/v2/https';
 import {
   anthropic,
   anthropicApiKey,
+  CALLABLE_CORS,
   checkAndIncrementUsage,
   MODELS,
   recordTokens,
@@ -187,7 +188,12 @@ async function runAnalyzePhoto(
 
   const params: Anthropic.Messages.MessageCreateParamsNonStreaming = {
     model,
-    max_tokens: 2000,
+    // Tool output is ~50-100 tokens. Adaptive thinking on Opus burns
+    // output budget, so the escalation pass gets 2000. The Haiku
+    // primary doesn't think — 600 is plenty for the tool call plus
+    // any preamble and prevents a runaway tool-loop from costing
+    // ~$0.01 instead of ~$0.003.
+    max_tokens: options.enableThinking ? 2000 : 600,
     system: SYSTEM_PROMPT,
     tools: [ANALYZE_PHOTO_TOOL],
     tool_choice: { type: 'tool', name: 'analyze_photo' },
@@ -235,6 +241,7 @@ export const analyzePhoto = onCall(
     timeoutSeconds: 90,
     secrets: [anthropicApiKey],
     invoker: 'public',
+    cors: CALLABLE_CORS,
   },
   async (request) => {
     const uid = requireAuth(request.auth?.uid);

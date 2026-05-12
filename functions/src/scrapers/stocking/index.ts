@@ -12,7 +12,11 @@ import {
 import { withFetchTrace } from './fetch';
 import { aiExtractStocking } from './aiExtract';
 import { FOCUS_WATERS } from './focusWaters';
-import { anthropicApiKey } from '../../claude/_shared';
+import {
+  anthropicApiKey,
+  CALLABLE_CORS,
+  checkAndStampActionCooldown,
+} from '../../claude/_shared';
 import { scrape as scrapeTwra } from './twra';
 import { scrape as scrapeGa } from './gaDnr';
 import { scrape as scrapeNc } from './ncWrc';
@@ -512,6 +516,7 @@ export const triggerStockingScrape = onCall(
     timeoutSeconds: 540,
     invoker: 'public',
     secrets: [anthropicApiKey],
+    cors: CALLABLE_CORS,
   },
   async (request) => {
     if (!request.auth) {
@@ -520,6 +525,19 @@ export const triggerStockingScrape = onCall(
     // Client opts into AI via `{ allowAi: true }`. Default false keeps
     // the casual "refresh" button cost-free.
     const allowAi = (request.data as { allowAi?: boolean })?.allowAi === true;
+
+    // Server-side cooldown — the frontend has a confirmation modal
+    // for the AI path, but a stale tab or misbehaving client can
+    // bypass that. ~$0.75/run with AI, so a 5-minute lockout per
+    // user is the cheapest insurance against blowing the $5/month
+    // budget on rapid clicks. Free-path (allowAi=false) gets a
+    // tighter 30-second cooldown.
+    await checkAndStampActionCooldown(
+      request.auth.uid,
+      allowAi ? 'stockingScrape:ai' : 'stockingScrape:free',
+      allowAi ? 5 * 60_000 : 30_000
+    );
+
     const { results, diagnostics } = await runAll({ allowAi });
     return {
       results,

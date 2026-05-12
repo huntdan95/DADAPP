@@ -3,6 +3,10 @@ import { onCall, HttpsError } from 'firebase-functions/v2/https';
 import { logger } from 'firebase-functions';
 import { getFirestore, FieldValue } from 'firebase-admin/firestore';
 import { CURATED_LAUNCHES } from './curatedLaunches';
+import {
+  CALLABLE_CORS,
+  checkAndStampActionCooldown,
+} from '../claude/_shared';
 
 /**
  * Seeds boat launches into Firestore from OpenStreetMap via the Overpass
@@ -389,11 +393,31 @@ export const seedBoatLaunchesCallable = onCall(
     // 17 states — see callSeedBoatLaunches() on the client.
     timeoutSeconds: 540,
     invoker: 'public',
+    cors: CALLABLE_CORS,
   },
   async (request) => {
     if (!request.auth) {
       throw new HttpsError('unauthenticated', 'Must be signed in');
     }
+    // Server-side cooldown — frontend gates via a 30-min localStorage
+    // check, but that's client-trusted only. 5-min server cooldown
+    // per user-per-action is the defense-in-depth: an over-eager
+    // refresh-spammer can't burn 9-minute / 1GiB Overpass scrapes
+    // back-to-back. The client's chunked-scrape flow (4 chunks for
+    // 17 states) lands them ~30s apart, well inside any client gate
+    // but distinct calls — we exempt the chunked-scrape pattern via
+    // a per-chunk action key.
+    const chunkKey =
+      Array.isArray((request.data as { states?: unknown }).states)
+        ? `seedBoatLaunches:chunk`
+        : `seedBoatLaunches:full`;
+    await checkAndStampActionCooldown(
+      request.auth.uid,
+      chunkKey,
+      // 10 seconds per chunk (chunks fire sequentially in practice,
+      // but we want to block a fresh tab from racing them).
+      10_000
+    );
     // Optional `states` array: when provided, scrape only those.
     // Validates against the canonical STATES list so a typo doesn't
     // wedge us into an unknown state. Empty / missing → all 17.

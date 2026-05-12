@@ -3,6 +3,7 @@ import { onCall, HttpsError } from 'firebase-functions/v2/https';
 import {
   anthropic,
   anthropicApiKey,
+  CALLABLE_CORS,
   checkAndIncrementUsage,
   MODELS,
   recordTokens,
@@ -235,7 +236,10 @@ async function runIdentifyFly(
 
   const params: Anthropic.Messages.MessageCreateParamsNonStreaming = {
     model,
-    max_tokens: 2000,
+    // Same logic as analyzePhoto: Haiku primary needs ~600 tokens
+    // for the tool call; Opus escalation burns more because adaptive
+    // thinking eats output budget.
+    max_tokens: options.enableThinking ? 2000 : 600,
     system: SYSTEM_PROMPT,
     tools: [IDENTIFY_FLY_TOOL],
     tool_choice: { type: 'tool', name: 'identify_fly' },
@@ -280,15 +284,7 @@ export const identifyFly = onCall(
     timeoutSeconds: 90,
     secrets: [anthropicApiKey],
     invoker: 'public',
-    cors: [
-      'https://fishingdads.app',
-      'https://www.fishingdads.app',
-      'https://dadapp-2cef8.web.app',
-      'https://dadapp-2cef8.firebaseapp.com',
-      /\.web\.app$/,
-      /\.firebaseapp\.com$/,
-      'http://localhost:5173',
-    ],
+    cors: CALLABLE_CORS,
   },
   async (request) => {
     const uid = requireAuth(request.auth?.uid);

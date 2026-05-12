@@ -462,10 +462,15 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
             </div>
           ) : aiToday ? (
             <div className="flex flex-col gap-1.5 text-sm">
+              {/* Caps mirror functions/src/claude/_shared.ts DAILY_CAPS.
+                  The identifySpecies bucket is shared by analyzePhoto +
+                  identifyFly (vision is one budget). Keep these in sync
+                  with the backend or the dashboard misleads users about
+                  their remaining quota. */}
               <AiRow label="Briefing" calls={aiToday.briefing} cap={5} />
-              <AiRow label="Photo / species ID" calls={aiToday.identifySpecies} cap={10} />
-              <AiRow label="Patterns Q&A" calls={aiToday.patterns} cap={10} />
-              <AiRow label="Parse journal" calls={aiToday.parseJournal} cap={20} />
+              <AiRow label="Photo / species + fly ID" calls={aiToday.identifySpecies} cap={5} />
+              <AiRow label="Patterns Q&A" calls={aiToday.patterns} cap={5} />
+              <AiRow label="Parse journal" calls={aiToday.parseJournal} cap={15} />
             </div>
           ) : (
             <div className="text-xs text-muted">

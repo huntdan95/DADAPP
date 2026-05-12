@@ -5,6 +5,7 @@ import { FieldValue, getFirestore } from 'firebase-admin/firestore';
 import {
   anthropic,
   anthropicApiKey,
+  CALLABLE_CORS,
   checkAndIncrementUsage,
   MODELS,
   recordTokens,
@@ -226,6 +227,7 @@ export const briefing = onCall(
     timeoutSeconds: 30,
     secrets: [anthropicApiKey],
     invoker: 'public',
+    cors: CALLABLE_CORS,
   },
   async (request) => {
     const uid = requireAuth(request.auth?.uid);

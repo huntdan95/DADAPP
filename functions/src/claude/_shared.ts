@@ -78,6 +78,28 @@ export const DAILY_CAPS = {
 
 export type AiFeature = keyof typeof DAILY_CAPS;
 
+/**
+ * Shared CORS allowlist for v2 onCall functions.
+ *
+ * v2 callables advertised as `invoker: 'public'` still need explicit
+ * `cors: [...]` on the custom domain (`fishingdads.app`) or the
+ * browser's preflight OPTIONS request fails before our function ever
+ * runs. Default Firebase Hosting origins cover *.web.app /
+ * *.firebaseapp.com but NOT the custom domain.
+ *
+ * Use this constant on every onCall so a new domain change only
+ * requires one edit.
+ */
+export const CALLABLE_CORS = [
+  'https://fishingdads.app',
+  'https://www.fishingdads.app',
+  'https://dadapp-2cef8.web.app',
+  'https://dadapp-2cef8.firebaseapp.com',
+  /\.web\.app$/,
+  /\.firebaseapp\.com$/,
+  'http://localhost:5173',
+];
+
 function db() {
   return getFirestore();
 }
@@ -149,6 +171,42 @@ export async function checkAndIncrementUsage(
       },
       { merge: true }
     );
+  });
+}
+
+/**
+ * Per-user server-side cooldown for expensive non-AI callables
+ * (stocking scrape, boat-launch seeder). The frontend has its own
+ * client-side gates, but those are trusted-by-the-client only; a
+ * misbehaving client or a re-deployed build with a stale cache can
+ * blow past them. This is the defense-in-depth layer.
+ *
+ * Each cooldown lives at `actionCooldowns/{uid}/actions/{action}`
+ * with `{ atMs }`. The cooldown is per-user-per-action so a stocking
+ * scrape doesn't block a boat-launch refresh.
+ *
+ * Throws `resource-exhausted` if invoked within `cooldownMs` of the
+ * last successful call. On success it stamps the doc with the new
+ * timestamp.
+ */
+export async function checkAndStampActionCooldown(
+  uid: string,
+  action: string,
+  cooldownMs: number
+): Promise<void> {
+  const ref = db().doc(`actionCooldowns/${uid}/actions/${action}`);
+  await db().runTransaction(async (tx) => {
+    const snap = await tx.get(ref);
+    const lastMs = (snap.data()?.atMs as number | undefined) ?? 0;
+    const sinceLast = Date.now() - lastMs;
+    if (lastMs > 0 && sinceLast < cooldownMs) {
+      const waitSec = Math.ceil((cooldownMs - sinceLast) / 1000);
+      throw new HttpsError(
+        'resource-exhausted',
+        `Slow down — wait ${waitSec}s before another ${action}.`
+      );
+    }
+    tx.set(ref, { atMs: Date.now(), action }, { merge: true });
   });
 }
 

@@ -3,6 +3,7 @@ import { onCall, HttpsError } from 'firebase-functions/v2/https';
 import {
   anthropic,
   anthropicApiKey,
+  CALLABLE_CORS,
   checkAndIncrementUsage,
   MODELS,
   recordTokens,
@@ -48,6 +49,7 @@ export const parseJournal = onCall(
     timeoutSeconds: 30,
     secrets: [anthropicApiKey],
     invoker: 'public',
+    cors: CALLABLE_CORS,
   },
   async (request) => {
     const uid = requireAuth(request.auth?.uid);

@@ -8,10 +8,15 @@ import { logger } from 'firebase-functions';
  * layer) which is heavy for a single-user app.
  *
  * Manual entry from the client is the supported path until this is built.
+ *
+ * Schedule throttled to once-daily — was firing 8x/day for a stub which
+ * just polluted logs and pre-warmed a function that does nothing useful.
+ * When this is actually implemented, restore the 5-7 PM ET window where
+ * TVA posts next-day schedules.
  */
 export const scrapeTva = onSchedule(
   {
-    schedule: '0 6,17,18,19,20,21,22,23 * * *',
+    schedule: '0 6 * * *',
     timeZone: 'America/New_York',
     region: 'us-central1',
     memory: '256MiB',

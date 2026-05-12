@@ -20,6 +20,7 @@ import { FieldValue, getFirestore } from 'firebase-admin/firestore';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { deriveStockingId, type StockingSource } from './types';
+import { CALLABLE_CORS } from '../../claude/_shared';
 
 // ----- raw-record normalizers (mirror scripts/seed-western-stocking.cjs) ----
 //
@@ -287,18 +288,9 @@ export const seedStockingFromBundle = onCall(
     timeoutSeconds: 540,
     invoker: 'public',
     // Explicit CORS — the app is served from BOTH the default Firebase
-    // Hosting domain AND a custom domain (fishingdads.app). Without
-    // these allowed origins the preflight OPTIONS request gets blocked
-    // by Cloud Run before the function even sees the call.
-    cors: [
-      'https://fishingdads.app',
-      'https://www.fishingdads.app',
-      'https://dadapp-2cef8.web.app',
-      'https://dadapp-2cef8.firebaseapp.com',
-      /\.web\.app$/,
-      /\.firebaseapp\.com$/,
-      'http://localhost:5173',           // dev
-    ],
+    // Hosting domain AND a custom domain (fishingdads.app). Shared
+    // allowlist in _shared.ts; one edit point if the domain changes.
+    cors: CALLABLE_CORS,
     // No anthropic key — pure data load, no Claude calls.
   },
   async (request) => {
