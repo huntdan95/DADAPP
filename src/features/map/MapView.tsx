@@ -16,10 +16,12 @@ import { BoatLaunchLayer } from './BoatLaunchLayer';
 import { BoatLaunchSheet } from './BoatLaunchSheet';
 import { AddLaunchForm } from './AddLaunchForm';
 import { MapSearch } from './MapSearch';
+import { UserLocationMarker } from './UserLocationMarker';
 import type { Location } from '@/lib/providers/types';
 import { ConditionsCard } from '@/features/conditions/ConditionsCard';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { getLocationStore } from '@/lib/store';
+import { useUserLocation } from '@/lib/userLocation';
 
 const LocationForm = lazy(() =>
   import('@/features/locations/LocationForm').then((m) => ({ default: m.LocationForm }))
@@ -92,8 +94,13 @@ export function MapView({
     label: string;
   } | null>(null);
   const [selectedLaunch, setSelectedLaunch] = useState<BoatLaunch | null>(null);
-  /** Device geolocation — captured on mount, displayed as a blue dot. */
-  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+  /**
+   * Device geolocation — shared across every map in the app via the
+   * `useUserLocation` hook (module-scoped cache + single permission
+   * prompt per session). The Map tab passes `watch: true` so the dot
+   * tracks live as the user moves; mini-maps elsewhere stay one-shot.
+   */
+  const userLocation = useUserLocation({ watch: true });
   const [legendOpen, setLegendOpen] = useState(false);
   const [seeding, setSeeding] = useState(false);
   const [seedError, setSeedError] = useState<string | null>(null);
@@ -118,19 +125,9 @@ export function MapView({
     // this effect re-fire even if the id is the same.
   }, [focus, locations]);
 
-  // Try to fix our position on mount so we can show "you are here" without
-  // requiring the user to tap anything. If permission is denied we just
-  // skip — they can still drive the map manually.
-  useEffect(() => {
-    if (!('geolocation' in navigator)) return;
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-      },
-      () => undefined,
-      { enableHighAccuracy: false, timeout: 8000, maximumAge: 5 * 60_000 }
-    );
-  }, []);
+  // (Geolocation now flows from useUserLocation above — module-scoped
+  //  cache + watchPosition refcount handles permission prompts and
+  //  live updates once, shared across every map in the app.)
 
   // Stale-while-revalidate load. localStorage cache fires synchronously
   // (or near-so) on second+ visits, and the background revalidation only
@@ -281,11 +278,11 @@ export function MapView({
           onLaunchClick={setSelectedLaunch}
         />
 
-        {userLocation && (
-          <Marker position={[userLocation.lat, userLocation.lng]} icon={youIcon}>
-            <Popup>You are here</Popup>
-          </Marker>
-        )}
+        {/* Shared "you are here" overlay — watches live updates so
+            the dot moves as the user drives. Every map in the app
+            uses this component (mini-maps gate it via maxDistanceMi). */}
+        <UserLocationMarker watch />
+
 
         {searchPin && (
           <Marker
@@ -729,14 +726,8 @@ function formatEta(seconds: number | null): string | undefined {
   return `~${mins} min left`;
 }
 
-const youIcon = L.divIcon({
-  html: `<div style="position:relative;width:18px;height:18px">
-    <div style="position:absolute;inset:0;border-radius:50%;background:#3b82f6;border:3px solid #fff;box-shadow:0 0 0 2px #3b82f6"></div>
-  </div>`,
-  className: '',
-  iconSize: [18, 18],
-  iconAnchor: [9, 9],
-});
+// (youIcon moved to `src/features/map/UserLocationMarker.tsx` — every
+//  map in the app now uses the shared component for "you are here".)
 
 /**
  * Temporary "I searched for this" pin. Yellow/amber so it's visually

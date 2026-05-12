@@ -6,6 +6,7 @@ import { Crosshair, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Field, Input, Select } from '@/components/ui/Input';
 import { BASEMAPS } from './basemaps';
+import { UserLocationMarker } from './UserLocationMarker';
 import { friendlyError } from '@/lib/errors';
 import { Timestamp } from 'firebase/firestore';
 import { reverseGeocode } from '@/lib/geo/reverseGeocode';
@@ -172,9 +173,12 @@ export function AddLaunchForm({
             center={center}
             zoom={initialCenter ? 14 : 4}
             scrollWheelZoom
-            className="h-full w-full"
+            className="h-full w-full cursor-crosshair"
           >
             <TileLayer url={BASEMAPS.osm.url} attribution={BASEMAPS.osm.attribution} />
+            {/* Shared "you are here" overlay so the launch picker
+                shows the user's position alongside the drop pin. */}
+            <UserLocationMarker />
             <PinPicker
               lat={lat}
               lng={lng}

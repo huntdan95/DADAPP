@@ -18,6 +18,7 @@ import type {
 } from '@/lib/waterbodies/types';
 import { buildFishMarker } from '@/features/map/fishMarker';
 import { BASEMAPS } from '@/features/map/basemaps';
+import { UserLocationMarker } from '@/features/map/UserLocationMarker';
 
 /**
  * Detail view for a single waterbody. Lives in a bottom sheet so it
@@ -161,6 +162,15 @@ export function WaterbodyDetailSheet({
                   <Marker
                     position={[waterbody.lat, waterbody.lng]}
                     icon={markerIcon}
+                  />
+                  {/* "You are here" overlay — gated to 75 mi (wider
+                      than the stocking sheet's 50 mi because
+                      waterbodies are shown at lower zoom). Hidden
+                      when the user is way out of frame. */}
+                  <UserLocationMarker
+                    maxDistanceMi={75}
+                    anchor={{ lat: waterbody.lat, lng: waterbody.lng }}
+                    showAccuracy={false}
                   />
                 </MapContainer>
               </div>

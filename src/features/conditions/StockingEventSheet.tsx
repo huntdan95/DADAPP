@@ -14,6 +14,7 @@ import type { StockingEvent } from '@/lib/stocking/types';
 import { geocodeWater, type GeocodeResult } from '@/lib/stocking/geocode';
 import { buildFishMarker } from '@/features/map/fishMarker';
 import { BASEMAPS } from '@/features/map/basemaps';
+import { UserLocationMarker } from '@/features/map/UserLocationMarker';
 
 /**
  * Per-event detail sheet for the stocking banner.
@@ -211,6 +212,15 @@ export function StockingEventSheet({
                   <Marker
                     position={[resolved.lat, resolved.lng]}
                     icon={markerIcon}
+                  />
+                  {/* "You are here" overlay — gated to 50 mi so a
+                      stocking event in central MI doesn't render a
+                      meaningless dot for a user in TN. The shared
+                      hook is module-cached so no extra GPS hit. */}
+                  <UserLocationMarker
+                    maxDistanceMi={50}
+                    anchor={{ lat: resolved.lat, lng: resolved.lng }}
+                    showAccuracy={false}
                   />
                 </MapContainer>
               </div>

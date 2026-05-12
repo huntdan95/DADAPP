@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/Button';
 import { Field, Input, Select } from '@/components/ui/Input';
 import { BASEMAPS } from '@/features/map/basemaps';
 import { MapSearch } from '@/features/map/MapSearch';
+import { UserLocationMarker } from '@/features/map/UserLocationMarker';
 import { friendlyError } from '@/lib/errors';
 import {
   nearestUsgsGauges,
@@ -636,8 +637,12 @@ export function LocationForm({
       <Field
         label="Name"
         hint={
-          nameSuggestion && !name
-            ? `Suggested: ${nameSuggestion} — tap to use`
+          // Show the suggestion hint whenever there's a suggestion AND it
+          // differs from what's in the field. Previously only shown when
+          // the field was empty, so users who tweaked-and-retried lost
+          // the affordance.
+          nameSuggestion && nameSuggestion !== name
+            ? `Suggested: ${nameSuggestion} — tap "Use" to replace`
             : undefined
         }
       >
@@ -647,12 +652,13 @@ export function LocationForm({
             onChange={(e) => setName(e.target.value)}
             placeholder={nameSuggestion ?? 'e.g. Caney Fork at Happy Hollow'}
           />
-          {nameSuggestion && !name && (
+          {nameSuggestion && nameSuggestion !== name && (
             <Button
               type="button"
               variant="secondary"
               size="sm"
               onClick={() => setName(nameSuggestion)}
+              title={`Use "${nameSuggestion}"`}
             >
               Use
             </Button>
@@ -713,7 +719,17 @@ export function LocationForm({
             {locating ? 'Locating…' : 'Use my location'}
           </Button>
         </div>
-        <div className="relative h-56 rounded-xl overflow-hidden border border-border">
+        {/* Tap-to-drop discoverability — shown only until the user
+            has actually placed a pin. Pairs with the crosshair cursor
+            on the map container so the map LOOKS interactive instead
+            of decorative. */}
+        {lat == null && lng == null && (
+          <div className="text-[11px] text-info bg-info/10 border border-info/30 rounded-lg px-2.5 py-1.5 mb-1.5 leading-snug">
+            Tap the map to drop your pin — or use{' '}
+            <b>📍 Use my location</b> to drop at your current location.
+          </div>
+        )}
+        <div className="relative h-72 rounded-xl overflow-hidden border border-border">
           <MapContainer
             center={initialCenter}
             zoom={initial ? 11 : 4}
@@ -722,10 +738,16 @@ export function LocationForm({
             // is. Disable default and re-add at bottom-right so the
             // search input has the full top edge.
             zoomControl={false}
-            className="h-full w-full"
+            // `cursor-crosshair` makes the tap-to-drop affordance
+            // obvious — users see this map IS for clicking.
+            className="h-full w-full cursor-crosshair"
           >
             <ZoomControl position="bottomright" />
             <TileLayer url={BASEMAPS.osm.url} attribution={BASEMAPS.osm.attribution} />
+            {/* "You are here" overlay — shared component, one-shot
+                (not watch). Helps the user judge how far the pin is
+                from where they're actually standing. */}
+            <UserLocationMarker />
             <PinPicker lat={lat} lng={lng} onSet={(la, ln) => {
               setLat(la);
               setLng(ln);
@@ -766,6 +788,47 @@ export function LocationForm({
             </div>
           )}
         </div>
+        {/* Manual lat/lng fallback. The map-search + GPS button cover
+            ~99% of cases, but if a user knows the exact coords from a
+            paper guide or wants to revisit an old waypoint, typing
+            them in is faster than panning the map. Inputs validate to
+            normal earth bounds and apply on blur so partial typing
+            doesn't fire the auto-detect chain. */}
+        <details className="mt-1.5 text-xs">
+          <summary className="cursor-pointer text-muted hover:text-text select-none">
+            Enter coords manually
+          </summary>
+          <div className="mt-1.5 flex items-center gap-2">
+            <input
+              type="number"
+              inputMode="decimal"
+              step="0.0001"
+              placeholder="latitude"
+              defaultValue={lat ?? ''}
+              onBlur={(e) => {
+                const v = parseFloat(e.target.value);
+                if (Number.isFinite(v) && v >= -90 && v <= 90) setLat(v);
+              }}
+              className="h-9 flex-1 px-2 rounded-lg bg-surface-2 border border-border focus:border-accent/60 outline-none text-xs num"
+            />
+            <input
+              type="number"
+              inputMode="decimal"
+              step="0.0001"
+              placeholder="longitude"
+              defaultValue={lng ?? ''}
+              onBlur={(e) => {
+                const v = parseFloat(e.target.value);
+                if (Number.isFinite(v) && v >= -180 && v <= 180) setLng(v);
+              }}
+              className="h-9 flex-1 px-2 rounded-lg bg-surface-2 border border-border focus:border-accent/60 outline-none text-xs num"
+            />
+          </div>
+          <div className="mt-1 text-[10px] text-muted">
+            Decimal degrees only. Negative longitude for the Western
+            Hemisphere (e.g. <span className="num">-85.8310</span>).
+          </div>
+        </details>
         {autoStatus && (
           <div className="mt-1.5 flex flex-wrap gap-1.5">
             {autoStatus.split(' · ').map((chip, i) => (
