@@ -26,6 +26,8 @@ import { useAuth } from '@/lib/useAuth';
 import { signOutCurrent } from '@/lib/firebase';
 import { seedLocations } from '@/seedLocations';
 import { prefetchConditionsForSpots } from '@/lib/prefetch';
+import { prefetchStockingForStates } from '@/lib/stocking/store';
+import { loadBoatLaunchesCached } from '@/lib/boatLaunches/store';
 import { useOnline } from '@/lib/useOnline';
 import { drainPhotoQueue, pendingPhotoCount } from '@/lib/log/photoQueue';
 
@@ -161,9 +163,31 @@ export default function App() {
   // Silent background prefetch of conditions for every saved spot when
   // we're on a fast / Wi-Fi connection. Pre-warms the service-worker
   // cache so opening the Conditions tab feels instant.
+  //
+  // Also pre-warms the stocking-events cache for every state the user
+  // has spots in AND the entire shared boat-launches dataset. Both
+  // hit localStorage caches with stale-while-revalidate so the next
+  // visit to any spot's banner / the map's launch layer is instant.
   useEffect(() => {
     if (locations.length === 0) return;
+    // Don't block — fire all three in parallel.
     prefetchConditionsForSpots(locations).catch(() => undefined);
+
+    const states = Array.from(
+      new Set(
+        locations
+          .map((l) => l.state)
+          .filter((s): s is string => !!s && s.length > 0)
+      )
+    );
+    if (states.length > 0) {
+      prefetchStockingForStates(states).catch(() => undefined);
+    }
+
+    // Trigger the boat-launch loader — uses its own SWR cache, so
+    // this is effectively "wake up the cache" and noop on subsequent
+    // renders.
+    loadBoatLaunchesCached().catch(() => undefined);
   }, [locations]);
 
   // Drain the offline photo-upload queue whenever we're online — on

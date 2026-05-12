@@ -32,6 +32,56 @@ function db() {
 
 const colName = 'stockingEvents';
 
+// ---- Per-state cache (mirrors boat-launches stale-while-revalidate) -------
+//
+// Stocking events change at most weekly (Monday cron). A spot in MI / TN / GA
+// can reuse the same state's event list across every visit, AND across
+// every USER who has spots in that state. With Firestore offline
+// persistence already enabled by firebase.ts, repeat reads are already
+// fast — but a localStorage layer makes the FIRST paint instant even
+// before Firestore's offline cache has been populated (e.g. fresh
+// install, private browsing, after clearing storage).
+
+const STOCKING_CACHE_PREFIX = 'dad-fishing.stocking.v1.';
+/** Cache validity. Stocking dataset only changes weekly via the cron. */
+const STOCKING_CACHE_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;       // 7 days
+
+interface StockingCachePayload {
+  cachedAt: number;
+  state: string;
+  events: StockingEvent[];
+}
+
+function stockingCacheKey(state: string): string {
+  return `${STOCKING_CACHE_PREFIX}${state.toUpperCase()}`;
+}
+
+function readStockingCache(state: string): StockingEvent[] | null {
+  try {
+    const raw = localStorage.getItem(stockingCacheKey(state));
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as StockingCachePayload;
+    if (!parsed?.events || !Array.isArray(parsed.events)) return null;
+    if (Date.now() - parsed.cachedAt > STOCKING_CACHE_MAX_AGE_MS) return null;
+    return parsed.events;
+  } catch {
+    return null;
+  }
+}
+
+function writeStockingCache(state: string, events: StockingEvent[]): void {
+  try {
+    const payload: StockingCachePayload = {
+      cachedAt: Date.now(),
+      state: state.toUpperCase(),
+      events,
+    };
+    localStorage.setItem(stockingCacheKey(state), JSON.stringify(payload));
+  } catch {
+    // localStorage quota — silently ignore.
+  }
+}
+
 export async function saveStockingEvent(
   event: Omit<StockingEvent, 'createdAt'>
 ): Promise<void> {
@@ -85,6 +135,13 @@ export function watchStockingWindowByState(
 ): () => void {
   const daysBack = opts.daysBack ?? 90;        // ~one season of history
   const daysForward = opts.daysForward ?? 90;  // upcoming season
+
+  // Instant paint from localStorage cache (if available and fresh).
+  // The banner sees data on the very first frame; the Firestore
+  // subscription below replaces it with the live version when ready.
+  const cached = readStockingCache(state);
+  if (cached) cb(cached);
+
   const startMs = Date.now() - daysBack * 86_400_000;
   const endMs = Date.now() + daysForward * 86_400_000;
   const startDate = new Date(startMs).toISOString().slice(0, 10);
@@ -98,8 +155,48 @@ export function watchStockingWindowByState(
     fsLimit(300)
   );
   return onSnapshot(q, (snap) => {
-    cb(snap.docs.map((d) => d.data() as StockingEvent));
+    const events = snap.docs.map((d) => d.data() as StockingEvent);
+    // Write-through to localStorage so the NEXT app-load paints from
+    // cache without waiting for the network.
+    writeStockingCache(state, events);
+    cb(events);
   });
+}
+
+/**
+ * One-shot prefetch for a set of states. Fire-and-forget — no return
+ * value. Used at app boot to pre-warm the localStorage cache for the
+ * states the user has spots in, so opening any spot's banner is
+ * instant. Idempotent: re-running just refreshes the cache.
+ */
+export async function prefetchStockingForStates(states: string[]): Promise<void> {
+  const unique = Array.from(new Set(states.map((s) => s.toUpperCase())));
+  if (unique.length === 0) return;
+  await Promise.all(
+    unique.map(async (state) => {
+      const daysBack = 90;
+      const daysForward = 90;
+      const startMs = Date.now() - daysBack * 86_400_000;
+      const endMs = Date.now() + daysForward * 86_400_000;
+      const startDate = new Date(startMs).toISOString().slice(0, 10);
+      const endDate = new Date(endMs).toISOString().slice(0, 10);
+      try {
+        const q = query(
+          collection(db(), colName),
+          where('state', '==', state),
+          where('date', '>=', startDate),
+          where('date', '<=', endDate),
+          orderBy('date', 'desc'),
+          fsLimit(300)
+        );
+        const snap = await getDocs(q);
+        const events = snap.docs.map((d) => d.data() as StockingEvent);
+        writeStockingCache(state, events);
+      } catch {
+        // Best-effort prefetch — silent.
+      }
+    })
+  );
 }
 
 /** One-shot read of recent events near a location. */

@@ -19,10 +19,6 @@ import { Card, CardHeader, CardSubtitle, CardTitle } from '@/components/ui/Card'
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { getFirebaseApp, getFirebaseAuth } from '@/lib/firebase';
 import { pendingPhotoCount } from '@/lib/log/photoQueue';
-import {
-  triggerStockingScrape,
-  type StockingScrapeDiagnostic,
-} from '@/lib/stocking/trigger';
 import { callSeedBoatLaunches, STATES as LAUNCH_STATES } from '@/lib/boatLaunches/store';
 import { Button } from '@/components/ui/Button';
 import { friendlyError } from '@/lib/errors';
@@ -54,10 +50,6 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
   const [photoQueue, setPhotoQueue] = useState<number>(0);
 
   const [scrapingStocking, setScrapingStocking] = useState(false);
-  const [stockingDiagnostics, setStockingDiagnostics] = useState<
-    StockingScrapeDiagnostic[] | null
-  >(null);
-  const [showDiagnostics, setShowDiagnostics] = useState(false);
   const [seedingLaunches, setSeedingLaunches] = useState(false);
   const [seedingMissing, setSeedingMissing] = useState(false);
   const [seedProgress, setSeedProgress] = useState<{
@@ -102,8 +94,9 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
   /**
    * Free refresh — re-reads the Firestore stockingEvents collection
    * and re-computes the per-state summary. No Cloud Function call,
-   * no Anthropic credits. This is the button users tap when they
-   * want to see the current state of the database.
+   * no Anthropic credits. This is the only refresh action — fresh
+   * AI extraction happens automatically every Monday 5 AM ET via
+   * the scheduled cron.
    */
   async function refreshView() {
     setScrapingStocking(true);
@@ -112,38 +105,6 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
     } catch (e) {
       setError(friendlyError(e));
     } finally {
-      setScrapingStocking(false);
-    }
-  }
-
-  /**
-   * On-demand AI cron — triggers the full scrape with AI fallback
-   * enabled. Costs ~$0.75 in Anthropic credits per full run. Gated
-   * behind a confirmation prompt so it's an explicit decision.
-   * Once Anthropic credits are topped up this is how the user gets
-   * a fresh scrape without waiting for the Monday cron.
-   */
-  const [runningAi, setRunningAi] = useState(false);
-  async function runAiScrape() {
-    if (
-      !window.confirm(
-        'This runs the full DNR scrape with Claude AI fallback enabled. ' +
-          'Approx cost: $0.75 in Anthropic credits. Continue?'
-      )
-    )
-      return;
-    setRunningAi(true);
-    setScrapingStocking(true);
-    try {
-      const res = await triggerStockingScrape({ allowAi: true });
-      setStockingDiagnostics(res.diagnostics ?? []);
-      const anyTrouble = (res.diagnostics ?? []).some((d) => d.status !== 'ok');
-      if (anyTrouble) setShowDiagnostics(true);
-      await load();
-    } catch (e) {
-      setError(friendlyError(e));
-    } finally {
-      setRunningAi(false);
       setScrapingStocking(false);
     }
   }
@@ -412,46 +373,19 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
               disabled={scrapingStocking}
               title="Re-reads the Firestore database. Free — no Claude credits."
             >
-              {scrapingStocking && !runningAi ? (
+              {scrapingStocking ? (
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
               ) : (
                 <RefreshCcw className="w-3.5 h-3.5" />
               )}
               Refresh view
             </Button>
-            <Button
-              size="sm"
-              variant="secondary"
-              onClick={runAiScrape}
-              disabled={scrapingStocking}
-              title="Runs full DNR scrape with Claude AI fallback. ~$0.75 in Anthropic credits."
-            >
-              {runningAi ? (
-                <Loader2 className="w-3.5 h-3.5 animate-spin" />
-              ) : (
-                <Sparkles className="w-3.5 h-3.5" />
-              )}
-              {runningAi ? 'Running AI scrape…' : 'Run AI scrape now'}
-            </Button>
-            {stockingDiagnostics && stockingDiagnostics.length > 0 && (
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => setShowDiagnostics((s) => !s)}
-              >
-                {showDiagnostics ? 'Hide' : 'Show'} per-source diagnostics
-              </Button>
-            )}
           </div>
           <div className="mt-2 text-[10px] text-muted leading-snug">
-            <b>Refresh view</b> — free Firestore re-read so you see the latest
-            data the cron / seed has written. <b>Run AI scrape now</b> — costs
-            ~$0.75 in Claude credits but pulls fresh records from every state
-            DNR's current data. Auto-runs every Monday 5 AM ET regardless.
+            Tap to re-read the database. Fresh DNR records are pulled
+            automatically every <b>Monday 5 AM ET</b> by the scheduled
+            cron — shared across every user, no per-tap cost.
           </div>
-          {stockingDiagnostics && showDiagnostics && (
-            <DiagnosticsPanel diagnostics={stockingDiagnostics} />
-          )}
         </div>
       </Card>
 
@@ -764,128 +698,6 @@ function AiRow({
       </div>
     </div>
   );
-}
-
-/**
- * Per-source diagnostic panel. Shows what each state-DNR scraper
- * actually fetched and why it might have returned 0 records. Color-
- * codes by status — green ok, yellow stub, red fetch/parse failures.
- *
- * The body snippet is intentionally short (~240 chars from the
- * server) and stripped of HTML tags so it's readable in a phone
- * viewport. Long enough to tell whether the page returned a real
- * stocking table, a redirect notice, a 404 page, or a JS-rendered
- * shell with no content.
- */
-function DiagnosticsPanel({
-  diagnostics,
-}: {
-  diagnostics: StockingScrapeDiagnostic[];
-}) {
-  const order: StockingScrapeDiagnostic['status'][] = [
-    'ai_credits_low',
-    'ai_failed',
-    'fetch_failed',
-    'parse_failed',
-    'empty',
-    'stub',
-    'ok',
-  ];
-  const sorted = [...diagnostics].sort(
-    (a, b) =>
-      order.indexOf(a.status) - order.indexOf(b.status) ||
-      a.source.localeCompare(b.source)
-  );
-  return (
-    <div className="mt-3 flex flex-col gap-2">
-      <div className="text-[11px] text-muted">
-        For each source: status, URL fetched, HTTP status, and a snippet
-        of the body. Tap a URL to open the DNR page in a new tab.
-      </div>
-      {sorted.map((d) => (
-        <DiagnosticRow key={d.source} d={d} />
-      ))}
-    </div>
-  );
-}
-
-function DiagnosticRow({ d }: { d: StockingScrapeDiagnostic }) {
-  const tone = statusTone(d.status);
-  return (
-    <div className={`rounded border ${tone.border} ${tone.bg} p-2`}>
-      <div className="flex items-center justify-between text-xs">
-        <span className={`font-mono ${tone.text}`}>
-          {d.source}
-        </span>
-        <span className={`font-mono ${tone.text}`}>
-          {d.status}
-          {d.httpStatus ? ` · HTTP ${d.httpStatus}` : ''}
-        </span>
-      </div>
-      {d.url && (
-        <div className="mt-1">
-          <a
-            href={d.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[11px] text-info underline break-all"
-          >
-            {d.url}
-          </a>
-        </div>
-      )}
-      {d.message && (
-        <div className="mt-1 text-[11px] text-muted">{d.message}</div>
-      )}
-      {d.bodySnippet && (
-        <div className="mt-1 text-[11px] text-muted font-mono break-words whitespace-pre-wrap">
-          {d.bodySnippet}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function statusTone(status: StockingScrapeDiagnostic['status']): {
-  border: string;
-  bg: string;
-  text: string;
-} {
-  switch (status) {
-    case 'ok':
-      return {
-        border: 'border-accent/30',
-        bg: 'bg-accent/5',
-        text: 'text-accent',
-      };
-    case 'stub':
-      return {
-        border: 'border-info/30',
-        bg: 'bg-info/5',
-        text: 'text-info',
-      };
-    case 'parse_failed':
-      return {
-        border: 'border-warn/40',
-        bg: 'bg-warn/5',
-        text: 'text-warn',
-      };
-    case 'ai_credits_low':
-    case 'ai_failed':
-    case 'fetch_failed':
-      return {
-        border: 'border-danger/40',
-        bg: 'bg-danger/5',
-        text: 'text-danger',
-      };
-    case 'empty':
-    default:
-      return {
-        border: 'border-white/10',
-        bg: 'bg-surface-2',
-        text: 'text-muted',
-      };
-  }
 }
 
 function formatAge(ms: number | null): string {
