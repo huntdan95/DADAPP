@@ -1654,7 +1654,15 @@
       "Size 8 orange / pink egg cluster (skein imitation)",
       "Size 10 single egg (peach, oregon-cheese)",
       "Size 6-8 articulated streamer (white / chartreuse)",
-      "Size 6 sucker spawn"
+      "Size 6 sucker spawn",
+      "Glo Bug — multiple colors",
+      "Estaz Egg — chartreuse / orange",
+      "Clown Egg — multi-color",
+      "Otter Egg",
+      "Crystal Meth",
+      "Steelhead Hammer",
+      "Nuke Egg",
+      "Size 8 sucker spawn (cream / pink)"
     ],
     "searchTerm": "king salmon eggs spawn fly Michigan",
     "wikipediaSlug": null,
@@ -1695,7 +1703,18 @@
       "Size 6 sucker spawn (white / cream)",
       "Size 8 nuke egg (Estaz, multi-color)",
       "Size 8 stonefly nymph (black or brown)",
-      "Size 6-8 articulated swung pattern"
+      "Size 6-8 articulated swung pattern",
+      "Glo Bug",
+      "Estaz Egg (peach / chartreuse / oregon-cheese)",
+      "Clown Egg — Michigan favorite",
+      "Otter Egg",
+      "Crystal Meth",
+      "Steelhead Hammer",
+      "Nuke Egg",
+      "Sucker Spawn (cream)",
+      "Sexy Hex Nymph — searching nymph between drifts",
+      "Spey pattern (purple / blue / black) — swung",
+      "Intruder pattern — swung"
     ],
     "searchTerm": "steelhead eggs beads fly Great Lakes",
     "wikipediaSlug": null,
@@ -1733,7 +1752,31 @@
       "Size 4 Galloup's Boogeyman",
       "Size 4 Drunk & Disorderly",
       "Size 2-4 mini-Drunk (smaller fall pattern)",
-      "Size 4 Circus Peanut"
+      "Size 4 Circus Peanut",
+      "Zoo Cougar (Galloup) — white",
+      "Zoo Cougar (Galloup) — yellow",
+      "Zoo Cougar (Galloup) — olive",
+      "Zoo Cougar (Galloup) — black",
+      "Mini Dungeon (Galloup)",
+      "Butt Monkey (Galloup) — dark colors at night",
+      "Boogie Man (Galloup)",
+      "Circus Peanut (Russ Madden)",
+      "Drunk & Disorderly (Tommy Lynch) — burnt orange",
+      "Schmidt's Rattlesnake (Ray Schmidt) — Manistee classic",
+      "Nutcracker",
+      "Flash Monkey",
+      "Red Rocket (Mike Schmidt)",
+      "Grumpy Muppet (Mike Schmidt)",
+      "Meal Ticket (Mike Schmidt)",
+      "Strolis's Ice Pick",
+      "Headbanger Sculpin",
+      "Hog Snare (Strolis)",
+      "Chuck Hawkins's Parr None — early-spring salmon-parr imitation",
+      "Size 4-8 olive / black / white Wooly Bugger",
+      "Size 4 Muddler Minnow",
+      "Size 6 Mickey Finn",
+      "Size 4 Black Ghost",
+      "Size 4 weighted Wet Skunk — work tight to wood"
     ],
     "searchTerm": "articulated streamer fly brown trout Michigan",
     "wikipediaSlug": null,
@@ -2618,7 +2661,8 @@
       "Size 14 peacock beetle",
       "Size 12 Japanese beetle (iridescent foam)",
       "Size 14 Dave's beetle (peacock)",
-      "Size 14 deer-hair beetle (low-riding)"
+      "Size 14 deer-hair beetle (low-riding)",
+      "Hippie Stomper — doubles as attractor"
     ],
     "searchTerm": "Coleoptera terrestrial fly fishing",
     "wikipediaSlug": null,
@@ -3023,7 +3067,9 @@
       "Size 8 Project Hopper",
       "Size 10 Chubby Chernobyl (tan)",
       "Size 10 Morrish Hopper",
-      "Size 8 Whit's Hopper"
+      "Size 8 Whit's Hopper",
+      "Joe's Hopper aka Michigan Hopper (Art Winnie original, Traverse City — genuine MI classic, 1900s)",
+      "Madsen's Skunk — MI classic; fish wet or dry"
     ],
     "searchTerm": "Orthoptera sp. terrestrial fly fishing",
     "wikipediaSlug": null,
@@ -3653,5 +3699,182 @@
     "searchTerm": "Ephemera varia mayfly fly fishing",
     "wikipediaSlug": null,
     "notes": "Peak: Summer. Best waters: Toccoa and freestones."
+  },
+  {
+    "id": "mi-mouse-patterns",
+    "name": "Mouse Patterns (MI night game)",
+    "scientific": "Mouse / vole imitation",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Pere Marquette",
+      "Big Manistee",
+      "Upper Manistee",
+      "Boardman"
+    ],
+    "startMonth": 6,
+    "endMonth": 9,
+    "waterTempMinF": 60,
+    "waterTempMaxF": 72,
+    "timeOfDay": "night",
+    "stages": [
+      "streamer",
+      "mouse"
+    ],
+    "flies": [
+      "Lynch's White-Bellied Mouse (Tommy Lynch) — trophy-brown specialist",
+      "McCoy's Mouse (Ed McCoy) — wiggle tail + foam head, deer-mouse profile",
+      "Morrish Mouse",
+      "Master Splinter (articulated)",
+      "Mr. Hanky (articulated)",
+      "Standard deer-hair mouse",
+      "Mouse Rat — old reliable"
+    ],
+    "searchTerm": "mouse pattern fly fishing Michigan trophy brown trout night",
+    "wikipediaSlug": null,
+    "notes": "MI's other claim to fame after Hex. Big browns hunt mice along undercut banks + log jams after dark. Tommy Lynch's White-Bellied Mouse and Ed McCoy's Mouse are MI-origin classics. Fish heavy tippet (1X-2X) — strikes are aggressive."
+  },
+  {
+    "id": "eastern-attractor-dries",
+    "name": "Attractor Dries (searching patterns)",
+    "scientific": "Generic attractor — not species-matching",
+    "regions": [
+      "Upper Midwest",
+      "Southern Appalachia",
+      "Mid-Atlantic",
+      "Northeast"
+    ],
+    "states": [
+      "MI",
+      "TN",
+      "GA",
+      "NC",
+      "KY",
+      "PA",
+      "AR",
+      "IN",
+      "OK"
+    ],
+    "rivers": [
+      "Au Sable",
+      "Big Manistee",
+      "Upper Manistee",
+      "Pere Marquette",
+      "Caney Fork",
+      "South Holston",
+      "Watauga",
+      "Hiwassee River",
+      "Toccoa River",
+      "Soque River",
+      "Davidson River"
+    ],
+    "startMonth": 5,
+    "endMonth": 10,
+    "waterTempMinF": 50,
+    "waterTempMaxF": 72,
+    "timeOfDay": "afternoon",
+    "stages": [
+      "always-on",
+      "attractor"
+    ],
+    "flies": [
+      "Patriot Fly (red/white/blue) — Josh Greenberg's go-to at Gates Au Sable Lodge",
+      "Purple Patriot — May version of the Patriot",
+      "Purple Haze — Western pattern that fishes hard in MI too",
+      "Royal Wulff — works almost anywhere",
+      "Royal Coachman",
+      "Hippie Stomper — doubles as terrestrial attractor",
+      "Stimulator (yellow / orange) — broad attractor",
+      "Size 14-16 Adams parachute",
+      "Madsen's Skunk — MI classic, fish wet or dry"
+    ],
+    "searchTerm": "attractor dry fly Patriot Purple Haze Royal Wulff",
+    "wikipediaSlug": null,
+    "notes": "Not matching anything specific — searching patterns that prospect when nothing's coming off. Bright + visible, easy to track in riffles. Lead with these on unfamiliar water or slow afternoons."
+  },
+  {
+    "id": "mi-sculpin-crayfish-lamprey",
+    "name": "Sculpins, Crayfish & Lamprey (MI subsurface protein)",
+    "scientific": "Cottidae / Crayfish / Petromyzontidae",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI"
+    ],
+    "rivers": [
+      "Big Manistee",
+      "Au Sable",
+      "Pere Marquette",
+      "Muskegon",
+      "Boardman"
+    ],
+    "startMonth": 4,
+    "endMonth": 11,
+    "waterTempMinF": 38,
+    "waterTempMaxF": 70,
+    "timeOfDay": "all day",
+    "stages": [
+      "always-on"
+    ],
+    "flies": [
+      "Sculpzilla — articulated sculpin staple",
+      "Galloup's Articulated Sculpin",
+      "Goldie (Galloup) — golden sculpin variant",
+      "Headbanger Sculpin",
+      "Strolis's Hog Snare",
+      "Near-Nuff Crayfish",
+      "Whitlock's Near Nuff Crayfish",
+      "Clouser Crayfish",
+      "Articulated crayfish (orange / olive — fall spawning colors)",
+      "Chestnut Lamprey pattern — early-spring Manistee specialty",
+      "Articulated lamprey ('crawl out of mud' presentation)"
+    ],
+    "searchTerm": "sculpin pattern crayfish fly lamprey Michigan trout",
+    "wikipediaSlug": "Cottus_bairdii",
+    "notes": "Subsurface protein anchors a MI brown's diet. Sculpins along the bottom, crayfish in slow water + the fall pre-spawn, chestnut lamprey 'crawl out of the mud' on the Manistee in early spring — trout key on them so hard some MI guides treat lamprey as a streamer match-the-hatch."
+  },
+  {
+    "id": "mi-night-frog",
+    "name": "Night Frog Patterns (MI trophy browns + smallmouth)",
+    "scientific": "Anura imitation",
+    "regions": [
+      "Upper Midwest"
+    ],
+    "states": [
+      "MI"
+    ],
+    "rivers": [
+      "Big Manistee",
+      "Au Sable",
+      "Pere Marquette",
+      "Grand Traverse Bay tribs"
+    ],
+    "startMonth": 6,
+    "endMonth": 9,
+    "waterTempMinF": 62,
+    "waterTempMaxF": 75,
+    "timeOfDay": "night",
+    "stages": [
+      "streamer",
+      "frog"
+    ],
+    "flies": [
+      "McCoy's Amphibious Assault (Ed McCoy) — MI guide go-to",
+      "Whitlock Hair Frog",
+      "Foam-bodied night frog",
+      "Standard deer-hair frog",
+      "Articulated frog (chartreuse / leopard)",
+      "Polar Changer — also smallmouth on lower Manistee",
+      "Diver pattern — Grand Traverse Bay smallmouth tribs"
+    ],
+    "searchTerm": "frog pattern fly night fishing brown trout Michigan",
+    "wikipediaSlug": null,
+    "notes": "Night fishing for trophy browns; also smallmouth on the lower Manistee and Grand Traverse Bay tribs. McCoy's Amphibious Assault is the MI guide go-to. Strip with hard pauses; strikes are explosive."
   }
 ]

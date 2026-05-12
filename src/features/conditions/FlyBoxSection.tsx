@@ -30,12 +30,38 @@ export function FlyBoxSection({ location }: { location: Location }) {
 
   const all = allHatches().filter(matchesState);
 
-  // Bucket each entry by what kind of fly it represents.
-  const staples = all.filter((h) => h.stages.includes('always-on'));
-  const streamers = all.filter((h) => h.stages.includes('streamer'));
-  const runPatterns = all.filter((h) =>
-    h.stages.includes('run-pattern') &&
-    inMonthRange(month, h.startMonth, h.endMonth)
+  // Bucket each entry by what kind of fly it represents. Specific
+  // categories (mouse, frog, attractor) are sub-types we want to
+  // surface as their own sections, so we filter them OUT of the
+  // generic "streamers" / "always-on" buckets to avoid duplicates.
+  const mice = all.filter(
+    (h) =>
+      h.stages.includes('mouse') &&
+      inMonthRange(month, h.startMonth, h.endMonth)
+  );
+  const frogs = all.filter(
+    (h) =>
+      h.stages.includes('frog') &&
+      inMonthRange(month, h.startMonth, h.endMonth)
+  );
+  const attractors = all.filter(
+    (h) =>
+      h.stages.includes('attractor') &&
+      inMonthRange(month, h.startMonth, h.endMonth)
+  );
+  const staples = all.filter(
+    (h) => h.stages.includes('always-on') && !h.stages.includes('attractor')
+  );
+  const streamers = all.filter(
+    (h) =>
+      h.stages.includes('streamer') &&
+      !h.stages.includes('mouse') &&
+      !h.stages.includes('frog')
+  );
+  const runPatterns = all.filter(
+    (h) =>
+      h.stages.includes('run-pattern') &&
+      inMonthRange(month, h.startMonth, h.endMonth)
   );
   const terrestrials = all.filter(
     (h) =>
@@ -45,7 +71,9 @@ export function FlyBoxSection({ location }: { location: Location }) {
 
   // Hide the whole section when there's nothing to show — avoids an
   // empty card on lake spots where none of these categories apply.
-  const totalRows = staples.length + streamers.length + runPatterns.length + terrestrials.length;
+  const totalRows =
+    staples.length + streamers.length + runPatterns.length +
+    terrestrials.length + mice.length + frogs.length + attractors.length;
   if (totalRows === 0) return null;
 
   return (
@@ -64,11 +92,35 @@ export function FlyBoxSection({ location }: { location: Location }) {
             onPick={setSelected}
           />
         )}
+        {attractors.length > 0 && (
+          <FlyGroup
+            label="Attractor dries"
+            hint="Searching patterns when nothing's coming off — Patriot, Wulff, Purple Haze."
+            hatches={attractors}
+            onPick={setSelected}
+          />
+        )}
         {streamers.length > 0 && (
           <FlyGroup
             label="Streamers"
             hint="Pre-spawn brown / aggressive-fish play. Heavy sink-tip."
             hatches={streamers}
+            onPick={setSelected}
+          />
+        )}
+        {mice.length > 0 && (
+          <FlyGroup
+            label="Mouse patterns"
+            hint="After dark; trophy browns hunt undercut banks + log jams."
+            hatches={mice}
+            onPick={setSelected}
+          />
+        )}
+        {frogs.length > 0 && (
+          <FlyGroup
+            label="Frog patterns"
+            hint="Night browns + smallmouth. Strip hard with pauses."
+            hatches={frogs}
             onPick={setSelected}
           />
         )}
