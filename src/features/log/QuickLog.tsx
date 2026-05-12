@@ -294,9 +294,19 @@ export function QuickLog({
       const matchedLoc = locations.find(
         (l) => l.id === draft.locationId
       ) ?? null;
+      // Pass every hint we have. Each one significantly narrows the
+      // model's candidate species — saltwater hint eliminates trout,
+      // tailwater hint eliminates pike, MI state hint biases toward
+      // Great Lakes salmonids, etc. Cheap context, big accuracy lift.
       const analysis = await analyzePhoto({
         imageUrl: photoMeta.url,
         hintLocation: matchedLoc?.name,
+        hintState: matchedLoc?.state,
+        hintWaterType: matchedLoc?.type,
+        hintRiver: matchedLoc?.river,
+        // Use the user's local month — seasonal priors drive species
+        // probability (fall salmon staging, winter sauger run, etc.).
+        hintMonth: new Date().getMonth() + 1,
       });
       if (!analysis) return;
       if (analysis.kind === 'insect') {
