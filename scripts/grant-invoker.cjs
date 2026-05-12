@@ -25,6 +25,7 @@ const SERVICES = [
   'analyzephoto',
   'seedboatlaunchescallable',
   'triggerstockingscrape',
+  'seedstockingfrombundle',
 ];
 
 (async () => {

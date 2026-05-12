@@ -286,6 +286,19 @@ export const seedStockingFromBundle = onCall(
     memory: '1GiB',                       // 8K-row batch writes
     timeoutSeconds: 540,
     invoker: 'public',
+    // Explicit CORS — the app is served from BOTH the default Firebase
+    // Hosting domain AND a custom domain (fishingdads.app). Without
+    // these allowed origins the preflight OPTIONS request gets blocked
+    // by Cloud Run before the function even sees the call.
+    cors: [
+      'https://fishingdads.app',
+      'https://www.fishingdads.app',
+      'https://dadapp-2cef8.web.app',
+      'https://dadapp-2cef8.firebaseapp.com',
+      /\.web\.app$/,
+      /\.firebaseapp\.com$/,
+      'http://localhost:5173',           // dev
+    ],
     // No anthropic key — pure data load, no Claude calls.
   },
   async (request) => {
