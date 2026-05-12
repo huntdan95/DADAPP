@@ -10,12 +10,26 @@
  * in these states. Doing the research in a Claude Code session (not
  * the app's runtime) burns zero Anthropic credits on the user's account.
  *
- * Reads five JSON files written by the research turns:
- *   data/seed/ut-raw.json  (UT DWR  — 528 records, Jan–May 2026)
+ * Reads seven JSON files written across the research turns:
+ *   data/seed/ut-raw.json  (UT DWR  — 531 records, Jan–May 2026)
  *   data/seed/co-raw.json  (CO CPW  — 70 records, May 2026)
- *   data/seed/id-raw.json  (IDFG    — 37 records, Feb + May 2026 across regions)
+ *   data/seed/id-raw.json  (IDFG    — 37 records, Feb + May 2026 regions)
  *   data/seed/ar-raw.json  (AGFC    — 5 records, April 2026 White River tailwater)
  *   data/seed/il-raw.json  (IDNR    — 59 records, 2026 spring trout season)
+ *   data/seed/mt-raw.json  (MT FWP  — 5 records, MT publishes very little structured
+ *                            data; Wedding/Ninepipe reservoirs + Big Timber permit ponds)
+ *   data/seed/nc-raw.json  (NCWRC   — 12 records, key mountain trout waters with
+ *                            confirmed 2026 stocking weeks; full schedule lives in
+ *                            per-county PDFs that aren't programmatically fetchable)
+ *
+ * Not seeded (cron + AI fallback will fill once Anthropic credits are
+ * topped up):
+ *   PA — PFBC publishes the FULL schedule but only behind a search form
+ *        with no CSV/CSV-equivalent export
+ *   OK — Blue River stocking season is Nov-Mar (out of season now);
+ *        Lower Mountain Fork is year-round but ODWC doesn't publish a
+ *        structured schedule
+ *   MS — MDWFP doesn't publish structured stocking data
  *
  * Each record is normalized into the same shape the scrapers emit and
  * given the same id rule (`auto-<source>-<date>-<water-slug>-<species-
@@ -232,6 +246,48 @@ function normalizeIl() {
     });
 }
 
+function normalizeMt() {
+  if (!fs.existsSync(path.join(__dirname, '..', 'data', 'seed', 'mt-raw.json'))) return [];
+  return loadJson('data/seed/mt-raw.json')
+    .filter((r) => r.water && r.date && /^\d{4}-\d{2}-\d{2}$/.test(r.date))
+    .map((r) => {
+      const noteBits = ['Seeded from MT FWP news releases / FWP-CEA permit listings.'];
+      if (r.hatchery) noteBits.push(`Hatchery: ${r.hatchery}.`);
+      if (r.notes) noteBits.push(r.notes);
+      return {
+        date: r.date,
+        locationName: r.county ? `${r.water} (${r.county} Co.)` : r.water,
+        state: 'MT',
+        species: canonicalSpecies(r.species),
+        count: typeof r.count === 'number' ? r.count : undefined,
+        size: r.size,
+        source: 'mt-fwp',
+        notes: noteBits.join(' '),
+      };
+    });
+}
+
+function normalizeNc() {
+  if (!fs.existsSync(path.join(__dirname, '..', 'data', 'seed', 'nc-raw.json'))) return [];
+  return loadJson('data/seed/nc-raw.json')
+    .filter((r) => r.water && r.date && /^\d{4}-\d{2}-\d{2}$/.test(r.date))
+    .map((r) => {
+      const noteBits = [];
+      if (r.notes) noteBits.push(r.notes);
+      else noteBits.push('Seeded from NCWRC 2026 Master Trout Stocking schedule.');
+      return {
+        date: r.date,
+        locationName: r.county ? `${r.water} (${r.county} Co.)` : r.water,
+        state: 'NC',
+        species: canonicalSpecies(r.species ?? 'Rainbow Trout'),
+        count: typeof r.count === 'number' ? r.count : undefined,
+        size: r.size,
+        source: 'nc-wrc',
+        notes: noteBits.join(' '),
+      };
+    });
+}
+
 // ---- Firestore REST helpers ------------------------------------------------
 
 /** Convert a JS value into Firestore's typed Value JSON. Handles only
@@ -305,9 +361,12 @@ async function writeIfMissing(accessToken, id, fields) {
   const id = normalizeId();
   const ar = normalizeAr();
   const il = normalizeIl();
-  const all = [...ut, ...co, ...id, ...ar, ...il];
+  const mt = normalizeMt();
+  const nc = normalizeNc();
+  const all = [...ut, ...co, ...id, ...ar, ...il, ...mt, ...nc];
   console.log(
-    `Normalized: UT ${ut.length}, CO ${co.length}, ID ${id.length}, AR ${ar.length}, IL ${il.length} = ${all.length} total`
+    `Normalized: UT ${ut.length}, CO ${co.length}, ID ${id.length}, ` +
+      `AR ${ar.length}, IL ${il.length}, MT ${mt.length}, NC ${nc.length} = ${all.length} total`
   );
 
   let written = 0;

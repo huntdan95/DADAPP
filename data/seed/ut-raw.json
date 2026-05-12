@@ -4222,5 +4222,29 @@
     "species": "Rainbow Trout",
     "count": 5016,
     "size": "3.19\""
+  },
+  {
+    "date": "2026-05-11",
+    "water": "NAVAJO L",
+    "county": "Kane",
+    "species": "Tiger Trout",
+    "count": 1650,
+    "size": "9.29\""
+  },
+  {
+    "date": "2026-05-11",
+    "water": "NAVAJO L",
+    "county": "Kane",
+    "species": "Tiger Trout",
+    "count": 1617,
+    "size": "9.29\""
+  },
+  {
+    "date": "2026-05-11",
+    "water": "TEAL SP",
+    "county": "Box Elder",
+    "species": "Rainbow Trout",
+    "count": 500,
+    "size": "10.4\""
   }
 ]

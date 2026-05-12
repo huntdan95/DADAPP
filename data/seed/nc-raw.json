@@ -1,0 +1,14 @@
+[
+  {"date":"2026-05-06","water":"Watauga River","county":"Watauga","species":"Rainbow Trout","size":"catchable","notes":"NCWRC 2026 master schedule: stocking week May 4-8."},
+  {"date":"2026-05-06","water":"Wilson Creek","county":"Caldwell","species":"Rainbow Trout","size":"catchable","notes":"NCWRC 2026 schedule: stocking week May 4-8."},
+  {"date":"2026-03-04","water":"Wilson Creek","county":"Caldwell","species":"Rainbow Trout","size":"catchable","notes":"NCWRC 2026 schedule: spring stocking week March 2-6."},
+  {"date":"2026-10-14","water":"Wilson Creek","county":"Caldwell","species":"Rainbow Trout","size":"catchable","notes":"NCWRC 2026 schedule: fall stocking week Oct 12-16."},
+  {"date":"2026-05-06","water":"Linville River","county":"Burke","species":"Rainbow Trout","size":"catchable","notes":"NCWRC 2026 master schedule: mountain Hatchery Supported trout water."},
+  {"date":"2026-04-15","water":"Davidson River","county":"Transylvania","species":"Rainbow Trout","size":"catchable","notes":"NCWRC 2026: Pisgah-area Delayed Harvest trout water."},
+  {"date":"2026-04-15","water":"South Toe River","county":"Yancey","species":"Rainbow Trout","size":"catchable","notes":"NCWRC 2026: Hatchery Supported trout water."},
+  {"date":"2026-04-15","water":"Nantahala River","county":"Macon","species":"Rainbow Trout","size":"catchable","notes":"NCWRC 2026: Delayed Harvest trout water; renovation-reduced stockings 2026-2028."},
+  {"date":"2026-04-15","water":"Tuckasegee River","county":"Jackson","species":"Rainbow Trout","size":"catchable","notes":"NCWRC 2026: Delayed Harvest trout water."},
+  {"date":"2026-04-15","water":"Pigeon River","county":"Haywood","species":"Rainbow Trout","size":"catchable","notes":"NCWRC 2026: Hatchery Supported trout water."},
+  {"date":"2026-04-15","water":"Nolichucky River","county":"Mitchell","species":"Brown Trout","size":"catchable","notes":"NCWRC 2026: Hatchery Supported trout water."},
+  {"date":"2026-04-15","water":"French Broad River","county":"Madison","species":"Rainbow Trout","size":"catchable","notes":"NCWRC 2026: Hatchery Supported trout water."}
+]

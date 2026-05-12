@@ -1,0 +1,7 @@
+[
+  {"date":"2026-05-05","water":"Ninepipe Reservoir","county":"Lake","species":"Rainbow Trout","size":"catchable","hatchery":"Jocko River Trout Hatchery","notes":"Community pond; kids fishing day. Hatchery stocks two smaller batches per month."},
+  {"date":"2026-07-01","water":"Wedding Reservoir","county":"Phillips","species":"Rainbow Trout","size":"catchable","notes":"Summer/fall 2026 establishment stocking. BLM-managed access."},
+  {"date":"2026-07-01","water":"Wedding Reservoir","county":"Phillips","species":"Bluegill","size":"fingerling","notes":"Summer/fall 2026 establishment stocking; hatchery + wild fish transfers."},
+  {"date":"2026-06-01","water":"Big Timber Private Pond #1","county":"Sweet Grass","species":"Yellowstone Cutthroat Trout","size":"catchable","notes":"Private pond license FWP-CEA-FSH-R5-26-003. Cutthroat-only per FWP risk policy."},
+  {"date":"2026-06-01","water":"Big Timber Private Pond #2","county":"Sweet Grass","species":"Yellowstone Cutthroat Trout","size":"catchable","notes":"Private pond license FWP-CEA-FSH-R5-26-003. Cutthroat-only per FWP risk policy."}
+]
