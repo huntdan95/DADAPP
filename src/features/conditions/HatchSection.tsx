@@ -166,10 +166,33 @@ function HatchRow({
           </span>
         </div>
       </div>
-      <div className="text-xs text-muted italic mt-0.5">{hatch.scientific}</div>
-      <div className="text-xs mt-1">{hatch.flies.slice(0, 2).join(' · ')}</div>
+      <div className="text-xs text-muted italic mt-0.5 line-clamp-1">{hatch.scientific}</div>
+      {/* Cap the flies preview at a single line. The full list lives
+          in the detail sheet that opens on tap — individual fly
+          strings can run long (e.g. "Lynch's White-Bellied Mouse
+          (Tommy Lynch) — trophy-brown specialist") so without this
+          the card grows into a wall of text. */}
+      <div className="text-xs mt-1 line-clamp-1">
+        {hatch.flies.slice(0, 2).join(' · ')}
+        {hatch.flies.length > 2 && (
+          <span className="text-muted"> · +{hatch.flies.length - 2} more</span>
+        )}
+      </div>
       {hatch.notes && (
-        <div className="text-[11px] text-muted mt-1">{hatch.notes}</div>
+        // Cap notes at 2 lines — the prose can be 3-4 sentences long
+        // (Holy Water / Tippy / Salmon Trout coaster brookies, etc.).
+        // Full text in the detail sheet.
+        <div className="text-[11px] text-muted mt-1 line-clamp-2">
+          {hatch.notes}
+        </div>
+      )}
+      {/* Small tap-affordance hint at the bottom so users know there's
+          more behind the row. Only renders when content was actually
+          truncated (more than 2 flies OR a notes block). */}
+      {(hatch.flies.length > 2 || hatch.notes) && (
+        <div className="text-[10px] text-accent/80 mt-1.5">
+          Tap for full details →
+        </div>
       )}
     </button>
   );
