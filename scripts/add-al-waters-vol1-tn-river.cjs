@@ -1,0 +1,302 @@
+/**
+ * Alabama Waters Guide — Vol 1: Tennessee River chain + Sipsey Fork.
+ *
+ * The Tennessee River runs across northern Alabama — Pickwick, Wilson,
+ * Wheeler, Guntersville. Guntersville is THE bass lake of the South.
+ * Sipsey Fork below Lewis Smith Dam is Alabama's only tailwater
+ * trout fishery.
+ */
+const fs = require('node:fs');
+const path = require('node:path');
+const FILE = path.join(__dirname, '..', 'data', 'waterbodies.json');
+
+const NEW_ENTRIES = [
+  {
+    id: 'al-lake-guntersville',
+    name: 'Lake Guntersville',
+    state: 'AL',
+    region: 'AL Tennessee River chain',
+    type: 'reservoir',
+    county: 'Marshall / Jackson',
+    acres: 67900,
+    maxDepthFt: 60,
+    lat: 34.36,
+    lng: -86.30,
+    signatureSpecies: 'Largemouth bass, crappie, smallmouth bass',
+    species: [
+      { name: 'Largemouth bass', importance: 'signature', size: '3-8 lb, 10+ lb regular', notes: 'Lake Guntersville is THE bass lake of America. Multiple Bassmaster Classic championships here. Trophy water — 10-pound fish are part of the conversation.' },
+      { name: 'Smallmouth bass', importance: 'strong', size: '2-5 lb', notes: 'Lower river rocky sections.' },
+      { name: 'Spotted bass', importance: 'good' },
+      { name: 'Black crappie', importance: 'signature', size: '9-13 in, jumbos common' },
+      { name: 'White crappie', importance: 'signature' },
+      { name: 'White bass', importance: 'strong' },
+      { name: 'Channel catfish', importance: 'strong' },
+      { name: 'Blue catfish', importance: 'strong', size: '5-50 lb' },
+      { name: 'Sauger', importance: 'good', notes: 'Below the dam in winter.' },
+    ],
+    patterns: [
+      {
+        title: 'Frog over hydrilla mats (the Guntersville signature)',
+        target: 'Largemouth bass',
+        when: 'April-October',
+        technique: 'Hollow-body frog (Spro Bronzeye, Snag-Proof) over hydrilla + milfoil mats; weighted senko in pockets; punching heavy tungsten through dense mats',
+        where: 'Hydrilla beds + milfoil mats throughout the lake — especially near the river channel + creek mouths',
+        details: 'Guntersville won the Classic on the frog bite. Heavy braid (65+ lb) + flippin\' stick rods mandatory. 10-lb bass on a frog is the bucket-list moment here.',
+      },
+      {
+        title: 'Pre-spawn lipless crank + chatterbait',
+        target: 'Largemouth bass',
+        when: 'February-April',
+        technique: 'Rat-L-Trap (red shad / chrome blue / sexy shad), chatterbait, swim jig + flipping near grass edges',
+        where: 'Spawn flats + outside grass edges',
+        details: 'Pre-spawn trophy window. The biggest fish of the year roll into the flats. Bassmaster + MLF tour stops time around this.',
+      },
+      {
+        title: 'Wild-shiner trophy bass',
+        target: 'Largemouth bass',
+        when: 'November-April',
+        technique: 'Wild shiners under cork on heavy spinning gear',
+        where: 'Outside grass edges + ledges',
+      },
+      {
+        title: 'Spring crappie spawn',
+        target: 'Crappie',
+        when: 'March-May',
+        technique: 'Jig + minnow under cork; spider-rigging',
+        where: 'Brush + flooded timber in creek arms',
+      },
+      {
+        title: 'Below-dam winter sauger',
+        target: 'Sauger',
+        when: 'November-February',
+        technique: 'Vertical jig + minnow',
+        where: 'Below Guntersville Dam tailwater',
+      },
+    ],
+    access: ['Goose Pond Colony', 'Browns Creek', 'Honeycomb Creek', 'Lake Guntersville State Park', 'BB Comer'],
+    regulations: 'Standard AL bass + crappie regs. Trophy slots may apply — confirm.',
+    managementProgram: ['TVA + AL DCNR management', 'Aquatic vegetation management — controversial; balance between bass habitat + boating'],
+    notes: 'THE bass lake of America. 67,900 acres on the Tennessee River in NE Alabama. Multiple Bassmaster Classic + FLW Forrest Wood Cup championships. World-class hydrilla-mat fishery.',
+  },
+  {
+    id: 'al-lake-wheeler',
+    name: 'Wheeler Lake',
+    state: 'AL',
+    region: 'AL Tennessee River chain',
+    type: 'reservoir',
+    county: 'Lawrence / Limestone / Madison / Morgan',
+    acres: 67100,
+    maxDepthFt: 90,
+    lat: 34.65,
+    lng: -87.10,
+    signatureSpecies: 'Largemouth bass, smallmouth bass, crappie, striped bass',
+    species: [
+      { name: 'Largemouth bass', importance: 'signature' },
+      { name: 'Smallmouth bass', importance: 'signature', size: '2-5 lb, 6+ lb possible', notes: 'Wheeler holds quality smallmouth — better than Guntersville for smallies.' },
+      { name: 'Striped bass', importance: 'strong' },
+      { name: 'Spotted bass', importance: 'strong' },
+      { name: 'Black crappie', importance: 'strong' },
+      { name: 'White crappie', importance: 'strong' },
+      { name: 'Sauger', importance: 'strong', notes: 'Winter run below the dam.' },
+      { name: 'Channel + blue + flathead catfish', importance: 'strong' },
+    ],
+    patterns: [
+      {
+        title: 'Wheeler smallmouth on ledges',
+        target: 'Smallmouth bass',
+        when: 'Year-round',
+        technique: 'Jerkbait, swimbait, drop-shot, Ned rig',
+        where: 'Main-river ledges + rocky points',
+      },
+      {
+        title: 'Winter sauger run',
+        target: 'Sauger',
+        when: 'November-February',
+        technique: 'Vertical jigging',
+        where: 'Below Wheeler Dam tailwater',
+      },
+    ],
+    access: ['Joe Wheeler State Park', 'Wheeler Dam', 'Decatur', 'Mooresville'],
+    notes: 'TN River reservoir between Wilson + Guntersville. Smallmouth + sauger marquee.',
+  },
+  {
+    id: 'al-lake-wilson',
+    name: 'Wilson Lake',
+    state: 'AL',
+    region: 'AL Tennessee River chain',
+    type: 'reservoir',
+    county: 'Lauderdale / Colbert',
+    acres: 15500,
+    maxDepthFt: 110,
+    lat: 34.78,
+    lng: -87.62,
+    signatureSpecies: 'Smallmouth bass, largemouth bass, striped bass',
+    species: [
+      { name: 'Smallmouth bass', importance: 'signature', size: '3-6 lb, 7+ lb possible', notes: 'Wilson Lake produces trophy smallmouth — best smallmouth water on the AL Tennessee River chain.' },
+      { name: 'Largemouth bass', importance: 'strong' },
+      { name: 'Striped bass', importance: 'strong', size: '10-25 lb' },
+      { name: 'Spotted bass', importance: 'strong' },
+      { name: 'Black crappie', importance: 'strong' },
+      { name: 'Sauger', importance: 'strong' },
+      { name: 'Channel + blue catfish', importance: 'strong' },
+    ],
+    patterns: [
+      {
+        title: 'Trophy smallmouth tailwater',
+        target: 'Smallmouth bass',
+        when: 'Year-round',
+        technique: 'Float-n-fly hair jig in winter; jerkbait + swimbait; drop-shot',
+        where: 'Below Wilson Dam + the rocky main-river ledges',
+        details: 'Wilson Lake (the tailwater of Pickwick Dam) holds trophy smallmouth — float-n-fly heaven in winter.',
+      },
+    ],
+    access: ['Wilson Dam tailrace', 'McFarland Park', 'O\'Neal Bridge'],
+    notes: 'Florence-Muscle Shoals area. Smaller + deeper than Wheeler/Guntersville. Premier AL smallmouth water.',
+  },
+  {
+    id: 'al-lake-pickwick',
+    name: 'Pickwick Lake (Alabama portion)',
+    state: 'AL',
+    region: 'AL Tennessee River chain',
+    type: 'reservoir',
+    county: 'Colbert / Lauderdale',
+    acres: 43100,
+    maxDepthFt: 90,
+    lat: 34.95,
+    lng: -88.10,
+    signatureSpecies: 'Smallmouth bass, largemouth bass, crappie, sauger',
+    species: [
+      { name: 'Smallmouth bass', importance: 'signature', size: '3-6 lb, 8+ lb possible', notes: 'Pickwick rivals Dale Hollow for trophy smallmouth in the South.' },
+      { name: 'Largemouth bass', importance: 'strong' },
+      { name: 'Spotted bass', importance: 'strong' },
+      { name: 'Black crappie', importance: 'strong' },
+      { name: 'White crappie', importance: 'strong' },
+      { name: 'Sauger', importance: 'strong', notes: 'Below the dam in winter.' },
+      { name: 'Blue catfish', importance: 'strong', size: '5-50 lb' },
+    ],
+    patterns: [
+      {
+        title: 'Pickwick smallmouth on ledges',
+        target: 'Smallmouth bass',
+        when: 'Year-round',
+        technique: 'Jerkbait (Megabass Vision 110), swimbait, drop-shot, Ned rig',
+        where: 'Main-river ledges + rocky points',
+      },
+    ],
+    access: ['Pickwick Landing State Park (TN)', 'Pickwick Dam tailrace (AL side)', 'Florence area'],
+    notes: 'Spans TN/MS/AL. The Tennessee River makes its big southward bend here. World-class smallmouth water.',
+  },
+  {
+    id: 'al-sipsey-fork-tailwater',
+    name: 'Sipsey Fork (Lewis Smith Dam tailwater)',
+    state: 'AL',
+    region: 'AL Tennessee River chain',
+    type: 'tailwater',
+    county: 'Walker',
+    river: 'Sipsey Fork',
+    lat: 33.92,
+    lng: -87.10,
+    signatureSpecies: 'Rainbow trout, brown trout',
+    species: [
+      { name: 'Rainbow trout', importance: 'signature', size: '10-15 in', notes: 'Alabama\'s ONLY tailwater trout fishery. AL DCNR stocked. Cold-water dam discharge from Lewis Smith Dam.' },
+      { name: 'Brown trout', importance: 'strong', size: '12-18 in' },
+      { name: 'Smallmouth bass', importance: 'good', size: 'Lower river warm zone' },
+    ],
+    patterns: [
+      {
+        title: 'Year-round trout — Alabama tailwater',
+        target: 'Rainbow + brown trout',
+        when: 'Year-round',
+        technique: 'Size 18-22 zebra midge + scud + Pheasant Tail; small jigs + spinners; size 16 sulfur emerger in spring + summer',
+        where: 'Below Lewis Smith Dam — 1.5 mile public-access tailwater section',
+        details: 'Alabama\'s only trout fishery. Cold dam discharges (mid-50s°F) keep trout active year-round. Smaller water than the TN tailwaters — wading classic.',
+      },
+    ],
+    access: ['Lewis Smith Dam tailrace', 'Trout Boy Pool', 'Sipsey Fork public access'],
+    regulations: 'AL trout license. Slot limit + creel — confirm current.',
+    managementProgram: ['AL DCNR trout stocking', 'Alabama Power Lewis Smith Dam'],
+    notes: 'The only cold-water trout tailwater in Alabama. Spawned a cult fly-fishing scene. Lewis Smith Dam\'s cold discharge creates the habitat.',
+  },
+  {
+    id: 'al-lewis-smith-lake',
+    name: 'Lewis Smith Lake',
+    state: 'AL',
+    region: 'AL Black Warrior + Tallapoosa',
+    type: 'reservoir',
+    county: 'Cullman / Walker / Winston',
+    acres: 21200,
+    maxDepthFt: 260,
+    lat: 34.04,
+    lng: -87.13,
+    signatureSpecies: 'Spotted bass, striped bass, largemouth bass, crappie',
+    species: [
+      { name: 'Spotted bass', importance: 'signature', size: '2-5 lb, 7+ lb possible', notes: 'Smith Lake holds the world-record spotted bass (10 lb 4 oz, 2017). Clear-deep-water trophy spotted bass mecca.' },
+      { name: 'Striped bass', importance: 'signature', size: '10-30 lb, 40+ lb documented', notes: 'Smith Lake stripers are world-class — Alabama state record came from here.' },
+      { name: 'Largemouth bass', importance: 'strong' },
+      { name: 'Black crappie', importance: 'strong' },
+      { name: 'Bluegill', importance: 'good' },
+      { name: 'Channel catfish', importance: 'good' },
+    ],
+    patterns: [
+      {
+        title: 'World-record spotted bass deep clear water',
+        target: 'Spotted bass',
+        when: 'Year-round',
+        technique: 'Drop-shot, jerkbait (Megabass Vision 110), Alabama rig in cold, deep crank',
+        where: 'Bluff banks + main-lake brush piles + standing timber 25-40 ft',
+        details: 'Smith Lake produced the world-record spotted bass in 2017. Clear deep glacial-style basin (260 ft max). Western-style spotted bass tactics rule.',
+      },
+      {
+        title: 'Trophy striper trolling',
+        target: 'Striped bass',
+        when: 'Year-round',
+        technique: 'Live shad + threadfin on downlines; planer boards; trolling Alabama rig',
+        where: 'Main lake basin + river-channel transitions',
+      },
+    ],
+    access: ['Smith Lake Park', 'Duncan Bridge', 'Houston'],
+    managementProgram: ['IGFA world-record spotted bass designation', 'AL DCNR striped bass stocking'],
+    notes: 'Deepest reservoir in AL (260 ft). Black Warrior River impoundment. Lewis Smith Dam creates the Sipsey Fork tailwater downstream. WORLD-RECORD spotted bass + striped bass.',
+  },
+  {
+    id: 'al-bear-creek-lakes',
+    name: 'Bear Creek Lakes (NW Alabama)',
+    state: 'AL',
+    region: 'AL Tennessee River chain',
+    type: 'reservoir',
+    county: 'Franklin / Marion',
+    acres: 12500,
+    maxDepthFt: 80,
+    signatureSpecies: 'Largemouth bass, spotted bass, crappie',
+    species: [
+      { name: 'Largemouth bass', importance: 'signature' },
+      { name: 'Spotted bass', importance: 'strong' },
+      { name: 'Black crappie', importance: 'strong' },
+      { name: 'Bluegill', importance: 'strong' },
+      { name: 'Channel catfish', importance: 'strong' },
+    ],
+    patterns: [
+      {
+        title: 'NW Alabama clear-water bass',
+        target: 'Spotted + largemouth bass',
+        when: 'February-October',
+        technique: 'Senko, jerkbait, drop-shot',
+        where: 'Rocky banks + standing timber',
+      },
+    ],
+    access: ['Bear Creek (Upper)', 'Cedar Creek Lake', 'Little Bear Creek Lake', 'Big Bear Creek Lake'],
+    notes: 'Four-lake system in NW Alabama: Upper Bear, Cedar, Little Bear, Big Bear. TVA reservoirs on Bear Creek. Quality NW AL fishery.',
+  },
+];
+
+const data = JSON.parse(fs.readFileSync(FILE, 'utf8'));
+const byId = new Map(data.map((w) => [w.id, w]));
+let appended = 0, skipped = 0;
+for (const e of NEW_ENTRIES) {
+  if (byId.has(e.id)) { skipped++; continue; }
+  data.push(e); byId.set(e.id, e);
+  console.log(`  + ${e.id}`);
+  appended++;
+}
+console.log(`\nAppended ${appended}, skipped ${skipped}. Total: ${data.length}`);
+fs.writeFileSync(FILE, JSON.stringify(data, null, 2) + '\n', 'utf8');

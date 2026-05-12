@@ -64255,5 +64255,4318 @@
       }
     ],
     "notes": "Generic Mason County public-access pond placeholder. The MI DNR catalogs hundreds of small public-access ponds with bluegill / largemouth — these are the long tail of the MI fishery beyond the named lakes. Replace with specifics when a saved spot matches."
+  },
+  {
+    "id": "ga-lake-lanier",
+    "name": "Lake Sidney Lanier",
+    "state": "GA",
+    "region": "GA Atlanta-metro reservoirs",
+    "type": "reservoir",
+    "county": "Hall / Forsyth / Dawson / Gwinnett / Lumpkin",
+    "acres": 38000,
+    "maxDepthFt": 156,
+    "lat": 34.21,
+    "lng": -84.05,
+    "signatureSpecies": "Striped bass, spotted bass, largemouth bass, crappie",
+    "species": [
+      {
+        "name": "Striped bass",
+        "importance": "signature",
+        "size": "10-30 lb, 40+ lb possible",
+        "notes": "Lake Lanier is one of the South's premier landlocked striped-bass fisheries. Year-round fishery — fish stage on standing timber + the river channel."
+      },
+      {
+        "name": "Spotted bass",
+        "importance": "signature",
+        "size": "2-4 lb, 6+ lb possible",
+        "notes": "Lanier spotted bass average bigger than the largemouth here. Clear-deep-water spotted bass tactics rule."
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong",
+        "size": "2-5 lb"
+      },
+      {
+        "name": "Black crappie",
+        "importance": "strong",
+        "size": "9-13 in"
+      },
+      {
+        "name": "White bass",
+        "importance": "strong",
+        "size": "10-14 in",
+        "notes": "Big spring runs up the Chattahoochee + Chestatee arms."
+      },
+      {
+        "name": "Bluegill + redear sunfish",
+        "importance": "good"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "good"
+      },
+      {
+        "name": "Walleye",
+        "importance": "good",
+        "size": "14-22 in",
+        "notes": "GA DNR stocking — surprising population for a Southern reservoir."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Summer striper schooling",
+        "target": "Striped bass",
+        "when": "June-September",
+        "technique": "Live blueback herring on downlines + planer boards; topwater pencil poppers (Spook + Sammy) at dawn; casting Jigging Rapalas + spoons into surface boils",
+        "where": "Main lake basin off Sunrise Cove + Aqualand + the Chattahoochee + Chestatee river arms",
+        "details": "Lanier stripers chase summer threadfin shad + blueback herring. Charter scene is robust. Birds working the surface = a school underneath."
+      },
+      {
+        "title": "Deep clear-water spotted bass",
+        "target": "Spotted bass",
+        "when": "Year-round, peak summer + winter",
+        "technique": "Drop-shot 4-in finesse worm; Ned rig; jerkbait (Megabass Vision 110); Alabama rig in winter; deep crankbait",
+        "where": "Standing timber + main-lake brush piles + rocky points 18-35 ft",
+        "details": "Lanier spotted bass are the best in the South. Clear deep water = finesse + light fluoro. The brush pile + standing-timber game is the Lanier signature."
+      },
+      {
+        "title": "Spring white bass run",
+        "target": "White bass",
+        "when": "March-April",
+        "technique": "Casting jigs + small swimbaits + in-line spinners",
+        "where": "Upper Chattahoochee + Chestatee river arms"
+      },
+      {
+        "title": "Crappie on brush + dock pilings",
+        "target": "Black crappie",
+        "when": "April-June + October",
+        "technique": "Jig + minnow under bobber; spider rigging",
+        "where": "Brush piles + dock concentrations across the lake"
+      }
+    ],
+    "access": [
+      "Sunrise Cove Marina",
+      "Aqualand Marina",
+      "Buford Dam tailrace",
+      "Lanier Islands",
+      "Bald Ridge Creek",
+      "Hideaway Bay"
+    ],
+    "regulations": "Striped bass slot + creel; spotted bass slot. Verify current GA DNR regs.",
+    "managementProgram": [
+      "GA DNR striped bass + walleye stocking",
+      "Army Corps of Engineers reservoir management"
+    ],
+    "notes": "Atlanta's home reservoir. 38,000 acres on the Chattahoochee + Chestatee, dammed at Buford. World-class striped bass + spotted bass + crappie. Charter scene + tournament scene huge."
+  },
+  {
+    "id": "ga-lake-allatoona",
+    "name": "Lake Allatoona",
+    "state": "GA",
+    "region": "GA Atlanta-metro reservoirs",
+    "type": "reservoir",
+    "county": "Bartow / Cherokee / Cobb",
+    "acres": 12010,
+    "maxDepthFt": 145,
+    "lat": 34.16,
+    "lng": -84.72,
+    "signatureSpecies": "Striped bass, spotted bass, largemouth bass, crappie",
+    "species": [
+      {
+        "name": "Striped bass",
+        "importance": "signature",
+        "size": "10-25 lb"
+      },
+      {
+        "name": "Spotted bass",
+        "importance": "signature",
+        "size": "2-4 lb"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Black crappie",
+        "importance": "strong",
+        "size": "9-12 in"
+      },
+      {
+        "name": "White bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Hybrid striped bass",
+        "importance": "good"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Striper trolling + live-bait",
+        "target": "Striped bass",
+        "when": "May-October",
+        "technique": "Live blueback herring on downlines; planer boards; trolling umbrella rigs",
+        "where": "Main basin + the Etowah + Little river arms"
+      },
+      {
+        "title": "Spotted bass on rocky points",
+        "target": "Spotted bass",
+        "when": "Year-round",
+        "technique": "Drop-shot, jerkbait, jigging spoon in summer",
+        "where": "Bluff banks + rocky main-lake points"
+      }
+    ],
+    "access": [
+      "Red Top Mountain State Park",
+      "Galt's Ferry",
+      "Allatoona Landing",
+      "Sweetwater Creek"
+    ],
+    "notes": "NW of Atlanta on the Etowah River. Smaller than Lanier but every bit as fishable."
+  },
+  {
+    "id": "ga-lake-west-point",
+    "name": "West Point Lake",
+    "state": "GA",
+    "region": "GA Atlanta-metro reservoirs",
+    "type": "reservoir",
+    "county": "Troup / Heard / Harris (GA) + Chambers (AL)",
+    "acres": 25864,
+    "maxDepthFt": 100,
+    "lat": 32.94,
+    "lng": -85.18,
+    "signatureSpecies": "Largemouth bass, spotted bass, crappie, hybrid striper",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "2-6 lb, 8+ lb possible"
+      },
+      {
+        "name": "Spotted bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Hybrid striped bass",
+        "importance": "signature",
+        "size": "3-10 lb, 12+ lb documented",
+        "notes": "West Point hybrids are a marquee fishery — schooling summer surface action."
+      },
+      {
+        "name": "Black crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "White crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Striped bass",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Summer hybrid schooling",
+        "target": "Hybrid striped bass",
+        "when": "June-September",
+        "technique": "Casting Jigging Rapalas + spoons + bucktail jigs into surface boils; live shad on downlines",
+        "where": "Main basin off Pyne Road Park + Earl Cook Recreation Area",
+        "details": "West Point hybrids gang up on threadfin shad. Birds working surface = active school."
+      },
+      {
+        "title": "Pre-spawn largemouth flats",
+        "target": "Largemouth bass",
+        "when": "February-April",
+        "technique": "Lipless cranks (Rat-L-Trap), chatterbait, swim jig, weighted senko",
+        "where": "Spawn flats off the main lake + the Chattahoochee River arm"
+      }
+    ],
+    "access": [
+      "Pyne Road Park",
+      "Earl Cook Recreation Area",
+      "Whitewater Creek",
+      "Yellow Jacket Creek"
+    ],
+    "managementProgram": [
+      "GA + AL cooperative management",
+      "Army Corps of Engineers"
+    ],
+    "notes": "Chattahoochee River reservoir on the GA/AL border. 25,800 acres. Hybrid striper + bass + crappie destination."
+  },
+  {
+    "id": "ga-lake-jackson",
+    "name": "Lake Jackson",
+    "state": "GA",
+    "region": "GA Atlanta-metro reservoirs",
+    "type": "reservoir",
+    "county": "Butts / Jasper / Newton",
+    "acres": 4750,
+    "maxDepthFt": 75,
+    "lat": 33.32,
+    "lng": -83.85,
+    "signatureSpecies": "Largemouth bass, spotted bass, crappie, white bass",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "2-5 lb"
+      },
+      {
+        "name": "Spotted bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Black crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "White bass",
+        "importance": "strong",
+        "notes": "Spring run up the South + Yellow + Alcovy rivers."
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Hybrid striped bass",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Spring white bass run",
+        "target": "White bass",
+        "when": "March-April",
+        "technique": "Jigs + small swimbaits",
+        "where": "South River + Yellow River + Alcovy River arms"
+      },
+      {
+        "title": "Largemouth on rocky points + brush",
+        "target": "Largemouth bass",
+        "when": "February-October",
+        "technique": "Spinnerbait, swim jig, senko",
+        "where": "Rocky points + flooded brush"
+      }
+    ],
+    "access": [
+      "Lake Jackson Public Ramps",
+      "Berry's Boat Dock"
+    ],
+    "notes": "GA Power's oldest reservoir (1911). Confluence of South + Yellow + Alcovy rivers + Tussahaw Creek. Quiet bass + crappie destination."
+  },
+  {
+    "id": "ga-lake-sinclair",
+    "name": "Lake Sinclair",
+    "state": "GA",
+    "region": "GA Atlanta-metro reservoirs",
+    "type": "reservoir",
+    "county": "Baldwin / Hancock / Putnam",
+    "acres": 15330,
+    "maxDepthFt": 95,
+    "lat": 33.16,
+    "lng": -83.27,
+    "signatureSpecies": "Largemouth bass, hybrid striped bass, crappie",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature"
+      },
+      {
+        "name": "Hybrid striped bass",
+        "importance": "signature",
+        "size": "3-8 lb"
+      },
+      {
+        "name": "Black crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "White crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Spotted bass",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Power-plant warm-water winter bite",
+        "target": "Largemouth + hybrid striper",
+        "when": "December-February",
+        "technique": "Lipless crank, jig, spinnerbait near the GA Power plant discharge",
+        "where": "Plant Branch warm-water outflow area",
+        "details": "GA Power plant's warm-water discharge keeps the bite going through winter. Locals know."
+      }
+    ],
+    "access": [
+      "Little River Park",
+      "Twin Bridges",
+      "Plant Branch ramp"
+    ],
+    "notes": "Oconee River reservoir, downstream of Lake Oconee. GA Power impoundment with warm-water discharge."
+  },
+  {
+    "id": "ga-lake-oconee",
+    "name": "Lake Oconee",
+    "state": "GA",
+    "region": "GA Atlanta-metro reservoirs",
+    "type": "reservoir",
+    "county": "Greene / Morgan / Putnam",
+    "acres": 19050,
+    "maxDepthFt": 110,
+    "lat": 33.45,
+    "lng": -83.21,
+    "signatureSpecies": "Largemouth bass, hybrid striped bass, crappie, white bass",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "2-6 lb, 9+ lb possible",
+        "notes": "Florida-strain stocking has made Lake Oconee a tournament destination — multiple FLW + Bassmaster Elite events."
+      },
+      {
+        "name": "Hybrid striped bass",
+        "importance": "signature",
+        "size": "3-10 lb"
+      },
+      {
+        "name": "Striped bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Black crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "White crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Spotted bass",
+        "importance": "good"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Pre-spawn flats largemouth",
+        "target": "Largemouth bass",
+        "when": "February-April",
+        "technique": "Lipless crank, chatterbait, swim jig, jerkbait",
+        "where": "Spawn flats + creek arms; the Apalachee + Oconee River arms",
+        "details": "Oconee's Florida-strain bass + heavily vegetated coves produce 8+ lb fish in pre-spawn."
+      },
+      {
+        "title": "Summer hybrid schooling",
+        "target": "Hybrid striped bass",
+        "when": "June-September",
+        "technique": "Live shad on downlines; topwater pencils at dawn",
+        "where": "Main lake basin"
+      }
+    ],
+    "access": [
+      "Sugar Creek Marina",
+      "Lake Oconee Marina",
+      "Hwy 44 ramp",
+      "Parks Mill"
+    ],
+    "managementProgram": [
+      "GA DNR Florida-strain largemouth stocking",
+      "Hybrid striper + striped bass stocking"
+    ],
+    "notes": "GA Power's flagship multi-species reservoir between Atlanta + Athens. Tournament destination — major bass + crappie events."
+  },
+  {
+    "id": "ga-lake-acworth",
+    "name": "Lake Acworth",
+    "state": "GA",
+    "region": "GA Atlanta-metro reservoirs",
+    "type": "reservoir",
+    "county": "Cobb",
+    "acres": 280,
+    "maxDepthFt": 35,
+    "signatureSpecies": "Largemouth bass, bluegill, crappie",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "strong"
+      },
+      {
+        "name": "Black crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Pad + brush largemouth",
+        "target": "Largemouth bass",
+        "when": "March-October",
+        "technique": "Senko, frog, spinnerbait",
+        "where": "Brush + dock pilings around the small lake"
+      }
+    ],
+    "access": [
+      "City of Acworth public ramp"
+    ],
+    "regulations": "Electric motors only on the lake itself.",
+    "notes": "Smaller suburban Acworth lake adjacent to Allatoona. Electric-only; quiet kid-fishing."
+  },
+  {
+    "id": "ga-black-shoals",
+    "name": "Black Shoals Reservoir",
+    "state": "GA",
+    "region": "GA Atlanta-metro reservoirs",
+    "type": "reservoir",
+    "county": "Rockdale",
+    "acres": 650,
+    "maxDepthFt": 75,
+    "signatureSpecies": "Largemouth bass, bluegill, crappie",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "2-5 lb"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "strong"
+      },
+      {
+        "name": "Black crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Quiet suburban largemouth",
+        "target": "Largemouth bass",
+        "when": "March-October",
+        "technique": "Senko, frog, jerkbait",
+        "where": "Dock corners + flooded brush + pad edges"
+      }
+    ],
+    "access": [
+      "Black Shoals Reservoir Park (Rockdale County)"
+    ],
+    "regulations": "Park hours apply; electric motors only.",
+    "notes": "Rockdale County suburb reservoir. Electric-only — quieter than Lanier / Allatoona, more accessible than the bigger lakes for non-boat anglers."
+  },
+  {
+    "id": "ga-lake-tobesofkee",
+    "name": "Lake Tobesofkee",
+    "state": "GA",
+    "region": "GA Atlanta-metro reservoirs",
+    "type": "reservoir",
+    "county": "Bibb",
+    "acres": 1750,
+    "maxDepthFt": 50,
+    "signatureSpecies": "Largemouth bass, hybrid striped bass, crappie",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature"
+      },
+      {
+        "name": "Hybrid striped bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Black crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Bass + hybrid mixed-bag",
+        "target": "Largemouth + hybrid striper",
+        "when": "March-October",
+        "technique": "Spinnerbait + senko for bass; spoon + Cleo for hybrids in summer",
+        "where": "Main basin + creek arms"
+      }
+    ],
+    "access": [
+      "Claystone Park",
+      "Arrowhead Park",
+      "Sandy Beach Park"
+    ],
+    "notes": "Macon-area reservoir. Multi-species mix — largemouth, hybrids, crappie, catfish."
+  },
+  {
+    "id": "ga-river-chattahoochee-tailwater",
+    "name": "Chattahoochee River — Atlanta Tailwater (below Buford Dam)",
+    "state": "GA",
+    "region": "GA North Mountain trout streams",
+    "type": "tailwater",
+    "county": "Forsyth / Hall / Gwinnett / Fulton / Cobb",
+    "river": "Chattahoochee River",
+    "lat": 34.14,
+    "lng": -84.07,
+    "signatureSpecies": "Rainbow trout, brown trout, striped bass",
+    "species": [
+      {
+        "name": "Rainbow trout",
+        "importance": "signature",
+        "size": "10-15 in",
+        "notes": "GA DNR heavily stocked. The Hooch tailwater is the most-fished trout water in the Southeast outside the TN tailwaters."
+      },
+      {
+        "name": "Brown trout",
+        "importance": "signature",
+        "size": "12-22 in, occasional 28+",
+        "notes": "Wild + holdover fish. Trophy class possible in the upper tailwater."
+      },
+      {
+        "name": "Brook trout",
+        "importance": "good",
+        "size": "TWRA stocked"
+      },
+      {
+        "name": "Striped bass",
+        "importance": "strong",
+        "size": "10-25 lb",
+        "notes": "Summer thermal refuge migration up the tailwater from Lake Lanier — similar to the Holston River pattern."
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "good",
+        "size": "Lower river warm zone past Atlanta"
+      },
+      {
+        "name": "Spotted bass",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Year-round midge nymphing",
+        "target": "Rainbow + brown trout",
+        "when": "Year-round, peak November-March",
+        "technique": "Size 20-24 zebra midge (black, red, olive), WD-40, RS-2 emergers; tiny Pheasant Tail; indicator + split-shot rig; 7X fluoro",
+        "where": "Throughout the 48-mile tailwater from Buford Dam to Atlanta",
+        "details": "The Hooch is a midge-fishery — TN Clinch character. Cold dam discharges (mid-50s°F year-round) keep trout active even in summer. Most-popular technique by far."
+      },
+      {
+        "title": "Trophy brown streamer fishing",
+        "target": "Brown trout",
+        "when": "October-March",
+        "technique": "Articulated streamers (Sex Dungeon, Boogie Man, Kreelex)",
+        "where": "Deep banks + structure in the upper tailwater zone"
+      },
+      {
+        "title": "Summer striped bass on flies",
+        "target": "Striped bass",
+        "when": "June-August",
+        "technique": "Big white streamers (Lefty's Deceiver, Half and Half, Game Changer); 9-10 wt rod + sink tip",
+        "where": "Cool tailwater pools where stripers stage during thermal-refuge migration",
+        "details": "World-class warmwater fly fishing — stripers in trout water. Charter scene out of Roswell + Atlanta."
+      },
+      {
+        "title": "Sulfur + caddis evening dry-fly",
+        "target": "Rainbow + brown trout",
+        "when": "April-September evenings",
+        "technique": "Size 16-18 Sulfur emerger + dun; Elk Hair Caddis",
+        "where": "Riffles + tailouts in the upper tailwater"
+      }
+    ],
+    "access": [
+      "Buford Dam tailrace",
+      "Settles Bridge",
+      "Jones Bridge",
+      "Medlock Bridge",
+      "Island Ford",
+      "Powers Island",
+      "Paces Mill"
+    ],
+    "regulations": "GA trout license + stamp. Catch-and-release sections + delayed-harvest zones. Slot limits on brown trout.",
+    "managementProgram": [
+      "GA DNR trout stocking",
+      "Army Corps of Engineers Buford Dam"
+    ],
+    "notes": "The Atlanta tailwater. 48 miles of cold-water trout fishing inside a major metro. Multiple delayed-harvest zones. Strong charter + guide scene."
+  },
+  {
+    "id": "ga-river-toccoa",
+    "name": "Toccoa River",
+    "state": "GA",
+    "region": "GA North Mountain trout streams",
+    "type": "river",
+    "county": "Fannin / Union",
+    "river": "Toccoa River",
+    "lat": 34.86,
+    "lng": -84.32,
+    "signatureSpecies": "Rainbow trout, brown trout, smallmouth bass",
+    "species": [
+      {
+        "name": "Rainbow trout",
+        "importance": "signature",
+        "size": "10-16 in"
+      },
+      {
+        "name": "Brown trout",
+        "importance": "signature",
+        "size": "12-22 in, occasional 25+",
+        "notes": "Toccoa River is one of GA's premier brown trout streams. Trophy fish in the deeper holes below the dam."
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "strong",
+        "size": "1-3 lb, lower river warm zone"
+      },
+      {
+        "name": "Brook trout",
+        "importance": "good",
+        "notes": "Upper headwaters."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Float-trip dry-fly + nymph",
+        "target": "Rainbow + brown trout",
+        "when": "May-September",
+        "technique": "Yellow Stimulator + dry-dropper rig; caddis + sulfur dries in season",
+        "where": "Below Blue Ridge Dam down to Lake Blue Ridge tributary mouth",
+        "details": "GA's only delayed-harvest tailwater. Drift-boat + raft fishery — guide trips out of Blue Ridge."
+      },
+      {
+        "title": "Streamer-fishing trophy browns",
+        "target": "Brown trout",
+        "when": "October-March",
+        "technique": "Articulated streamers (Sex Dungeon, Mini D&D); Kreelex",
+        "where": "Deep holes below the dam"
+      }
+    ],
+    "access": [
+      "Toccoa River Delayed Harvest section",
+      "Blue Ridge Dam tailwater",
+      "Curtis Switch"
+    ],
+    "regulations": "Delayed Harvest Nov-May (catch-and-release, artificial lures only). GA trout stamp required.",
+    "managementProgram": [
+      "GA DNR delayed-harvest trout management"
+    ],
+    "notes": "Crossing the AT north of Blue Ridge. The Toccoa flows north into the Ocoee in TN. Premier GA trout tailwater."
+  },
+  {
+    "id": "ga-river-soque",
+    "name": "Soque River",
+    "state": "GA",
+    "region": "GA North Mountain trout streams",
+    "type": "river",
+    "county": "Habersham",
+    "river": "Soque River",
+    "signatureSpecies": "Brown trout, rainbow trout",
+    "species": [
+      {
+        "name": "Brown trout",
+        "importance": "signature",
+        "size": "20-30+ in, trophies common",
+        "notes": "The Soque is a private trophy-trout fishery — 20+ in browns are routine. Almost entirely on private land with paid guided access."
+      },
+      {
+        "name": "Rainbow trout",
+        "importance": "signature",
+        "size": "15-25 in"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Sight-fishing trophy browns",
+        "target": "Brown trout",
+        "when": "Year-round",
+        "technique": "Streamers (Zoo Cougar, Circus Peanut, articulated patterns); nymphs (size 14-18 Pheasant Tail, Hare's Ear)",
+        "where": "Below private-water riffles into deep pools",
+        "details": "Private-water guided trips out of Clarkesville. Trophy-trout factory — the Soque produces the biggest browns in GA."
+      }
+    ],
+    "access": [
+      "Private water — guided trips only via Soque River outfitters"
+    ],
+    "notes": "Trophy private trout water in Habersham County. Almost entirely paid-access through outfitters (Brigadoon, Reel 'em Inn, etc.). 20-pound browns documented."
+  },
+  {
+    "id": "ga-river-tallulah",
+    "name": "Tallulah River",
+    "state": "GA",
+    "region": "GA North Mountain trout streams",
+    "type": "river",
+    "county": "Rabun / Habersham",
+    "river": "Tallulah River",
+    "signatureSpecies": "Rainbow trout, brown trout",
+    "species": [
+      {
+        "name": "Rainbow trout",
+        "importance": "signature",
+        "size": "8-12 in"
+      },
+      {
+        "name": "Brown trout",
+        "importance": "strong",
+        "size": "10-15 in"
+      },
+      {
+        "name": "Brook trout",
+        "importance": "good",
+        "notes": "Headwaters."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Pocket-water dry-fly",
+        "target": "Rainbow + brown trout",
+        "when": "April-October",
+        "technique": "Yellow Stimulator, Adams, dry-dropper rigs",
+        "where": "Above + below the Tallulah Gorge dam pools"
+      }
+    ],
+    "access": [
+      "Tallulah Gorge State Park",
+      "Tate Branch",
+      "Sandy Bottom"
+    ],
+    "notes": "Headwaters of the Tallulah-Chattooga drainage. Tallulah Gorge state-park access. Quality wild-trout water."
+  },
+  {
+    "id": "ga-river-chattooga",
+    "name": "Chattooga River (GA / SC line)",
+    "state": "GA",
+    "region": "GA North Mountain trout streams",
+    "type": "river",
+    "county": "Rabun (GA) / Oconee (SC)",
+    "river": "Chattooga River",
+    "signatureSpecies": "Rainbow trout, brown trout, smallmouth bass",
+    "species": [
+      {
+        "name": "Rainbow trout",
+        "importance": "signature"
+      },
+      {
+        "name": "Brown trout",
+        "importance": "strong"
+      },
+      {
+        "name": "Brook trout",
+        "importance": "good",
+        "notes": "Headwaters above the falls."
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "good",
+        "size": "Lower river warm sections"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Wild River trout",
+        "target": "Trout",
+        "when": "April-October",
+        "technique": "Dry-fly + small streamers",
+        "where": "Above the falls + designated trout sections",
+        "details": "Federally-designated Wild + Scenic River. Multiple paddling sections, all famous from \"Deliverance.\""
+      }
+    ],
+    "access": [
+      "Burrells Ford",
+      "Bull Sluice",
+      "Earl's Ford"
+    ],
+    "notes": "Wild + Scenic River on the GA/SC border. Trout in the upper, whitewater + smallmouth in the lower. Iconic Southern wilderness river."
+  },
+  {
+    "id": "ga-river-coopers-creek",
+    "name": "Coopers Creek",
+    "state": "GA",
+    "region": "GA North Mountain trout streams",
+    "type": "river",
+    "county": "Union",
+    "river": "Coopers Creek",
+    "signatureSpecies": "Rainbow trout, brown trout, brook trout",
+    "species": [
+      {
+        "name": "Rainbow trout",
+        "importance": "signature"
+      },
+      {
+        "name": "Brown trout",
+        "importance": "strong"
+      },
+      {
+        "name": "Brook trout",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Wild-trout small-stream wading",
+        "target": "Brown + rainbow + brook trout",
+        "when": "April-October",
+        "technique": "Small dries (#14-18 Adams, Royal Wulff); Tellico Nymph + Yallarhammer wets",
+        "where": "Pocket water + plunge pools"
+      }
+    ],
+    "access": [
+      "Coopers Creek WMA",
+      "Mulky Gap"
+    ],
+    "notes": "Cooper Creek WMA — premier GA wild-trout small-stream. Federally-managed wild-trout management area."
+  },
+  {
+    "id": "ga-river-rock-creek",
+    "name": "Rock Creek",
+    "state": "GA",
+    "region": "GA North Mountain trout streams",
+    "type": "river",
+    "county": "Fannin",
+    "river": "Rock Creek",
+    "signatureSpecies": "Rainbow trout, brook trout",
+    "species": [
+      {
+        "name": "Rainbow trout",
+        "importance": "signature"
+      },
+      {
+        "name": "Brook trout",
+        "importance": "strong"
+      },
+      {
+        "name": "Brown trout",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Native brookie water",
+        "target": "Brook trout",
+        "when": "May-September",
+        "technique": "Small dries; small streamers",
+        "where": "Above the falls (catch-and-release brookie zone)"
+      }
+    ],
+    "access": [
+      "Rock Creek Lake",
+      "Rock Creek trail access (USFS)"
+    ],
+    "notes": "Native Southern brook trout headwater. Catch-and-release in upper stretches."
+  },
+  {
+    "id": "ga-river-dukes-smith-creek",
+    "name": "Dukes Creek + Smith Creek (Delayed Harvest)",
+    "state": "GA",
+    "region": "GA North Mountain trout streams",
+    "type": "river",
+    "county": "White",
+    "river": "Dukes Creek + Smith Creek",
+    "signatureSpecies": "Rainbow trout, brown trout",
+    "species": [
+      {
+        "name": "Rainbow trout",
+        "importance": "signature",
+        "size": "12-18 in"
+      },
+      {
+        "name": "Brown trout",
+        "importance": "strong",
+        "size": "12-22 in"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Delayed-harvest fly fishing",
+        "target": "Trout",
+        "when": "November-May (DH season)",
+        "technique": "Dry-dropper rigs; egg patterns; small streamers; Sulfur emergers in spring",
+        "where": "Designated DH sections at Smithgall Woods State Park"
+      }
+    ],
+    "access": [
+      "Smithgall Woods State Park"
+    ],
+    "regulations": "Delayed Harvest Nov-May; catch-and-release, artificial lures only. GA trout stamp required.",
+    "notes": "Smithgall Woods DH section — managed by GA DNR for premium wild + stocked trout. Among the best DH water in the Southeast."
+  },
+  {
+    "id": "ga-river-wildcat-creek",
+    "name": "Wildcat Creek (Rabun)",
+    "state": "GA",
+    "region": "GA North Mountain trout streams",
+    "type": "river",
+    "county": "Rabun",
+    "river": "Wildcat Creek",
+    "signatureSpecies": "Rainbow trout, brown trout",
+    "species": [
+      {
+        "name": "Rainbow trout",
+        "importance": "signature"
+      },
+      {
+        "name": "Brown trout",
+        "importance": "strong"
+      },
+      {
+        "name": "Brook trout",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Stocked + wild small-stream",
+        "target": "Trout",
+        "when": "March-October",
+        "technique": "Dry-fly + small streamers",
+        "where": "Throughout"
+      }
+    ],
+    "access": [
+      "Wildcat Creek WMA",
+      "Lake Burton Hatchery area"
+    ],
+    "notes": "Rabun County classic. GA DNR stocked alongside wild fish."
+  },
+  {
+    "id": "ga-lake-hartwell",
+    "name": "Lake Hartwell",
+    "state": "GA",
+    "region": "GA Savannah River reservoirs",
+    "type": "reservoir",
+    "county": "Hart / Stephens / Franklin (GA) + Anderson / Oconee (SC)",
+    "acres": 56000,
+    "maxDepthFt": 185,
+    "lat": 34.36,
+    "lng": -82.83,
+    "signatureSpecies": "Largemouth bass, spotted bass, striped bass, hybrid striped bass, crappie",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "2-6 lb, 8+ lb possible"
+      },
+      {
+        "name": "Spotted bass",
+        "importance": "signature",
+        "size": "2-4 lb"
+      },
+      {
+        "name": "Striped bass",
+        "importance": "signature",
+        "size": "10-25 lb"
+      },
+      {
+        "name": "Hybrid striped bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Black crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "White crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Summer striper schooling",
+        "target": "Striped bass",
+        "when": "June-September",
+        "technique": "Live blueback herring on downlines; topwater pencils at dawn",
+        "where": "Main lake basin + river channel"
+      },
+      {
+        "title": "Spotted bass on rocky points + brush",
+        "target": "Spotted bass",
+        "when": "Year-round",
+        "technique": "Drop-shot, Ned rig, jerkbait, jigging spoon",
+        "where": "Main-lake points + brush piles"
+      }
+    ],
+    "access": [
+      "Big Oaks Recreation Area",
+      "Hartwell Dam tailwater",
+      "Tugaloo State Park",
+      "Lavonia"
+    ],
+    "managementProgram": [
+      "Army Corps of Engineers",
+      "GA + SC cooperative management"
+    ],
+    "notes": "Major Savannah River reservoir on the GA/SC border. 56,000 acres. Striper + spotted bass + tournament destination."
+  },
+  {
+    "id": "ga-lake-russell",
+    "name": "Lake Richard B. Russell",
+    "state": "GA",
+    "region": "GA Savannah River reservoirs",
+    "type": "reservoir",
+    "county": "Elbert / Lincoln (GA) + Abbeville (SC)",
+    "acres": 26650,
+    "maxDepthFt": 150,
+    "signatureSpecies": "Largemouth bass, spotted bass, hybrid striped bass, crappie",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature"
+      },
+      {
+        "name": "Spotted bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Hybrid striped bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Black crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Striped bass",
+        "importance": "good"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Standing-timber largemouth",
+        "target": "Largemouth bass",
+        "when": "March-October",
+        "technique": "Flipping creature bait + senko in flooded timber",
+        "where": "Standing timber throughout the lake"
+      }
+    ],
+    "access": [
+      "Bobby Brown State Park",
+      "Russell Dam tailrace"
+    ],
+    "notes": "Between Hartwell + Strom Thurmond. 26,650-acre Savannah River reservoir."
+  },
+  {
+    "id": "ga-lake-strom-thurmond",
+    "name": "J. Strom Thurmond Lake (Clarks Hill)",
+    "state": "GA",
+    "region": "GA Savannah River reservoirs",
+    "type": "reservoir",
+    "county": "Lincoln / Wilkes / Columbia / McDuffie / Elbert (GA) + McCormick / Edgefield (SC)",
+    "acres": 71100,
+    "maxDepthFt": 145,
+    "lat": 33.66,
+    "lng": -82.2,
+    "signatureSpecies": "Largemouth bass, hybrid striped bass, crappie, striped bass",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "2-6 lb, 9+ lb possible"
+      },
+      {
+        "name": "Hybrid striped bass",
+        "importance": "signature",
+        "size": "3-10 lb"
+      },
+      {
+        "name": "Striped bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Black crappie",
+        "importance": "signature",
+        "size": "9-13 in"
+      },
+      {
+        "name": "White crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Spring crappie spawn",
+        "target": "Crappie",
+        "when": "March-May",
+        "technique": "Jig + minnow under cork; spider rigging",
+        "where": "Brush + flooded timber in spawning coves"
+      },
+      {
+        "title": "Summer hybrid schooling",
+        "target": "Hybrid striped bass",
+        "when": "June-September",
+        "technique": "Live shad on downlines; topwater pencils at dawn",
+        "where": "Main basin"
+      }
+    ],
+    "access": [
+      "Bobby Brown State Park",
+      "Clarks Hill",
+      "Hester's Ferry",
+      "Pollards Corner"
+    ],
+    "managementProgram": [
+      "Army Corps of Engineers",
+      "GA + SC cooperative management"
+    ],
+    "notes": "Massive 71,100-acre Savannah River reservoir below Russell. Crappie destination. Hybrid striper destination."
+  },
+  {
+    "id": "ga-lake-carters",
+    "name": "Carters Lake",
+    "state": "GA",
+    "region": "GA Atlanta-metro reservoirs",
+    "type": "reservoir",
+    "county": "Murray / Gilmer",
+    "acres": 3220,
+    "maxDepthFt": 450,
+    "lat": 34.61,
+    "lng": -84.66,
+    "signatureSpecies": "Spotted bass, walleye, striped bass, smallmouth bass",
+    "species": [
+      {
+        "name": "Spotted bass",
+        "importance": "signature",
+        "size": "2-5 lb"
+      },
+      {
+        "name": "Walleye",
+        "importance": "signature",
+        "size": "14-22 in",
+        "notes": "Rare Southern walleye fishery. GA DNR stocked."
+      },
+      {
+        "name": "Striped bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "strong",
+        "notes": "GA DNR stocked smallmouth — very rare for the South."
+      },
+      {
+        "name": "Black crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Deep clear-water spotted + smallmouth bass",
+        "target": "Spotted + smallmouth bass",
+        "when": "Year-round",
+        "technique": "Drop-shot, jerkbait, jigging spoon, Ned rig",
+        "where": "Bluff banks + main-lake points",
+        "details": "Carters' 450 ft max depth + clear water = Western-style smallmouth + spotted bass habitat. Rare for the South."
+      },
+      {
+        "title": "Spring walleye run",
+        "target": "Walleye",
+        "when": "March-April",
+        "technique": "Jig + minnow; live shiner",
+        "where": "Coosawattee River arm pre-spawn"
+      }
+    ],
+    "access": [
+      "Doll Mountain Park",
+      "Woodring Branch",
+      "Carters Lake tailrace"
+    ],
+    "managementProgram": [
+      "GA DNR walleye + smallmouth stocking"
+    ],
+    "notes": "Deepest reservoir east of the Mississippi at 450 ft max. Built on the Coosawattee River. Unique GA fishery — Western-style deep-clear water + walleye + smallmouth."
+  },
+  {
+    "id": "ga-river-etowah-upper",
+    "name": "Etowah River — Upper",
+    "state": "GA",
+    "region": "GA North Mountain trout streams",
+    "type": "river",
+    "county": "Lumpkin / Dawson / Forsyth",
+    "river": "Etowah River",
+    "signatureSpecies": "Rainbow trout, brown trout, smallmouth bass",
+    "species": [
+      {
+        "name": "Rainbow trout",
+        "importance": "signature",
+        "notes": "Upper Etowah is stocked trout water."
+      },
+      {
+        "name": "Brown trout",
+        "importance": "strong"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "strong",
+        "size": "Below the trout zone (Dahlonega downstream)"
+      },
+      {
+        "name": "Redeye bass",
+        "importance": "good"
+      },
+      {
+        "name": "Spotted bass",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Upper river stocked trout",
+        "target": "Rainbow + brown trout",
+        "when": "Year-round",
+        "technique": "Small jigs, in-line spinners, dry-dropper rigs",
+        "where": "Above Dahlonega"
+      },
+      {
+        "title": "Wade-fishing smallmouth lower",
+        "target": "Smallmouth bass",
+        "when": "May-October",
+        "technique": "Tubes, Ned, in-line spinners",
+        "where": "Below Dahlonega through Dawson County"
+      }
+    ],
+    "access": [
+      "Auraria",
+      "Dahlonega area",
+      "Etowah River Park"
+    ],
+    "notes": "The Etowah headwaters drain N GA mountains. Trout upper + smallmouth lower. Flows to Lake Allatoona."
+  },
+  {
+    "id": "ga-lake-eufaula",
+    "name": "Lake Walter F. George (Lake Eufaula)",
+    "state": "GA",
+    "region": "GA Middle/South reservoirs",
+    "type": "reservoir",
+    "county": "Stewart / Quitman / Clay / Early (GA) + Russell / Barbour / Henry / Houston (AL)",
+    "acres": 45181,
+    "maxDepthFt": 100,
+    "lat": 31.85,
+    "lng": -85.04,
+    "signatureSpecies": "Largemouth bass, hybrid striped bass, crappie, channel catfish",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "3-7 lb, 10+ lb possible",
+        "notes": "Florida-strain stocked — Eufaula is the \"Big Bass Capital of the World\" historically. 10+ lb fish are real."
+      },
+      {
+        "name": "Hybrid striped bass",
+        "importance": "signature",
+        "size": "3-10 lb"
+      },
+      {
+        "name": "Black crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "White crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Striped bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Bluegill + redear",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Florida-strain largemouth on flats + grass",
+        "target": "Largemouth bass",
+        "when": "February-October, peak spring spawn",
+        "technique": "Lipless cranks, weighted senko, swim jig, chatterbait, wild shiner",
+        "where": "Hydrilla mats + ledges + stump fields throughout the lake",
+        "details": "\"Big Bass Capital\" reputation built on Florida-strain stocking + abundant grass cover. Major tournament destination."
+      },
+      {
+        "title": "Summer hybrid schooling",
+        "target": "Hybrid striped bass",
+        "when": "June-September",
+        "technique": "Live shad on downlines; topwater pencils",
+        "where": "Main basin off the dam"
+      }
+    ],
+    "access": [
+      "Lake Eufaula State Park (AL)",
+      "Cool Branch (GA)",
+      "Florence Marina (GA)",
+      "Bag-bee Branch"
+    ],
+    "managementProgram": [
+      "GA + AL cooperative management",
+      "Florida-strain bass stocking"
+    ],
+    "notes": "Chattahoochee River impoundment on GA/AL line. 45,181 acres. World-record-class largemouth historically. Bass tournament destination."
+  },
+  {
+    "id": "ga-lake-seminole",
+    "name": "Lake Seminole",
+    "state": "GA",
+    "region": "GA Middle/South reservoirs",
+    "type": "reservoir",
+    "county": "Decatur / Seminole (GA) + Jackson (FL) + Houston (AL)",
+    "acres": 37500,
+    "maxDepthFt": 35,
+    "lat": 30.8,
+    "lng": -84.86,
+    "signatureSpecies": "Largemouth bass, hybrid striped bass, crappie, striped bass",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "3-8 lb, 13+ lb documented",
+        "notes": "Seminole is one of the top trophy Florida-strain largemouth waters in the South."
+      },
+      {
+        "name": "Hybrid striped bass",
+        "importance": "signature"
+      },
+      {
+        "name": "Striped bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Black crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Bluegill + shellcracker",
+        "importance": "strong"
+      },
+      {
+        "name": "Bowfin",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Hydrilla + grass-mat largemouth",
+        "target": "Largemouth bass",
+        "when": "February-October",
+        "technique": "Punching mats with heavy tungsten; senko in pockets; topwater frog",
+        "where": "Hydrilla beds + grass mats throughout the lake",
+        "details": "Seminole's hydrilla beds + Florida-strain stocking produce 10+ lb fish. Mat-punching is the established trophy approach."
+      }
+    ],
+    "access": [
+      "Wingate's Lunker Lodge",
+      "Seminole State Park (GA)",
+      "Jim Woodruff Dam tailwater"
+    ],
+    "notes": "Three-state reservoir (GA/AL/FL) at the confluence of the Chattahoochee + Flint rivers. Trophy bass + crappie destination. Apalachicola River drains downstream."
+  },
+  {
+    "id": "ga-river-ocmulgee",
+    "name": "Ocmulgee River",
+    "state": "GA",
+    "region": "GA Middle/South rivers",
+    "type": "river",
+    "county": "Multiple — Macon to Lumber City",
+    "river": "Ocmulgee River",
+    "signatureSpecies": "Largemouth bass, crappie, catfish, redbreast sunfish",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Black crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Flathead catfish",
+        "importance": "strong",
+        "size": "10-30 lb"
+      },
+      {
+        "name": "Redbreast sunfish",
+        "importance": "strong",
+        "notes": "Iconic Southeastern stream sunfish."
+      },
+      {
+        "name": "Bluegill",
+        "importance": "strong"
+      },
+      {
+        "name": "Redeye bass",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Float-trip redbreast + bass",
+        "target": "Redbreast + largemouth bass",
+        "when": "April-October",
+        "technique": "Beetle Spin, cricket + bobber, popping bug on fly rod",
+        "where": "Cypress + tupelo banks; oxbow swamps"
+      }
+    ],
+    "access": [
+      "Lake Tobesofkee",
+      "Macon area",
+      "Hawkinsville",
+      "Lumber City"
+    ],
+    "notes": "Major south-flowing GA river. Joins the Oconee to form the Altamaha. Quintessential Southeastern blackwater bass + redbreast water."
+  },
+  {
+    "id": "ga-river-oconee",
+    "name": "Oconee River",
+    "state": "GA",
+    "region": "GA Middle/South rivers",
+    "type": "river",
+    "county": "Multiple",
+    "river": "Oconee River",
+    "signatureSpecies": "Largemouth bass, hybrid striped bass, crappie",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Hybrid striped bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Black crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Flathead catfish",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Below Sinclair Dam tailwater",
+        "target": "Hybrid striped bass + largemouth",
+        "when": "Spring + fall",
+        "technique": "Jig + minnow, swimbaits",
+        "where": "Below Lake Sinclair Dam"
+      }
+    ],
+    "access": [
+      "Sinclair Dam tailrace",
+      "Milledgeville",
+      "Dublin"
+    ],
+    "notes": "Flows out of Lake Sinclair south to join the Ocmulgee + form the Altamaha. Below-dam tailwater + flowing river fishery."
+  },
+  {
+    "id": "ga-river-altamaha",
+    "name": "Altamaha River",
+    "state": "GA",
+    "region": "GA Middle/South rivers",
+    "type": "river",
+    "county": "Multiple — east-central GA to coast",
+    "river": "Altamaha River",
+    "lat": 31.5,
+    "lng": -82.5,
+    "signatureSpecies": "Largemouth bass, channel catfish, flathead catfish, redbreast sunfish, bowfin",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "signature",
+        "size": "3-15 lb"
+      },
+      {
+        "name": "Flathead catfish",
+        "importance": "signature",
+        "size": "15-50+ lb",
+        "notes": "Altamaha flathead are a major destination — invasive species but quality target."
+      },
+      {
+        "name": "Redbreast sunfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Black crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Striped bass",
+        "importance": "strong",
+        "notes": "Spring run from the coast."
+      },
+      {
+        "name": "Bowfin",
+        "importance": "good"
+      },
+      {
+        "name": "American shad",
+        "importance": "good",
+        "notes": "Spring spawning run."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Trophy flathead night fishing",
+        "target": "Flathead catfish",
+        "when": "May-September evenings",
+        "technique": "Live bream on heavy circle hooks; heavy braid + circle-hook bait clicker rigs",
+        "where": "Deep outside bends + log jams + river-channel structure",
+        "details": "Altamaha flatheads regularly hit 40+ lb. Charter scene out of Jesup + Baxley."
+      },
+      {
+        "title": "Spring striper run",
+        "target": "Striped bass",
+        "when": "March-May",
+        "technique": "Live shad on circle hooks; trolling crankbaits",
+        "where": "Lower river up from Darien"
+      }
+    ],
+    "access": [
+      "Jesup",
+      "Baxley",
+      "Wayne County ramps",
+      "Darien (mouth)"
+    ],
+    "notes": "Largest free-flowing river entirely in GA. 137-mile blackwater giant. Drains nearly a quarter of GA. Trophy flathead destination + spring striper + shad run."
+  },
+  {
+    "id": "ga-river-satilla",
+    "name": "Satilla River",
+    "state": "GA",
+    "region": "GA Middle/South rivers",
+    "type": "river",
+    "county": "Multiple — south GA",
+    "river": "Satilla River",
+    "signatureSpecies": "Largemouth bass, redbreast sunfish, bowfin",
+    "species": [
+      {
+        "name": "Redbreast sunfish",
+        "importance": "signature"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Black crappie",
+        "importance": "good"
+      },
+      {
+        "name": "Bowfin",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Cypress-tannin redbreast",
+        "target": "Redbreast sunfish",
+        "when": "April-September",
+        "technique": "Beetle Spin, cricket + bobber, popping bug",
+        "where": "Cypress + tupelo banks"
+      }
+    ],
+    "access": [
+      "Waycross",
+      "Jamaica",
+      "Owens Ferry"
+    ],
+    "notes": "Blackwater South GA river. Tannin-stained from cypress swamps. Redbreast + bass + cat. Paddle-fishing classic."
+  },
+  {
+    "id": "ga-river-savannah-mouth",
+    "name": "Savannah River (Mouth + estuary)",
+    "state": "GA",
+    "region": "GA Coastal",
+    "type": "great-lake-trib",
+    "county": "Chatham",
+    "river": "Savannah River",
+    "signatureSpecies": "Redfish, spotted sea trout, flounder, sheepshead, striped bass",
+    "species": [
+      {
+        "name": "Redfish",
+        "importance": "signature",
+        "size": "20-35 in slot, 30+ bull reds"
+      },
+      {
+        "name": "Spotted sea trout",
+        "importance": "signature"
+      },
+      {
+        "name": "Flounder",
+        "importance": "strong",
+        "size": "14-22 in"
+      },
+      {
+        "name": "Sheepshead",
+        "importance": "strong"
+      },
+      {
+        "name": "Striped bass",
+        "importance": "strong",
+        "notes": "Atlantic-strain spring run."
+      },
+      {
+        "name": "Black drum",
+        "importance": "good"
+      },
+      {
+        "name": "Tarpon",
+        "importance": "good",
+        "size": "Summer migration"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Spartina-grass tailing redfish",
+        "target": "Redfish",
+        "when": "September-November",
+        "technique": "Spoon Fly, Kwan, Borski Slider; gold spoon + soft-plastic",
+        "where": "Spartina grass flats on the back-bay side",
+        "details": "GA coastal flats — spartina-grass tailing reds during fall flood tides is the signature Lowcountry pattern."
+      }
+    ],
+    "access": [
+      "Savannah River dock + ramps",
+      "Tybee Island",
+      "Wassaw Sound"
+    ],
+    "notes": "Major GA coastal estuary. Spartina-grass tailing redfish + spotted trout + tarpon corridor."
+  },
+  {
+    "id": "ga-coastal-st-simons",
+    "name": "Brunswick / St. Simons / Sea Island Sound",
+    "state": "GA",
+    "region": "GA Coastal",
+    "type": "great-lake",
+    "county": "Glynn",
+    "lat": 31.13,
+    "lng": -81.41,
+    "signatureSpecies": "Redfish, spotted sea trout, tarpon, tripletail",
+    "species": [
+      {
+        "name": "Redfish",
+        "importance": "signature",
+        "size": "20-30 in slot"
+      },
+      {
+        "name": "Spotted sea trout",
+        "importance": "signature"
+      },
+      {
+        "name": "Tarpon",
+        "importance": "signature",
+        "size": "50-150 lb",
+        "notes": "Summer migration through GA Golden Isles."
+      },
+      {
+        "name": "Tripletail",
+        "importance": "strong",
+        "notes": "Sight-fishing under buoys + crab pots."
+      },
+      {
+        "name": "Sheepshead",
+        "importance": "strong"
+      },
+      {
+        "name": "Flounder",
+        "importance": "strong"
+      },
+      {
+        "name": "Spanish mackerel",
+        "importance": "good"
+      },
+      {
+        "name": "Sharks (bonnethead + blacktip)",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Spartina-grass tailing reds",
+        "target": "Redfish",
+        "when": "September-November flood tides",
+        "technique": "Spoon Fly, Kwan, Strong Arm Crab; gold spoon",
+        "where": "Spartina grass flats on the back-bay side",
+        "details": "The Golden Isles flood-tide redfish — the iconic Lowcountry fly fishery. Tailing fish on top of spartina-grass flats."
+      },
+      {
+        "title": "Summer tarpon sight-fishing",
+        "target": "Tarpon",
+        "when": "June-September",
+        "technique": "Toad, Cockroach, EP Tarpon Streamer; live mullet",
+        "where": "Sound channels + beach migration corridor"
+      },
+      {
+        "title": "Tripletail under crab pots",
+        "target": "Tripletail",
+        "when": "May-September",
+        "technique": "Live shrimp; soft-plastic jig",
+        "where": "Crab-pot buoys + floating debris in the sounds"
+      }
+    ],
+    "access": [
+      "Brunswick",
+      "St. Simons Island",
+      "Sea Island",
+      "Jekyll Island",
+      "Sapelo Island"
+    ],
+    "notes": "The Golden Isles. Premier GA inshore + flats fishery. Tarpon + redfish + tripletail + speckled trout + sheepshead. Charter scene robust."
+  },
+  {
+    "id": "ga-coastal-cumberland",
+    "name": "Cumberland Island + Cumberland Sound",
+    "state": "GA",
+    "region": "GA Coastal",
+    "type": "great-lake",
+    "county": "Camden",
+    "signatureSpecies": "Redfish, spotted sea trout, tarpon, flounder",
+    "species": [
+      {
+        "name": "Redfish",
+        "importance": "signature"
+      },
+      {
+        "name": "Spotted sea trout",
+        "importance": "signature"
+      },
+      {
+        "name": "Tarpon",
+        "importance": "strong"
+      },
+      {
+        "name": "Flounder",
+        "importance": "strong"
+      },
+      {
+        "name": "Sheepshead",
+        "importance": "good"
+      },
+      {
+        "name": "Black drum",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Wilderness-coast redfish + trout",
+        "target": "Redfish + trout",
+        "when": "Year-round",
+        "technique": "Gold spoon, paddle-tail, Spoon Fly",
+        "where": "Spartina-grass flats + creek mouths"
+      }
+    ],
+    "access": [
+      "St. Marys (ferry to Cumberland Island NS)",
+      "Crooked River State Park"
+    ],
+    "notes": "Southernmost GA barrier island. Cumberland Island National Seashore — wilderness coast. Quieter than the Golden Isles."
+  },
+  {
+    "id": "ga-river-flint-middle",
+    "name": "Flint River — Middle (Albany area)",
+    "state": "GA",
+    "region": "GA Middle/South rivers",
+    "type": "river",
+    "county": "Dougherty / Lee / Mitchell / Decatur",
+    "river": "Flint River",
+    "signatureSpecies": "Shoal bass, largemouth bass, channel catfish, flathead catfish",
+    "species": [
+      {
+        "name": "Shoal bass",
+        "importance": "signature",
+        "size": "1-3 lb, 4+ lb possible",
+        "notes": "Flint is the home water for shoal bass — endemic black-bass species."
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Flathead catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Shoal-bass fly fishing (Stealth Bomber water)",
+        "target": "Shoal bass",
+        "when": "May-October",
+        "technique": "Stealth Bomber (Kent Edmonds — GA-born), Clouser, crayfish patterns, hellgrammite imitations",
+        "where": "Rock shoals + current breaks",
+        "details": "The Flint shoal-bass fly-fishery is the most-distinctly GA freshwater experience. Kent Edmonds invented the Stealth Bomber for this water."
+      }
+    ],
+    "access": [
+      "Albany",
+      "Bainbridge",
+      "Newton",
+      "Sprewell Bluff"
+    ],
+    "notes": "Middle Flint between Sprewell Bluff + Lake Seminole. Endemic shoal bass + Stealth Bomber origin. Already have a southern-FL entry; this is the GA river itself."
+  },
+  {
+    "id": "al-lake-guntersville",
+    "name": "Lake Guntersville",
+    "state": "AL",
+    "region": "AL Tennessee River chain",
+    "type": "reservoir",
+    "county": "Marshall / Jackson",
+    "acres": 67900,
+    "maxDepthFt": 60,
+    "lat": 34.36,
+    "lng": -86.3,
+    "signatureSpecies": "Largemouth bass, crappie, smallmouth bass",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "3-8 lb, 10+ lb regular",
+        "notes": "Lake Guntersville is THE bass lake of America. Multiple Bassmaster Classic championships here. Trophy water — 10-pound fish are part of the conversation."
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "strong",
+        "size": "2-5 lb",
+        "notes": "Lower river rocky sections."
+      },
+      {
+        "name": "Spotted bass",
+        "importance": "good"
+      },
+      {
+        "name": "Black crappie",
+        "importance": "signature",
+        "size": "9-13 in, jumbos common"
+      },
+      {
+        "name": "White crappie",
+        "importance": "signature"
+      },
+      {
+        "name": "White bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Blue catfish",
+        "importance": "strong",
+        "size": "5-50 lb"
+      },
+      {
+        "name": "Sauger",
+        "importance": "good",
+        "notes": "Below the dam in winter."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Frog over hydrilla mats (the Guntersville signature)",
+        "target": "Largemouth bass",
+        "when": "April-October",
+        "technique": "Hollow-body frog (Spro Bronzeye, Snag-Proof) over hydrilla + milfoil mats; weighted senko in pockets; punching heavy tungsten through dense mats",
+        "where": "Hydrilla beds + milfoil mats throughout the lake — especially near the river channel + creek mouths",
+        "details": "Guntersville won the Classic on the frog bite. Heavy braid (65+ lb) + flippin' stick rods mandatory. 10-lb bass on a frog is the bucket-list moment here."
+      },
+      {
+        "title": "Pre-spawn lipless crank + chatterbait",
+        "target": "Largemouth bass",
+        "when": "February-April",
+        "technique": "Rat-L-Trap (red shad / chrome blue / sexy shad), chatterbait, swim jig + flipping near grass edges",
+        "where": "Spawn flats + outside grass edges",
+        "details": "Pre-spawn trophy window. The biggest fish of the year roll into the flats. Bassmaster + MLF tour stops time around this."
+      },
+      {
+        "title": "Wild-shiner trophy bass",
+        "target": "Largemouth bass",
+        "when": "November-April",
+        "technique": "Wild shiners under cork on heavy spinning gear",
+        "where": "Outside grass edges + ledges"
+      },
+      {
+        "title": "Spring crappie spawn",
+        "target": "Crappie",
+        "when": "March-May",
+        "technique": "Jig + minnow under cork; spider-rigging",
+        "where": "Brush + flooded timber in creek arms"
+      },
+      {
+        "title": "Below-dam winter sauger",
+        "target": "Sauger",
+        "when": "November-February",
+        "technique": "Vertical jig + minnow",
+        "where": "Below Guntersville Dam tailwater"
+      }
+    ],
+    "access": [
+      "Goose Pond Colony",
+      "Browns Creek",
+      "Honeycomb Creek",
+      "Lake Guntersville State Park",
+      "BB Comer"
+    ],
+    "regulations": "Standard AL bass + crappie regs. Trophy slots may apply — confirm.",
+    "managementProgram": [
+      "TVA + AL DCNR management",
+      "Aquatic vegetation management — controversial; balance between bass habitat + boating"
+    ],
+    "notes": "THE bass lake of America. 67,900 acres on the Tennessee River in NE Alabama. Multiple Bassmaster Classic + FLW Forrest Wood Cup championships. World-class hydrilla-mat fishery."
+  },
+  {
+    "id": "al-lake-wheeler",
+    "name": "Wheeler Lake",
+    "state": "AL",
+    "region": "AL Tennessee River chain",
+    "type": "reservoir",
+    "county": "Lawrence / Limestone / Madison / Morgan",
+    "acres": 67100,
+    "maxDepthFt": 90,
+    "lat": 34.65,
+    "lng": -87.1,
+    "signatureSpecies": "Largemouth bass, smallmouth bass, crappie, striped bass",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "signature",
+        "size": "2-5 lb, 6+ lb possible",
+        "notes": "Wheeler holds quality smallmouth — better than Guntersville for smallies."
+      },
+      {
+        "name": "Striped bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Spotted bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Black crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "White crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Sauger",
+        "importance": "strong",
+        "notes": "Winter run below the dam."
+      },
+      {
+        "name": "Channel + blue + flathead catfish",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Wheeler smallmouth on ledges",
+        "target": "Smallmouth bass",
+        "when": "Year-round",
+        "technique": "Jerkbait, swimbait, drop-shot, Ned rig",
+        "where": "Main-river ledges + rocky points"
+      },
+      {
+        "title": "Winter sauger run",
+        "target": "Sauger",
+        "when": "November-February",
+        "technique": "Vertical jigging",
+        "where": "Below Wheeler Dam tailwater"
+      }
+    ],
+    "access": [
+      "Joe Wheeler State Park",
+      "Wheeler Dam",
+      "Decatur",
+      "Mooresville"
+    ],
+    "notes": "TN River reservoir between Wilson + Guntersville. Smallmouth + sauger marquee."
+  },
+  {
+    "id": "al-lake-wilson",
+    "name": "Wilson Lake",
+    "state": "AL",
+    "region": "AL Tennessee River chain",
+    "type": "reservoir",
+    "county": "Lauderdale / Colbert",
+    "acres": 15500,
+    "maxDepthFt": 110,
+    "lat": 34.78,
+    "lng": -87.62,
+    "signatureSpecies": "Smallmouth bass, largemouth bass, striped bass",
+    "species": [
+      {
+        "name": "Smallmouth bass",
+        "importance": "signature",
+        "size": "3-6 lb, 7+ lb possible",
+        "notes": "Wilson Lake produces trophy smallmouth — best smallmouth water on the AL Tennessee River chain."
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Striped bass",
+        "importance": "strong",
+        "size": "10-25 lb"
+      },
+      {
+        "name": "Spotted bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Black crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Sauger",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel + blue catfish",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Trophy smallmouth tailwater",
+        "target": "Smallmouth bass",
+        "when": "Year-round",
+        "technique": "Float-n-fly hair jig in winter; jerkbait + swimbait; drop-shot",
+        "where": "Below Wilson Dam + the rocky main-river ledges",
+        "details": "Wilson Lake (the tailwater of Pickwick Dam) holds trophy smallmouth — float-n-fly heaven in winter."
+      }
+    ],
+    "access": [
+      "Wilson Dam tailrace",
+      "McFarland Park",
+      "O'Neal Bridge"
+    ],
+    "notes": "Florence-Muscle Shoals area. Smaller + deeper than Wheeler/Guntersville. Premier AL smallmouth water."
+  },
+  {
+    "id": "al-lake-pickwick",
+    "name": "Pickwick Lake (Alabama portion)",
+    "state": "AL",
+    "region": "AL Tennessee River chain",
+    "type": "reservoir",
+    "county": "Colbert / Lauderdale",
+    "acres": 43100,
+    "maxDepthFt": 90,
+    "lat": 34.95,
+    "lng": -88.1,
+    "signatureSpecies": "Smallmouth bass, largemouth bass, crappie, sauger",
+    "species": [
+      {
+        "name": "Smallmouth bass",
+        "importance": "signature",
+        "size": "3-6 lb, 8+ lb possible",
+        "notes": "Pickwick rivals Dale Hollow for trophy smallmouth in the South."
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Spotted bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Black crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "White crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Sauger",
+        "importance": "strong",
+        "notes": "Below the dam in winter."
+      },
+      {
+        "name": "Blue catfish",
+        "importance": "strong",
+        "size": "5-50 lb"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Pickwick smallmouth on ledges",
+        "target": "Smallmouth bass",
+        "when": "Year-round",
+        "technique": "Jerkbait (Megabass Vision 110), swimbait, drop-shot, Ned rig",
+        "where": "Main-river ledges + rocky points"
+      }
+    ],
+    "access": [
+      "Pickwick Landing State Park (TN)",
+      "Pickwick Dam tailrace (AL side)",
+      "Florence area"
+    ],
+    "notes": "Spans TN/MS/AL. The Tennessee River makes its big southward bend here. World-class smallmouth water."
+  },
+  {
+    "id": "al-sipsey-fork-tailwater",
+    "name": "Sipsey Fork (Lewis Smith Dam tailwater)",
+    "state": "AL",
+    "region": "AL Tennessee River chain",
+    "type": "tailwater",
+    "county": "Walker",
+    "river": "Sipsey Fork",
+    "lat": 33.92,
+    "lng": -87.1,
+    "signatureSpecies": "Rainbow trout, brown trout",
+    "species": [
+      {
+        "name": "Rainbow trout",
+        "importance": "signature",
+        "size": "10-15 in",
+        "notes": "Alabama's ONLY tailwater trout fishery. AL DCNR stocked. Cold-water dam discharge from Lewis Smith Dam."
+      },
+      {
+        "name": "Brown trout",
+        "importance": "strong",
+        "size": "12-18 in"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "good",
+        "size": "Lower river warm zone"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Year-round trout — Alabama tailwater",
+        "target": "Rainbow + brown trout",
+        "when": "Year-round",
+        "technique": "Size 18-22 zebra midge + scud + Pheasant Tail; small jigs + spinners; size 16 sulfur emerger in spring + summer",
+        "where": "Below Lewis Smith Dam — 1.5 mile public-access tailwater section",
+        "details": "Alabama's only trout fishery. Cold dam discharges (mid-50s°F) keep trout active year-round. Smaller water than the TN tailwaters — wading classic."
+      }
+    ],
+    "access": [
+      "Lewis Smith Dam tailrace",
+      "Trout Boy Pool",
+      "Sipsey Fork public access"
+    ],
+    "regulations": "AL trout license. Slot limit + creel — confirm current.",
+    "managementProgram": [
+      "AL DCNR trout stocking",
+      "Alabama Power Lewis Smith Dam"
+    ],
+    "notes": "The only cold-water trout tailwater in Alabama. Spawned a cult fly-fishing scene. Lewis Smith Dam's cold discharge creates the habitat."
+  },
+  {
+    "id": "al-lewis-smith-lake",
+    "name": "Lewis Smith Lake",
+    "state": "AL",
+    "region": "AL Black Warrior + Tallapoosa",
+    "type": "reservoir",
+    "county": "Cullman / Walker / Winston",
+    "acres": 21200,
+    "maxDepthFt": 260,
+    "lat": 34.04,
+    "lng": -87.13,
+    "signatureSpecies": "Spotted bass, striped bass, largemouth bass, crappie",
+    "species": [
+      {
+        "name": "Spotted bass",
+        "importance": "signature",
+        "size": "2-5 lb, 7+ lb possible",
+        "notes": "Smith Lake holds the world-record spotted bass (10 lb 4 oz, 2017). Clear-deep-water trophy spotted bass mecca."
+      },
+      {
+        "name": "Striped bass",
+        "importance": "signature",
+        "size": "10-30 lb, 40+ lb documented",
+        "notes": "Smith Lake stripers are world-class — Alabama state record came from here."
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Black crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "good"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "World-record spotted bass deep clear water",
+        "target": "Spotted bass",
+        "when": "Year-round",
+        "technique": "Drop-shot, jerkbait (Megabass Vision 110), Alabama rig in cold, deep crank",
+        "where": "Bluff banks + main-lake brush piles + standing timber 25-40 ft",
+        "details": "Smith Lake produced the world-record spotted bass in 2017. Clear deep glacial-style basin (260 ft max). Western-style spotted bass tactics rule."
+      },
+      {
+        "title": "Trophy striper trolling",
+        "target": "Striped bass",
+        "when": "Year-round",
+        "technique": "Live shad + threadfin on downlines; planer boards; trolling Alabama rig",
+        "where": "Main lake basin + river-channel transitions"
+      }
+    ],
+    "access": [
+      "Smith Lake Park",
+      "Duncan Bridge",
+      "Houston"
+    ],
+    "managementProgram": [
+      "IGFA world-record spotted bass designation",
+      "AL DCNR striped bass stocking"
+    ],
+    "notes": "Deepest reservoir in AL (260 ft). Black Warrior River impoundment. Lewis Smith Dam creates the Sipsey Fork tailwater downstream. WORLD-RECORD spotted bass + striped bass."
+  },
+  {
+    "id": "al-bear-creek-lakes",
+    "name": "Bear Creek Lakes (NW Alabama)",
+    "state": "AL",
+    "region": "AL Tennessee River chain",
+    "type": "reservoir",
+    "county": "Franklin / Marion",
+    "acres": 12500,
+    "maxDepthFt": 80,
+    "signatureSpecies": "Largemouth bass, spotted bass, crappie",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature"
+      },
+      {
+        "name": "Spotted bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Black crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "NW Alabama clear-water bass",
+        "target": "Spotted + largemouth bass",
+        "when": "February-October",
+        "technique": "Senko, jerkbait, drop-shot",
+        "where": "Rocky banks + standing timber"
+      }
+    ],
+    "access": [
+      "Bear Creek (Upper)",
+      "Cedar Creek Lake",
+      "Little Bear Creek Lake",
+      "Big Bear Creek Lake"
+    ],
+    "notes": "Four-lake system in NW Alabama: Upper Bear, Cedar, Little Bear, Big Bear. TVA reservoirs on Bear Creek. Quality NW AL fishery."
+  },
+  {
+    "id": "al-weiss-lake",
+    "name": "Weiss Lake",
+    "state": "AL",
+    "region": "Northeast Alabama",
+    "type": "reservoir",
+    "county": "Cherokee",
+    "acres": 30200,
+    "maxDepthFt": 60,
+    "lat": 34.215,
+    "lng": -85.58,
+    "signatureSpecies": [
+      "Crappie",
+      "Largemouth Bass"
+    ],
+    "species": [
+      {
+        "name": "Crappie",
+        "importance": "signature",
+        "size": "Up to 3 lb; 11–14\" tournament-quality slabs",
+        "notes": "\"The Crappie Capital of the World\" — Weiss is internationally famous for slab crappie. State biologists stock and manage aggressively. Spring spawn in March–April is one of America's great crappie events."
+      },
+      {
+        "name": "Largemouth Bass",
+        "importance": "signature",
+        "size": "2–5 lb common, 8+ lb in winter",
+        "notes": "Big fish lake — submerged grass, lily pads, and creek mouths. Weiss has produced multiple double-digit largemouth."
+      },
+      {
+        "name": "Spotted Bass",
+        "importance": "strong",
+        "size": "1–3 lb",
+        "notes": "Lower lake near dam, deep main-lake points."
+      },
+      {
+        "name": "Striped Bass",
+        "importance": "good",
+        "size": "10–30 lb",
+        "notes": "Stocked. River channels and deep summer water."
+      },
+      {
+        "name": "Channel Catfish",
+        "importance": "good",
+        "size": "2–8 lb",
+        "notes": "Creek mouths and river channel."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Spring Crappie Spawn — Lily Pads & Cypress",
+        "target": "Crappie",
+        "when": "Mid-March – Late April when water hits 60–68°F",
+        "technique": "Long-pole jigging (BnM 12–14' poles) with 1/16-oz jigs around lily pad edges, cypress knees, and shoreline cover. Pearl/chartreuse, blue/white, or red/chartreuse skirts. Slip-cork with minnows works equally well.",
+        "where": "Little River, Mill Creek, Yellow Creek, Cowans Creek arms — spawn in skinny water (2–4 ft) along banks with vegetation and wood.",
+        "details": "When the dogwoods bloom in north Alabama, the crappie spawn peaks. Weiss puts more 1.5–2.5 lb slabs in the boat per April day than almost anywhere in the country."
+      },
+      {
+        "title": "Summer Crappie Brush Piles",
+        "target": "Crappie",
+        "when": "June – September",
+        "technique": "Vertical jig brush piles in 12–22 ft with electronics (LiveScope-style forward facing has revolutionized this lake). Single-pole spider rigging with 1/8-oz jigs and a minnow trailer.",
+        "where": "Main-lake brush piles, creek-channel ledges. State and private brush piles are public knowledge — many marked on Navionics.",
+        "details": "Summer Weiss crappie suspend over 25–40 ft, sitting in brush at 15–20 ft. Forward-facing sonar lets you pick out individual fish."
+      },
+      {
+        "title": "Fall Largemouth on Grass Edges",
+        "target": "Largemouth Bass",
+        "when": "October – December",
+        "technique": "Square-bills, lipless cranks (Red Eye Shad), and weightless flukes around hydrilla and milfoil edges. Spinnerbaits in stained water.",
+        "where": "Mid-lake grass flats, creek mouths.",
+        "details": "Weiss has good grass — when fall shad start dumping, the largemouth gorge."
+      },
+      {
+        "title": "Winter Trophy Largemouth",
+        "target": "Largemouth Bass",
+        "when": "December – February",
+        "technique": "Slow-rolled big swimbaits, jerkbaits (Megabass Vision 110), and Alabama rigs in deeper water near creek channels.",
+        "where": "Coosa, Little, and Yellow Creek channels in 8–20 ft.",
+        "details": "Weiss's biggest bass of the year come from cold months — slow presentations in the channel-edge zone."
+      }
+    ],
+    "access": [
+      "Cherokee County: Bay Springs Marina, Riverside Park, Little River Park",
+      "Centre area: J.D. Pruett Park, Weiss Lake Marine"
+    ],
+    "regulations": "AL fishing license. Crappie: 30/day, 9\" minimum. Largemouth: 5/day, 13\" minimum (special on Coosa chain). Striped/hybrid: 2/day, 22\" minimum. Check ADCNR.",
+    "managementProgram": [
+      "Crappie stocking and habitat enhancement",
+      "Florida-strain largemouth introductions",
+      "Brush pile placement program"
+    ],
+    "notes": "Weiss is one of the very few lakes in America where the crappie are as famous as the bass — and the bass are very famous. Coosa River impoundment formed in 1961, Alabama Power. Cherokee, AL area built around fishing tourism."
+  },
+  {
+    "id": "al-neely-henry-lake",
+    "name": "Neely Henry Lake",
+    "state": "AL",
+    "region": "East Alabama",
+    "type": "reservoir",
+    "county": "Etowah / St. Clair / Calhoun",
+    "acres": 11200,
+    "maxDepthFt": 55,
+    "lat": 33.88,
+    "lng": -86.06,
+    "signatureSpecies": [
+      "Spotted Bass",
+      "Largemouth Bass"
+    ],
+    "species": [
+      {
+        "name": "Spotted Bass",
+        "importance": "signature",
+        "size": "1.5–4 lb; trophy 5+ lb",
+        "notes": "Coosa-strain spots — aggressive, hard-fighting. Main-lake points, bluffs, and bridges."
+      },
+      {
+        "name": "Largemouth Bass",
+        "importance": "signature",
+        "size": "2–6 lb",
+        "notes": "Creek arms, grass, and shallow cover."
+      },
+      {
+        "name": "Crappie",
+        "importance": "good",
+        "size": "0.5–1.5 lb",
+        "notes": "Creek mouths and brush."
+      },
+      {
+        "name": "Striped Bass",
+        "importance": "good",
+        "size": "10–25 lb",
+        "notes": "Below Neely Henry Dam tailrace especially."
+      },
+      {
+        "name": "Catfish",
+        "importance": "good",
+        "size": "Channel, blue, flathead present",
+        "notes": "Main lake and river current."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Coosa-Strain Spotted Bass — Bluff Walls",
+        "target": "Spotted Bass",
+        "when": "Year-round, peak fall & spring",
+        "technique": "Drop-shot, shaky head, jerkbaits, and small swimbaits along vertical rock. Spotted bass push shad against bluff walls — fast, reactive bite.",
+        "where": "Main-lake bluff sections, particularly mid-lake and below the railroad bridge.",
+        "details": "The Coosa River chain (Neely Henry, Logan Martin, Lay, Mitchell, Jordan) is the spotted bass tournament circuit of the South. Coosa spots are genetic gold — they grow fat in current."
+      },
+      {
+        "title": "Bridge Pilings & Causeway",
+        "target": "Spotted Bass and Largemouth",
+        "when": "Summer & winter",
+        "technique": "Drop-shot, vertical jigging spoons (Cotton Cordell C.C. Spoon), and live bait around pilings.",
+        "where": "I-59, U.S. 11, and railroad bridges across the lake.",
+        "details": "Bridges concentrate shad and bass year-round on the Coosa."
+      },
+      {
+        "title": "Spring Largemouth Creek Spawn",
+        "target": "Largemouth Bass",
+        "when": "March – April",
+        "technique": "Lipless cranks, ChatterBaits, and Senkos in creek arms.",
+        "where": "Big Canoe Creek, Beaver Creek, Ohatchee Creek.",
+        "details": "Creek arms warm first and hold the largemouth spawn."
+      }
+    ],
+    "access": [
+      "Etowah County: Coosa Landing (Gadsden), Rainbow Landing",
+      "Public ramps at Canoe Creek, Riverside"
+    ],
+    "regulations": "AL fishing license. Bass: special Coosa chain rules — check ADCNR. Spotted bass: no minimum, 10/day combined with largemouth. Largemouth: 12\" minimum on most of the Coosa chain.",
+    "managementProgram": [
+      "Coosa-strain spotted bass conservation",
+      "Habitat enhancement"
+    ],
+    "notes": "H. Neely Henry Lake, impounded 1966. The upper Coosa chain reservoir, north of Gadsden. Tournament regular."
+  },
+  {
+    "id": "al-logan-martin-lake",
+    "name": "Logan Martin Lake",
+    "state": "AL",
+    "region": "East Alabama",
+    "type": "reservoir",
+    "county": "St. Clair / Talladega",
+    "acres": 17000,
+    "maxDepthFt": 75,
+    "lat": 33.43,
+    "lng": -86.31,
+    "signatureSpecies": [
+      "Spotted Bass",
+      "Largemouth Bass"
+    ],
+    "species": [
+      {
+        "name": "Spotted Bass",
+        "importance": "signature",
+        "size": "1.5–4 lb; 5+ lb trophy",
+        "notes": "Coosa-strain — Logan Martin is one of the premier spotted bass tournament fisheries in the South."
+      },
+      {
+        "name": "Largemouth Bass",
+        "importance": "signature",
+        "size": "2–7 lb",
+        "notes": "Creek arms and grass."
+      },
+      {
+        "name": "Striped Bass",
+        "importance": "strong",
+        "size": "15–40 lb",
+        "notes": "Stocked. Logan Martin produces some of Alabama's biggest stripers — 40-pounders not uncommon."
+      },
+      {
+        "name": "Crappie",
+        "importance": "good",
+        "size": "0.5–2 lb",
+        "notes": "Creek mouths and brush in 12–20 ft."
+      },
+      {
+        "name": "Catfish",
+        "importance": "good",
+        "size": "Channel + flathead + blue",
+        "notes": "River channel; trophy blues from Coosa."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Logan Martin Spots — Main-Lake Rock",
+        "target": "Spotted Bass",
+        "when": "Year-round",
+        "technique": "Drop-shot (4–6\" worms), shaky head with finesse worm, jerkbaits (Spro McStick) in cold months, small flukes warmer. Coosa spots love clean rock and current.",
+        "where": "Main-lake points, riprap, bridge causeways, the Coosa River channel.",
+        "details": "Logan Martin spots are the standard against which other Coosa chain lakes are measured. Tournament weights here are spotted-bass-heavy."
+      },
+      {
+        "title": "Striped Bass — Summer Current Breaks",
+        "target": "Striped Bass",
+        "when": "May – September",
+        "technique": "Live shad on planer boards, freelined or down-rod, in 20–40 ft. Big swimbaits when fish surface-bust schools.",
+        "where": "Below Neely Henry Dam (Logan Martin's headwaters), main-river channel, deep coves with current breaks.",
+        "details": "Logan Martin stripers grow large — trophy 30–40 lb fish on schedule. AL Power releases at Neely Henry move the bait, the bait moves the stripers."
+      },
+      {
+        "title": "Schooling Spots & Largemouth — Fall Shad Bust",
+        "target": "Spotted Bass and Largemouth",
+        "when": "September – November",
+        "technique": "Pencil poppers, walking topwater (Spook), and small swimbaits when fish boil shad. Sub-surface: Alabama rig and flukes.",
+        "where": "Main-lake points and creek mouths.",
+        "details": "Fall is the visual season — surface explosions across the lake on shad pods."
+      },
+      {
+        "title": "Big Largemouth — Grass & Wood",
+        "target": "Largemouth Bass",
+        "when": "Spring and Fall",
+        "technique": "ChatterBaits, lipless cranks, and frogs over and around grass.",
+        "where": "Coosa Island, Choccolocco Creek, Cropwell Creek arms.",
+        "details": "Largemouth bias in the creek arms; spots dominate the main lake."
+      }
+    ],
+    "access": [
+      "Coosa Island Marina, Lake Logan Martin State Park area ramps",
+      "Public ramps at Stemley Bridge, Pell City, Riverside"
+    ],
+    "regulations": "AL fishing license. Special Coosa chain bass regulations — verify with ADCNR.",
+    "managementProgram": [
+      "Coosa-strain spot management",
+      "Striped bass stocking"
+    ],
+    "notes": "Logan Martin Lake (1964), 48 miles long Coosa River impoundment. Birmingham's primary tournament destination. The Coosa chain spotted bass tournament weights here are legendary."
+  },
+  {
+    "id": "al-lay-lake",
+    "name": "Lay Lake",
+    "state": "AL",
+    "region": "Central Alabama",
+    "type": "reservoir",
+    "county": "Shelby / Chilton / Coosa / Talladega",
+    "acres": 12000,
+    "maxDepthFt": 87,
+    "lat": 33.115,
+    "lng": -86.515,
+    "signatureSpecies": [
+      "Spotted Bass",
+      "Largemouth Bass"
+    ],
+    "species": [
+      {
+        "name": "Spotted Bass",
+        "importance": "signature",
+        "size": "1.5–4 lb",
+        "notes": "Coosa-strain — Lay Lake hosted the 1996, 2002, 2007 Bassmaster Classics."
+      },
+      {
+        "name": "Largemouth Bass",
+        "importance": "signature",
+        "size": "2–8 lb",
+        "notes": "Creek arms with hydrilla and milfoil."
+      },
+      {
+        "name": "Crappie",
+        "importance": "strong",
+        "size": "0.5–2 lb",
+        "notes": "Spring spawn in creek backs is excellent."
+      },
+      {
+        "name": "Striped Bass",
+        "importance": "good",
+        "size": "10–30 lb",
+        "notes": "Stocked."
+      },
+      {
+        "name": "Catfish",
+        "importance": "good",
+        "size": "Channel + blue + flathead",
+        "notes": "Big blues common in the main river channel."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Lay Lake Spots — Rock + Current",
+        "target": "Spotted Bass",
+        "when": "Year-round",
+        "technique": "Same Coosa chain playbook — drop-shot, shaky head, jerkbaits, small swimbaits on main-lake rock and bridge structure.",
+        "where": "Beeswax Creek, Paint Creek, main-lake points. The dam area is electric in spring.",
+        "details": "Three Bassmaster Classics on this lake (1996, 2002, 2007) tell you everything about the spotted bass fishery."
+      },
+      {
+        "title": "Spring Largemouth Hydrilla",
+        "target": "Largemouth Bass",
+        "when": "March – May",
+        "technique": "ChatterBait (Z-Man with Yamamoto Zako trailer), lipless cranks (Rat-L-Trap, Red Eye Shad in red craw), and Senkos on grass edges.",
+        "where": "Mid-lake creek arms, Paint Creek, Spring Creek.",
+        "details": "Lay has better hydrilla than some Coosa lakes — concentrates the largemouth spawn."
+      },
+      {
+        "title": "Crappie Spawn — Coves",
+        "target": "Crappie",
+        "when": "March – April",
+        "technique": "Long-pole jigs and minnows in shallow coves with wood and grass.",
+        "where": "Beeswax Creek, Cottonwood Creek, Yellowleaf Creek.",
+        "details": "April crappie spawn is a quiet star of this lake."
+      },
+      {
+        "title": "Below Logan Martin Dam — Tailrace",
+        "target": "Striped Bass and Spotted Bass",
+        "when": "When AL Power is generating",
+        "technique": "Bucktails, swimbaits, and live shad in the tailrace turbulence.",
+        "where": "Lay Lake headwaters below Logan Martin Dam.",
+        "details": "Generating periods stack stripers and spots in the tailrace."
+      }
+    ],
+    "access": [
+      "Beeswax Creek Park, Paint Creek Park",
+      "Mitchell Dam area, Cottonwood Creek"
+    ],
+    "regulations": "AL fishing license. Coosa chain special bass regulations apply.",
+    "managementProgram": [
+      "Hydrilla management balance",
+      "Tournament habitat work"
+    ],
+    "notes": "Lay Lake (1914 — oldest of the Coosa Alabama Power impoundments). Bassmaster Classic venue 1996, 2002, 2007. Central Alabama tournament hub."
+  },
+  {
+    "id": "al-mitchell-lake",
+    "name": "Mitchell Lake",
+    "state": "AL",
+    "region": "Central Alabama",
+    "type": "reservoir",
+    "county": "Chilton / Coosa",
+    "acres": 5850,
+    "maxDepthFt": 110,
+    "lat": 32.795,
+    "lng": -86.47,
+    "signatureSpecies": [
+      "Spotted Bass",
+      "Striped Bass"
+    ],
+    "species": [
+      {
+        "name": "Spotted Bass",
+        "importance": "signature",
+        "size": "1.5–4 lb",
+        "notes": "Deep, clear Coosa lake — heavy spotted bass bias."
+      },
+      {
+        "name": "Striped Bass",
+        "importance": "signature",
+        "size": "15–35 lb",
+        "notes": "Stocked. Mitchell produces strong stripers in the deep main lake."
+      },
+      {
+        "name": "Largemouth Bass",
+        "importance": "strong",
+        "size": "2–6 lb",
+        "notes": "Creek arms."
+      },
+      {
+        "name": "Crappie",
+        "importance": "good",
+        "size": "0.5–1.5 lb",
+        "notes": "Brush piles."
+      },
+      {
+        "name": "Catfish",
+        "importance": "good",
+        "size": "Blues and flatheads",
+        "notes": "Big fish in the deep river channel."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Deep Spots — Drop-Shot Mid-Lake",
+        "target": "Spotted Bass",
+        "when": "Summer & winter",
+        "technique": "Drop-shot in 25–50 ft on main-lake humps and points. Spotted bass go deeper here than on most Coosa lakes — Mitchell is the deepest.",
+        "where": "Main lake from Higgins Ferry to dam.",
+        "details": "Mitchell is small, deep, and clear — a finesse spotted bass lake more than a power-fishing lake."
+      },
+      {
+        "title": "Summer Stripers — Down-Rod Live Shad",
+        "target": "Striped Bass",
+        "when": "June – August",
+        "technique": "Live blueback herring or shad on down-rods at 30–50 ft over the river channel.",
+        "where": "Main-lake channel bends.",
+        "details": "Stripers stack in the cool depths of Mitchell's narrow main lake."
+      },
+      {
+        "title": "Tailrace Spotted Bass + Stripers — Below Lay Dam",
+        "target": "Spotted Bass and Striped Bass",
+        "when": "Generating periods",
+        "technique": "Bucktails, soft jerkbaits, and live shad in current breaks.",
+        "where": "Mitchell's headwaters below Lay Dam.",
+        "details": "When AL Power generates upstream, the tailrace lights up."
+      }
+    ],
+    "access": [
+      "Higgins Ferry Park (Coosa County), Mitchell Dam area",
+      "Public ramps along U.S. 280 corridor"
+    ],
+    "regulations": "AL fishing license. Coosa chain rules apply.",
+    "managementProgram": [
+      "Striped bass stocking",
+      "Coosa chain spot conservation"
+    ],
+    "notes": "Mitchell Lake (1923). Small (5,850 acres) but deep (110 ft) Coosa River impoundment. Less-pressured than Lay or Logan Martin."
+  },
+  {
+    "id": "al-jordan-lake",
+    "name": "Jordan Lake",
+    "state": "AL",
+    "region": "Central Alabama",
+    "type": "reservoir",
+    "county": "Elmore / Coosa",
+    "acres": 6800,
+    "maxDepthFt": 90,
+    "lat": 32.61,
+    "lng": -86.25,
+    "signatureSpecies": [
+      "Striped Bass",
+      "Spotted Bass"
+    ],
+    "species": [
+      {
+        "name": "Striped Bass",
+        "importance": "signature",
+        "size": "15–40 lb",
+        "notes": "Jordan is the trophy striper lake of the Coosa chain — 30–40 lb fish realistic."
+      },
+      {
+        "name": "Spotted Bass",
+        "importance": "signature",
+        "size": "1.5–4 lb",
+        "notes": "Coosa-strain — deep clear water."
+      },
+      {
+        "name": "Largemouth Bass",
+        "importance": "good",
+        "size": "2–6 lb",
+        "notes": "Creek arms."
+      },
+      {
+        "name": "Crappie",
+        "importance": "good",
+        "size": "0.5–2 lb",
+        "notes": "Brush piles in 15–25 ft."
+      },
+      {
+        "name": "Catfish",
+        "importance": "good",
+        "size": "Blues and flatheads to 60+ lb",
+        "notes": "Trophy blues from Coosa."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Jordan Trophy Stripers — Live Shad",
+        "target": "Striped Bass",
+        "when": "Spring & summer",
+        "technique": "Big live blueback herring or gizzard shad on planer boards and down-rods over the main-lake river channel.",
+        "where": "Main lake, dam area, Coosa channel.",
+        "details": "Some of Alabama's biggest stripers come from Jordan — the lake stratifies and concentrates the fish in cool water."
+      },
+      {
+        "title": "Below Mitchell Dam — Tailrace",
+        "target": "Striped Bass and Spotted Bass",
+        "when": "Generating periods",
+        "technique": "Bucktails, big soft swimbaits, and live shad in the turbulence.",
+        "where": "Jordan's headwaters below Mitchell Dam.",
+        "details": "The tailrace at Jordan's upper end is reliable striper water during AL Power generation."
+      },
+      {
+        "title": "Coosa Spots — Bluff Walls",
+        "target": "Spotted Bass",
+        "when": "Year-round",
+        "technique": "Drop-shot, jerkbaits, shaky head on bluff rock.",
+        "where": "Main-lake bluff sections.",
+        "details": "Classic Coosa spotted bass — deep, clean, vertical."
+      }
+    ],
+    "access": [
+      "Bonner Recreation Area, Wetumpka area ramps",
+      "Pinedale Marina"
+    ],
+    "regulations": "AL fishing license. Coosa chain rules.",
+    "managementProgram": [
+      "Striped bass stocking (trophy program)",
+      "Coosa spot conservation"
+    ],
+    "notes": "Jordan Dam (1928), lower Coosa chain. Lower elevation, deep, trophy striped bass destination. Wetumpka, AL."
+  },
+  {
+    "id": "al-lake-tuscaloosa",
+    "name": "Lake Tuscaloosa",
+    "state": "AL",
+    "region": "West Alabama",
+    "type": "reservoir",
+    "county": "Tuscaloosa",
+    "acres": 5885,
+    "maxDepthFt": 76,
+    "lat": 33.38,
+    "lng": -87.53,
+    "signatureSpecies": [
+      "Largemouth Bass",
+      "Spotted Bass"
+    ],
+    "species": [
+      {
+        "name": "Largemouth Bass",
+        "importance": "signature",
+        "size": "2–8 lb",
+        "notes": "Clear water lake with Florida-strain genetics — produces solid trophy potential."
+      },
+      {
+        "name": "Spotted Bass",
+        "importance": "strong",
+        "size": "1.5–3 lb",
+        "notes": "Deep main-lake points."
+      },
+      {
+        "name": "Striped Bass",
+        "importance": "good",
+        "size": "10–25 lb",
+        "notes": "Stocked."
+      },
+      {
+        "name": "Crappie",
+        "importance": "good",
+        "size": "0.5–1.5 lb",
+        "notes": "Brush piles, creek mouths."
+      },
+      {
+        "name": "Bream",
+        "importance": "good",
+        "size": "Bluegill and shellcracker",
+        "notes": "Strong panfish presence."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Clear-Water Largemouth — Sight Spawn",
+        "target": "Largemouth Bass",
+        "when": "March – April",
+        "technique": "Sight-fish beds with white tubes, Senkos, and small swimbaits. Long casts in clear water.",
+        "where": "Coves and protected pockets across the lake.",
+        "details": "Tuscaloosa's clear water makes it a premier sight-fishing lake in spring."
+      },
+      {
+        "title": "Summer Deep Spots & Largemouth",
+        "target": "Largemouth Bass and Spotted Bass",
+        "when": "June – September",
+        "technique": "Drop-shot and Carolina rig on main-lake humps and points in 18–30 ft.",
+        "where": "Main lake near dam.",
+        "details": "Clear deep summer water — finesse plays."
+      }
+    ],
+    "access": [
+      "Binion Creek Park, North River",
+      "Tierce Patton Park"
+    ],
+    "regulations": "AL fishing license. Standard statewide bass regs.",
+    "managementProgram": [
+      "Water supply lake — limited public motor restrictions in some zones"
+    ],
+    "notes": "Tuscaloosa city water supply reservoir (1970). Clear, deep, and surprisingly under-promoted."
+  },
+  {
+    "id": "al-bankhead-lake",
+    "name": "Bankhead Lake",
+    "state": "AL",
+    "region": "West Central Alabama",
+    "type": "reservoir",
+    "county": "Walker / Tuscaloosa / Jefferson",
+    "acres": 9200,
+    "maxDepthFt": 75,
+    "lat": 33.45,
+    "lng": -87.355,
+    "signatureSpecies": [
+      "Largemouth Bass",
+      "Spotted Bass"
+    ],
+    "species": [
+      {
+        "name": "Largemouth Bass",
+        "importance": "signature",
+        "size": "2–6 lb",
+        "notes": "Black Warrior River impoundment — varied cover."
+      },
+      {
+        "name": "Spotted Bass",
+        "importance": "strong",
+        "size": "1.5–3 lb",
+        "notes": "Main-lake rock and current."
+      },
+      {
+        "name": "Striped Bass",
+        "importance": "good",
+        "size": "10–25 lb",
+        "notes": "Stocked."
+      },
+      {
+        "name": "Catfish",
+        "importance": "good",
+        "size": "Channel, blue, flathead",
+        "notes": "Trophy flatheads from the river channel."
+      },
+      {
+        "name": "Crappie",
+        "importance": "good",
+        "size": "0.5–1.5 lb",
+        "notes": "Brush and creek mouths."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Black Warrior Largemouth — Wood + Current",
+        "target": "Largemouth Bass",
+        "when": "Spring & Fall",
+        "technique": "ChatterBaits, square-bills, jigs around laydowns and wood in creek arms.",
+        "where": "Lost Creek, Davis Creek arms.",
+        "details": "River-system largemouth — current and wood are the keys."
+      },
+      {
+        "title": "Below Smith Lake Dam Tailrace",
+        "target": "Striped Bass and Spotted Bass",
+        "when": "Generation periods",
+        "technique": "Bucktails, soft jerkbaits in cool tailrace water.",
+        "where": "Bankhead headwaters below Smith Lake Dam.",
+        "details": "Smith Dam discharges cold clean water — concentrates fish on hot days."
+      }
+    ],
+    "access": [
+      "Public ramps along Lock and Dam Road",
+      "Brookwood, Sumiton ramps"
+    ],
+    "regulations": "AL fishing license. Standard statewide bass regs.",
+    "managementProgram": [
+      "Black Warrior river system management"
+    ],
+    "notes": "Bankhead Lake (1916), Black Warrior River. Industrial corridor + good fishery overlap."
+  },
+  {
+    "id": "al-holt-lake",
+    "name": "Holt Lake",
+    "state": "AL",
+    "region": "West Central Alabama",
+    "type": "reservoir",
+    "county": "Tuscaloosa",
+    "acres": 3290,
+    "maxDepthFt": 65,
+    "lat": 33.295,
+    "lng": -87.45,
+    "signatureSpecies": [
+      "Largemouth Bass",
+      "Catfish"
+    ],
+    "species": [
+      {
+        "name": "Largemouth Bass",
+        "importance": "signature",
+        "size": "2–6 lb",
+        "notes": "Black Warrior pool — riverine."
+      },
+      {
+        "name": "Catfish",
+        "importance": "signature",
+        "size": "Trophy blues 30–60 lb",
+        "notes": "Holt produces some of the best trophy catfishing on the Black Warrior."
+      },
+      {
+        "name": "Spotted Bass",
+        "importance": "strong",
+        "size": "1.5–3 lb",
+        "notes": "Riprap and rock."
+      },
+      {
+        "name": "Crappie",
+        "importance": "good",
+        "size": "0.5–1.5 lb",
+        "notes": "Wood and creek mouths."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Holt Trophy Blues — Cut Bait Drifting",
+        "target": "Catfish (Blue)",
+        "when": "Year-round, peak late fall – winter",
+        "technique": "Fresh cut skipjack or shad on Santee rigs, drifted across river channel ledges and deep holes.",
+        "where": "Main river channel, lock area.",
+        "details": "Holt is a trophy blue catfish lake — Black Warrior fish to 60+ lb caught regularly."
+      },
+      {
+        "title": "River Largemouth — Wood",
+        "target": "Largemouth Bass",
+        "when": "Spring – Fall",
+        "technique": "Jigs, square-bills, and Texas-rigged worms around shoreline laydowns.",
+        "where": "Creek arms and slack-water pockets.",
+        "details": "Find the slack-water pockets off the main river."
+      }
+    ],
+    "access": [
+      "Holt Lock and Dam area, Rocky Branch",
+      "Public ramps near Tuscaloosa"
+    ],
+    "regulations": "AL fishing license. Standard regs.",
+    "managementProgram": [
+      "Trophy blue catfish habitat conservation"
+    ],
+    "notes": "Holt Lake (1968), Black Warrior River navigation pool. Trophy blue catfishery."
+  },
+  {
+    "id": "al-lake-martin",
+    "name": "Lake Martin",
+    "state": "AL",
+    "region": "East Alabama",
+    "type": "reservoir",
+    "county": "Tallapoosa / Coosa / Elmore",
+    "acres": 41150,
+    "maxDepthFt": 156,
+    "lat": 32.7,
+    "lng": -85.9,
+    "signatureSpecies": [
+      "Spotted Bass",
+      "Striped Bass",
+      "Largemouth Bass"
+    ],
+    "species": [
+      {
+        "name": "Spotted Bass",
+        "importance": "signature",
+        "size": "1.5–4 lb; 5+ lb trophy",
+        "notes": "Lake Martin is one of the premier deep-clear spotted bass lakes in the country. Tallapoosa River impoundment with 750 miles of shoreline."
+      },
+      {
+        "name": "Striped Bass",
+        "importance": "signature",
+        "size": "15–40 lb",
+        "notes": "Stocked — Lake Martin produces some of Alabama's biggest stripers; AL state record 70 lb came from Martin (1959)."
+      },
+      {
+        "name": "Largemouth Bass",
+        "importance": "strong",
+        "size": "2–7 lb",
+        "notes": "Creek arms."
+      },
+      {
+        "name": "Crappie",
+        "importance": "good",
+        "size": "0.5–2 lb",
+        "notes": "Brush piles in 15–30 ft."
+      },
+      {
+        "name": "Bream",
+        "importance": "good",
+        "size": "Bluegill, shellcracker, redear",
+        "notes": "Bedding panfish in May–June."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Lake Martin Spots — Deep Clear Drop-Shot",
+        "target": "Spotted Bass",
+        "when": "Year-round, peak May – October",
+        "technique": "Drop-shot (Robo Worm, Zoom finesse) on main-lake points and humps in 20–45 ft. Forward-facing sonar is now standard — pick fish out of the water column. Shaky head and jerkbaits supplement.",
+        "where": "Main lake mid-channel humps, points, and bluff transitions. Kowaliga area, Real Island, Pleasure Point.",
+        "details": "Martin is \"the standard\" for deep-clear-water spotted bass in the South. Local pros built drop-shot reputations here. Water is gin-clear most of the year — finesse is the law."
+      },
+      {
+        "title": "Topwater Spots — Schooling Shad",
+        "target": "Spotted Bass",
+        "when": "Late July – October",
+        "technique": "Walking topwater (Spook Jr., Sammy 100), pencil poppers, and small flukes when fish boil shad on flat calm mornings.",
+        "where": "Main lake points and humps, especially Kowaliga and the dam area.",
+        "details": "Schooling Martin spots are visual fishing at its best — fast boats, sharp eyes, accurate casts."
+      },
+      {
+        "title": "Trophy Stripers — Live Shad on Down-Rods",
+        "target": "Striped Bass",
+        "when": "May – September",
+        "technique": "Live blueback herring (legal in AL with permit) or shad on down-rods at 30–60 ft over the main river channel.",
+        "where": "Lower lake near dam, main river channel.",
+        "details": "Martin's deep cold thermocline holds stripers in summer. Hire a guide if you're new — finding the bait ball matters more than gear."
+      },
+      {
+        "title": "Spring Crappie & Largemouth Creek Spawn",
+        "target": "Crappie and Largemouth",
+        "when": "March – April",
+        "technique": "Jigs and minnows on long poles for crappie; Senkos, ChatterBaits, and lipless cranks for largemouth.",
+        "where": "Upper-lake creek arms: Kowaliga Creek, Sandy Creek, Wind Creek.",
+        "details": "Creek arms warm faster than the deep main lake."
+      },
+      {
+        "title": "Bream Spawning Beds",
+        "target": "Bluegill, Shellcracker, Redear",
+        "when": "May – June full moon",
+        "technique": "Crickets, redworms, and small popping bugs around shallow gravel/sand spawning beds.",
+        "where": "Shallow sandy pockets across the lake.",
+        "details": "Martin's bream beds are legendary for kid-and-grandkid trips."
+      }
+    ],
+    "access": [
+      "Wind Creek State Park (large public ramp + camping)",
+      "Kowaliga area marinas",
+      "Real Island, Pleasure Point public ramps",
+      "Public ramps at Madwind Creek, Castaway Marina"
+    ],
+    "regulations": "AL fishing license. Bass: 10/day combined largemouth + spotted, 12\" minimum largemouth, no minimum spotted. Striped bass: 2/day, 22\" minimum. Crappie: 30/day, 9\" minimum. Bream: no limit.",
+    "managementProgram": [
+      "Striped bass stocking (trophy program)",
+      "Spotted bass conservation",
+      "Habitat enhancement"
+    ],
+    "notes": "\"Smith Mountain Lake of the South.\" 41,150 acres, 156 ft max, 750 mi of shoreline. Built 1926 by Alabama Power. Lake Martin is the deep clear-water trophy bass and striper destination of central Alabama, with summer-home culture (Russell Lands, Children's Harbor, Kowaliga). World-class."
+  },
+  {
+    "id": "al-yates-lake",
+    "name": "Yates Lake",
+    "state": "AL",
+    "region": "East Alabama",
+    "type": "reservoir",
+    "county": "Elmore / Tallapoosa",
+    "acres": 2000,
+    "maxDepthFt": 65,
+    "lat": 32.58,
+    "lng": -85.89,
+    "signatureSpecies": [
+      "Largemouth Bass",
+      "Spotted Bass"
+    ],
+    "species": [
+      {
+        "name": "Largemouth Bass",
+        "importance": "signature",
+        "size": "2–6 lb",
+        "notes": "Small Tallapoosa pool, riverine character."
+      },
+      {
+        "name": "Spotted Bass",
+        "importance": "strong",
+        "size": "1.5–3 lb",
+        "notes": "Rock + current."
+      },
+      {
+        "name": "Crappie",
+        "importance": "good",
+        "size": "0.5–1.5 lb",
+        "notes": "Wood and brush."
+      },
+      {
+        "name": "Catfish",
+        "importance": "good",
+        "size": "Channel + flathead",
+        "notes": "River channel."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Below Martin Dam — Tailrace",
+        "target": "Striped Bass, Spotted Bass, Largemouth",
+        "when": "AL Power generating periods",
+        "technique": "Bucktails, swimbaits, soft jerkbaits in turbulence.",
+        "where": "Yates headwaters below Lake Martin Dam.",
+        "details": "Cold deep discharge from Lake Martin lights up tailrace."
+      },
+      {
+        "title": "Riverine Largemouth — Cover",
+        "target": "Largemouth Bass",
+        "when": "Year-round",
+        "technique": "Jigs, ChatterBaits around laydowns and rip-rap.",
+        "where": "Creek mouths and slack-water.",
+        "details": "Small lake, big-river feel."
+      }
+    ],
+    "access": [
+      "Yates Public Ramp, Wetumpka area"
+    ],
+    "regulations": "AL fishing license.",
+    "managementProgram": [
+      "Tallapoosa river fishery"
+    ],
+    "notes": "Yates Lake (1928), 2,000-acre Tallapoosa River impoundment between Martin and Thurlow. Tailrace fishery below Martin Dam is the headline."
+  },
+  {
+    "id": "al-thurlow-lake",
+    "name": "Thurlow Lake",
+    "state": "AL",
+    "region": "East Alabama",
+    "type": "reservoir",
+    "county": "Elmore",
+    "acres": 580,
+    "maxDepthFt": 30,
+    "lat": 32.55,
+    "lng": -85.9,
+    "signatureSpecies": [
+      "Largemouth Bass",
+      "Striped Bass"
+    ],
+    "species": [
+      {
+        "name": "Largemouth Bass",
+        "importance": "signature",
+        "size": "2–6 lb",
+        "notes": "Small riverine pool below Yates."
+      },
+      {
+        "name": "Striped Bass",
+        "importance": "strong",
+        "size": "10–25 lb",
+        "notes": "Stocked + migratory from Alabama River."
+      },
+      {
+        "name": "Spotted Bass",
+        "importance": "good",
+        "size": "1–2 lb",
+        "notes": "Rock."
+      },
+      {
+        "name": "Catfish",
+        "importance": "good",
+        "size": "Channel + flathead",
+        "notes": "River."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Below Yates Dam — Striper Tailrace",
+        "target": "Striped Bass and Spotted Bass",
+        "when": "Spring & summer generation",
+        "technique": "Bucktails, big swimbaits, live shad in the tailrace.",
+        "where": "Thurlow headwaters.",
+        "details": "Three dam cascade (Martin → Yates → Thurlow) creates layered tailrace fisheries."
+      }
+    ],
+    "access": [
+      "Wetumpka area ramps"
+    ],
+    "regulations": "AL fishing license.",
+    "managementProgram": [
+      "Tallapoosa fishery"
+    ],
+    "notes": "Thurlow Dam (1930), the last Tallapoosa impoundment before the Alabama River. Small pool, tailrace-driven fishery."
+  },
+  {
+    "id": "al-r-l-harris-reservoir",
+    "name": "R.L. Harris Reservoir (Lake Wedowee)",
+    "state": "AL",
+    "region": "East Alabama",
+    "type": "reservoir",
+    "county": "Randolph / Clay",
+    "acres": 10660,
+    "maxDepthFt": 95,
+    "lat": 33.22,
+    "lng": -85.5,
+    "signatureSpecies": [
+      "Largemouth Bass",
+      "Spotted Bass"
+    ],
+    "species": [
+      {
+        "name": "Largemouth Bass",
+        "importance": "signature",
+        "size": "2–8 lb",
+        "notes": "Florida-strain stocking has built trophy potential — Wedowee produces 8–10+ lb largemouth."
+      },
+      {
+        "name": "Spotted Bass",
+        "importance": "strong",
+        "size": "1.5–3 lb",
+        "notes": "Deep clear main lake."
+      },
+      {
+        "name": "Crappie",
+        "importance": "strong",
+        "size": "0.5–1.5 lb",
+        "notes": "Brush piles and creek mouths in 12–20 ft."
+      },
+      {
+        "name": "Striped Bass",
+        "importance": "good",
+        "size": "10–25 lb",
+        "notes": "Stocked."
+      },
+      {
+        "name": "Catfish",
+        "importance": "good",
+        "size": "Channel + flathead",
+        "notes": "River channel."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Wedowee Largemouth — Wood + Deep Cover",
+        "target": "Largemouth Bass",
+        "when": "Spring – Fall",
+        "technique": "Jigs, Texas-rigged creature baits, ChatterBaits around standing timber and laydowns. Deep crankbaits in summer.",
+        "where": "Creek arms (Wedowee Creek, Cane Creek, Wood Brushy Branch), standing timber stands.",
+        "details": "Wedowee has significant standing timber and is a Florida-strain trophy lake — patience and big baits pay off."
+      },
+      {
+        "title": "Spring Spotted Bass — Main-Lake Rock",
+        "target": "Spotted Bass",
+        "when": "March – May",
+        "technique": "Drop-shot, jerkbaits, shaky head on main-lake points and bluffs.",
+        "where": "Main lake.",
+        "details": "Typical Tallapoosa main-lake spot pattern."
+      },
+      {
+        "title": "Crappie Brush Piles",
+        "target": "Crappie",
+        "when": "Year-round",
+        "technique": "Vertical jigging brush in 12–22 ft.",
+        "where": "Creek-mouth brush piles.",
+        "details": "State-marked and private brush piles dot the lake."
+      }
+    ],
+    "access": [
+      "Wedowee Marine, Flat Rock Park",
+      "Public ramps at Foster Bridge, Mountain Creek"
+    ],
+    "regulations": "AL fishing license. Slot limit on largemouth: 13–16\" protected slot (trophy management).",
+    "managementProgram": [
+      "Florida-strain largemouth stocking",
+      "13–16\" largemouth slot limit (trophy management)",
+      "Crappie habitat enhancement"
+    ],
+    "notes": "R.L. Harris Reservoir / Lake Wedowee (1983). 10,660 acres, deep, with standing timber and Florida-strain trophy largemouth program. A favorite of east Alabama bass anglers."
+  },
+  {
+    "id": "al-alabama-river",
+    "name": "Alabama River",
+    "state": "AL",
+    "region": "Central Alabama",
+    "type": "river",
+    "county": "Multi-county",
+    "acres": null,
+    "maxDepthFt": null,
+    "lat": 31.87,
+    "lng": -87.3,
+    "signatureSpecies": [
+      "Largemouth Bass",
+      "Spotted Bass",
+      "Catfish"
+    ],
+    "species": [
+      {
+        "name": "Largemouth Bass",
+        "importance": "signature",
+        "size": "2–8 lb",
+        "notes": "Three pools — Claiborne, Millers Ferry (Lake Dannelly), Robert F. Henry (Woodruff Lake). Trophy potential."
+      },
+      {
+        "name": "Spotted Bass",
+        "importance": "signature",
+        "size": "1.5–4 lb",
+        "notes": "Coosa-strain genetics flushed downstream."
+      },
+      {
+        "name": "Catfish",
+        "importance": "signature",
+        "size": "Blue 30–80 lb trophy class; flathead 30–60 lb",
+        "notes": "The Alabama River is one of the South's premier trophy catfishing destinations."
+      },
+      {
+        "name": "Striped Bass",
+        "importance": "strong",
+        "size": "15–35 lb",
+        "notes": "Migratory from Mobile delta + stocked."
+      },
+      {
+        "name": "Crappie",
+        "importance": "good",
+        "size": "0.5–2 lb",
+        "notes": "Oxbows and creek mouths."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Alabama River Trophy Blues",
+        "target": "Catfish (Blue)",
+        "when": "Year-round, peak fall – winter",
+        "technique": "Fresh cut skipjack or gizzard shad on Santee rigs, drift main-channel ledges and deep holes (25–50 ft). Anchor on ledges in winter.",
+        "where": "Main river channel, especially Millers Ferry pool and Claiborne pool.",
+        "details": "Trophy blues to 80+ lb are a real possibility. The Alabama is the Mississippi River of the Southeast for catfish."
+      },
+      {
+        "title": "Largemouth — Backwater Cover",
+        "target": "Largemouth Bass",
+        "when": "Spring – Fall",
+        "technique": "Frogs, jigs, and ChatterBaits around oxbow lily pads, laydowns, and creek mouths.",
+        "where": "Oxbow lakes and slack-water backwaters off the main river.",
+        "details": "Main-river current pushes largemouth into oxbows — fish the oxbows."
+      },
+      {
+        "title": "Tailrace Stripers + Spots — Below Each Dam",
+        "target": "Striped Bass, Spotted Bass",
+        "when": "Generation periods",
+        "technique": "Bucktails, big swimbaits, live shad in tailwater turbulence.",
+        "where": "Below Claiborne, Millers Ferry, and R.F. Henry dams.",
+        "details": "Three dams = three tailrace fisheries."
+      }
+    ],
+    "access": [
+      "Selma, Camden, Monroeville public ramps",
+      "Millers Ferry Lock and Dam",
+      "Claiborne Lock and Dam"
+    ],
+    "regulations": "AL fishing license. Standard statewide bass and catfish regulations.",
+    "managementProgram": [
+      "Trophy catfish conservation",
+      "Striped bass stocking",
+      "Multiple-pool habitat work"
+    ],
+    "notes": "Alabama River — formed by confluence of Coosa and Tallapoosa near Wetumpka, runs 318 miles to the Mobile-Tensaw delta. Three navigation pools: R.F. Henry (Woodruff), Millers Ferry (Dannelly), Claiborne."
+  },
+  {
+    "id": "al-cahaba-river",
+    "name": "Cahaba River",
+    "state": "AL",
+    "region": "Central Alabama",
+    "type": "river",
+    "county": "Jefferson / Bibb / Dallas",
+    "acres": null,
+    "maxDepthFt": null,
+    "lat": 33,
+    "lng": -87.15,
+    "signatureSpecies": [
+      "Cahaba Bass (Redeye Bass)",
+      "Largemouth Bass"
+    ],
+    "species": [
+      {
+        "name": "Cahaba Bass (Redeye)",
+        "importance": "signature",
+        "size": "8–14\"; rarely larger",
+        "notes": "The Cahaba is home to a distinct subspecies of redeye bass — a wild-river specialty. Aggressive, surface-feeding, beautiful fish."
+      },
+      {
+        "name": "Largemouth Bass",
+        "importance": "strong",
+        "size": "2–6 lb",
+        "notes": "Slack-water pools."
+      },
+      {
+        "name": "Spotted Bass",
+        "importance": "strong",
+        "size": "1–3 lb",
+        "notes": "Rock + current."
+      },
+      {
+        "name": "Bream",
+        "importance": "good",
+        "size": "Bluegill, longear, redbreast",
+        "notes": "Excellent panfish stream."
+      },
+      {
+        "name": "Catfish",
+        "importance": "good",
+        "size": "Channel cats",
+        "notes": "Lower river."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Redeye Bass on Poppers — Wild River",
+        "target": "Cahaba Bass (Redeye)",
+        "when": "May – September",
+        "technique": "Fly: small poppers (size 8–10) and rubber-legged terrestrials on 4–5 wt. Spin: small inline spinners (Mepps #1), 1/16-oz tubes.",
+        "where": "Cahaba upstream of Centreville — riffles, plunge pools, current breaks.",
+        "details": "The Cahaba is one of the most biodiverse rivers in North America (more species per mile than any other US river). Redeye bass on a fly rod in a wild Appalachian-foothills river — special."
+      },
+      {
+        "title": "Spring Cahaba Lily Bloom (Memorial Day)",
+        "target": "Bream, Cahaba bass",
+        "when": "Late May – early June",
+        "technique": "Float through the Cahaba Lily blooms — sight-cast surface flies.",
+        "where": "Cahaba River National Wildlife Refuge (between West Blocton and Centreville).",
+        "details": "The Cahaba lily bloom is a regional natural-history event — the lilies grow only on shoal habitat. Float-fish during the bloom for a once-a-year experience."
+      },
+      {
+        "title": "Lower Cahaba Largemouth + Spots — Bibb / Dallas County",
+        "target": "Largemouth and Spotted Bass",
+        "when": "Spring – Fall",
+        "technique": "ChatterBaits, jigs, square-bills around laydowns and pool tail-outs.",
+        "where": "Lower Cahaba below the fall line.",
+        "details": "Lower Cahaba is more typical Southern coastal-plain river fishing."
+      }
+    ],
+    "access": [
+      "Cahaba River National Wildlife Refuge (West Blocton)",
+      "Caffee Junction, Old Mill Park (Bibb County)",
+      "Centreville, Sprott access"
+    ],
+    "regulations": "AL fishing license. Standard regs. Catch-and-release encouraged for native redeye bass to protect the subspecies.",
+    "managementProgram": [
+      "Cahaba River NWR habitat protection",
+      "Native redeye bass conservation"
+    ],
+    "notes": "The Cahaba is Alabama's ecological crown jewel — wild, undammed for much of its length, with endemic species. Memorial Day lily bloom is iconic. Distinct \"Cahaba redeye bass\" subspecies. A must-visit warm-water fly-fishing destination."
+  },
+  {
+    "id": "al-mobile-tensaw-delta",
+    "name": "Mobile-Tensaw Delta",
+    "state": "AL",
+    "region": "Coastal Alabama",
+    "type": "river",
+    "county": "Baldwin / Mobile",
+    "acres": 260000,
+    "maxDepthFt": 40,
+    "lat": 30.84,
+    "lng": -87.94,
+    "signatureSpecies": [
+      "Largemouth Bass",
+      "Redfish",
+      "Speckled Trout",
+      "Catfish"
+    ],
+    "species": [
+      {
+        "name": "Largemouth Bass",
+        "importance": "signature",
+        "size": "2–8 lb; trophies 10+ lb",
+        "notes": "\"America's Amazon\" — the Mobile-Tensaw Delta is one of the most diverse river deltas in the country. Florida-strain influence + endless cover."
+      },
+      {
+        "name": "Redfish",
+        "importance": "signature",
+        "size": "15–35\"; bulls 36\"+",
+        "notes": "Bull reds push up into the brackish delta from Mobile Bay year-round; slot reds in marshes year-round."
+      },
+      {
+        "name": "Speckled Trout",
+        "importance": "signature",
+        "size": "14–24\"; trophy 5+ lb",
+        "notes": "Brackish stretches — fall is peak."
+      },
+      {
+        "name": "Catfish",
+        "importance": "signature",
+        "size": "Blue 30–80 lb; flathead 30–60 lb",
+        "notes": "Delta is one of America's premier trophy catfish destinations — multiple state-record class fish."
+      },
+      {
+        "name": "Striped Bass",
+        "importance": "good",
+        "size": "10–30 lb",
+        "notes": "Migratory + remnant Gulf-strain."
+      },
+      {
+        "name": "Crappie",
+        "importance": "good",
+        "size": "0.5–2 lb",
+        "notes": "Oxbows and creek mouths."
+      },
+      {
+        "name": "Bream",
+        "importance": "good",
+        "size": "Bluegill, redear",
+        "notes": "Lily pads and cypress knees."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Delta Largemouth — Frogs in Lily Pads",
+        "target": "Largemouth Bass",
+        "when": "May – September",
+        "technique": "Hollow-body frogs (SPRO Bronzeye, Booyah Pad Crasher) over hyacinth mats, lily pads, and grass mats. Punching with 1.5–2 oz tungsten and creature baits in the thickest stuff.",
+        "where": "Tensaw River, Mobile River backwaters, Bay Minette Basin, Chuckfee Bay, Stiggins Lake, Bayou Sara.",
+        "details": "The Delta is a frog-fishing paradise — 260,000 acres of lily-pad, hyacinth, and grass cover. Heavy braid (65 lb), strong rods, no apologies."
+      },
+      {
+        "title": "Speckled Trout — Brackish Bayous",
+        "target": "Speckled Trout",
+        "when": "September – December peak",
+        "technique": "Soft-plastic paddle tails (DOA, MirrOLure) under a popping cork, or topwater (Heddon Spook Jr.) on calm mornings.",
+        "where": "Lower delta bayous: Tensaw, Apalachee, Mobile river mouths into the bay.",
+        "details": "Fall trout push from the bay into the bayous chasing shrimp and shad."
+      },
+      {
+        "title": "Bull Redfish — River Mouth Schools",
+        "target": "Redfish",
+        "when": "September – November",
+        "technique": "Big cut bait (mullet or pogie chunks) on Carolina rigs at the river mouths; or sight-cast schools with big swimbaits.",
+        "where": "Mouths of Mobile River, Tensaw River, Blakeley River into the upper bay.",
+        "details": "Bulls stack at the river mouths in fall — drum and croaker, too."
+      },
+      {
+        "title": "Trophy Catfish — Channel Drifting",
+        "target": "Catfish (Blue and Flathead)",
+        "when": "Year-round, peak fall – winter",
+        "technique": "Fresh cut skipjack on Santee rigs, drifted across river channel ledges (15–35 ft).",
+        "where": "Mobile and Tensaw river channels, deep bend holes.",
+        "details": "The Delta's flathead and blue catfish are huge — state records have come from this system. Heavy gear, fresh bait, anchored in winter holes."
+      },
+      {
+        "title": "Spring Crappie Cypress Knees",
+        "target": "Crappie",
+        "when": "February – April",
+        "technique": "Long-pole jigging 1/16-oz jigs around cypress knees, lily pad stems, and shoreline wood.",
+        "where": "Oxbow lakes off the rivers — Stiggins, Chuckfee, Big Bateau.",
+        "details": "Skinny shallow water in spring — visible cypress strikes."
+      }
+    ],
+    "access": [
+      "Cliff's Landing (Tensaw River, Baldwin County)",
+      "Live Oak Landing, Stockton",
+      "Blakeley State Park (south end)",
+      "Bayou La Batre area south of the delta",
+      "Hubbard Landing"
+    ],
+    "regulations": "AL freshwater + saltwater licenses required (saltwater for redfish, trout, and brackish-zone fishing). Redfish: 16–26\" slot, 3/day. Speckled trout: 15\" minimum, 6/day. Bass: standard.",
+    "managementProgram": [
+      "Mobile-Tensaw Delta wildlife refuge",
+      "Multi-species habitat conservation",
+      "Saltwater stock assessment"
+    ],
+    "notes": "Mobile-Tensaw Delta — \"America's Amazon.\" Second-largest river delta in the US (260,000 acres). The Mobile, Tensaw, Apalachee, and Blakeley rivers braid through swamp, bayou, and marsh before emptying into Mobile Bay. Possibly the most species-rich freshwater body in North America. World-class trophy largemouth, catfish, AND saltwater redfish/trout in one system."
+  },
+  {
+    "id": "al-mobile-bay",
+    "name": "Mobile Bay",
+    "state": "AL",
+    "region": "Coastal Alabama",
+    "type": "saltwater",
+    "county": "Mobile / Baldwin",
+    "acres": 410000,
+    "maxDepthFt": 20,
+    "lat": 30.5,
+    "lng": -87.95,
+    "signatureSpecies": [
+      "Speckled Trout",
+      "Redfish",
+      "Flounder"
+    ],
+    "species": [
+      {
+        "name": "Speckled Trout",
+        "importance": "signature",
+        "size": "14–24\"; trophies 5–8 lb",
+        "notes": "Mobile Bay produces some of the Gulf's biggest specks — 8-pounders from grass-edge waders are real."
+      },
+      {
+        "name": "Redfish",
+        "importance": "signature",
+        "size": "Slots 16–26\"; bulls 36–48\"",
+        "notes": "Slot reds in shallow grass; bulls in deeper bay and at ship channel mouth."
+      },
+      {
+        "name": "Flounder",
+        "importance": "signature",
+        "size": "14–22\"; trophies 4–6 lb",
+        "notes": "Excellent fall flounder run — gigging legal at night."
+      },
+      {
+        "name": "Spanish Mackerel",
+        "importance": "strong",
+        "size": "1–4 lb",
+        "notes": "Bay mouth and channel."
+      },
+      {
+        "name": "White Trout",
+        "importance": "good",
+        "size": "10–14\"",
+        "notes": "Numbers fish, good eating."
+      },
+      {
+        "name": "Sheepshead",
+        "importance": "good",
+        "size": "2–6 lb",
+        "notes": "Pilings, jetties, oyster reefs."
+      },
+      {
+        "name": "Tripletail",
+        "importance": "good",
+        "size": "5–20 lb",
+        "notes": "Sight-fish around floating crab traps and buoys in summer."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Speckled Trout — Grass Edges",
+        "target": "Speckled Trout",
+        "when": "Year-round, peak April – October",
+        "technique": "Topwater (Heddon Spook Jr., MirrOLure Top Dog) at dawn; soft plastics (DOA shrimp, Z-Man PaddlerZ) under a popping cork through the day. Live shrimp under cork is the deadliest bait.",
+        "where": "Eastern shore grass beds (Fairhope, Daphne), Fish River mouth, Weeks Bay, lower bay islands.",
+        "details": "Mobile Bay grass beds hold both numbers and trophy potential. Wading the eastern shore at first light is the classic move."
+      },
+      {
+        "title": "Bull Redfish — Ship Channel + Bay Mouth",
+        "target": "Redfish (Bull)",
+        "when": "August – November",
+        "technique": "Big chunks of mullet or blue crab on Carolina rigs; jigs and big swimbaits when schools are visible.",
+        "where": "Mobile Ship Channel, Dixey Bar, bay mouth at the Gulf.",
+        "details": "Fall bull-red run stacks 30–48\" reds at the bay mouth. Dixey Bar is famous for it."
+      },
+      {
+        "title": "Fall Flounder Run",
+        "target": "Flounder",
+        "when": "October – November",
+        "technique": "Jigs (3\" Gulp shrimp on 1/4-oz jighead), live mud minnows on Carolina rigs. Drift drop-offs near ICW and bay channels.",
+        "where": "ICW, Fish River, Bon Secour, Dog River.",
+        "details": "Fall flounder migration stages in the bay before heading to Gulf — peak numbers in October."
+      },
+      {
+        "title": "Tripletail — Crab Trap Buoys",
+        "target": "Tripletail",
+        "when": "June – September",
+        "technique": "Sight-cast with live shrimp on a free-line or with a popping cork to fish hanging under floating buoys.",
+        "where": "Lower bay around crab trap markers, channel buoys.",
+        "details": "Specialty fishery — pure visual sight-casting in calm conditions."
+      },
+      {
+        "title": "Jubilee",
+        "target": "All species",
+        "when": "Summer nights at high humidity + east wind",
+        "technique": "Wade or scoop fish in the surf line as hypoxic water pushes flounder, shrimp, crab, and trout onto the beach.",
+        "where": "Eastern shore beaches, primarily Daphne–Fairhope.",
+        "details": "A Mobile Bay phenomenon — when conditions align, fish strand in the shallows. Not predictable but local watchers track conditions. Cultural experience as much as fishery."
+      }
+    ],
+    "access": [
+      "Cedar Point Pier (south Mobile Bay)",
+      "Bayfront Park (Daphne), Battles Wharf (Point Clear)",
+      "Fairhope Pier, Magnolia Beach (Fairhope public)",
+      "Dauphin Island public ramps + bridge fishing",
+      "Fort Morgan Peninsula",
+      "Bon Secour and Wolf Bay access"
+    ],
+    "regulations": "AL saltwater license. Speckled trout: 15\" minimum, 6/day. Redfish: 16–26\" slot, 3/day (one over 26\" allowed). Flounder: 14\" minimum, 5/day. Check ADCNR.",
+    "managementProgram": [
+      "Inshore saltwater fishery management",
+      "Oyster habitat restoration",
+      "Speckled trout stock assessment"
+    ],
+    "notes": "Mobile Bay — 4th largest estuary in the US. The \"Jubilee\" phenomenon (fish stranding) is unique in the world to this bay. Eastern shore (Fairhope, Daphne) is the trophy speck zone; lower bay around Dauphin Island is the redfish and ship channel zone. World-class inshore fishery."
+  },
+  {
+    "id": "al-bon-secour-bay",
+    "name": "Bon Secour Bay & River",
+    "state": "AL",
+    "region": "Coastal Alabama",
+    "type": "saltwater",
+    "county": "Baldwin",
+    "acres": null,
+    "maxDepthFt": 12,
+    "lat": 30.293,
+    "lng": -87.745,
+    "signatureSpecies": [
+      "Speckled Trout",
+      "Redfish"
+    ],
+    "species": [
+      {
+        "name": "Speckled Trout",
+        "importance": "signature",
+        "size": "15–22\"; trophy specks possible",
+        "notes": "Bon Secour grass flats and creek mouths are a classic trout zone."
+      },
+      {
+        "name": "Redfish",
+        "importance": "signature",
+        "size": "16–26\" slot reds",
+        "notes": "Shallow marsh and creek edges."
+      },
+      {
+        "name": "Flounder",
+        "importance": "good",
+        "size": "14–20\"",
+        "notes": "Creek mouths and sand cuts."
+      },
+      {
+        "name": "Black Drum",
+        "importance": "good",
+        "size": "2–10 lb; bigger drum possible",
+        "notes": "Oyster bars and pilings."
+      },
+      {
+        "name": "Sheepshead",
+        "importance": "good",
+        "size": "2–4 lb",
+        "notes": "Pilings, oyster reefs."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Marsh Redfish — Sight-Cast Shallow Cuts",
+        "target": "Redfish",
+        "when": "Year-round, peak fall",
+        "technique": "Sight-cast tailing reds with weedless spoons (Johnson silver) or shrimp imitations on light jigheads. Live shrimp under cork in stained water.",
+        "where": "Bon Secour River marsh, oyster bar fringes.",
+        "details": "Bon Secour is one of the best shallow-water sight-fishing zones in coastal Alabama."
+      },
+      {
+        "title": "Speckled Trout — Creek Mouths",
+        "target": "Speckled Trout",
+        "when": "Spring – Fall",
+        "technique": "Soft plastics under a popping cork at creek mouths on falling tide.",
+        "where": "Bon Secour River drainages into the bay.",
+        "details": "Falling tides funnel bait out of marsh creeks — trout stack at the mouths."
+      }
+    ],
+    "access": [
+      "Bon Secour public ramp (Baldwin County)",
+      "Bon Secour National Wildlife Refuge (limited access)"
+    ],
+    "regulations": "AL saltwater license. Standard inshore regs apply.",
+    "managementProgram": [
+      "Bon Secour NWR protection",
+      "Inshore species management"
+    ],
+    "notes": "Bon Secour Bay and River — a smaller, quieter inshore complex on the south side of Mobile Bay near Gulf Shores. Bon Secour NWR protects significant habitat."
+  },
+  {
+    "id": "al-wolf-bay",
+    "name": "Wolf Bay",
+    "state": "AL",
+    "region": "Coastal Alabama",
+    "type": "saltwater",
+    "county": "Baldwin",
+    "acres": 8500,
+    "maxDepthFt": 8,
+    "lat": 30.33,
+    "lng": -87.62,
+    "signatureSpecies": [
+      "Speckled Trout",
+      "Redfish",
+      "Flounder"
+    ],
+    "species": [
+      {
+        "name": "Speckled Trout",
+        "importance": "signature",
+        "size": "14–22\"",
+        "notes": "Wolf Bay produces consistent specks year-round."
+      },
+      {
+        "name": "Redfish",
+        "importance": "signature",
+        "size": "16–26\" slot reds",
+        "notes": "Marsh edges and oyster reefs."
+      },
+      {
+        "name": "Flounder",
+        "importance": "strong",
+        "size": "14–20\"",
+        "notes": "Wolf Bay is a flounder gigging destination."
+      },
+      {
+        "name": "Black Drum",
+        "importance": "good",
+        "size": "2–8 lb",
+        "notes": "Oyster bars."
+      },
+      {
+        "name": "Sheepshead",
+        "importance": "good",
+        "size": "2–4 lb",
+        "notes": "Pilings."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Wolf Bay Trout — Topwater Daybreak",
+        "target": "Speckled Trout",
+        "when": "April – October",
+        "technique": "Heddon Spook Jr. and MirrOLure topwaters at first light over grass flats.",
+        "where": "Wolf Bay main bay and creek mouths.",
+        "details": "Sheltered, productive, less-pressured than Mobile Bay's east shore."
+      },
+      {
+        "title": "Flounder Gigging at Night",
+        "target": "Flounder",
+        "when": "October – November (legal gigging season)",
+        "technique": "Bright LED bow lights, wade or shallow-draft skiff over sand and grass flats at night.",
+        "where": "Wolf Bay sand flats, ICW edges.",
+        "details": "Wolf Bay is one of coastal Alabama's legendary flounder gigging destinations. Check current regulations."
+      }
+    ],
+    "access": [
+      "Cotton Bayou (Orange Beach)",
+      "Wolf Bay public ramps (Gulf Shores/Foley area)"
+    ],
+    "regulations": "AL saltwater license. Standard inshore regs.",
+    "managementProgram": [
+      "Inshore management"
+    ],
+    "notes": "Wolf Bay — north of Orange Beach. Shallow, productive, popular with local guides. Major flounder gigging culture."
+  },
+  {
+    "id": "al-perdido-bay",
+    "name": "Perdido Bay & Perdido Pass",
+    "state": "AL",
+    "region": "Coastal Alabama",
+    "type": "saltwater",
+    "county": "Baldwin",
+    "acres": 31000,
+    "maxDepthFt": 18,
+    "lat": 30.336,
+    "lng": -87.448,
+    "signatureSpecies": [
+      "Speckled Trout",
+      "Redfish",
+      "Spanish Mackerel"
+    ],
+    "species": [
+      {
+        "name": "Speckled Trout",
+        "importance": "signature",
+        "size": "14–22\"",
+        "notes": "Bay and pass area produce consistent specks."
+      },
+      {
+        "name": "Redfish",
+        "importance": "signature",
+        "size": "16–48\" (slots + bulls)",
+        "notes": "Slot reds in bay; bulls at the pass in fall."
+      },
+      {
+        "name": "Spanish Mackerel",
+        "importance": "strong",
+        "size": "1–4 lb",
+        "notes": "Schools blast through Perdido Pass on incoming tides."
+      },
+      {
+        "name": "Flounder",
+        "importance": "good",
+        "size": "14–20\"",
+        "notes": "Sand flats."
+      },
+      {
+        "name": "King Mackerel",
+        "importance": "good",
+        "size": "8–25 lb",
+        "notes": "Nearshore Gulf just outside pass."
+      },
+      {
+        "name": "Sheepshead",
+        "importance": "good",
+        "size": "2–5 lb",
+        "notes": "Pass jetties — winter convict run."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Perdido Pass — Spanish Mackerel + Bluefish",
+        "target": "Spanish Mackerel",
+        "when": "April – October",
+        "technique": "Gotcha plugs and small spoons on light tackle. Cast and crank fast as schools blitz through the pass.",
+        "where": "Perdido Pass jetties, mouth of bay.",
+        "details": "Perdido Pass is one of Alabama's most reliable Spanish mackerel spots — easy walking access from jetties."
+      },
+      {
+        "title": "Fall Bull Redfish — Pass",
+        "target": "Redfish (Bull)",
+        "when": "September – November",
+        "technique": "Big chunks of mullet or blue crab on Carolina rigs from jetties or boats; sight-cast schools.",
+        "where": "Perdido Pass jetties + tide line out front.",
+        "details": "Bull-red migration stacks 36–48\" reds at the pass in fall."
+      },
+      {
+        "title": "Winter Sheepshead Jetty Run",
+        "target": "Sheepshead",
+        "when": "January – March",
+        "technique": "Live fiddler crabs or pieces of shrimp on small jighead or split-shot rigs, dropped tight to jetty rocks.",
+        "where": "Perdido Pass jetties.",
+        "details": "Convict run — sheepshead stack on jetty barnacles. Sensitive bite, sharp teeth."
+      }
+    ],
+    "access": [
+      "Perdido Pass public jetty (Orange Beach)",
+      "Boggy Point Boat Launch",
+      "Bear Point Marina"
+    ],
+    "regulations": "AL saltwater license. Spanish mackerel: 12\" minimum, 15/day. Standard inshore regs for trout/redfish/flounder.",
+    "managementProgram": [
+      "Inshore + nearshore management"
+    ],
+    "notes": "Perdido Bay straddles the AL/FL line. Perdido Pass at Orange Beach connects bay to Gulf — major recreational fishery, easy public jetty access, year-round species mix."
+  },
+  {
+    "id": "al-dauphin-island",
+    "name": "Dauphin Island (Bay + Gulf side)",
+    "state": "AL",
+    "region": "Coastal Alabama",
+    "type": "saltwater",
+    "county": "Mobile",
+    "acres": null,
+    "maxDepthFt": 35,
+    "lat": 30.25,
+    "lng": -88.13,
+    "signatureSpecies": [
+      "Speckled Trout",
+      "Redfish",
+      "Spanish Mackerel",
+      "Pompano"
+    ],
+    "species": [
+      {
+        "name": "Speckled Trout",
+        "importance": "signature",
+        "size": "14–24\"",
+        "notes": "Bay-side grass and pier fishing."
+      },
+      {
+        "name": "Redfish",
+        "importance": "signature",
+        "size": "16–48\"",
+        "notes": "Slot reds bay-side; bulls at the ship channel and Dixey Bar."
+      },
+      {
+        "name": "Spanish Mackerel",
+        "importance": "strong",
+        "size": "1–4 lb",
+        "notes": "Schools at the pier and pass."
+      },
+      {
+        "name": "Pompano",
+        "importance": "strong",
+        "size": "1–3 lb",
+        "notes": "Surf fishing — sand flea bait on Pompano rigs."
+      },
+      {
+        "name": "King Mackerel",
+        "importance": "good",
+        "size": "10–30 lb",
+        "notes": "Trolled offshore."
+      },
+      {
+        "name": "Tarpon",
+        "importance": "good",
+        "size": "50–150 lb",
+        "notes": "Summer migration past Dauphin Island."
+      },
+      {
+        "name": "Cobia",
+        "importance": "good",
+        "size": "20–60 lb",
+        "notes": "Spring run, sight-cast."
+      },
+      {
+        "name": "Sheepshead",
+        "importance": "good",
+        "size": "2–5 lb",
+        "notes": "Pier and bridge pilings."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Surf Fishing — Pompano + Whiting",
+        "target": "Pompano",
+        "when": "April – June and September – November",
+        "technique": "Sand fleas (mole crabs) or shrimp on a Pompano rig (two-hook surf rig) cast into the second bar from shore.",
+        "where": "Gulf-side beaches of Dauphin Island.",
+        "details": "Classic Gulf Coast surf-fishing — pompano are prized eating fish."
+      },
+      {
+        "title": "Spring Cobia Sight-Casting",
+        "target": "Cobia",
+        "when": "April – May",
+        "technique": "Sight-cast cruising fish from boat with bucktails (2–4 oz), big swimbaits, or live eels. Cobia run east-to-west along the Gulf beaches.",
+        "where": "Nearshore Gulf along Dauphin Island and Fort Morgan beaches.",
+        "details": "Cobia tournaments draw crowds in April — a Gulf Coast spring tradition."
+      },
+      {
+        "title": "Dauphin Island Pier — Spanish Mackerel + Tarpon",
+        "target": "Spanish Mackerel and Tarpon",
+        "when": "June – September",
+        "technique": "Gotcha plugs and Spanish spoons for mackerel. Live bait under floats or sight-cast for tarpon when they roll.",
+        "where": "Dauphin Island Public Fishing Pier.",
+        "details": "The pier is one of the Gulf's great public-access fishing platforms — multiple species in a single visit."
+      },
+      {
+        "title": "Dixey Bar Bull Reds",
+        "target": "Redfish (Bull)",
+        "when": "August – November",
+        "technique": "Big cut bait (mullet, pogie) on Carolina rigs; vertical jigging spoons.",
+        "where": "Dixey Bar (sandbar at Mobile Bay mouth, Gulf side of Dauphin Island).",
+        "details": "Dixey Bar is legendary — bull reds stack here every fall."
+      }
+    ],
+    "access": [
+      "Dauphin Island Public Fishing Pier (major)",
+      "Multiple public ramps + park access",
+      "Fort Gaines area (east end)",
+      "Bayou Heron, west end ramps"
+    ],
+    "regulations": "AL saltwater license. Standard inshore + Gulf federal regs (some species have closed seasons offshore).",
+    "managementProgram": [
+      "Coastal fisheries management",
+      "Beach access conservation"
+    ],
+    "notes": "Dauphin Island — barrier island at Mobile Bay mouth. Inshore bay-side + Gulf-side surf + public fishing pier. The single most fishable AL coastal spot for non-boat anglers."
+  },
+  {
+    "id": "al-mississippi-sound-al",
+    "name": "Mississippi Sound (Alabama portion)",
+    "state": "AL",
+    "region": "Coastal Alabama",
+    "type": "saltwater",
+    "county": "Mobile",
+    "acres": null,
+    "maxDepthFt": 15,
+    "lat": 30.26,
+    "lng": -88.3,
+    "signatureSpecies": [
+      "Speckled Trout",
+      "Redfish",
+      "Flounder"
+    ],
+    "species": [
+      {
+        "name": "Speckled Trout",
+        "importance": "signature",
+        "size": "14–24\"; trophies possible",
+        "notes": "Sound grass flats and oyster reefs."
+      },
+      {
+        "name": "Redfish",
+        "importance": "signature",
+        "size": "16–48\"",
+        "notes": "Slot reds inshore, bulls at pass mouths."
+      },
+      {
+        "name": "Flounder",
+        "importance": "good",
+        "size": "14–20\"",
+        "notes": "Sand cuts and oyster reefs."
+      },
+      {
+        "name": "Spanish Mackerel",
+        "importance": "good",
+        "size": "1–4 lb",
+        "notes": "Schools across the sound in summer."
+      },
+      {
+        "name": "Black Drum",
+        "importance": "good",
+        "size": "2–10 lb",
+        "notes": "Oyster reefs."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Sound Trout — Oyster Reefs + Grass",
+        "target": "Speckled Trout",
+        "when": "Year-round",
+        "technique": "Soft plastics under popping cork, topwater at first light, live shrimp anytime.",
+        "where": "Sound oyster reefs west of Dauphin Island toward MS line.",
+        "details": "The Mississippi Sound is shallow, grass + oyster reef habitat — classic Gulf Coast inshore."
+      },
+      {
+        "title": "Bayou Mouth Redfish — Falling Tide",
+        "target": "Redfish",
+        "when": "Year-round",
+        "technique": "Gold spoons, soft plastics, and live shrimp around bayou and creek mouths on falling tide.",
+        "where": "Bayou la Batre, Heron Bayou, sound-side creeks.",
+        "details": "Falling tide concentrates bait — reds set up on the edges."
+      }
+    ],
+    "access": [
+      "Bayou La Batre public ramp",
+      "Coden public ramp",
+      "Dauphin Island west-end ramps"
+    ],
+    "regulations": "AL saltwater license. Standard inshore regs.",
+    "managementProgram": [
+      "Sound oyster reef restoration",
+      "Inshore species management"
+    ],
+    "notes": "Mississippi Sound — the lagoonal system between Alabama's barrier islands and the mainland, extending west into Mississippi. Shallow, grass + oyster reef habitat. Lesser-pressured than Mobile Bay east shore."
   }
 ]

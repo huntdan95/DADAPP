@@ -45,6 +45,11 @@ export default defineConfig({
       workbox: {
         // Precache the app shell + bundles.
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+        // Bumped from the 2 MiB default — the main bundle has grown past
+        // 2 MB now that the waterbodies database (1200+ entries) ships in
+        // the app. Without this, the precache silently skips the bundle
+        // and the PWA loads stale code offline.
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
         // App-shell route → /index.html for client routing fallback.
         navigateFallback: '/index.html',
         // New SW takes over immediately on install. Without this iOS
