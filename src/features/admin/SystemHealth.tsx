@@ -19,6 +19,7 @@ import { Card, CardHeader, CardSubtitle, CardTitle } from '@/components/ui/Card'
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { getFirebaseApp, getFirebaseAuth } from '@/lib/firebase';
 import { pendingPhotoCount } from '@/lib/log/photoQueue';
+import { seedStockingFromBundle } from '@/lib/stocking/seedBundle';
 import { callSeedBoatLaunches, STATES as LAUNCH_STATES } from '@/lib/boatLaunches/store';
 import { Button } from '@/components/ui/Button';
 import { friendlyError } from '@/lib/errors';
@@ -106,6 +107,44 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
       setError(friendlyError(e));
     } finally {
       setScrapingStocking(false);
+    }
+  }
+
+  /**
+   * One-click bundled-seed uploader. Pushes the 8K+ records bundled
+   * with the Cloud Function deploy to Firestore. Idempotent — re-runs
+   * skip already-written ids. Costs $0 in Anthropic credits (pure
+   * data load); just Firestore writes.
+   *
+   * Result populates EVERY user's view immediately since stockingEvents
+   * is a shared collection that every signed-in user reads from.
+   */
+  const [seeding, setSeeding] = useState(false);
+  const [seedResult, setSeedResult] = useState<string | null>(null);
+  async function uploadSeed() {
+    if (
+      !window.confirm(
+        'Upload the bundled stocking seed (~8,000 records across 11 states) ' +
+          'to Firebase? This is safe to re-run — existing records skip. ' +
+          'Costs $0 in Anthropic credits.'
+      )
+    ) {
+      return;
+    }
+    setSeeding(true);
+    setSeedResult(null);
+    try {
+      const res = await seedStockingFromBundle();
+      setSeedResult(
+        `Done. Wrote ${res.written.toLocaleString()} new, skipped ${res.skipped.toLocaleString()} existing` +
+          (res.failed > 0 ? ` (${res.failed} failed)` : '') +
+          '. Refreshing view…'
+      );
+      await load();
+    } catch (e) {
+      setError(friendlyError(e));
+    } finally {
+      setSeeding(false);
     }
   }
 
@@ -370,7 +409,7 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
               size="sm"
               variant="secondary"
               onClick={refreshView}
-              disabled={scrapingStocking}
+              disabled={scrapingStocking || seeding}
               title="Re-reads the Firestore database. Free — no Claude credits."
             >
               {scrapingStocking ? (
@@ -380,11 +419,30 @@ export function SystemHealth({ onClose }: { onClose: () => void }) {
               )}
               Refresh view
             </Button>
+            <Button
+              size="sm"
+              variant="secondary"
+              onClick={uploadSeed}
+              disabled={seeding || scrapingStocking}
+              title="Pushes the 8K+ bundled records to Firebase. Safe to re-run; existing records skip. $0 in Claude credits."
+            >
+              {seeding ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              ) : (
+                <Database className="w-3.5 h-3.5" />
+              )}
+              {seeding ? 'Uploading seed…' : 'Upload seed data'}
+            </Button>
           </div>
+          {seedResult && (
+            <div className="mt-2 text-[11px] text-info">{seedResult}</div>
+          )}
           <div className="mt-2 text-[10px] text-muted leading-snug">
-            Tap to re-read the database. Fresh DNR records are pulled
-            automatically every <b>Monday 5 AM ET</b> by the scheduled
-            cron — shared across every user, no per-tap cost.
+            <b>Refresh view</b> — re-reads Firestore for the latest data.
+            <b className="ml-1">Upload seed data</b> — one-click loads
+            the ~8,000 records I pre-compiled for AR/CO/GA/ID/IL/MS/MT/NC/OK/PA/UT.
+            Fresh DNR records are pulled automatically every <b>Monday 5 AM ET</b>
+            by the scheduled cron — shared across every user, no per-tap cost.
           </div>
         </div>
       </Card>

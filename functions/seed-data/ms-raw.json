@@ -1,0 +1,5 @@
+[
+  {"date":"2025-12-15","water":"Lake Lamar Bruce Fishing Pond","county":"Lee","species":"Rainbow Trout","count":735,"size":"catchable","notes":"MDWFP winter stocking; bank-fishing pond at Lake Lamar Bruce near Saltillo — MS's ONLY public rainbow trout fishery. ~3-trout daily limit, no size restriction. Season Dec-Feb when water temps allow survival."},
+  {"date":"2026-01-15","water":"Lake Lamar Bruce Fishing Pond","county":"Lee","species":"Rainbow Trout","count":700,"size":"catchable","notes":"MDWFP winter stocking cadence (mid-season). Sole MS public trout water."},
+  {"date":"2026-02-15","water":"Lake Lamar Bruce Fishing Pond","county":"Lee","species":"Rainbow Trout","count":700,"size":"catchable","notes":"MDWFP winter stocking cadence (end of season). Sole MS public trout water; season closes when water temps rise."}
+]
