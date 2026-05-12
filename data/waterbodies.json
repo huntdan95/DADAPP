@@ -11564,5 +11564,3265 @@
       "East Grand Rapids"
     ],
     "notes": "East Grand Rapids' home lake. Small + deep + clear. Premier suburban GR fishery."
+  },
+  {
+    "id": "fl-crystal-river-kings-bay",
+    "name": "Crystal River + Kings Bay",
+    "state": "FL",
+    "region": "Citrus County / Nature Coast",
+    "type": "great-lake-trib",
+    "county": "Citrus",
+    "river": "Crystal River",
+    "lat": 28.89,
+    "lng": -82.59,
+    "signatureSpecies": "Spotted sea trout, redfish, snook, sheepshead, tarpon",
+    "species": [
+      {
+        "name": "Spotted sea trout",
+        "importance": "signature",
+        "size": "15-22 in, 24+ gators possible",
+        "notes": "Kings Bay grass flats are a year-round trout factory. Bigger fish hold in winter when water cools."
+      },
+      {
+        "name": "Redfish",
+        "importance": "signature",
+        "size": "20-30 in slot, 30+ in bull reds",
+        "notes": "Tailing reds on shallow grass flats in calm low-tide windows. Bull reds offshore in fall."
+      },
+      {
+        "name": "Snook",
+        "importance": "signature",
+        "size": "24-30 in slot, 38+ possible",
+        "notes": "Northern range — sensitive to cold snaps. Spring-fed water gives them winter thermal refuge in Kings Bay."
+      },
+      {
+        "name": "Sheepshead",
+        "importance": "strong",
+        "size": "12-18 in",
+        "notes": "Around dock pilings + oyster bars. Cold-water + spring fishery."
+      },
+      {
+        "name": "Tarpon",
+        "importance": "strong",
+        "size": "60-150 lb, occasional 180+",
+        "notes": "May-July migration through. Less famous than Homosassa next door but quality fish."
+      },
+      {
+        "name": "Mangrove (gray) snapper",
+        "importance": "good",
+        "size": "10-16 in"
+      },
+      {
+        "name": "Cobia",
+        "importance": "good",
+        "size": "20-50 lb",
+        "notes": "Spring migration along Nature Coast."
+      },
+      {
+        "name": "Spanish mackerel",
+        "importance": "good",
+        "notes": "Summer schools off the Crystal River nuclear plant warm-water discharge."
+      },
+      {
+        "name": "Black drum",
+        "importance": "good"
+      },
+      {
+        "name": "Florida pompano",
+        "importance": "good",
+        "notes": "Beach surf + sandy flats."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Sight-fishing tailing redfish on Kings Bay grass flats",
+        "target": "Redfish",
+        "when": "October-April low-tide windows, dawn + dusk",
+        "technique": "Spoon Fly, Kwan, Borski Slider, small Merkin Crab on 8 wt with 16 lb fluoro; spin-cast 1/4 oz gold spoon, paddle-tail jerkbait",
+        "where": "Shallow turtle-grass + sand-hole transitions throughout Kings Bay; tailing fish in <2 ft water on negative tides",
+        "details": "The Citrus County signature fishery. Sight-fish from a skiff or kayak on calm low-tide mornings — wind kills it. Long leads ahead of the fish. The shallowest tails mean the most-spooky fish; downsize."
+      },
+      {
+        "title": "Grass-flat sea trout",
+        "target": "Spotted sea trout",
+        "when": "Year-round, peak November-March",
+        "technique": "Soft-plastic jerkbaits (DOA, Z-Man), gold spoons, Cajun-thunder popping cork rigs; fly: Clouser, Surf Candy, Gurgler",
+        "where": "3-5 ft turtle-grass flats off Kings Bay; mid-bay flats off the Three Sisters area",
+        "details": "Trout school heavily — when you find one, you find more. Winter cold-snap fishing under floats with shrimp produces the biggest sea trout."
+      },
+      {
+        "title": "Cold-snap snook in the spring runs",
+        "target": "Snook",
+        "when": "December-February (during + after cold fronts)",
+        "technique": "Live shrimp on jigheads; Gartside Gurgler at low light; Schminnow + Bend-Back patterns",
+        "where": "Three Sisters Springs vent + Kings Spring vent + the 72°F spring boils",
+        "details": "During winter cold events, snook stack in the spring vents — water there stays a constant 72°F when surrounding flats drop into the 50s. Catch-and-release; respect the manatee zones (the snook are sharing thermal refuge with the manatees)."
+      },
+      {
+        "title": "Tarpon migration through Crystal River",
+        "target": "Tarpon",
+        "when": "Late April-July",
+        "technique": "Toad patterns, Cockroach, Apte II, EP Tarpon Streamer on 11-12 wt with 16-20 lb class tippet + 80 lb bite tippet",
+        "where": "Outside the bar, the open Gulf shoreline, and the Crystal River channel entrance",
+        "details": "Less crowded than Homosassa proper. Most boats stage out of Citrus County's public ramps. Watch tide windows + sun angle."
+      },
+      {
+        "title": "Sheepshead on dock pilings",
+        "target": "Sheepshead",
+        "when": "December-March",
+        "technique": "Live fiddler crab or shrimp on 1/0 hook + small split shot; cane-pole presentation against the pilings",
+        "where": "Residential dock systems throughout Kings Bay",
+        "details": "Sheepshead bite light — feel for weight, not a tap. Set the hook on any tension change."
+      }
+    ],
+    "access": [
+      "Pete's Pier (Crystal River)",
+      "Hunter Springs Park",
+      "King's Bay Park",
+      "Three Sisters Springs (NWR)",
+      "Fort Island Trail Park",
+      "Crystal River Public Ramp (Kings Bay)"
+    ],
+    "regulations": "No-motor + slow-speed zones for manatee protection. Snook closed in winter (cold-snap regs). FWC sportfishing license required. Citrus County sportfishing license valid statewide.",
+    "managementProgram": [
+      "Crystal River National Wildlife Refuge — manatee protection",
+      "FWC inshore fisheries management"
+    ],
+    "notes": "Kings Bay is the heart of Crystal River — 72°F spring-fed bay draining the Gulf. Most famous as a manatee sanctuary, but underneath that is one of the best winter inshore fisheries in the South. Spring vents (Three Sisters, Kings Spring, Magnolia Spring) hold fish year-round. The Nature Coast moniker is real — almost no high-rise development, miles of grass flats."
+  },
+  {
+    "id": "fl-homosassa-river",
+    "name": "Homosassa River + Homosassa Bay",
+    "state": "FL",
+    "region": "Citrus County / Nature Coast",
+    "type": "great-lake-trib",
+    "county": "Citrus",
+    "river": "Homosassa River",
+    "lat": 28.78,
+    "lng": -82.61,
+    "signatureSpecies": "Tarpon, redfish, spotted sea trout, snook",
+    "species": [
+      {
+        "name": "Tarpon",
+        "importance": "signature",
+        "size": "80-180 lb, 200+ documented",
+        "notes": "HOMOSASSA TARPON — legendary. Stu Apte + Lefty Kreh fished here. Considered THE giant-tarpon water in the world (along with Boca Grande). Massive May-June migration."
+      },
+      {
+        "name": "Spotted sea trout",
+        "importance": "signature",
+        "size": "15-22 in, 28+ gator possible"
+      },
+      {
+        "name": "Redfish",
+        "importance": "signature",
+        "size": "20-30 in slot",
+        "notes": "Tailing reds on the back-bay flats."
+      },
+      {
+        "name": "Snook",
+        "importance": "strong",
+        "size": "24-32 in slot",
+        "notes": "Like Crystal River — northern range, spring-vent thermal refuge in winter."
+      },
+      {
+        "name": "Cobia",
+        "importance": "strong",
+        "size": "20-60 lb",
+        "notes": "Spring migration through Nature Coast."
+      },
+      {
+        "name": "Spanish mackerel",
+        "importance": "strong",
+        "notes": "Summer schools."
+      },
+      {
+        "name": "Mangrove snapper",
+        "importance": "good"
+      },
+      {
+        "name": "Sheepshead",
+        "importance": "good"
+      },
+      {
+        "name": "Black drum",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Homosassa tarpon migration — the iconic flats fishery",
+        "target": "Tarpon",
+        "when": "May-June (peak), occasionally late April + early July",
+        "technique": "Toad, Cockroach, Apte II, EP Tarpon Streamer, Black Death, Coker Smoker on 11-12 wt; live crab or threadfin for spin-tackle",
+        "where": "Oklahoma + Black Rock + the channels into Homosassa Bay; the offshore migration corridor",
+        "details": "The most-famous flats tarpon water on earth. Stu Apte called Homosassa the \"tarpon capital.\" Big white sand-bottom flats with cruising lanes — sight-fish from a poled skiff. Crowded during peak weeks; the unwritten Homosassa etiquette matters. Hire a guide on your first trip."
+      },
+      {
+        "title": "Back-bay tailing redfish",
+        "target": "Redfish",
+        "when": "October-April low-tide windows",
+        "technique": "Spoon Fly, Kwan, small Merkin Crab on 8 wt; gold spoon + soft-plastic on spin",
+        "where": "Back lakes + creek mouths off the main river; the Homosassa Bay flats at low tide",
+        "details": "Same Citrus County playbook as Kings Bay but with more mangrove edge + creek-mouth structure."
+      },
+      {
+        "title": "Trout drift on grass flats",
+        "target": "Spotted sea trout",
+        "when": "Year-round, peak fall + winter",
+        "technique": "Popping cork + soft-plastic jerkbait; gold spoon; fly with Clouser + Gurgler",
+        "where": "Mid-bay grass flats outside the river mouth"
+      },
+      {
+        "title": "Cold-snap snook at the spring runs",
+        "target": "Snook",
+        "when": "December-February",
+        "technique": "Live shrimp + small jigheads; Gartside Gurgler at low light",
+        "where": "Main spring vent (Homosassa Springs) + tributary spring vents",
+        "details": "The river's headwater is Homosassa Springs (72°F year-round). Snook + tarpon + sea trout all use the spring as thermal refuge in cold events. Catch-and-release in the park-managed area."
+      }
+    ],
+    "access": [
+      "MacRae's Riverside Resort ramp",
+      "Homosassa Public Ramp",
+      "Mason Creek ramp",
+      "Halls River Road"
+    ],
+    "regulations": "FWC license. Tarpon regs — kill-tag required for harvest (rarely used; almost universally C+R).",
+    "managementProgram": [
+      "FWC tarpon tracking program",
+      "Homosassa Springs Wildlife State Park (headwater)"
+    ],
+    "notes": "The most-storied flats-tarpon water in the world. The 1970s Homosassa scene with Stu Apte, Lefty Kreh, Tom Evans, Billy Pate produced the IGFA world records of the era + the modern saltwater fly canon. Still produces giants — 200+ pound fish caught annually."
+  },
+  {
+    "id": "fl-chassahowitzka-river",
+    "name": "Chassahowitzka River + Bay",
+    "state": "FL",
+    "region": "Citrus County / Nature Coast",
+    "type": "great-lake-trib",
+    "county": "Citrus / Hernando",
+    "river": "Chassahowitzka River",
+    "lat": 28.71,
+    "lng": -82.58,
+    "signatureSpecies": "Spotted sea trout, redfish, snook, largemouth bass",
+    "species": [
+      {
+        "name": "Spotted sea trout",
+        "importance": "signature",
+        "size": "15-22 in"
+      },
+      {
+        "name": "Redfish",
+        "importance": "signature",
+        "size": "20-28 in"
+      },
+      {
+        "name": "Snook",
+        "importance": "strong",
+        "size": "24-30 in, mostly C+R cold-snap fish"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong",
+        "size": "2-5 lb",
+        "notes": "Brackish-to-fresh transition above the spring run holds quality largemouth."
+      },
+      {
+        "name": "Mangrove snapper",
+        "importance": "good"
+      },
+      {
+        "name": "Bluegill + redear sunfish",
+        "importance": "good",
+        "notes": "Above the salt line."
+      },
+      {
+        "name": "Tarpon",
+        "importance": "good",
+        "size": "Smaller fish than Homosassa — 30-80 lb migrating juveniles."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Brackish-zone redfish + trout",
+        "target": "Redfish + sea trout",
+        "when": "Year-round, peak fall + winter",
+        "technique": "Soft-plastic jerkbait, Spoon Fly, gold spoon",
+        "where": "Creek mouths + grass flats outside the river"
+      },
+      {
+        "title": "Spring-run largemouth + bream",
+        "target": "Largemouth + panfish",
+        "when": "May-September",
+        "technique": "Topwater frog, senko; cricket + bobber for bream",
+        "where": "Above Crawford Creek + Salt Creek confluences — fresh-water zone",
+        "details": "Chass has the rare brackish-fresh transition that gives anglers a multi-species day from one ramp."
+      }
+    ],
+    "access": [
+      "Chassahowitzka Public Ramp",
+      "Chassahowitzka Wildlife Management Area"
+    ],
+    "notes": "The \"Chazz\" — smaller + quieter than Homosassa. Springs-fed, narrow, character-filled. Wild Florida feel."
+  },
+  {
+    "id": "fl-halls-river",
+    "name": "Halls River (Homosassa tributary)",
+    "state": "FL",
+    "region": "Citrus County / Nature Coast",
+    "type": "river",
+    "county": "Citrus",
+    "river": "Halls River",
+    "signatureSpecies": "Redfish, sea trout, snook, largemouth bass",
+    "species": [
+      {
+        "name": "Spotted sea trout",
+        "importance": "strong"
+      },
+      {
+        "name": "Redfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Snook",
+        "importance": "good",
+        "notes": "Spring-vent winter refuge."
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "good",
+        "notes": "Brackish-fresh transition."
+      },
+      {
+        "name": "Mangrove snapper",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Creek-mouth redfish",
+        "target": "Redfish",
+        "when": "October-April",
+        "technique": "Gold spoon, soft-plastic jerkbait, Kwan fly",
+        "where": "Mouth of Halls River at Homosassa River confluence"
+      }
+    ],
+    "access": [
+      "Halls River Road landing",
+      "Homosassa system via boat"
+    ],
+    "notes": "Major Homosassa River tributary. Quieter side-water fishery."
+  },
+  {
+    "id": "fl-ozello-salt-river",
+    "name": "Ozello / Salt River back-lake system",
+    "state": "FL",
+    "region": "Citrus County / Nature Coast",
+    "type": "river",
+    "county": "Citrus",
+    "river": "Salt River",
+    "lat": 28.84,
+    "lng": -82.65,
+    "signatureSpecies": "Redfish, spotted sea trout, snook",
+    "species": [
+      {
+        "name": "Redfish",
+        "importance": "signature",
+        "size": "20-30 in slot",
+        "notes": "Ozello's maze of back lakes + creeks is one of the best redfish destinations in FL."
+      },
+      {
+        "name": "Spotted sea trout",
+        "importance": "signature",
+        "size": "15-22 in"
+      },
+      {
+        "name": "Snook",
+        "importance": "strong",
+        "size": "24-32 in"
+      },
+      {
+        "name": "Sheepshead",
+        "importance": "good"
+      },
+      {
+        "name": "Mangrove snapper",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Maze-of-back-lakes redfish",
+        "target": "Redfish",
+        "when": "Year-round, peak October-April",
+        "technique": "Spoon Fly, Kwan, Borski Slider; gold spoon, paddle-tail jerkbait",
+        "where": "Network of unmarked back lakes + creeks between Ozello + Crystal Bay; tailing fish on flats",
+        "details": "Ozello = \"the maze\" — narrow channels through mangrove islands open into small lakes. Local knowledge or a guide is mandatory; GPS waypoints rule. Quiet electric-motor work, no big-engine running."
+      },
+      {
+        "title": "Winter trout on the deeper Salt River channels",
+        "target": "Spotted sea trout",
+        "when": "November-March",
+        "technique": "Soft-plastic jerkbait + popping cork; live shrimp on jigheads",
+        "where": "Deeper holes in the Salt River main channel"
+      }
+    ],
+    "access": [
+      "Ozello Public Ramp",
+      "Salt River boat launch"
+    ],
+    "notes": "Citrus County's \"secret\" inshore fishery. Local Ozello guides specialize in the maze. Pristine — no development, no boat traffic outside guide skiffs."
+  },
+  {
+    "id": "fl-rainbow-river",
+    "name": "Rainbow River + Rainbow Springs",
+    "state": "FL",
+    "region": "Citrus County / Nature Coast",
+    "type": "river",
+    "county": "Marion (headwaters) / Citrus (downstream)",
+    "river": "Rainbow River",
+    "lat": 29.1,
+    "lng": -82.43,
+    "signatureSpecies": "Largemouth bass, bluegill, redear sunfish (shellcracker), spotted sunfish, mullet",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "2-5 lb",
+        "notes": "Crystal-clear spring-fed water; sight-fishing in 6-15 ft."
+      },
+      {
+        "name": "Bluegill",
+        "importance": "signature",
+        "size": "7-9 in"
+      },
+      {
+        "name": "Redear sunfish (shellcracker)",
+        "importance": "signature",
+        "size": "8-11 in",
+        "notes": "Rainbow River shellcrackers are renowned — clear water + abundant snail forage = big bream."
+      },
+      {
+        "name": "Spotted sunfish (stumpknocker)",
+        "importance": "strong"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Mullet",
+        "importance": "good",
+        "notes": "Schooled mullet visible in the clear water; not really a fly target but they're everywhere."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Sight-fishing crystal-water bass",
+        "target": "Largemouth bass",
+        "when": "Year-round",
+        "technique": "Lightly-weighted senko, Texas-rigged worm, finesse jig; fly: small streamers, sliders",
+        "where": "Spring boils + downstream pools; visible cruising fish",
+        "details": "The water is so clear (visibility 30+ ft) that you sight-fish bass like trout. Long leaders, light tippet, finesse presentations."
+      },
+      {
+        "title": "Trophy shellcracker on snail beds",
+        "target": "Redear sunfish (shellcracker)",
+        "when": "April-June spawn",
+        "technique": "Worm or cricket on small hook + bobber; 1/64-1/32 oz jig",
+        "where": "Sandy bottom + spawning beds visible from the surface"
+      }
+    ],
+    "access": [
+      "Rainbow Springs State Park",
+      "KP Hole County Park",
+      "Rainbow River Conservation easement (Citrus)"
+    ],
+    "regulations": "No internal-combustion engines in upper reaches. Electric-only on the upper Rainbow.",
+    "notes": "Technically headwaters in Marion County (Rainbow Springs), flows through Citrus County to the Withlacoochee. One of the clearest rivers in North America — 6+ million gallons of spring water per hour. Tubing destination but also a serious fishery if you go before/after summer."
+  },
+  {
+    "id": "fl-withlacoochee-citrus",
+    "name": "Withlacoochee River (Citrus + Hernando)",
+    "state": "FL",
+    "region": "Citrus County / Nature Coast",
+    "type": "river",
+    "county": "Citrus / Hernando / Sumter",
+    "river": "Withlacoochee River",
+    "signatureSpecies": "Largemouth bass, bluegill, redear sunfish, channel catfish",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "2-5 lb, 6+ possible"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "signature"
+      },
+      {
+        "name": "Redear sunfish (shellcracker)",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Black crappie (specks)",
+        "importance": "strong",
+        "size": "9-13 in"
+      },
+      {
+        "name": "Bowfin",
+        "importance": "good"
+      },
+      {
+        "name": "Spotted gar",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Bass + bream from a paddle craft",
+        "target": "Largemouth + panfish",
+        "when": "April-October",
+        "technique": "Senko, topwater frog, popper for bass; cricket + bobber for bream",
+        "where": "Cypress + tupelo edges; oxbow swamps"
+      },
+      {
+        "title": "Speck (crappie) winter schools",
+        "target": "Black crappie",
+        "when": "November-March",
+        "technique": "Jig + minnow under bobber",
+        "where": "Deep holes + brush above Lake Rousseau"
+      }
+    ],
+    "access": [
+      "Riverwood Conservation Camp",
+      "Lake Rousseau (downstream impoundment)",
+      "Crooked River Wildlife Management Area"
+    ],
+    "notes": "Wild Florida river through cypress swamps. Joins Lake Rousseau then exits to the Gulf at Yankeetown. Quiet paddle-fishing river — wildlife-rich."
+  },
+  {
+    "id": "fl-lake-rousseau",
+    "name": "Lake Rousseau",
+    "state": "FL",
+    "region": "Citrus County / Nature Coast",
+    "type": "reservoir",
+    "county": "Citrus / Levy / Marion",
+    "acres": 3700,
+    "maxDepthFt": 15,
+    "lat": 29.07,
+    "lng": -82.45,
+    "signatureSpecies": "Largemouth bass, black crappie, bluegill, channel catfish",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "2-5 lb, 8+ lb possible",
+        "notes": "Lake Rousseau is the best bass lake in west-central FL outside the Kissimmee chain."
+      },
+      {
+        "name": "Black crappie (specks)",
+        "importance": "signature",
+        "size": "9-13 in, jumbos possible"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "strong"
+      },
+      {
+        "name": "Redear sunfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Striped bass",
+        "importance": "good",
+        "notes": "Stocked — landlocked striper fishery."
+      },
+      {
+        "name": "Florida gar",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Pad + cypress largemouth",
+        "target": "Largemouth bass",
+        "when": "March-October",
+        "technique": "Topwater frog, weighted Senko, swim jig, flipping plastic",
+        "where": "Pad fields + cypress stand-offs throughout the impoundment",
+        "details": "Flooded cypress + lily pads + Kissimmee grass = classic Florida bass habitat. Punch the mats in summer."
+      },
+      {
+        "title": "Speck spawn",
+        "target": "Black crappie",
+        "when": "January-March",
+        "technique": "Jig + minnow under cork; spider rigging multi-pole",
+        "where": "Cypress stumps + brush in 5-8 ft"
+      }
+    ],
+    "access": [
+      "Lake Rousseau Public Ramp",
+      "Inglis Lock + Dam",
+      "Cross Florida Greenway access"
+    ],
+    "notes": "Withlacoochee River impoundment created for the Cross-Florida Barge Canal (never completed). Flooded cypress forest + endless pad fields = bass-fishing heaven."
+  },
+  {
+    "id": "fl-tsala-apopka-chain",
+    "name": "Tsala Apopka Lake Chain",
+    "state": "FL",
+    "region": "Citrus County / Nature Coast",
+    "type": "natural-lake",
+    "county": "Citrus",
+    "acres": 22000,
+    "maxDepthFt": 12,
+    "lat": 28.85,
+    "lng": -82.3,
+    "signatureSpecies": "Largemouth bass, black crappie, bluegill, redear sunfish",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "2-6 lb, 8+ lb possible",
+        "notes": "Tsala Apopka grows Florida-strain bass. Multiple lake pools = different fishing characters."
+      },
+      {
+        "name": "Black crappie (specks)",
+        "importance": "signature",
+        "size": "9-13 in"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "signature"
+      },
+      {
+        "name": "Redear sunfish (shellcracker)",
+        "importance": "signature",
+        "size": "8-11 in"
+      },
+      {
+        "name": "Spotted sunfish (stumpknocker)",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Bowfin",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Pad-and-pencil-reed largemouth (the FL chain-lake game)",
+        "target": "Largemouth bass",
+        "when": "February-November",
+        "technique": "Hollow-body frog over pads; weighted senko in pockets; swim jig + chatterbait on outside grass edges; wild-shiner under cork for trophy class",
+        "where": "Pad fields + pencil reeds + Kissimmee grass + cypress points across all three pools",
+        "details": "Three connected pools — Inverness Pool (north), Floral City Pool (south), Hernando Pool (middle). Each fishes a little different. Inverness has more grass; Floral City has more pads. Wild shiners catch the trophy fish."
+      },
+      {
+        "title": "Spawn shellcracker on snail beds",
+        "target": "Redear sunfish",
+        "when": "April-June",
+        "technique": "Cricket or worm on 1/64 oz jig + bobber; tipped with small live shiner for big bream",
+        "where": "Sand-bottom spawn pockets visible from the surface; 2-4 ft",
+        "details": "Tsala Apopka shellcrackers run big — 10-12 in fish common in good years."
+      },
+      {
+        "title": "Speck spawn under cypress",
+        "target": "Black crappie",
+        "when": "January-March",
+        "technique": "Crappie jig + minnow under cork; spider rigging",
+        "where": "Flooded cypress + brush in 5-8 ft"
+      }
+    ],
+    "access": [
+      "Inverness public ramps",
+      "Hampton Boat Ramp (Hernando Pool)",
+      "Floral City Public Ramp",
+      "Whispering Pines Park"
+    ],
+    "regulations": "FL bass slot + 5-fish limit. Specks 25/day no size limit.",
+    "managementProgram": [
+      "FWC Florida-strain largemouth management",
+      "TrophyCatch program eligible"
+    ],
+    "notes": "The biggest natural-lake system in Citrus County. Three interconnected pools spanning ~22,000 acres. Old Florida bass + bream destination — 70+ year history. Wild Florida feel, low-rise shoreline, lots of cypress."
+  },
+  {
+    "id": "fl-lake-henderson-inverness",
+    "name": "Lake Henderson (Inverness)",
+    "state": "FL",
+    "region": "Citrus County / Nature Coast",
+    "type": "natural-lake",
+    "county": "Citrus",
+    "acres": 858,
+    "maxDepthFt": 15,
+    "signatureSpecies": "Largemouth bass, black crappie, bluegill",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "2-5 lb"
+      },
+      {
+        "name": "Black crappie",
+        "importance": "strong",
+        "size": "9-12 in"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "strong"
+      },
+      {
+        "name": "Redear sunfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Suburban Inverness bass fishery",
+        "target": "Largemouth bass",
+        "when": "March-October",
+        "technique": "Senko, frog, swim jig, wild-shiner under cork",
+        "where": "Dock corners + pad edges around the city of Inverness"
+      }
+    ],
+    "access": [
+      "Wallace Brooks Park (downtown Inverness)",
+      "Lake Henderson Public Ramp"
+    ],
+    "notes": "Connected to the Tsala Apopka chain via channel. Inverness's home lake — fishable urban bass + crappie."
+  },
+  {
+    "id": "fl-nature-coast-flats",
+    "name": "Nature Coast Gulf Flats (Citrus Co. shoreline)",
+    "state": "FL",
+    "region": "Citrus County / Nature Coast",
+    "type": "great-lake",
+    "county": "Citrus",
+    "lat": 28.83,
+    "lng": -82.74,
+    "signatureSpecies": "Spotted sea trout, redfish, cobia, Spanish mackerel, grouper",
+    "species": [
+      {
+        "name": "Spotted sea trout",
+        "importance": "signature",
+        "size": "15-22 in"
+      },
+      {
+        "name": "Redfish",
+        "importance": "signature",
+        "size": "20-30 in slot, 30+ bull reds"
+      },
+      {
+        "name": "Cobia",
+        "importance": "signature",
+        "size": "20-60 lb, 80+ documented",
+        "notes": "Nature Coast cobia migration is March-May — sight-fishing along the inshore turtle-grass shoreline."
+      },
+      {
+        "name": "Spanish mackerel",
+        "importance": "strong",
+        "size": "14-22 in",
+        "notes": "Summer schools."
+      },
+      {
+        "name": "King mackerel",
+        "importance": "strong",
+        "size": "15-30 lb",
+        "notes": "Spring + fall runs offshore."
+      },
+      {
+        "name": "Grouper (gag + red)",
+        "importance": "strong",
+        "size": "15-30 in",
+        "notes": "Offshore Nature Coast ledges."
+      },
+      {
+        "name": "Snapper (mangrove + lane)",
+        "importance": "good"
+      },
+      {
+        "name": "Tarpon",
+        "importance": "good",
+        "notes": "May-June migration along the shoreline."
+      },
+      {
+        "name": "Sheepshead",
+        "importance": "good"
+      },
+      {
+        "name": "Florida pompano",
+        "importance": "good",
+        "notes": "Sandy flats + beach surf."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Sight-fishing cobia on the inshore shoreline",
+        "target": "Cobia",
+        "when": "March-May",
+        "technique": "Big bucktail jig (3-4 oz, chartreuse); live pinfish; fly: Cobia Tube Fly + big bucktail-style streamers",
+        "where": "Inside the 4-7 ft turtle-grass shoreline; sight-fishing single fish + pairs cruising",
+        "details": "The Nature Coast spring cobia migration is one of FL's best sight-fisheries. Tower boats run the shoreline scanning. Captain has to spot the fish + cast quickly — they don't wait around."
+      },
+      {
+        "title": "Mid-bay sea trout drift",
+        "target": "Spotted sea trout",
+        "when": "Year-round",
+        "technique": "Popping cork + soft-plastic jerkbait; gold spoon; fly: Clouser, Gurgler",
+        "where": "Mid-bay 4-7 ft grass flats"
+      },
+      {
+        "title": "Offshore grouper bottom-fishing",
+        "target": "Gag + red grouper",
+        "when": "May-December",
+        "technique": "Live pinfish on circle hooks + heavy sinker; jigs",
+        "where": "Limestone ledges 30-100 ft offshore from Crystal River + Homosassa"
+      }
+    ],
+    "access": [
+      "Crystal River channel exit",
+      "Homosassa channel exit",
+      "Yankeetown / Withlacoochee exit",
+      "Ozello"
+    ],
+    "regulations": "FWC saltwater license. Cobia 36\" min, 1/day. Sea trout slot (varies by zone). Snook closed in cold. Grouper seasons.",
+    "notes": "The shoreline strip from Crystal River through Yankeetown is the famed \"Nature Coast\" — undeveloped, low-rise, miles of turtle-grass flats. Inshore + offshore mixed-bag waters; charter scene runs out of Crystal River, Homosassa, Ozello, Yankeetown."
+  },
+  {
+    "id": "fl-lake-okeechobee",
+    "name": "Lake Okeechobee (the Big O)",
+    "state": "FL",
+    "region": "Central FL bass lakes",
+    "type": "natural-lake",
+    "county": "Glades / Hendry / Martin / Okeechobee / Palm Beach",
+    "acres": 448000,
+    "maxDepthFt": 12,
+    "lat": 26.93,
+    "lng": -80.8,
+    "signatureSpecies": "Largemouth bass, black crappie, bluegill, redear sunfish, channel catfish",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "3-7 lb, 10+ lb possible",
+        "notes": "America's bass lake. Florida-strain bass + endless habitat. Multiple FLW + Bassmaster Elite tournaments here annually."
+      },
+      {
+        "name": "Black crappie (specks)",
+        "importance": "signature",
+        "size": "9-14 in, jumbos common",
+        "notes": "Spring speck spawn is one of the most-fished events in FL freshwater."
+      },
+      {
+        "name": "Bluegill",
+        "importance": "signature"
+      },
+      {
+        "name": "Redear sunfish (shellcracker)",
+        "importance": "signature",
+        "size": "9-12 in"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Spotted sunfish (stumpknocker)",
+        "importance": "strong"
+      },
+      {
+        "name": "Bowfin",
+        "importance": "good"
+      },
+      {
+        "name": "Florida gar",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Punching the mats (the Big O bass signature)",
+        "target": "Largemouth bass",
+        "when": "February-October, peak spawn March-May",
+        "technique": "Heavy 1-1.5 oz tungsten + creature bait (Sweet Beaver, Brush Hog) on heavy braid; flippin' stick rod",
+        "where": "Hyacinth + hydrilla mats; \"punch holes\" through dense vegetation",
+        "details": "Tournaments are won on the punch bite. Florida-strain bass live UNDER the mats in summer + cold. Heavy gear non-negotiable — 65 lb braid + heavy hook."
+      },
+      {
+        "title": "Wild-shiner trophy bass",
+        "target": "Largemouth bass",
+        "when": "November-April (cold-season trophy window)",
+        "technique": "Wild golden shiners under a float on heavy spinning gear",
+        "where": "Outside grass edges + reed clumps + hyacinth lines",
+        "details": "The trophy way. Wild shiners (8-10 in) catch the 10+ lb fish that won't commit to artificials. Guide-led shiner trips out of Clewiston + Belle Glade + Okeechobee City are the established trophy program."
+      },
+      {
+        "title": "Open-water speck spawn",
+        "target": "Black crappie",
+        "when": "January-March",
+        "technique": "Spider-rigging jig + minnow on multi-pole rigs; pitch jigs to brush + holes",
+        "where": "Open-water brush piles; the rim canal"
+      },
+      {
+        "title": "Bream + shellcracker shoreline",
+        "target": "Bluegill + redear",
+        "when": "April-August",
+        "technique": "Cricket + bobber; small popper for bluegill on fly rod",
+        "where": "Shoreline + Kissimmee River mouth + outflow canals"
+      }
+    ],
+    "access": [
+      "Clewiston (south)",
+      "Belle Glade (south)",
+      "Okeechobee City + Lockmaster Park (north)",
+      "Pahokee",
+      "Moore Haven (Caloosahatchee outlet)"
+    ],
+    "regulations": "FL freshwater license. 5-bass limit; only 1 over 16 in. Slot rules vary — check current FWC regs.",
+    "managementProgram": [
+      "FWC Florida-strain largemouth management",
+      "TrophyCatch program eligible",
+      "Army Corps of Engineers lake-level management"
+    ],
+    "notes": "The Big O. 730 square miles + 448,000 acres = the second-largest freshwater lake entirely in the contiguous US (only Lake Michigan is bigger). Average depth 9 ft, max 12 ft — shallow, weedy, hot. Hurricanes drive water-quality cycles. Trophy bass capital of the world."
+  },
+  {
+    "id": "fl-lake-toho",
+    "name": "Lake Tohopekaliga (Lake Toho)",
+    "state": "FL",
+    "region": "Central FL bass lakes",
+    "type": "natural-lake",
+    "county": "Osceola",
+    "acres": 22700,
+    "maxDepthFt": 16,
+    "lat": 28.21,
+    "lng": -81.41,
+    "signatureSpecies": "Largemouth bass, black crappie, bluegill",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "3-8 lb, 12+ documented",
+        "notes": "Kissimmee-chain Florida-strain bass. Pat Cullen's 12-pounder set a Toho record. Major tournament destination."
+      },
+      {
+        "name": "Black crappie (specks)",
+        "importance": "signature",
+        "size": "9-13 in"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "strong"
+      },
+      {
+        "name": "Redear sunfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "good"
+      },
+      {
+        "name": "Bowfin",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Pre-spawn flipping + topwater",
+        "target": "Largemouth bass",
+        "when": "February-April",
+        "technique": "Flipping jig + creature bait into pencil reeds; weighted senko; topwater walking bait (Spook + Sammy) at dawn",
+        "where": "Pencil reeds + bulrush + hydrilla edges; the spawn flats off Goblets Cove + Big Grassy",
+        "details": "Toho pre-spawn produces the biggest fish of the year. Major bass tournaments time around this window."
+      },
+      {
+        "title": "Wild-shiner trophy season",
+        "target": "Largemouth bass",
+        "when": "December-March",
+        "technique": "Wild shiners under cork on heavy spinning gear",
+        "where": "Outside grass edges, \"scattered\" hydrilla patches"
+      },
+      {
+        "title": "Speck winter night fishing",
+        "target": "Black crappie",
+        "when": "November-March",
+        "technique": "Jig + minnow over brush piles; nighttime lights drawing baitfish + crappie",
+        "where": "Bridge lights + nighttime brush stops"
+      }
+    ],
+    "access": [
+      "Big Toho Marina (Kissimmee)",
+      "St. Cloud Public Ramp",
+      "Goblets Cove Ramp"
+    ],
+    "regulations": "FL bass slot limit; TrophyCatch eligible.",
+    "managementProgram": [
+      "FWC Florida-strain bass management",
+      "Kissimmee Chain of Lakes management"
+    ],
+    "notes": "Lake \"Toho\" — anchor of the Kissimmee chain. Trophy bass destination, multiple Bassmaster Classics. Connected to East Toho + downstream to Cypress + Hatchineha + Kissimmee + Okeechobee via the Kissimmee River system."
+  },
+  {
+    "id": "fl-east-lake-toho",
+    "name": "East Lake Tohopekaliga",
+    "state": "FL",
+    "region": "Central FL bass lakes",
+    "type": "natural-lake",
+    "county": "Osceola",
+    "acres": 11968,
+    "maxDepthFt": 22,
+    "signatureSpecies": "Largemouth bass, black crappie, bluegill",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "3-7 lb"
+      },
+      {
+        "name": "Black crappie",
+        "importance": "signature"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "strong"
+      },
+      {
+        "name": "Redear sunfish",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Florida-strain bass on grass edges",
+        "target": "Largemouth bass",
+        "when": "February-October",
+        "technique": "Senko, weighted plastic, swim jig, chatterbait",
+        "where": "Hydrilla + Kissimmee grass + pencil reed edges"
+      }
+    ],
+    "access": [
+      "Boggy Creek Park",
+      "Chisholm Park"
+    ],
+    "notes": "East Toho — quieter sister to the main Toho. Same Florida-strain bass fishery without the tournament traffic."
+  },
+  {
+    "id": "fl-lake-kissimmee",
+    "name": "Lake Kissimmee",
+    "state": "FL",
+    "region": "Central FL bass lakes",
+    "type": "natural-lake",
+    "county": "Osceola / Polk",
+    "acres": 34948,
+    "maxDepthFt": 14,
+    "lat": 27.92,
+    "lng": -81.3,
+    "signatureSpecies": "Largemouth bass, black crappie, bluegill",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "3-8 lb, 10+ lb regular"
+      },
+      {
+        "name": "Black crappie",
+        "importance": "signature"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "strong"
+      },
+      {
+        "name": "Redear sunfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Wild-shiner trophy bass on pencil reeds",
+        "target": "Largemouth bass",
+        "when": "November-April",
+        "technique": "Wild shiner under cork",
+        "where": "Pencil reed outside edges + scattered hydrilla",
+        "details": "The trophy program. Local guides out of Camp Mack work the Kissimmee for 10+ lb fish."
+      },
+      {
+        "title": "Mat-punching summer",
+        "target": "Largemouth bass",
+        "when": "June-September",
+        "technique": "Heavy tungsten + creature bait punching hyacinth mats",
+        "where": "Mat lines across the lake"
+      }
+    ],
+    "access": [
+      "Camp Mack Marina",
+      "Kissimmee Lake Lock + Dam (S-65)",
+      "Joe Overstreet Landing"
+    ],
+    "notes": "Third lake in the Kissimmee Chain. Wilder + less developed than Toho. Multiple state-record bass have come from the Kissimmee chain over the decades."
+  },
+  {
+    "id": "fl-lake-hatchineha-cypress",
+    "name": "Lake Hatchineha + Lake Cypress",
+    "state": "FL",
+    "region": "Central FL bass lakes",
+    "type": "natural-lake",
+    "county": "Osceola / Polk",
+    "acres": 11630,
+    "maxDepthFt": 12,
+    "signatureSpecies": "Largemouth bass, crappie",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "3-7 lb"
+      },
+      {
+        "name": "Black crappie",
+        "importance": "signature"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "strong"
+      },
+      {
+        "name": "Redear sunfish",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Pad-edge + cypress bass",
+        "target": "Largemouth bass",
+        "when": "March-October",
+        "technique": "Frog, senko, swim jig, wild shiner under cork",
+        "where": "Cypress points + pad edges"
+      }
+    ],
+    "access": [
+      "Lake Hatchineha Public Ramp",
+      "Lake Cypress Public Ramp"
+    ],
+    "notes": "Two connected lakes mid-Kissimmee chain. Bass-tournament + trophy bream water. Less famous than Toho/Kissimmee = less pressure."
+  },
+  {
+    "id": "fl-harris-chain",
+    "name": "Harris Chain of Lakes",
+    "state": "FL",
+    "region": "Central FL bass lakes",
+    "type": "natural-lake",
+    "county": "Lake (county)",
+    "acres": 76000,
+    "maxDepthFt": 30,
+    "lat": 28.78,
+    "lng": -81.79,
+    "signatureSpecies": "Largemouth bass, black crappie, bluegill, redear sunfish",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "3-7 lb, 10+ lb possible",
+        "notes": "Lake Apopka was once notoriously polluted; restoration brought it back. Lake Yale + Eustis + Harris hold the trophy fish."
+      },
+      {
+        "name": "Black crappie",
+        "importance": "signature",
+        "size": "9-14 in, jumbos possible",
+        "notes": "Spring spawn is the heaviest-fished crappie event in central FL."
+      },
+      {
+        "name": "Bluegill",
+        "importance": "signature"
+      },
+      {
+        "name": "Redear sunfish",
+        "importance": "signature",
+        "size": "9-12 in"
+      },
+      {
+        "name": "Striped bass",
+        "importance": "good",
+        "notes": "Stocked into select lakes."
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Pre-spawn bass on the spawn flats",
+        "target": "Largemouth bass",
+        "when": "January-April",
+        "technique": "Lipless crank, chatterbait, swim jig, weighted senko",
+        "where": "Sand-bottom spawn flats off Lake Yale + Eustis"
+      },
+      {
+        "title": "Trophy speck spawn",
+        "target": "Black crappie",
+        "when": "January-March",
+        "technique": "Jig + minnow under cork; spider rigging",
+        "where": "Lake Griffin + Lake Yale brush piles; the canal connectors",
+        "details": "Lake Griffin is the celebrity speck water of the chain. Limits of 13-inchers are routine in peak weeks."
+      }
+    ],
+    "access": [
+      "Hickory Point Park (Tavares)",
+      "Lake Eustis ramps",
+      "Lake Yale ramps",
+      "Lake Griffin ramps",
+      "Lake Harris ramps"
+    ],
+    "managementProgram": [
+      "Lake Apopka restoration project (ongoing)",
+      "FWC Florida-strain bass management"
+    ],
+    "notes": "Seven connected lakes northwest of Orlando: Harris, Eustis, Dora, Beauclair, Apopka, Yale, Griffin. Connected by channels + locks. ~76,000 acres of bass + speck water. Apopka was the most-polluted; cleanup over the past 20 years restored its bass fishery."
+  },
+  {
+    "id": "fl-lake-george",
+    "name": "Lake George (St. Johns River)",
+    "state": "FL",
+    "region": "St. Johns River system",
+    "type": "natural-lake",
+    "county": "Putnam / Volusia / Marion",
+    "acres": 46000,
+    "maxDepthFt": 12,
+    "lat": 29.27,
+    "lng": -81.59,
+    "signatureSpecies": "Largemouth bass, striped bass, black crappie, channel catfish",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "3-7 lb"
+      },
+      {
+        "name": "Striped bass",
+        "importance": "signature",
+        "size": "10-25 lb",
+        "notes": "Atlantic-strain stripers run up the St. Johns; Lake George is staging water."
+      },
+      {
+        "name": "Black crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Blue catfish",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "St. Johns River striper run",
+        "target": "Striped bass",
+        "when": "March-May (spring run)",
+        "technique": "Live shad + threadfin on planer boards; trolling crankbaits + umbrella rigs",
+        "where": "Lake George main basin + the St. Johns River channel entering + exiting the lake"
+      },
+      {
+        "title": "Lake George bass",
+        "target": "Largemouth bass",
+        "when": "February-October",
+        "technique": "Senko, frog, swim jig, wild shiner",
+        "where": "Pad fields + grass edges along the lake shoreline"
+      }
+    ],
+    "access": [
+      "Astor Public Ramp",
+      "Salt Springs run",
+      "Welaka"
+    ],
+    "managementProgram": [
+      "FWC striped bass + bass management",
+      "St. Johns River Water Management District"
+    ],
+    "notes": "Second-largest natural lake in FL (after Okeechobee). 12 mi long, 6 mi wide, all 12 ft deep. The St. Johns River flows through it. Striper + bass combo is rare for FL."
+  },
+  {
+    "id": "fl-stick-marsh",
+    "name": "Stick Marsh / Farm 13 (Headwaters)",
+    "state": "FL",
+    "region": "Central FL bass lakes",
+    "type": "reservoir",
+    "county": "Indian River / Brevard",
+    "acres": 6000,
+    "maxDepthFt": 14,
+    "lat": 27.86,
+    "lng": -80.74,
+    "signatureSpecies": "Largemouth bass",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "4-9 lb, 13+ documented",
+        "notes": "World-famous trophy bass water. C+R only. The Farm 13 record bass is genuinely legendary."
+      },
+      {
+        "name": "Black crappie",
+        "importance": "good"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Flipping the flooded timber",
+        "target": "Largemouth bass",
+        "when": "October-May",
+        "technique": "Heavy creature bait flipped into timber; wild shiner on heavy gear",
+        "where": "Flooded timber + standing dead trees across the reservoir",
+        "details": "Stick Marsh produces 10+ lb largemouth at a frequency unmatched in FL. C+R only — every fish goes back. Tournaments are barbless + paper-only."
+      }
+    ],
+    "access": [
+      "Stick Marsh Boat Ramp (Florida Game Commission)"
+    ],
+    "regulations": "CATCH AND RELEASE ONLY for largemouth. All bass must be released alive.",
+    "managementProgram": [
+      "FWC catch-and-release bass research site",
+      "St. Johns River Water Management District"
+    ],
+    "notes": "AKA \"Farm 13/Stick Marsh\" — flooded agricultural land reclaimed as the headwaters of the St. Johns River. The catch-and-release rule + flooded-timber habitat produces a density of giants found almost nowhere else. Iconic FL bass-fishing destination."
+  },
+  {
+    "id": "fl-rodman-reservoir",
+    "name": "Rodman Reservoir (Lake Ocklawaha)",
+    "state": "FL",
+    "region": "St. Johns River system",
+    "type": "reservoir",
+    "county": "Putnam / Marion",
+    "acres": 9500,
+    "maxDepthFt": 30,
+    "lat": 29.51,
+    "lng": -81.79,
+    "signatureSpecies": "Largemouth bass, black crappie",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "3-7 lb, 10+ documented"
+      },
+      {
+        "name": "Black crappie",
+        "importance": "signature"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Flooded-timber bass",
+        "target": "Largemouth bass",
+        "when": "February-October",
+        "technique": "Frog over slop, weighted senko in pockets, flipping creature into timber",
+        "where": "Standing timber + grass mats"
+      }
+    ],
+    "access": [
+      "Rodman Recreation Area",
+      "Kenwood Recreation Area"
+    ],
+    "notes": "Cross-Florida Barge Canal impoundment of the Ocklawaha River. Periodic drawdowns concentrate fish. Bass + bream destination."
+  },
+  {
+    "id": "fl-lake-talquin",
+    "name": "Lake Talquin",
+    "state": "FL",
+    "region": "Panhandle waters",
+    "type": "reservoir",
+    "county": "Leon / Gadsden",
+    "acres": 8800,
+    "maxDepthFt": 40,
+    "signatureSpecies": "Largemouth bass, black crappie, striped bass, bluegill",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "3-7 lb"
+      },
+      {
+        "name": "Black crappie",
+        "importance": "signature"
+      },
+      {
+        "name": "Striped bass",
+        "importance": "strong",
+        "notes": "Stocked."
+      },
+      {
+        "name": "Bluegill",
+        "importance": "strong"
+      },
+      {
+        "name": "Redear sunfish",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Crappie + bass combo trip",
+        "target": "Crappie + bass",
+        "when": "February-May",
+        "technique": "Jig + minnow for crappie; swim jig + senko for bass",
+        "where": "Standing timber + creek arms"
+      }
+    ],
+    "access": [
+      "Lake Talquin State Park",
+      "Whippoorwill",
+      "Pitt's Camp"
+    ],
+    "notes": "Ochlockonee River impoundment west of Tallahassee. Standing flooded timber + creek arms. Panhandle bass + crappie destination."
+  },
+  {
+    "id": "fl-st-johns-river",
+    "name": "St. Johns River (Florida)",
+    "state": "FL",
+    "region": "St. Johns River system",
+    "type": "river",
+    "county": "Multiple (310 mi)",
+    "river": "St. Johns River",
+    "lat": 29.5,
+    "lng": -81.6,
+    "signatureSpecies": "Largemouth bass, striped bass, black crappie, channel catfish, blue catfish",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "3-7 lb"
+      },
+      {
+        "name": "Striped bass",
+        "importance": "signature",
+        "size": "8-25 lb",
+        "notes": "Atlantic-strain spring run from Jacksonville into the upper St. Johns."
+      },
+      {
+        "name": "Black crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Blue catfish",
+        "importance": "strong",
+        "size": "5-40 lb",
+        "notes": "Increasing population in the lower river."
+      },
+      {
+        "name": "Flathead catfish",
+        "importance": "good"
+      },
+      {
+        "name": "Sunshine bass (hybrid striper × white bass)",
+        "importance": "good",
+        "notes": "Stocked into the upper river."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Spring striper run",
+        "target": "Striped bass",
+        "when": "March-May",
+        "technique": "Live shad on planer boards; trolling crankbaits",
+        "where": "River channel from Jacksonville up through Welaka, Astor, Lake George"
+      },
+      {
+        "title": "Pad-and-eelgrass largemouth",
+        "target": "Largemouth bass",
+        "when": "February-October",
+        "technique": "Frog, senko, flipping jig",
+        "where": "Pad edges + cypress in the middle + upper river"
+      }
+    ],
+    "access": [
+      "Jacksonville (mouth)",
+      "Welaka",
+      "Palatka",
+      "Astor",
+      "Sanford",
+      "Deland",
+      "Volusia Bar"
+    ],
+    "managementProgram": [
+      "St. Johns River Water Management District",
+      "FWC striper + bass management"
+    ],
+    "notes": "Florida's longest river (310 miles), one of the few that flows NORTH. Drains to Jacksonville. Massive multi-species river — bass + striper + catfish + bream. Manatees common."
+  },
+  {
+    "id": "fl-mosquito-lagoon",
+    "name": "Mosquito Lagoon",
+    "state": "FL",
+    "region": "FL Atlantic Coast inshore",
+    "type": "great-lake",
+    "county": "Brevard / Volusia",
+    "acres": 36000,
+    "maxDepthFt": 8,
+    "lat": 28.8,
+    "lng": -80.79,
+    "signatureSpecies": "Redfish, spotted sea trout, black drum",
+    "species": [
+      {
+        "name": "Redfish",
+        "importance": "signature",
+        "size": "20-35 in, 40+ in bull reds",
+        "notes": "Mosquito Lagoon is the gold-standard sight-fishing flats for redfish in the eastern US. Crystal-clear water + abundant grass + cruising tailing fish."
+      },
+      {
+        "name": "Spotted sea trout",
+        "importance": "signature",
+        "size": "15-22 in, 28+ gators common",
+        "notes": "Trophy gator-trout water. The Lagoon's flats give up 8-pound trout regularly."
+      },
+      {
+        "name": "Black drum",
+        "importance": "strong",
+        "size": "5-30 lb"
+      },
+      {
+        "name": "Sheepshead",
+        "importance": "good"
+      },
+      {
+        "name": "Snook",
+        "importance": "good",
+        "notes": "Northern range; thermal-refuge issue in cold."
+      },
+      {
+        "name": "Tarpon",
+        "importance": "good",
+        "notes": "Migrating fish summer."
+      },
+      {
+        "name": "Ladyfish + jacks",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Tailing redfish + gator trout on grass flats",
+        "target": "Redfish + gator sea trout",
+        "when": "Year-round, peak fall + winter",
+        "technique": "Spoon Fly, Kwan, Borski Slider on 8 wt with 16 lb fluoro; gold spoon + paddle-tail jerkbait + DOA on spin gear",
+        "where": "Shallow turtle-grass flats with sand-hole transitions; the iconic \"Indian River Lagoon style\" 1-3 ft tailing water",
+        "details": "Mosquito Lagoon is THE redfish flats — the place tournament + magazine guides go. Best on calm low-tide mornings. Long leads, downsized flies, full stealth."
+      },
+      {
+        "title": "Gator trout on potholes",
+        "target": "Spotted sea trout",
+        "when": "November-April",
+        "technique": "Soft-plastic jerkbait + popping cork; fly: Clouser + Surf Candy",
+        "where": "Sand potholes within the turtle-grass flats",
+        "details": "Trophy trout (28+ in, 8+ lb) hold in the potholes when water cools."
+      }
+    ],
+    "access": [
+      "Haulover Canal",
+      "Edgewater",
+      "Oak Hill",
+      "Titusville"
+    ],
+    "regulations": "FWC saltwater license. Redfish + trout slot limits (vary).",
+    "notes": "World-class shallow-flats sight-fishery. Adjacent to Kennedy Space Center — the protected status keeps development out + the fishery pristine."
+  },
+  {
+    "id": "fl-indian-river-lagoon",
+    "name": "Indian River Lagoon",
+    "state": "FL",
+    "region": "FL Atlantic Coast inshore",
+    "type": "great-lake",
+    "county": "Brevard / Indian River / St. Lucie / Martin",
+    "acres": 156000,
+    "maxDepthFt": 12,
+    "lat": 27.96,
+    "lng": -80.55,
+    "signatureSpecies": "Redfish, spotted sea trout, snook, tarpon",
+    "species": [
+      {
+        "name": "Redfish",
+        "importance": "signature",
+        "size": "20-30 in slot, 30+ bull reds"
+      },
+      {
+        "name": "Spotted sea trout",
+        "importance": "signature",
+        "size": "15-22 in"
+      },
+      {
+        "name": "Snook",
+        "importance": "signature",
+        "size": "24-38 in",
+        "notes": "Spillways + inlets are snook factories."
+      },
+      {
+        "name": "Tarpon",
+        "importance": "strong",
+        "size": "30-150 lb",
+        "notes": "Migration corridor."
+      },
+      {
+        "name": "Common snook",
+        "importance": "strong"
+      },
+      {
+        "name": "Spanish mackerel",
+        "importance": "good"
+      },
+      {
+        "name": "Black drum",
+        "importance": "good"
+      },
+      {
+        "name": "Ladyfish + jacks",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Spillway snook",
+        "target": "Snook",
+        "when": "Year-round, peak summer rain events",
+        "technique": "Hot Lips foam shrimp, paddle-tail jerkbait, live shrimp under cork",
+        "where": "C-44 + S-80 + other freshwater discharge spillways from Lake Okeechobee + St. Johns",
+        "details": "Snook stack at spillway outflows when freshwater is being released. Predictable + technique-driven fishery."
+      },
+      {
+        "title": "Sea trout drift",
+        "target": "Spotted sea trout",
+        "when": "Year-round",
+        "technique": "Popping cork + soft plastic; gold spoon",
+        "where": "Mid-lagoon grass flats"
+      }
+    ],
+    "access": [
+      "Sebastian Inlet",
+      "Stuart",
+      "Fort Pierce",
+      "Vero Beach",
+      "Cocoa Beach"
+    ],
+    "notes": "The longer system south of Mosquito Lagoon. 156-mile estuary, the most biologically diverse estuary in North America. Multiple inlets connect to the Atlantic."
+  },
+  {
+    "id": "fl-banana-river",
+    "name": "Banana River Lagoon",
+    "state": "FL",
+    "region": "FL Atlantic Coast inshore",
+    "type": "great-lake",
+    "county": "Brevard",
+    "acres": 31000,
+    "maxDepthFt": 10,
+    "signatureSpecies": "Redfish, spotted sea trout, snook",
+    "species": [
+      {
+        "name": "Redfish",
+        "importance": "signature",
+        "size": "20-32 in slot"
+      },
+      {
+        "name": "Spotted sea trout",
+        "importance": "signature"
+      },
+      {
+        "name": "Snook",
+        "importance": "strong"
+      },
+      {
+        "name": "Tarpon",
+        "importance": "good"
+      },
+      {
+        "name": "Black drum",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "No-motor-zone tailing reds",
+        "target": "Redfish",
+        "when": "Year-round",
+        "technique": "Spoon Fly, Kwan; kayak / paddleboard / electric-only",
+        "where": "NASA No-Motor Zone flats (the back of the Banana River)",
+        "details": "The back of the Banana River is a No-Motor Zone — kayak + electric only. That keeps the pressure low + the fish unspooked. Genuinely one of FL's best kayak-fly destinations."
+      }
+    ],
+    "access": [
+      "KARS Park (NASA)",
+      "Port Canaveral"
+    ],
+    "regulations": "No-Motor Zone in the back of the Banana River. Kayak / electric / paddle only.",
+    "notes": "Adjacent to Kennedy Space Center / Cape Canaveral. The NMZ creates a pristine kayak-only fishery."
+  },
+  {
+    "id": "fl-sebastian-inlet",
+    "name": "Sebastian Inlet",
+    "state": "FL",
+    "region": "FL Atlantic Coast inshore",
+    "type": "river",
+    "county": "Brevard / Indian River",
+    "signatureSpecies": "Snook, tarpon, redfish, Spanish mackerel, jacks",
+    "species": [
+      {
+        "name": "Snook",
+        "importance": "signature",
+        "size": "24-40 in"
+      },
+      {
+        "name": "Tarpon",
+        "importance": "strong",
+        "size": "30-100 lb"
+      },
+      {
+        "name": "Redfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Spanish mackerel",
+        "importance": "strong"
+      },
+      {
+        "name": "Jacks (crevalle)",
+        "importance": "strong"
+      },
+      {
+        "name": "Bluefish",
+        "importance": "good"
+      },
+      {
+        "name": "Spotted sea trout",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Inlet snook on the rocks",
+        "target": "Snook",
+        "when": "May-October",
+        "technique": "Bucktail jig + Gulp shrimp; large soft-plastic jerkbait; live mullet",
+        "where": "Bridge pilings + jetty rocks",
+        "details": "Sebastian Inlet is one of the most-fished snook spots in FL. Catwalk + jetty access. Strong currents + structure."
+      }
+    ],
+    "access": [
+      "Sebastian Inlet State Park",
+      "Catwalk + Jetty"
+    ],
+    "notes": "Premier shore-access saltwater fishery on the central east coast. Big fish + heavy current."
+  },
+  {
+    "id": "fl-stuart-st-lucie",
+    "name": "Stuart / St. Lucie River",
+    "state": "FL",
+    "region": "FL Atlantic Coast inshore",
+    "type": "river",
+    "county": "Martin / St. Lucie",
+    "river": "St. Lucie River",
+    "signatureSpecies": "Snook, tarpon, redfish, sailfish (offshore)",
+    "species": [
+      {
+        "name": "Snook",
+        "importance": "signature"
+      },
+      {
+        "name": "Tarpon",
+        "importance": "signature",
+        "size": "30-150 lb",
+        "notes": "Stuart is a major migration corridor + summer staging area."
+      },
+      {
+        "name": "Sailfish",
+        "importance": "signature",
+        "notes": "Stuart = sailfish capital of the world (offshore)."
+      },
+      {
+        "name": "Redfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Spotted sea trout",
+        "importance": "strong"
+      },
+      {
+        "name": "Spanish mackerel",
+        "importance": "strong"
+      },
+      {
+        "name": "King mackerel",
+        "importance": "strong",
+        "notes": "Offshore."
+      },
+      {
+        "name": "Mahi (dolphin)",
+        "importance": "strong",
+        "notes": "Offshore."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Stuart sailfish offshore",
+        "target": "Sailfish",
+        "when": "November-April",
+        "technique": "Trolling rigged ballyhoo + dredges; fly-fishing teasers with Cam Sigler tube fly",
+        "where": "Gulf Stream off Stuart (8-30 mi offshore)",
+        "details": "Stuart bills itself as the sailfish capital of the world. Tournament season is January. Charter scene out of Stuart + Hutchinson Island."
+      },
+      {
+        "title": "St. Lucie inshore snook + tarpon",
+        "target": "Snook + tarpon",
+        "when": "Year-round",
+        "technique": "Soft-plastic jerkbait, Gartside Gurgler, live mullet",
+        "where": "St. Lucie River channel + Roosevelt Bridge + inlet"
+      }
+    ],
+    "access": [
+      "Stuart Causeway",
+      "Roosevelt Bridge",
+      "St. Lucie Inlet"
+    ],
+    "notes": "Stuart = \"Sailfish Capital.\" Offshore: sailfish, mahi, king mackerel, tuna. Inshore: snook, tarpon, redfish, trout. Multi-species hub."
+  },
+  {
+    "id": "fl-loxahatchee-river",
+    "name": "Loxahatchee River (Jupiter)",
+    "state": "FL",
+    "region": "FL Atlantic Coast inshore",
+    "type": "river",
+    "county": "Palm Beach / Martin",
+    "river": "Loxahatchee River",
+    "signatureSpecies": "Snook, tarpon, redfish, juvenile tarpon",
+    "species": [
+      {
+        "name": "Snook",
+        "importance": "signature",
+        "size": "24-38 in"
+      },
+      {
+        "name": "Tarpon",
+        "importance": "signature",
+        "size": "20-150 lb",
+        "notes": "The Loxahatchee is famous for JUVENILE tarpon — the back-river canals + pools hold 5-20 lb baby tarpon year-round. Great learning water."
+      },
+      {
+        "name": "Redfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "good",
+        "notes": "Upper river fresh-water reach."
+      },
+      {
+        "name": "Mangrove snapper",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Juvenile tarpon in back-river canals",
+        "target": "Juvenile tarpon",
+        "when": "Year-round",
+        "technique": "Small tarpon flies (Cockroach, Toad) on 7-9 wt; small plugs + DOA shrimp on light spin",
+        "where": "Back-river canals + pools above Jupiter Inlet",
+        "details": "The Loxahatchee's juvenile tarpon are a learning-water gift. Smaller flies, lighter tackle, more catches."
+      }
+    ],
+    "access": [
+      "Jupiter Inlet",
+      "Jonathan Dickinson State Park",
+      "Burt Reynolds Park"
+    ],
+    "notes": "Designated National Wild + Scenic River. Unique cypress + mangrove transition."
+  },
+  {
+    "id": "fl-st-johns-river-jacksonville",
+    "name": "St. Johns River (Jacksonville / Mayport)",
+    "state": "FL",
+    "region": "FL Atlantic Coast inshore",
+    "type": "great-lake-trib",
+    "county": "Duval",
+    "signatureSpecies": "Redfish, spotted sea trout, flounder, sheepshead, tarpon",
+    "species": [
+      {
+        "name": "Redfish",
+        "importance": "signature",
+        "size": "20-35 in",
+        "notes": "Jetty + ICW + flats redfish through Jacksonville."
+      },
+      {
+        "name": "Spotted sea trout",
+        "importance": "signature"
+      },
+      {
+        "name": "Flounder",
+        "importance": "strong",
+        "size": "14-22 in",
+        "notes": "Jacksonville is the southern flounder destination on the east coast."
+      },
+      {
+        "name": "Sheepshead",
+        "importance": "strong"
+      },
+      {
+        "name": "Tarpon",
+        "importance": "strong",
+        "notes": "Spring + summer migration through the river mouth."
+      },
+      {
+        "name": "Black drum",
+        "importance": "good"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "good",
+        "notes": "Upriver freshwater."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Mayport jetty redfish",
+        "target": "Redfish",
+        "when": "Year-round",
+        "technique": "Bucktail jig + Gulp; live shrimp; soft-plastic paddle tail",
+        "where": "Mayport jetty + the river mouth"
+      },
+      {
+        "title": "Flounder on the bottom",
+        "target": "Flounder",
+        "when": "September-November fall run",
+        "technique": "Jig + minnow on bottom; live mud minnow or finger mullet",
+        "where": "ICW channels + ledges; oyster bars"
+      }
+    ],
+    "access": [
+      "Mayport",
+      "Sisters Creek",
+      "Huguenot Park"
+    ],
+    "notes": "St. Johns River mouth. North FL inshore + nearshore mixed-bag."
+  },
+  {
+    "id": "fl-st-augustine-matanzas",
+    "name": "St. Augustine + Matanzas River",
+    "state": "FL",
+    "region": "FL Atlantic Coast inshore",
+    "type": "river",
+    "county": "St. Johns",
+    "river": "Matanzas River",
+    "signatureSpecies": "Redfish, spotted sea trout, flounder",
+    "species": [
+      {
+        "name": "Redfish",
+        "importance": "signature"
+      },
+      {
+        "name": "Spotted sea trout",
+        "importance": "signature"
+      },
+      {
+        "name": "Flounder",
+        "importance": "strong",
+        "notes": "Fall run."
+      },
+      {
+        "name": "Sheepshead",
+        "importance": "good"
+      },
+      {
+        "name": "Tarpon",
+        "importance": "good",
+        "size": "Summer migration"
+      },
+      {
+        "name": "Black drum",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Oyster-bar redfish",
+        "target": "Redfish",
+        "when": "Year-round",
+        "technique": "Gold spoon, soft-plastic, Spoon Fly",
+        "where": "Oyster bars + creek mouths along the Matanzas"
+      }
+    ],
+    "access": [
+      "Matanzas Inlet",
+      "St. Augustine Inlet",
+      "Salt Run"
+    ],
+    "notes": "Historic St. Augustine area. Quiet inshore fishery with oyster bars + grass flats. Less pressure than Mosquito Lagoon."
+  },
+  {
+    "id": "fl-tampa-bay",
+    "name": "Tampa Bay",
+    "state": "FL",
+    "region": "FL Gulf Coast inshore",
+    "type": "great-lake",
+    "county": "Hillsborough / Pinellas / Manatee",
+    "acres": 400000,
+    "maxDepthFt": 50,
+    "lat": 27.78,
+    "lng": -82.5,
+    "signatureSpecies": "Spotted sea trout, redfish, snook, tarpon, mackerel",
+    "species": [
+      {
+        "name": "Spotted sea trout",
+        "importance": "signature",
+        "size": "15-25 in, gators 28+",
+        "notes": "Tampa Bay trout population is exceptional — the bay's grass flats are productive year-round."
+      },
+      {
+        "name": "Redfish",
+        "importance": "signature",
+        "size": "20-30 in slot, 30+ bull reds"
+      },
+      {
+        "name": "Snook",
+        "importance": "signature",
+        "size": "24-38 in",
+        "notes": "Year-round resident + spawn-season at the passes."
+      },
+      {
+        "name": "Tarpon",
+        "importance": "signature",
+        "size": "60-180 lb",
+        "notes": "May-July migration through Tampa Bay; pre-Boca-Grande staging."
+      },
+      {
+        "name": "Spanish mackerel",
+        "importance": "strong"
+      },
+      {
+        "name": "Cobia",
+        "importance": "strong"
+      },
+      {
+        "name": "Sheepshead",
+        "importance": "strong"
+      },
+      {
+        "name": "Mangrove snapper",
+        "importance": "good"
+      },
+      {
+        "name": "Permit",
+        "importance": "good",
+        "size": "Smaller juveniles on flats; offshore wrecks for bigger fish"
+      },
+      {
+        "name": "Black drum",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Spring + summer tarpon at the passes",
+        "target": "Tarpon",
+        "when": "May-July",
+        "technique": "Live crab on circle hook; live pinfish; fly: Toad, Cockroach, Apte II",
+        "where": "Egmont Channel + the passes (Egmont Key area, Skyway shipping channel) + bay flats",
+        "details": "Tampa Bay tarpon stage in deeper bay channels + the passes before pushing to Boca Grande. Pre-spawn fish are aggressive."
+      },
+      {
+        "title": "Snook spawn at the passes",
+        "target": "Snook",
+        "when": "May-September (spawn)",
+        "technique": "Live pinfish + sardine; pearl/chartreuse soft-plastic; fly: Schminnow, Bend-Back",
+        "where": "Pass-a-Grille, Egmont Channel, Bunces Pass"
+      },
+      {
+        "title": "Mid-bay grass flats trout",
+        "target": "Spotted sea trout",
+        "when": "Year-round",
+        "technique": "Popping cork + soft-plastic; gold spoon; fly: Clouser, Gurgler",
+        "where": "Old Tampa Bay, Lower Tampa Bay, Cockroach Bay grass flats"
+      }
+    ],
+    "access": [
+      "St. Pete Pier",
+      "Skyway Pier",
+      "Picnic Island",
+      "Apollo Beach",
+      "Cockroach Bay"
+    ],
+    "managementProgram": [
+      "FWC inshore management",
+      "Tampa Bay Estuary Program restoration"
+    ],
+    "notes": "Florida's largest open-water estuary. 400,000 acres of grass flats + passes + mangrove. Year-round multi-species + tarpon highlight reel."
+  },
+  {
+    "id": "fl-boca-grande-pass",
+    "name": "Boca Grande Pass + Charlotte Harbor",
+    "state": "FL",
+    "region": "FL Gulf Coast inshore",
+    "type": "great-lake",
+    "county": "Lee / Charlotte",
+    "acres": 270000,
+    "maxDepthFt": 80,
+    "lat": 26.72,
+    "lng": -82.26,
+    "signatureSpecies": "Tarpon, snook, redfish, spotted sea trout",
+    "species": [
+      {
+        "name": "Tarpon",
+        "importance": "signature",
+        "size": "100-200 lb",
+        "notes": "BOCA GRANDE = the tarpon capital of the world by sheer numbers. Mid-May through July, thousands of fish stack in Boca Grande Pass."
+      },
+      {
+        "name": "Snook",
+        "importance": "signature"
+      },
+      {
+        "name": "Redfish",
+        "importance": "signature"
+      },
+      {
+        "name": "Spotted sea trout",
+        "importance": "strong"
+      },
+      {
+        "name": "Cobia",
+        "importance": "strong"
+      },
+      {
+        "name": "Permit",
+        "importance": "good"
+      },
+      {
+        "name": "King mackerel",
+        "importance": "good"
+      },
+      {
+        "name": "Goliath grouper",
+        "importance": "good",
+        "notes": "C+R only — protected."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Boca Grande Pass tarpon — the iconic event",
+        "target": "Tarpon",
+        "when": "Mid-May through July",
+        "technique": "Live crab on circle hook; live pass crab; pinfish; fly fishing in the back-bay edges (the pass itself is too deep for fly comfortably)",
+        "where": "Boca Grande Pass (mouth) and the channels into Charlotte Harbor",
+        "details": "The most-fished tarpon event in the world. Crowds of 100+ boats some days. Local etiquette + tournament rules apply. Hire a guide."
+      },
+      {
+        "title": "Charlotte Harbor inshore mixed-bag",
+        "target": "Redfish + snook + trout",
+        "when": "Year-round",
+        "technique": "Soft-plastic jerkbait, gold spoon, live shrimp, fly with Clouser + Gurgler",
+        "where": "Mangrove shoreline + oyster bars + grass flats throughout the harbor"
+      }
+    ],
+    "access": [
+      "Boca Grande",
+      "Punta Gorda",
+      "Placida",
+      "Cape Coral"
+    ],
+    "notes": "Charlotte Harbor is Florida's second-largest open-water estuary. Boca Grande Pass is the famous mouth. Mid-summer tarpon migration is the world's most-fished tarpon event."
+  },
+  {
+    "id": "fl-pine-island-sound",
+    "name": "Pine Island Sound + Sanibel / Captiva",
+    "state": "FL",
+    "region": "FL Gulf Coast inshore",
+    "type": "great-lake",
+    "county": "Lee",
+    "acres": 110000,
+    "maxDepthFt": 12,
+    "lat": 26.58,
+    "lng": -82.1,
+    "signatureSpecies": "Redfish, spotted sea trout, snook, tarpon",
+    "species": [
+      {
+        "name": "Redfish",
+        "importance": "signature"
+      },
+      {
+        "name": "Spotted sea trout",
+        "importance": "signature"
+      },
+      {
+        "name": "Snook",
+        "importance": "signature"
+      },
+      {
+        "name": "Tarpon",
+        "importance": "signature",
+        "notes": "Boca Grande Pass nearby."
+      },
+      {
+        "name": "Sheepshead",
+        "importance": "strong"
+      },
+      {
+        "name": "Permit",
+        "importance": "good",
+        "notes": "Beach permit cruising — sight-fishery."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Sanibel beach snook (Schminnow water)",
+        "target": "Snook",
+        "when": "May-October",
+        "technique": "Schminnow, Crystal Schminnow, Floating Minnow; small white DOA shrimp",
+        "where": "Sanibel + Captiva beach shoreline",
+        "details": "Norm Zeigler's Schminnow was invented here — Sanibel beach snook eat it without question. Wade or kayak the surf."
+      },
+      {
+        "title": "Mangrove-shoreline redfish",
+        "target": "Redfish",
+        "when": "Year-round",
+        "technique": "Gold spoon, weedless jerkbait",
+        "where": "Mangrove shoreline + oyster bars in Pine Island Sound"
+      }
+    ],
+    "access": [
+      "Punta Rassa",
+      "Pine Island",
+      "Captiva",
+      "Sanibel"
+    ],
+    "notes": "Sanibel + Captiva are the famous islands; Pine Island Sound separates them from the mainland. Premier multi-species flats."
+  },
+  {
+    "id": "fl-naples-estero-bay",
+    "name": "Naples / Estero Bay",
+    "state": "FL",
+    "region": "FL Gulf Coast inshore",
+    "type": "great-lake",
+    "county": "Collier / Lee",
+    "signatureSpecies": "Snook, redfish, tarpon",
+    "species": [
+      {
+        "name": "Snook",
+        "importance": "signature",
+        "size": "24-40 in",
+        "notes": "Naples is one of the best year-round snook fisheries in FL."
+      },
+      {
+        "name": "Redfish",
+        "importance": "signature"
+      },
+      {
+        "name": "Tarpon",
+        "importance": "strong",
+        "size": "50-150 lb"
+      },
+      {
+        "name": "Spotted sea trout",
+        "importance": "strong"
+      },
+      {
+        "name": "Sheepshead",
+        "importance": "good"
+      },
+      {
+        "name": "Mangrove snapper",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Mangrove tunnel snook",
+        "target": "Snook",
+        "when": "Year-round",
+        "technique": "Weedless jerkbait + Bend-Back fly into mangrove tunnels",
+        "where": "Estero Bay mangroves + Naples back-bay residential canals"
+      }
+    ],
+    "access": [
+      "Naples",
+      "Bonita Beach",
+      "Estero Bay"
+    ],
+    "notes": "SW FL's premier snook + redfish flats. Quieter than the Keys or Tampa Bay."
+  },
+  {
+    "id": "fl-10000-islands",
+    "name": "10,000 Islands + Everglades National Park backcountry",
+    "state": "FL",
+    "region": "FL Gulf Coast inshore",
+    "type": "great-lake",
+    "county": "Collier / Monroe",
+    "acres": 1500000,
+    "maxDepthFt": 10,
+    "lat": 25.8,
+    "lng": -81.4,
+    "signatureSpecies": "Snook, redfish, tarpon, snapper, juvenile tarpon",
+    "species": [
+      {
+        "name": "Snook",
+        "importance": "signature",
+        "size": "24-40 in, 36+ inch fish common"
+      },
+      {
+        "name": "Redfish",
+        "importance": "signature"
+      },
+      {
+        "name": "Tarpon",
+        "importance": "signature",
+        "size": "30-180 lb",
+        "notes": "Everglades = the iconic tarpon backcountry. Big migrations + juvenile fish year-round."
+      },
+      {
+        "name": "Mangrove snapper",
+        "importance": "strong"
+      },
+      {
+        "name": "Spotted sea trout",
+        "importance": "strong"
+      },
+      {
+        "name": "Goliath grouper",
+        "importance": "good",
+        "notes": "C+R protected."
+      },
+      {
+        "name": "Permit",
+        "importance": "good"
+      },
+      {
+        "name": "Spanish mackerel",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Mangrove-tunnel snook",
+        "target": "Snook",
+        "when": "October-May",
+        "technique": "Bend-Back, Schminnow, weedless plastic; live pinfish",
+        "where": "Mangrove root systems + creek mouths",
+        "details": "The Everglades backcountry is a maze of mangrove islands + creeks. Local knowledge or a guide is mandatory — GPS waypoints rule."
+      },
+      {
+        "title": "Backcountry tarpon",
+        "target": "Tarpon",
+        "when": "March-July",
+        "technique": "Toad, Cockroach, Tarpon Bunny on 11 wt; live mullet",
+        "where": "Backcountry channels + bays leading from Florida Bay to the Gulf"
+      }
+    ],
+    "access": [
+      "Everglades City",
+      "Chokoloskee",
+      "Flamingo (south entrance)"
+    ],
+    "regulations": "Everglades National Park rules + permits in park-managed water.",
+    "notes": "1.5 million acres of mangrove maze. The iconic Florida tarpon backcountry — Hemingway, Zane Grey, every generation of saltwater fly anglers. Guided trip strongly recommended for first-timers."
+  },
+  {
+    "id": "fl-biscayne-bay",
+    "name": "Biscayne Bay",
+    "state": "FL",
+    "region": "FL Keys + Bay",
+    "type": "great-lake",
+    "county": "Miami-Dade",
+    "acres": 270000,
+    "maxDepthFt": 12,
+    "lat": 25.55,
+    "lng": -80.2,
+    "signatureSpecies": "Bonefish, permit, tarpon, snook, redfish",
+    "species": [
+      {
+        "name": "Bonefish",
+        "importance": "signature",
+        "size": "4-12 lb",
+        "notes": "Biscayne Bay bonefishing is the urban-flats classic — sight-fishing skinny water in view of downtown Miami."
+      },
+      {
+        "name": "Permit",
+        "importance": "signature",
+        "size": "15-30 lb"
+      },
+      {
+        "name": "Tarpon",
+        "importance": "signature",
+        "size": "60-150 lb"
+      },
+      {
+        "name": "Snook",
+        "importance": "strong"
+      },
+      {
+        "name": "Redfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Spotted sea trout",
+        "importance": "good"
+      },
+      {
+        "name": "Spanish + king mackerel",
+        "importance": "good"
+      },
+      {
+        "name": "Sailfish",
+        "importance": "good",
+        "notes": "Offshore."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Biscayne Bay bonefish flats",
+        "target": "Bonefish",
+        "when": "Year-round, peak fall + winter",
+        "technique": "Crazy Charlie, Gotcha, Kwan, Bonefish Bitters; small spin-cast jigs",
+        "where": "Bay flats from Stiltsville to the Keys + Card Sound + Ragged Keys",
+        "details": "Biscayne Bay bones are a sight-fishery — wading + poling from skiffs. Permits, tarpon, snook share the same water."
+      },
+      {
+        "title": "Stiltsville permit",
+        "target": "Permit",
+        "when": "April-October",
+        "technique": "Merkin Crab, EP Crab, small soft-plastic shrimp",
+        "where": "Stiltsville flats + Biscayne National Park flats"
+      }
+    ],
+    "access": [
+      "Crandon Marina",
+      "Black Point Marina",
+      "Card Sound Bridge"
+    ],
+    "notes": "Half urban (downtown Miami shoreline), half Biscayne National Park. The Kwan fly was developed here."
+  },
+  {
+    "id": "fl-florida-bay",
+    "name": "Florida Bay (Flamingo + south Everglades)",
+    "state": "FL",
+    "region": "FL Keys + Bay",
+    "type": "great-lake",
+    "county": "Monroe",
+    "acres": 800000,
+    "maxDepthFt": 9,
+    "lat": 25.1,
+    "lng": -80.8,
+    "signatureSpecies": "Tarpon, redfish, snook, bonefish, sea trout",
+    "species": [
+      {
+        "name": "Tarpon",
+        "importance": "signature",
+        "size": "40-150 lb"
+      },
+      {
+        "name": "Snook",
+        "importance": "signature"
+      },
+      {
+        "name": "Redfish",
+        "importance": "signature"
+      },
+      {
+        "name": "Bonefish",
+        "importance": "strong",
+        "notes": "Smaller pop than the Keys proper."
+      },
+      {
+        "name": "Spotted sea trout",
+        "importance": "strong"
+      },
+      {
+        "name": "Mangrove snapper",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Flamingo backcountry tarpon + snook",
+        "target": "Tarpon + snook",
+        "when": "April-July",
+        "technique": "Tarpon flies + small streamers + soft-plastic; live mullet",
+        "where": "Whitewater Bay + Cape Sable + the back-bay creek mouths"
+      }
+    ],
+    "access": [
+      "Flamingo (Everglades NP)",
+      "Florida City"
+    ],
+    "notes": "Massive shallow flat-bottomed bay between the Keys + the Everglades. The \"backcountry\" — opposite of Atlantic-side glamour."
+  },
+  {
+    "id": "fl-islamorada-flats",
+    "name": "Islamorada Flats (Upper Keys)",
+    "state": "FL",
+    "region": "FL Keys + Bay",
+    "type": "great-lake",
+    "county": "Monroe",
+    "lat": 24.92,
+    "lng": -80.62,
+    "signatureSpecies": "Bonefish, permit, tarpon, redfish",
+    "species": [
+      {
+        "name": "Bonefish",
+        "importance": "signature",
+        "size": "4-12 lb, 14+ lb possible",
+        "notes": "Islamorada = \"sportfishing capital of the world\" — the famous Florida Keys flats epicenter."
+      },
+      {
+        "name": "Permit",
+        "importance": "signature",
+        "size": "15-30 lb"
+      },
+      {
+        "name": "Tarpon",
+        "importance": "signature",
+        "size": "60-180 lb"
+      },
+      {
+        "name": "Redfish",
+        "importance": "strong",
+        "notes": "Backcountry side toward Florida Bay."
+      },
+      {
+        "name": "Snook",
+        "importance": "strong"
+      },
+      {
+        "name": "Sailfish + mahi",
+        "importance": "good",
+        "notes": "Offshore."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Bonefish flats (the Keys classic)",
+        "target": "Bonefish",
+        "when": "October-May, peak November-April",
+        "technique": "Crazy Charlie, Gotcha, Kwan, Bonefish Bitters on 8 wt",
+        "where": "Ocean-side + bay-side flats throughout the Upper Keys",
+        "details": "The Keys bonefish are notoriously spooky + selective. Long leaders, light tippet, perfect presentations."
+      },
+      {
+        "title": "Permit on the flats",
+        "target": "Permit",
+        "when": "May-October",
+        "technique": "Merkin Crab, EP Crab, Avalon Permit Fly",
+        "where": "Bay-side flats + tarpon highway near-shore"
+      },
+      {
+        "title": "Backcountry tarpon (Florida Bay side)",
+        "target": "Tarpon",
+        "when": "April-July",
+        "technique": "Toad, Cockroach, Apte II",
+        "where": "Florida Bay backcountry to the north of Islamorada"
+      }
+    ],
+    "access": [
+      "Robbie's Marina",
+      "World Wide Sportsman",
+      "Bud N' Mary's"
+    ],
+    "notes": "Islamorada — the most-fished flats town in the world. Permit + bonefish + tarpon flats program built around hundreds of guides."
+  },
+  {
+    "id": "fl-marathon-flats",
+    "name": "Marathon Flats (Middle Keys)",
+    "state": "FL",
+    "region": "FL Keys + Bay",
+    "type": "great-lake",
+    "county": "Monroe",
+    "lat": 24.71,
+    "lng": -81.09,
+    "signatureSpecies": "Bonefish, permit, tarpon",
+    "species": [
+      {
+        "name": "Bonefish",
+        "importance": "signature"
+      },
+      {
+        "name": "Permit",
+        "importance": "signature"
+      },
+      {
+        "name": "Tarpon",
+        "importance": "signature"
+      },
+      {
+        "name": "Redfish",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Middle Keys flats",
+        "target": "Bonefish + permit + tarpon",
+        "when": "Year-round",
+        "technique": "Same Keys playbook — bonefish flies + permit crabs + tarpon flies",
+        "where": "Bay-side + ocean-side flats"
+      }
+    ],
+    "access": [
+      "Marathon Public Ramp",
+      "Burdines Marina"
+    ],
+    "notes": "Quieter alternative to Islamorada. Same flats fishery character."
+  },
+  {
+    "id": "fl-lower-keys-big-pine",
+    "name": "Lower Keys (Big Pine / No Name Key)",
+    "state": "FL",
+    "region": "FL Keys + Bay",
+    "type": "great-lake",
+    "county": "Monroe",
+    "signatureSpecies": "Bonefish, permit, tarpon",
+    "species": [
+      {
+        "name": "Bonefish",
+        "importance": "signature"
+      },
+      {
+        "name": "Permit",
+        "importance": "signature"
+      },
+      {
+        "name": "Tarpon",
+        "importance": "signature"
+      },
+      {
+        "name": "Mangrove snapper",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Big Pine Key flats",
+        "target": "Permit + bonefish",
+        "when": "Year-round",
+        "technique": "Permit crabs + bonefish flies",
+        "where": "Niles Channel + Big Pine flats"
+      }
+    ],
+    "access": [
+      "Big Pine Key",
+      "No Name Key"
+    ],
+    "notes": "The quietest of the Keys flats systems. Local guides specialize here."
+  },
+  {
+    "id": "fl-key-west-backcountry",
+    "name": "Key West Backcountry + Marquesas",
+    "state": "FL",
+    "region": "FL Keys + Bay",
+    "type": "great-lake",
+    "county": "Monroe",
+    "lat": 24.55,
+    "lng": -82.1,
+    "signatureSpecies": "Permit, tarpon, bonefish, sharks",
+    "species": [
+      {
+        "name": "Permit",
+        "importance": "signature",
+        "size": "20-30 lb, 35+ lb possible"
+      },
+      {
+        "name": "Tarpon",
+        "importance": "signature"
+      },
+      {
+        "name": "Bonefish",
+        "importance": "signature"
+      },
+      {
+        "name": "Lemon shark",
+        "importance": "good",
+        "size": "50-150 lb",
+        "notes": "Sight-fishing on the flats — a fly-rod adventure target."
+      },
+      {
+        "name": "Cobia",
+        "importance": "good"
+      },
+      {
+        "name": "Mahi (offshore)",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Marquesas permit",
+        "target": "Permit",
+        "when": "April-October",
+        "technique": "Merkin Crab, EP Crab, Avalon Permit Fly on 10 wt",
+        "where": "Marquesas Atoll flats (30 mi west of Key West)",
+        "details": "Marquesas is the legendary permit destination. Boat run from Key West + flats wading on uninhabited islands."
+      },
+      {
+        "title": "Lemon shark sight-fishing",
+        "target": "Lemon shark",
+        "when": "Year-round",
+        "technique": "Big Red Shark Fly + chum",
+        "where": "Backcountry flats around Boca Grande Key + Marquesas"
+      }
+    ],
+    "access": [
+      "Key West (Stock Island, Geiger Key, Garrison Bight)",
+      "Marquesas (boat-in only)"
+    ],
+    "notes": "Key West = end of the road but middle of the action. Marquesas = the legendary permit + tarpon destination. Dry Tortugas farther west still."
+  },
+  {
+    "id": "fl-dry-tortugas",
+    "name": "Dry Tortugas",
+    "state": "FL",
+    "region": "FL Keys + Bay",
+    "type": "great-lake",
+    "county": "Monroe",
+    "lat": 24.63,
+    "lng": -82.87,
+    "signatureSpecies": "Permit, mutton snapper, goliath grouper, kingfish",
+    "species": [
+      {
+        "name": "Permit",
+        "importance": "signature"
+      },
+      {
+        "name": "Mutton snapper",
+        "importance": "signature",
+        "size": "5-15 lb",
+        "notes": "Famous Dry Tortugas mutton snapper fishery."
+      },
+      {
+        "name": "Goliath grouper",
+        "importance": "good"
+      },
+      {
+        "name": "King mackerel",
+        "importance": "strong"
+      },
+      {
+        "name": "Cobia",
+        "importance": "good"
+      },
+      {
+        "name": "Mahi",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Mutton snapper bottom-fishing",
+        "target": "Mutton snapper",
+        "when": "Year-round, peak summer",
+        "technique": "Live pinfish + ballyhoo on circle hooks; jig in 80-200 ft",
+        "where": "Dry Tortugas reefs + wrecks"
+      }
+    ],
+    "access": [
+      "Boat-in only from Key West (~70 mi west)"
+    ],
+    "notes": "70 miles west of Key West. Multi-day boat trips. Mutton snapper + permit + grouper destination. Fort Jefferson is the historic landmark."
+  },
+  {
+    "id": "fl-apalachicola-bay",
+    "name": "Apalachicola Bay",
+    "state": "FL",
+    "region": "FL Panhandle",
+    "type": "great-lake",
+    "county": "Franklin",
+    "acres": 210000,
+    "maxDepthFt": 12,
+    "lat": 29.7,
+    "lng": -84.97,
+    "signatureSpecies": "Spotted sea trout, redfish, flounder, oysters (commercial)",
+    "species": [
+      {
+        "name": "Spotted sea trout",
+        "importance": "signature",
+        "size": "15-25 in, gators possible"
+      },
+      {
+        "name": "Redfish",
+        "importance": "signature"
+      },
+      {
+        "name": "Flounder",
+        "importance": "strong"
+      },
+      {
+        "name": "Sheepshead",
+        "importance": "strong"
+      },
+      {
+        "name": "Black drum",
+        "importance": "good"
+      },
+      {
+        "name": "Tripletail",
+        "importance": "good",
+        "notes": "Sight-fishery — Apalachicola is famous for tripletail under crab pots + buoys."
+      },
+      {
+        "name": "Tarpon",
+        "importance": "good",
+        "notes": "Summer migration."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Tripletail sight-fishing under buoys",
+        "target": "Tripletail",
+        "when": "May-October",
+        "technique": "Live shrimp, soft-plastic jig, fly: Schminnow + small Clouser",
+        "where": "Crab-pot buoys + floating debris in the bay + nearshore",
+        "details": "Tripletail hold under structure on the surface. Cruise crab-pot lines + bait the fish with shrimp. A genuinely unique FL sight-fishery."
+      },
+      {
+        "title": "Grass-flat trout",
+        "target": "Spotted sea trout",
+        "when": "Year-round",
+        "technique": "Soft-plastic + popping cork; gold spoon",
+        "where": "East Bay + West Bay grass flats"
+      }
+    ],
+    "access": [
+      "Apalachicola",
+      "East Point",
+      "Carrabelle"
+    ],
+    "notes": "Famous oyster bay (recovering). Inshore + nearshore Panhandle classic."
+  },
+  {
+    "id": "fl-st-joseph-bay",
+    "name": "St. Joseph Bay (Port St. Joe)",
+    "state": "FL",
+    "region": "FL Panhandle",
+    "type": "great-lake",
+    "county": "Gulf",
+    "acres": 65000,
+    "maxDepthFt": 32,
+    "lat": 29.82,
+    "lng": -85.42,
+    "signatureSpecies": "Spotted sea trout, redfish, scallops (commercial)",
+    "species": [
+      {
+        "name": "Spotted sea trout",
+        "importance": "signature",
+        "size": "15-25 in, gators 28+",
+        "notes": "St. Joe Bay is the trophy-trout flats of the Panhandle."
+      },
+      {
+        "name": "Redfish",
+        "importance": "signature"
+      },
+      {
+        "name": "Flounder",
+        "importance": "strong"
+      },
+      {
+        "name": "Pompano",
+        "importance": "strong",
+        "notes": "Surf + sand flats."
+      },
+      {
+        "name": "Sheepshead",
+        "importance": "strong"
+      },
+      {
+        "name": "Tarpon",
+        "importance": "good",
+        "notes": "Summer migration."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Gator trout on grass flats",
+        "target": "Spotted sea trout",
+        "when": "Year-round, peak fall + winter",
+        "technique": "Soft-plastic + popping cork; topwater walking bait at dawn; fly: Clouser + Gurgler",
+        "where": "St. Joe Bay grass flats + sand-hole transitions"
+      }
+    ],
+    "access": [
+      "Port St. Joe",
+      "Cape San Blas"
+    ],
+    "notes": "Pristine Panhandle bay. Famous scallop fishery + trophy trout flats."
+  },
+  {
+    "id": "fl-choctawhatchee-destin",
+    "name": "Choctawhatchee Bay (Destin)",
+    "state": "FL",
+    "region": "FL Panhandle",
+    "type": "great-lake",
+    "county": "Okaloosa / Walton",
+    "acres": 110000,
+    "maxDepthFt": 40,
+    "lat": 30.4,
+    "lng": -86.31,
+    "signatureSpecies": "Spotted sea trout, redfish, king mackerel, snapper",
+    "species": [
+      {
+        "name": "Spotted sea trout",
+        "importance": "signature"
+      },
+      {
+        "name": "Redfish",
+        "importance": "signature"
+      },
+      {
+        "name": "King mackerel",
+        "importance": "signature",
+        "size": "15-30 lb",
+        "notes": "Destin = king mackerel capital."
+      },
+      {
+        "name": "Vermilion + red snapper",
+        "importance": "strong",
+        "notes": "Offshore reefs + wrecks."
+      },
+      {
+        "name": "Sheepshead",
+        "importance": "strong"
+      },
+      {
+        "name": "Flounder",
+        "importance": "strong"
+      },
+      {
+        "name": "Cobia",
+        "importance": "strong",
+        "notes": "Spring migration through the Panhandle."
+      },
+      {
+        "name": "Spanish mackerel",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Destin offshore king mackerel",
+        "target": "King mackerel",
+        "when": "April-October",
+        "technique": "Slow-troll live cigar minnow + ribbon-fish on wire stinger rigs",
+        "where": "Offshore reefs + wrecks 5-30 mi off Destin"
+      },
+      {
+        "title": "Cobia migration sight-fishing",
+        "target": "Cobia",
+        "when": "March-April",
+        "technique": "Big bucktail jig 3-4 oz chartreuse; live pinfish",
+        "where": "Inside the 4-7 ft sand shoreline; tower-boats run the beach scanning"
+      }
+    ],
+    "access": [
+      "Destin Harbor",
+      "East Pass"
+    ],
+    "notes": "Destin = the working-class offshore charter port. King + snapper + cobia destination."
+  },
+  {
+    "id": "fl-pensacola-bay",
+    "name": "Pensacola Bay",
+    "state": "FL",
+    "region": "FL Panhandle",
+    "type": "great-lake",
+    "county": "Escambia / Santa Rosa",
+    "acres": 140000,
+    "maxDepthFt": 35,
+    "signatureSpecies": "Spotted sea trout, redfish, sheepshead, flounder",
+    "species": [
+      {
+        "name": "Spotted sea trout",
+        "importance": "signature"
+      },
+      {
+        "name": "Redfish",
+        "importance": "signature"
+      },
+      {
+        "name": "Sheepshead",
+        "importance": "strong"
+      },
+      {
+        "name": "Flounder",
+        "importance": "strong"
+      },
+      {
+        "name": "Spanish mackerel",
+        "importance": "good"
+      },
+      {
+        "name": "King mackerel",
+        "importance": "good"
+      },
+      {
+        "name": "Tripletail",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Pensacola Bay grass-flat trout",
+        "target": "Spotted sea trout",
+        "when": "Year-round",
+        "technique": "Popping cork + soft-plastic; fly: Clouser",
+        "where": "Bay-side grass flats + sand-hole transitions"
+      }
+    ],
+    "access": [
+      "Pensacola Beach",
+      "Pensacola Naval Air Station",
+      "Gulf Breeze"
+    ],
+    "notes": "Westernmost FL Panhandle bay. Inshore multi-species fishery. Connected to Perdido Bay (AL line)."
+  },
+  {
+    "id": "fl-cedar-key",
+    "name": "Cedar Key",
+    "state": "FL",
+    "region": "Citrus County / Nature Coast",
+    "type": "great-lake",
+    "county": "Levy",
+    "lat": 29.13,
+    "lng": -83.04,
+    "signatureSpecies": "Spotted sea trout, redfish, sheepshead, mangrove snapper",
+    "species": [
+      {
+        "name": "Spotted sea trout",
+        "importance": "signature"
+      },
+      {
+        "name": "Redfish",
+        "importance": "signature"
+      },
+      {
+        "name": "Mangrove snapper",
+        "importance": "strong"
+      },
+      {
+        "name": "Sheepshead",
+        "importance": "strong"
+      },
+      {
+        "name": "Tarpon",
+        "importance": "good",
+        "notes": "Summer migration along Nature Coast."
+      },
+      {
+        "name": "Cobia",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Oyster-bar redfish + trout",
+        "target": "Redfish + trout",
+        "when": "Year-round",
+        "technique": "Gold spoon + soft-plastic + Spoon Fly",
+        "where": "Oyster bars + creek mouths around the Cedar Keys"
+      }
+    ],
+    "access": [
+      "Cedar Key public ramp",
+      "Suwannee Sound"
+    ],
+    "notes": "Quaint old Florida fishing village. North Nature Coast inshore."
+  },
+  {
+    "id": "fl-suwannee-river",
+    "name": "Suwannee River",
+    "state": "FL",
+    "region": "FL Rivers + Springs",
+    "type": "river",
+    "county": "Multiple — north FL",
+    "river": "Suwannee River",
+    "signatureSpecies": "Largemouth bass, Suwannee bass, redfish (lower), striped bass",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "2-5 lb"
+      },
+      {
+        "name": "Suwannee bass",
+        "importance": "signature",
+        "size": "1-3 lb",
+        "notes": "Endemic to the Suwannee + Ochlockonee systems. Compact black bass with red eye + dark spotted markings."
+      },
+      {
+        "name": "Redfish",
+        "importance": "strong",
+        "size": "Lower river / Suwannee Sound"
+      },
+      {
+        "name": "Striped bass",
+        "importance": "strong",
+        "size": "Atlantic-strain, run from Gulf"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Bluegill + redear sunfish",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Suwannee bass sight-fishing in clear water",
+        "target": "Suwannee bass",
+        "when": "April-October",
+        "technique": "Small soft-plastic jerkbait, in-line spinner, fly: small streamers + poppers",
+        "where": "Rocky river runs + spring-fed clear-water sections",
+        "details": "The Suwannee bass is a genuinely unique FL species — limestone-river specialist. Sight-fish in clear water."
+      }
+    ],
+    "access": [
+      "Branford",
+      "Mayo",
+      "Suwannee Park",
+      "Manatee Springs State Park"
+    ],
+    "notes": "Famous south-flowing FL river through limestone karst. Multiple state parks. Suwannee bass = endemic FL species."
+  },
+  {
+    "id": "fl-wakulla-river",
+    "name": "Wakulla River + St. Marks (springs)",
+    "state": "FL",
+    "region": "FL Rivers + Springs",
+    "type": "river",
+    "county": "Wakulla",
+    "river": "Wakulla River",
+    "signatureSpecies": "Largemouth bass, bluegill, redear sunfish, redfish (lower)",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "strong"
+      },
+      {
+        "name": "Redear sunfish (shellcracker)",
+        "importance": "strong"
+      },
+      {
+        "name": "Redfish",
+        "importance": "good",
+        "notes": "Lower river + St. Marks NWR area."
+      },
+      {
+        "name": "Spotted sea trout",
+        "importance": "good",
+        "notes": "St. Marks NWR."
+      },
+      {
+        "name": "Striped bass",
+        "importance": "good",
+        "notes": "St. Marks River run."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Spring-river bass + bream",
+        "target": "Largemouth + panfish",
+        "when": "Year-round",
+        "technique": "Senko, popping bug, cricket",
+        "where": "Spring run + downstream cypress"
+      }
+    ],
+    "access": [
+      "Wakulla Springs State Park",
+      "St. Marks NWR"
+    ],
+    "notes": "Wakulla Springs is one of the largest + deepest freshwater springs in the world. River flows into St. Marks + the Gulf. Manatees + alligators present."
+  },
+  {
+    "id": "fl-silver-river",
+    "name": "Silver River + Silver Springs",
+    "state": "FL",
+    "region": "FL Rivers + Springs",
+    "type": "river",
+    "county": "Marion",
+    "river": "Silver River",
+    "signatureSpecies": "Largemouth bass, bluegill, redear sunfish, spotted sunfish",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "strong"
+      },
+      {
+        "name": "Redear sunfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Spotted sunfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Clear-water sight bass",
+        "target": "Largemouth bass",
+        "when": "Year-round",
+        "technique": "Light-weighted plastics, in-line spinner, popper",
+        "where": "Spring boil + downstream"
+      }
+    ],
+    "access": [
+      "Silver Springs State Park"
+    ],
+    "notes": "Silver Springs = historic glass-bottom boat destination. Clear spring run for 5.5 mi to Ocklawaha River. Sight-fishing bass + bream paradise."
   }
 ]
