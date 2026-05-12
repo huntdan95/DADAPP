@@ -6,6 +6,7 @@ import {
   ChevronRight,
   Image as ImageIcon,
   Plus,
+  ScanEye,
   Search,
   Sparkles,
   StickyNote,
@@ -16,6 +17,7 @@ import type { Location } from '@/lib/providers/types';
 import { allHatches, type Hatch } from '@/lib/hatches/store';
 import { FlyDetail } from './FlyDetail';
 import { CustomFlyForm } from './CustomFlyForm';
+import { IdentifyFlySheet } from './IdentifyFlySheet';
 import {
   watchAllFlyNotes,
   watchCustomFlies,
@@ -37,6 +39,10 @@ export function FlyBox({ locations }: { locations: Location[] }) {
   const [showAll, setShowAll] = useState(false);    // ignore state filter
   const [selectedEntry, setSelectedEntry] = useState<Hatch | CustomFly | null>(null);
   const [customFormOpen, setCustomFormOpen] = useState(false);
+  const [customFormPrefill, setCustomFormPrefill] = useState<
+    { name?: string; category?: string; notes?: string } | undefined
+  >(undefined);
+  const [identifyOpen, setIdentifyOpen] = useState(false);
   const [expanded, setExpanded] = useState<Set<string>>(
     new Set(['mayfly', 'streamer', 'terrestrial'])
   );
@@ -103,7 +109,7 @@ export function FlyBox({ locations }: { locations: Location[] }) {
 
   return (
     <div className="flex flex-col gap-3">
-      {/* Header: totals + add button */}
+      {/* Header: totals + identify + add buttons */}
       <Card>
         <div className="px-4 py-3 flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-2">
@@ -117,14 +123,28 @@ export function FlyBox({ locations }: { locations: Location[] }) {
               </div>
             </div>
           </div>
-          <button
-            type="button"
-            onClick={() => setCustomFormOpen(true)}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-accent/15 border border-accent/40 hover:bg-accent/25 active:scale-[0.98] text-sm font-medium text-accent transition"
-          >
-            <Plus className="w-4 h-4" />
-            Add fly
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setIdentifyOpen(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-info/15 border border-info/40 hover:bg-info/25 active:scale-[0.98] text-sm font-medium text-info transition"
+              title="Identify a fly you tied or a bug you found stream-side"
+            >
+              <ScanEye className="w-4 h-4" />
+              Identify
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setCustomFormPrefill(undefined);
+                setCustomFormOpen(true);
+              }}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-accent/15 border border-accent/40 hover:bg-accent/25 active:scale-[0.98] text-sm font-medium text-accent transition"
+            >
+              <Plus className="w-4 h-4" />
+              Add fly
+            </button>
+          </div>
         </div>
       </Card>
 
@@ -265,8 +285,34 @@ export function FlyBox({ locations }: { locations: Location[] }) {
       {/* Custom-fly add sheet */}
       {customFormOpen && (
         <CustomFlyForm
-          onClose={() => setCustomFormOpen(false)}
-          onSaved={() => setCustomFormOpen(false)}
+          onClose={() => {
+            setCustomFormOpen(false);
+            setCustomFormPrefill(undefined);
+          }}
+          onSaved={() => {
+            setCustomFormOpen(false);
+            setCustomFormPrefill(undefined);
+          }}
+          prefill={customFormPrefill}
+        />
+      )}
+
+      {/* Identify-with-Claude sheet — accepts a photo of a tied fly or
+          a natural insect and returns the identified name/category.
+          Two follow-ups: drive the search bar with the identified name,
+          or open the custom-fly form prefilled. */}
+      {identifyOpen && (
+        <IdentifyFlySheet
+          onClose={() => setIdentifyOpen(false)}
+          onSearch={(q) => {
+            setQuery(q);
+            setShowAll(true);          // surface matches regardless of state filter
+            setStateFilter('all');
+          }}
+          onAddCustom={(prefill) => {
+            setCustomFormPrefill(prefill);
+            setCustomFormOpen(true);
+          }}
         />
       )}
     </div>

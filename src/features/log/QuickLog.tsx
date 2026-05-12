@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import {
+  Bug,
   Camera,
   CloudOff,
   Crosshair,
@@ -105,6 +106,12 @@ export function QuickLog({
    * even when the user already knew what they caught.
    */
   const [aiAnalysisPending, setAiAnalysisPending] = useState(false);
+  /**
+   * Set when the AI says the photo is a bug, not a fish. Fly/bug
+   * identification moved to the Fly Box page — surface a nudge here
+   * instead of silently auto-routing the user into a hatch log entry.
+   */
+  const [insectNudge, setInsectNudge] = useState<string | null>(null);
   /**
    * Holds the photo's uploaded url + path so the opt-in AI button can
    * call `analyzePhoto` later in the flow without re-uploading.
@@ -271,13 +278,18 @@ export function QuickLog({
    *
    * Behavior:
    *   - If a field is already typed by the user, leave it alone.
-   *   - Otherwise, fill species / length / hatch fields from AI.
-   *   - If the photo turns out to be an insect, flip kind → 'hatch'.
+   *   - If the photo is a fish, fill species / length / notes.
+   *   - If the photo is a bug, DO NOT auto-create a hatch entry —
+   *     fly/bug identification lives on the Fly Box page now.
+   *     Show a one-line nudge so the user can hop over there.
+   *   - If the photo is something else, surface a soft "not a fish"
+   *     note but leave the draft alone.
    */
   async function runAiAnalysis() {
     if (!photoMeta) return;
     setAiAnalysisPending(true);
     setError(null);
+    setInsectNudge(null);
     try {
       const matchedLoc = locations.find(
         (l) => l.id === draft.locationId
@@ -287,37 +299,42 @@ export function QuickLog({
         hintLocation: matchedLoc?.name,
       });
       if (!analysis) return;
-      const inferredKind: LogKind =
-        analysis.kind === 'insect'
-          ? 'hatch'
-          : analysis.kind === 'fish'
-          ? 'catch'
-          : 'note';
+      if (analysis.kind === 'insect') {
+        // Hand off to the Fly Box flow — the AI's insect ID is shown
+        // as a hint, the user can switch tabs to actually log it.
+        const label = analysis.insect_name
+          ? `Looks like ${analysis.insect_name}`
+          : 'Looks like an insect';
+        const stage =
+          analysis.insect_stage && analysis.insect_stage !== 'unknown'
+            ? ` (${analysis.insect_stage})`
+            : '';
+        setInsectNudge(
+          `${label}${stage} — head to the Fly Box → Identify to match it to a hatch.`
+        );
+        return;
+      }
+      if (analysis.kind === 'other') {
+        setInsectNudge(
+          'Photo doesn\'t look like a fish to Claude. Try a clearer shot or fill the fields manually.'
+        );
+        return;
+      }
+      // analysis.kind === 'fish'
       setDraft((prev) => {
         const next: Partial<LogEntry> = { ...prev };
-        if (inferredKind === 'catch' && analysis.kind === 'fish') {
-          if (!prev.species) next.species = analysis.species;
-          if (!prev.speciesConfidence)
-            next.speciesConfidence = analysis.confidence;
-          if (
-            prev.lengthInches == null &&
-            analysis.estimated_length_inches != null
-          ) {
-            next.lengthInches = analysis.estimated_length_inches;
-          }
-        }
-        if (inferredKind === 'hatch' && analysis.kind === 'insect') {
-          if (!prev.hatchName) next.hatchName = analysis.insect_name;
-          if (!prev.hatchStage) next.hatchStage = analysis.insect_stage;
+        if (!prev.species) next.species = analysis.species;
+        if (!prev.speciesConfidence)
+          next.speciesConfidence = analysis.confidence;
+        if (
+          prev.lengthInches == null &&
+          analysis.estimated_length_inches != null
+        ) {
+          next.lengthInches = analysis.estimated_length_inches;
         }
         if (!prev.notes && analysis.notes) next.notes = analysis.notes;
         return next;
       });
-      if (inferredKind === 'hatch') {
-        setKind('hatch');
-      } else if (inferredKind === 'note') {
-        setKind('note');
-      }
     } catch (e) {
       setError(friendlyError(e));
     } finally {
@@ -535,8 +552,9 @@ export function QuickLog({
         >
           <Sparkles className="w-3.5 h-3.5 text-info flex-none" />
           <span className="flex-1">
-            <b>Not sure what this is?</b> Tap to identify the species
-            (or insect) with Claude.
+            <b>Not sure what fish this is?</b> Tap to identify the species
+            with Claude. (For a tied fly or a stream-side bug, use the
+            Fly Box → Identify button instead.)
           </span>
         </button>
       )}
@@ -544,6 +562,12 @@ export function QuickLog({
         <div className="rounded-lg bg-info/10 border border-info/40 px-3 py-2 text-xs flex items-center gap-2">
           <Loader2 className="w-3.5 h-3.5 animate-spin text-info" />
           <span>Claude is analyzing the photo…</span>
+        </div>
+      )}
+      {insectNudge && (
+        <div className="rounded-lg bg-warn/10 border border-warn/40 px-3 py-2 text-xs flex items-start gap-2">
+          <Bug className="w-3.5 h-3.5 text-warn mt-0.5 flex-none" />
+          <span className="flex-1">{insectNudge}</span>
         </div>
       )}
 

@@ -37,15 +37,23 @@ const CATEGORY_OPTIONS = [
 export function CustomFlyForm({
   onClose,
   onSaved,
+  prefill,
 }: {
   onClose: () => void;
   onSaved: () => void;
+  /**
+   * Optional starting values. Used when the user lands here from the
+   * "Identify a fly or bug" sheet — Claude's identified pattern name +
+   * mapped category + notes get seeded into the form so saving the
+   * custom fly is one tap.
+   */
+  prefill?: { name?: string; category?: string; notes?: string };
 }) {
-  const [name, setName] = useState('');
-  const [category, setCategory] = useState('streamer');
+  const [name, setName] = useState(prefill?.name ?? '');
+  const [category, setCategory] = useState(prefill?.category ?? 'streamer');
   const [description, setDescription] = useState('');
   const [youtubeUrl, setYoutubeUrl] = useState('');
-  const [notes, setNotes] = useState('');
+  const [notes, setNotes] = useState(prefill?.notes ?? '');
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);

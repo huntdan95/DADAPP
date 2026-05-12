@@ -31,3 +31,4 @@ export { parseJournal } from './claude/parseJournal';
 export { patterns } from './claude/patterns';
 export { identifySpecies } from './claude/identifySpecies';
 export { analyzePhoto } from './claude/analyzePhoto';
+export { identifyFly } from './claude/identifyFly';

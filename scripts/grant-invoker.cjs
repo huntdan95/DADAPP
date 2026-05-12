@@ -23,6 +23,7 @@ const SERVICES = [
   'patterns',
   'identifyspecies',
   'analyzephoto',
+  'identifyfly',
   'seedboatlaunchescallable',
   'triggerstockingscrape',
   'seedstockingfrombundle',
