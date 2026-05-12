@@ -1,11 +1,22 @@
-import { useState } from 'react';
-import { Plus, Pencil, Trash2 } from 'lucide-react';
+import { lazy, Suspense, useMemo, useState } from 'react';
+import { BookOpen, Plus, Pencil, Trash2 } from 'lucide-react';
 import type { Location } from '@/lib/providers/types';
 import type { LocationStore } from '@/lib/store';
 import { Button } from '@/components/ui/Button';
 import { Card, CardHeader, CardSubtitle, CardTitle } from '@/components/ui/Card';
 import { BottomSheet } from '@/components/ui/BottomSheet';
 import { LocationForm } from './LocationForm';
+
+/**
+ * Lazy-load the Waters Guide — it bundles Leaflet for the embedded
+ * mini-map plus the full 60-waterbody dataset, so we keep it off the
+ * critical path until the user actually taps to open it.
+ */
+const WatersGuide = lazy(() =>
+  import('@/features/waterbodies/WatersGuide').then((m) => ({
+    default: m.WatersGuide,
+  }))
+);
 
 type SheetState =
   | { kind: 'closed' }
@@ -27,17 +38,38 @@ export function LocationsList({
   onSpotCreated?: (id: string) => void;
 }) {
   const [sheet, setSheet] = useState<SheetState>({ kind: 'closed' });
+  const [guideOpen, setGuideOpen] = useState(false);
+
+  // States the user has spots in — drives which state the Waters
+  // Guide defaults to. Falls back to 'IN' inside the guide if no
+  // overlap with our data.
+  const userStates = useMemo(() => {
+    const seen = new Set<string>();
+    for (const l of locations) if (l.state) seen.add(l.state.toUpperCase());
+    return Array.from(seen);
+  }, [locations]);
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-2">
         <div className="text-sm text-muted">
           {locations.length} spot{locations.length === 1 ? '' : 's'}
         </div>
-        <Button size="sm" onClick={() => setSheet({ kind: 'create' })}>
-          <Plus className="w-4 h-4" />
-          Add
-        </Button>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setGuideOpen(true)}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-info/15 border border-info/40 hover:bg-info/25 active:scale-[0.98] text-sm font-medium text-info transition"
+            title="Browse lakes + rivers with species mix, patterns, and pin locations"
+          >
+            <BookOpen className="w-4 h-4" />
+            Waters guide
+          </button>
+          <Button size="sm" onClick={() => setSheet({ kind: 'create' })}>
+            <Plus className="w-4 h-4" />
+            Add
+          </Button>
+        </div>
       </div>
 
       {locations.length === 0 ? (
@@ -108,6 +140,19 @@ export function LocationsList({
           />
         )}
       </BottomSheet>
+
+      {/* Lazy-loaded; only fires its bundle when the user actually
+          opens the guide. The guide itself manages its child detail
+          sheet, so we only need to toggle the top-level open state. */}
+      {guideOpen && (
+        <Suspense fallback={null}>
+          <WatersGuide
+            open={guideOpen}
+            onClose={() => setGuideOpen(false)}
+            userStates={userStates}
+          />
+        </Suspense>
+      )}
     </div>
   );
 }
