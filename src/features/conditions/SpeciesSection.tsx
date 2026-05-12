@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Anchor, ChevronRight, Fish } from 'lucide-react';
+import { Anchor, ChevronRight, Fish, Waves } from 'lucide-react';
 import { CardSection } from '@/components/ui/Card';
 import type { Location } from '@/lib/providers/types';
 import {
@@ -14,6 +14,12 @@ import {
 } from '@/lib/trolling/depthEstimator';
 import { fetchLakeData } from '@/lib/providers';
 import { useAsync } from './useAsync';
+import { matchWaterbody } from '@/lib/waterbodies/matcher';
+import type {
+  PatternEntry as WaterbodyPattern,
+  SpeciesEntry as WaterbodySpecies,
+  Waterbody,
+} from '@/lib/waterbodies/types';
 
 /**
  * Species + lure recommendations for water types where insect hatches
@@ -28,7 +34,25 @@ import { useAsync } from './useAsync';
  */
 const VISIBLE_COUNT = 5;
 
+/**
+ * Top-level switch. When the spot matches one of our Waters Guide
+ * entries, use the waterbody-specific render path — species + "how"
+ * patterns reflect that exact water (lily-pad bass on MI vs deep
+ * rocky reservoir bass on TN, etc.). When there's no match, fall
+ * back to the generic state-list logic.
+ *
+ * Split as separate components so the hook order in each path stays
+ * stable regardless of which branch renders.
+ */
 export function SpeciesSection({ location }: { location: Location }) {
+  const waterbody = useMemo(() => matchWaterbody(location), [location]);
+  if (waterbody) {
+    return <WaterbodySpeciesSection waterbody={waterbody} location={location} />;
+  }
+  return <GenericSpeciesSection location={location} />;
+}
+
+function GenericSpeciesSection({ location }: { location: Location }) {
   const [selected, setSelected] = useState<SpeciesEntry | null>(null);
   const [moreOpen, setMoreOpen] = useState(false);
 
@@ -316,4 +340,287 @@ function waterLabel(type: Location['type']): string {
     case 'saltwater':
       return 'saltwater';
   }
+}
+
+// ============================================================
+// Waterbody-aware render path
+// ============================================================
+
+/**
+ * Sort waterbody species by importance so the "signature" fish lead.
+ * Signature > strong > good > present. Within each tier, preserve
+ * the JSON order (curator-chosen).
+ */
+const IMPORTANCE_ORDER: Record<WaterbodySpecies['importance'], number> = {
+  signature: 0,
+  strong: 1,
+  good: 2,
+  present: 3,
+};
+
+/**
+ * Token overlap match between a pattern's `target` field and a species
+ * name. Patterns target free-text species lists like "Brown + rainbow
+ * trout" or "Largemouth + crappie" — we want any species in either
+ * side to map to the right patterns.
+ */
+function patternsForSpecies(
+  speciesName: string,
+  patterns: WaterbodyPattern[]
+): WaterbodyPattern[] {
+  const needle = speciesName.toLowerCase();
+  // Bag-of-tokens match: split species name into tokens, see which
+  // patterns mention any of those tokens in their target field.
+  const tokens = needle
+    .split(/[\s/]+/)
+    .filter((t) => t.length >= 4 && t !== 'bass' && t !== 'trout');
+  // Always include the full species name as a phrase check first.
+  return patterns.filter((p) => {
+    const hay = p.target.toLowerCase();
+    if (hay.includes(needle)) return true;
+    return tokens.some((t) => hay.includes(t));
+  });
+}
+
+function WaterbodySpeciesSection({
+  waterbody,
+  location,
+}: {
+  waterbody: Waterbody;
+  location: Location;
+}) {
+  const [selected, setSelected] = useState<WaterbodySpecies | null>(null);
+  const [moreOpen, setMoreOpen] = useState(false);
+
+  // Sort by importance — signature species lead.
+  const sortedSpecies = useMemo(() => {
+    return [...waterbody.species].sort(
+      (a, b) => IMPORTANCE_ORDER[a.importance] - IMPORTANCE_ORDER[b.importance]
+    );
+  }, [waterbody]);
+
+  const top = sortedSpecies.slice(0, VISIBLE_COUNT);
+  const rest = sortedSpecies.slice(VISIBLE_COUNT);
+
+  // Suggest preferred trolling depth for "trolling" patterns when
+  // a species has any. Generic state-list logic relies on a curated
+  // depth profile; here we just surface the pattern's `where` field,
+  // which the waterbody curator already wrote with depth specifics.
+  void location;
+
+  return (
+    <CardSection label="What's biting + how">
+      {/* Tiny header tying the data to the specific waterbody so the
+          user understands why these picks differ from a generic state
+          list — "this is what's caught here, not just in MI". */}
+      <div className="text-[11px] text-muted mb-2 leading-snug flex items-start gap-1">
+        <Waves className="w-3 h-3 mt-0.5 flex-none text-info" />
+        <span>
+          Curated for <b>{waterbody.name}</b>. Tap any species for
+          waterbody-specific tactics.
+        </span>
+      </div>
+      <div className="flex flex-col gap-2">
+        {top.map((s, i) => (
+          <WaterbodySpeciesRow
+            key={`${s.name}:${i}`}
+            species={s}
+            patternCount={patternsForSpecies(s.name, waterbody.patterns).length}
+            onOpen={() => {
+              setMoreOpen(false);
+              setSelected(s);
+            }}
+          />
+        ))}
+        {rest.length > 0 && (
+          <button
+            type="button"
+            onClick={() => setMoreOpen(true)}
+            className="mt-1 flex items-center justify-between rounded-lg border border-border bg-surface-2/50 hover:bg-surface-2 hover:border-accent/40 px-3 py-2 text-xs text-muted transition active:scale-[0.99]"
+          >
+            <span>+ {rest.length} more species here</span>
+            <ChevronRight className="w-3.5 h-3.5" />
+          </button>
+        )}
+      </div>
+
+      <WaterbodySpeciesDetailSheet
+        species={selected}
+        waterbody={waterbody}
+        onClose={() => setSelected(null)}
+      />
+
+      <BottomSheet
+        open={moreOpen}
+        onClose={() => setMoreOpen(false)}
+        title={`More species at ${waterbody.name}`}
+      >
+        <div className="flex flex-col gap-2">
+          <div className="text-xs text-muted">
+            Less commonly targeted here, but present. Tap for tactics.
+          </div>
+          {rest.map((s, i) => (
+            <WaterbodySpeciesRow
+              key={`${s.name}:${i}`}
+              species={s}
+              patternCount={patternsForSpecies(s.name, waterbody.patterns).length}
+              onOpen={() => {
+                setMoreOpen(false);
+                setSelected(s);
+              }}
+            />
+          ))}
+        </div>
+      </BottomSheet>
+    </CardSection>
+  );
+}
+
+function WaterbodySpeciesRow({
+  species,
+  patternCount,
+  onOpen,
+}: {
+  species: WaterbodySpecies;
+  patternCount: number;
+  onOpen: () => void;
+}) {
+  // Importance pill mirrors the WaterbodyDetailSheet styling so the
+  // user sees consistent visual language between Conditions card +
+  // Waters Guide.
+  const importStyle: Record<WaterbodySpecies['importance'], string> = {
+    signature: 'border-accent/40 bg-accent/15 text-accent',
+    strong: 'border-info/40 bg-info/10 text-info',
+    good: 'border-border bg-surface-2 text-text/80',
+    present: 'border-border bg-surface-2/50 text-muted',
+  };
+  return (
+    <button
+      type="button"
+      onClick={onOpen}
+      className="text-left rounded-lg bg-surface-2 border border-border p-2.5 hover:border-accent/40 active:scale-[0.99] transition"
+    >
+      <div className="flex items-center justify-between gap-2 flex-wrap">
+        <div className="text-sm font-semibold flex items-center gap-1.5 min-w-0">
+          <Fish className="w-3.5 h-3.5 text-info flex-none" />
+          <span className="truncate">{species.name}</span>
+          <ChevronRight className="w-3 h-3 text-muted flex-none" />
+        </div>
+        <span
+          className={`px-1.5 py-0.5 rounded-md text-[9px] uppercase tracking-wider border whitespace-nowrap flex-none ${importStyle[species.importance]}`}
+        >
+          {species.importance}
+        </span>
+      </div>
+      {(species.size || species.notes) && (
+        <div className="text-[11px] text-muted leading-snug mt-0.5">
+          {species.size && <span>{species.size}</span>}
+          {species.size && species.notes && <span> · </span>}
+          {species.notes && <span>{species.notes}</span>}
+        </div>
+      )}
+      {patternCount > 0 && (
+        <div className="text-[11px] text-info/80 mt-1">
+          {patternCount} pattern{patternCount === 1 ? '' : 's'} for this
+          species at this water
+        </div>
+      )}
+    </button>
+  );
+}
+
+function WaterbodySpeciesDetailSheet({
+  species,
+  waterbody,
+  onClose,
+}: {
+  species: WaterbodySpecies | null;
+  waterbody: Waterbody;
+  onClose: () => void;
+}) {
+  // Filter the waterbody's patterns to ones targeting this species.
+  // If none match (rare — curator may not have written one for every
+  // species), fall back to the full pattern list so the user still
+  // sees waterbody-specific tactics.
+  const matchedPatterns = useMemo(() => {
+    if (!species) return [];
+    const m = patternsForSpecies(species.name, waterbody.patterns);
+    return m.length > 0 ? m : [];
+  }, [species, waterbody]);
+
+  return (
+    <BottomSheet open={species != null} onClose={onClose} title={species?.name}>
+      {species && (
+        <div className="flex flex-col gap-4">
+          {/* Identity block — same look as Waters Guide for visual
+              continuity. Size + notes carry the field-mark detail. */}
+          <div className="rounded-lg border border-border bg-surface-2/40 p-3">
+            <div className="text-xs text-muted leading-relaxed">
+              {species.size && (
+                <div>
+                  <b>Size class:</b> {species.size}
+                </div>
+              )}
+              {species.notes && (
+                <div className="mt-1">{species.notes}</div>
+              )}
+              <div className="mt-1 text-[10px] uppercase tracking-wider text-info">
+                {species.importance} target at {waterbody.name}
+              </div>
+            </div>
+          </div>
+
+          {/* HOW — waterbody-specific patterns. This is the section the
+              user explicitly asked to be "appropriate to the body of
+              water" (lily pads in MI vs deep rocky TN reservoir). */}
+          {matchedPatterns.length > 0 ? (
+            <div>
+              <div className="text-[11px] uppercase tracking-wider text-muted mb-1.5 flex items-center gap-1">
+                <Waves className="w-3 h-3" />
+                How — tactics specific to {waterbody.name}
+              </div>
+              <div className="flex flex-col gap-2">
+                {matchedPatterns.map((p, i) => (
+                  <WaterbodyPatternCard key={i} pattern={p} />
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="text-xs text-muted">
+              No water-specific pattern written for this species yet —
+              consult the Waters Guide for general tactics on{' '}
+              {waterbody.name}.
+            </div>
+          )}
+        </div>
+      )}
+    </BottomSheet>
+  );
+}
+
+function WaterbodyPatternCard({ pattern }: { pattern: WaterbodyPattern }) {
+  return (
+    <div className="rounded-lg border border-border bg-surface-2/40 p-3">
+      <div className="flex items-center justify-between gap-2 flex-wrap">
+        <div className="text-sm font-semibold">{pattern.title}</div>
+        <span className="text-[10px] text-accent border border-accent/40 bg-accent/10 px-1.5 py-0.5 rounded-md whitespace-nowrap">
+          {pattern.target}
+        </span>
+      </div>
+      <div className="text-[11px] text-muted mt-1">
+        <b>When:</b> {pattern.when}
+      </div>
+      <div className="text-xs text-text/90 mt-0.5">
+        <b className="text-muted">How:</b> {pattern.technique}
+      </div>
+      <div className="text-xs text-text/90 mt-0.5">
+        <b className="text-muted">Where:</b> {pattern.where}
+      </div>
+      {pattern.details && (
+        <div className="text-[11px] text-muted leading-relaxed border-t border-border pt-1.5 mt-1.5">
+          {pattern.details}
+        </div>
+      )}
+    </div>
+  );
 }

@@ -12,7 +12,6 @@ import { TidesSection } from './TidesSection';
 import { TidesSetupPrompt } from './TidesSetupPrompt';
 import { BriefingSection } from './BriefingSection';
 import { StockingBanner } from './StockingBanner';
-import { WatersGuideSection } from './WatersGuideSection';
 import { useAuth } from '@/lib/useAuth';
 import { activeHatchesForLocation } from '@/lib/hatches/store';
 
@@ -79,13 +78,14 @@ export function ConditionsCard({ location }: { location: Location }) {
         // a station in one tap so the rest of the section can render.
         location.type === 'saltwater' && <TidesSetupPrompt location={location} />
       )}
+      {/* Note: there used to be a separate "What's biting + how"
+          section here that surfaced the matched waterbody's species
+          + patterns. That duplicated the SpeciesSection and
+          FlyBoxSection below, so we folded the waterbody intelligence
+          INTO those canonical sections. SpeciesSection now uses
+          waterbody-specific "how" tactics when there's a match;
+          FlyBoxSection leads with waterbody-specific top patterns. */}
       <SolunarSection location={location} />
-      {/* Matched Waters Guide entry — signature species + top patterns
-          + a tap-through to the full waterbody profile. Renders only
-          when the matcher finds a strong match (state + river/name
-          overlap + GPS proximity). Silent fallback when nothing
-          confidently matches. */}
-      <WatersGuideSection location={location} />
       {showHatches && <HatchSection location={location} />}
       {showSpecies && <SpeciesSection location={location} />}
       {/* Local fly box — non-hatch patterns (streamers, eggs, mysis,

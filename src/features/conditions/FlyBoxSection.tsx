@@ -1,9 +1,12 @@
-import { useState } from 'react';
-import { Boxes } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { Boxes, Waves } from 'lucide-react';
 import { CardSection } from '@/components/ui/Card';
+import { BottomSheet } from '@/components/ui/BottomSheet';
 import type { Location } from '@/lib/providers/types';
 import { allHatches, type Hatch } from '@/lib/hatches/store';
 import { HatchDetailSheet } from '@/features/hatches/HatchDetailSheet';
+import { matchWaterbody } from '@/lib/waterbodies/matcher';
+import type { PatternEntry as WaterbodyPattern } from '@/lib/waterbodies/types';
 
 /**
  * Local fly-box recommendations — complements HatchSection. Where the
@@ -19,8 +22,18 @@ import { HatchDetailSheet } from '@/features/hatches/HatchDetailSheet';
  */
 export function FlyBoxSection({ location }: { location: Location }) {
   const [selected, setSelected] = useState<Hatch | null>(null);
+  const [selectedPattern, setSelectedPattern] =
+    useState<WaterbodyPattern | null>(null);
   const state = location.state.toUpperCase();
   const month = monthIn(location.timezone);
+
+  // Pull waterbody match — when present, the matched water's top
+  // patterns get the first group ("This water's top patterns"). These
+  // are way more actionable than the generic state-filtered hatches
+  // because the curator already wrote the WHEN + WHERE + technique
+  // for this specific water.
+  const waterbody = useMemo(() => matchWaterbody(location), [location]);
+  const waterbodyPatterns = waterbody?.patterns ?? [];
 
   // Pull entries by category. State must include the spot's state, OR
   // the entry must have no state restriction (`states.length === 0`,
@@ -71,19 +84,34 @@ export function FlyBoxSection({ location }: { location: Location }) {
 
   // Hide the whole section when there's nothing to show — avoids an
   // empty card on lake spots where none of these categories apply.
+  // Now also surfaces when there's at least one waterbody pattern.
   const totalRows =
     staples.length + streamers.length + runPatterns.length +
-    terrestrials.length + mice.length + frogs.length + attractors.length;
+    terrestrials.length + mice.length + frogs.length + attractors.length +
+    waterbodyPatterns.length;
   if (totalRows === 0) return null;
 
   return (
     <CardSection label="Local fly box">
       <div className="text-[11px] text-muted mb-2 leading-snug">
-        Anytime patterns for {state} — separate from seasonal hatches above.
-        Tap any to see the full fly toolkit.
+        {waterbody
+          ? `Patterns for ${waterbody.name} first, then anytime ${state} patterns below.`
+          : `Anytime patterns for ${state} — separate from seasonal hatches above. Tap any to see the full fly toolkit.`}
       </div>
 
       <div className="flex flex-col gap-3">
+        {/* Waterbody-specific top patterns LEAD when we have a match.
+            These are the actionable picks — curator-written with the
+            water's specific structure and forage in mind, so they
+            beat the generic state-list patterns for this exact spot. */}
+        {waterbodyPatterns.length > 0 && (
+          <WaterbodyPatternGroup
+            waterbodyName={waterbody!.name}
+            patterns={waterbodyPatterns.slice(0, 4)}
+            onPick={setSelectedPattern}
+            extraCount={Math.max(0, waterbodyPatterns.length - 4)}
+          />
+        )}
         {staples.length > 0 && (
           <FlyGroup
             label="Tailwater staples"
@@ -143,7 +171,118 @@ export function FlyBoxSection({ location }: { location: Location }) {
       </div>
 
       <HatchDetailSheet hatch={selected} onClose={() => setSelected(null)} />
+
+      {/* Tapping a waterbody pattern opens a sheet with the full
+          When/How/Where/Details. Separate from the HatchDetailSheet
+          because the shape is different (patterns have technique +
+          where, hatches have flies). */}
+      <WaterbodyPatternSheet
+        pattern={selectedPattern}
+        waterbodyName={waterbody?.name}
+        onClose={() => setSelectedPattern(null)}
+      />
     </CardSection>
+  );
+}
+
+function WaterbodyPatternGroup({
+  waterbodyName,
+  patterns,
+  onPick,
+  extraCount,
+}: {
+  waterbodyName: string;
+  patterns: WaterbodyPattern[];
+  onPick: (p: WaterbodyPattern) => void;
+  extraCount: number;
+}) {
+  return (
+    <div>
+      <div className="text-[11px] uppercase tracking-wider text-muted mb-1 flex items-center gap-1">
+        <Waves className="w-3 h-3 text-info" />
+        Top patterns at {waterbodyName}
+      </div>
+      <div className="text-[11px] text-muted/80 mb-1.5">
+        Curator-written for this exact water — the right fly for this
+        structure + forage, not just the state-wide list.
+      </div>
+      <div className="flex flex-col gap-1.5">
+        {patterns.map((p, i) => (
+          <button
+            key={i}
+            type="button"
+            onClick={() => onPick(p)}
+            className="text-left rounded-lg bg-surface-2/60 border border-border hover:border-accent/40 p-2 transition active:scale-[0.99] flex items-start gap-2"
+          >
+            <Boxes className="w-3.5 h-3.5 text-info mt-0.5 flex-none" />
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center justify-between gap-2 flex-wrap">
+                <div className="text-sm font-semibold truncate">{p.title}</div>
+                <span className="text-[10px] text-accent border border-accent/40 bg-accent/10 px-1.5 py-0.5 rounded-md whitespace-nowrap flex-none">
+                  {p.target}
+                </span>
+              </div>
+              <div className="text-[11px] text-muted truncate mt-0.5">
+                {p.technique}
+              </div>
+            </div>
+          </button>
+        ))}
+        {extraCount > 0 && (
+          <div className="text-[11px] text-muted px-1">
+            + {extraCount} more pattern{extraCount === 1 ? '' : 's'} — open
+            the Waters Guide for the full list.
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function WaterbodyPatternSheet({
+  pattern,
+  waterbodyName,
+  onClose,
+}: {
+  pattern: WaterbodyPattern | null;
+  waterbodyName?: string;
+  onClose: () => void;
+}) {
+  return (
+    <BottomSheet
+      open={pattern != null}
+      onClose={onClose}
+      title={pattern?.title}
+    >
+      {pattern && (
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-[10px] text-accent border border-accent/40 bg-accent/10 px-1.5 py-0.5 rounded-md">
+              {pattern.target}
+            </span>
+            {waterbodyName && (
+              <span className="text-[10px] text-info border border-info/40 bg-info/10 px-1.5 py-0.5 rounded-md">
+                {waterbodyName}
+              </span>
+            )}
+          </div>
+          <div className="text-xs">
+            <b className="text-muted">When:</b> {pattern.when}
+          </div>
+          <div className="text-sm text-text/90">
+            <b className="text-muted">How:</b> {pattern.technique}
+          </div>
+          <div className="text-sm text-text/90">
+            <b className="text-muted">Where:</b> {pattern.where}
+          </div>
+          {pattern.details && (
+            <div className="text-xs text-muted leading-relaxed border-t border-border pt-2">
+              {pattern.details}
+            </div>
+          )}
+        </div>
+      )}
+    </BottomSheet>
   );
 }
 
