@@ -6,6 +6,7 @@ import {
   Map as MapIcon,
   ListChecks,
   NotebookPen,
+  Boxes,
   RefreshCcw,
   LogOut,
   Loader2,
@@ -53,13 +54,17 @@ const LogFeed = lazy(() =>
 const SystemHealth = lazy(() =>
   import('@/features/admin/SystemHealth').then((m) => ({ default: m.SystemHealth }))
 );
+const FlyBox = lazy(() =>
+  import('@/features/flybox/FlyBox').then((m) => ({ default: m.FlyBox }))
+);
 
-type Tab = 'conditions' | 'map' | 'spots' | 'log';
+type Tab = 'conditions' | 'map' | 'spots' | 'log' | 'flybox';
 
 const TABS = [
   { key: 'conditions' as const, label: 'Conditions', icon: Activity },
   { key: 'map' as const, label: 'Map', icon: MapIcon },
   { key: 'spots' as const, label: 'Spots', icon: ListChecks },
+  { key: 'flybox' as const, label: 'Flies', icon: Boxes },
   { key: 'log' as const, label: 'Log', icon: NotebookPen },
 ];
 
@@ -358,6 +363,12 @@ export default function App() {
               locations={locations}
               isFirebaseConfigured={isFirebaseConfigured}
             />
+          </Suspense>
+        )}
+
+        {tab === 'flybox' && (
+          <Suspense fallback={<TabFallback />}>
+            <FlyBox locations={locations} />
           </Suspense>
         )}
       </main>
