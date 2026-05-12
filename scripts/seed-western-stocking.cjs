@@ -321,6 +321,38 @@ function normalizeOk() {
     }));
 }
 
+function normalizeGa() {
+  if (!fs.existsSync(path.join(__dirname, '..', 'data', 'seed', 'ga-raw.json'))) return [];
+  return loadJson('data/seed/ga-raw.json')
+    .filter((r) => r.water && r.date && /^\d{4}-\d{2}-\d{2}$/.test(r.date))
+    .map((r) => ({
+      date: r.date,
+      locationName: r.county ? `${r.water} (${r.county} Co.)` : r.water,
+      state: 'GA',
+      species: canonicalSpecies(r.species ?? 'Rainbow Trout'),
+      count: typeof r.count === 'number' ? r.count : undefined,
+      size: r.size,
+      source: 'ga-dnr',
+      notes: r.notes ?? 'Seeded from GA WRD Weekly Trout Stocking Report.',
+    }));
+}
+
+function normalizeMs() {
+  if (!fs.existsSync(path.join(__dirname, '..', 'data', 'seed', 'ms-raw.json'))) return [];
+  return loadJson('data/seed/ms-raw.json')
+    .filter((r) => r.water && r.date && /^\d{4}-\d{2}-\d{2}$/.test(r.date))
+    .map((r) => ({
+      date: r.date,
+      locationName: r.county ? `${r.water} (${r.county} Co.)` : r.water,
+      state: 'MS',
+      species: canonicalSpecies(r.species ?? 'Rainbow Trout'),
+      count: typeof r.count === 'number' ? r.count : undefined,
+      size: r.size,
+      source: 'ms-mdwfp',
+      notes: r.notes ?? 'Seeded from MDWFP Lake Lamar Bruce winter trout program.',
+    }));
+}
+
 // ---- Firestore REST helpers ------------------------------------------------
 
 /** Convert a JS value into Firestore's typed Value JSON. Handles only
@@ -398,12 +430,15 @@ async function writeIfMissing(accessToken, id, fields) {
   const nc = normalizeNc();
   const pa = normalizePa();
   const ok = normalizeOk();
-  const all = [...ut, ...co, ...id, ...ar, ...il, ...mt, ...nc, ...pa, ...ok];
+  const ga = normalizeGa();
+  const ms = normalizeMs();
+  const all = [...ut, ...co, ...id, ...ar, ...il, ...mt, ...nc, ...pa, ...ok, ...ga, ...ms];
   console.log(
     `Normalized:\n` +
       `  UT ${ut.length.toString().padStart(5)}   CO ${co.length.toString().padStart(5)}   ID ${id.length.toString().padStart(5)}\n` +
       `  AR ${ar.length.toString().padStart(5)}   IL ${il.length.toString().padStart(5)}   MT ${mt.length.toString().padStart(5)}\n` +
       `  NC ${nc.length.toString().padStart(5)}   PA ${pa.length.toString().padStart(5)}   OK ${ok.length.toString().padStart(5)}\n` +
+      `  GA ${ga.length.toString().padStart(5)}   MS ${ms.length.toString().padStart(5)}\n` +
       `  = ${all.length} total`
   );
 
