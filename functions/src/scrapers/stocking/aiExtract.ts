@@ -197,9 +197,14 @@ export async function aiExtractStocking(
   //   - Web search ONLY when no PDF is attached. When a PDF is provided
   //     Claude has the source-of-truth document in-context — letting
   //     it also web_search wastes tokens reading SEO pages.
+  // Anthropic now requires `allowed_callers: ['direct']` on web_search
+  // when invoked from models that don't support programmatic tool calling
+  // (Haiku 4.5 is one — the API returns a 400 with exact wording
+  // "Explicitly set allowed_callers=['direct'] on these tools"). Setting
+  // it unconditionally is safe for Sonnet/Opus too.
   const tools: Anthropic.Messages.ToolUnion[] | undefined = input.directPdfUrl
     ? undefined
-    : [{ type: 'web_search_20260209', name: 'web_search' }];
+    : [{ type: 'web_search_20260209', name: 'web_search', allowed_callers: ['direct'] } as never];
 
   let response: Anthropic.Messages.Message;
   try {
