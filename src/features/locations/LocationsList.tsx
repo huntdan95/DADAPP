@@ -1,14 +1,11 @@
 import { lazy, Suspense, useMemo, useState } from 'react';
-import { BookOpen, MapPin, Plus, Pencil, Trash2 } from 'lucide-react';
+import { BookOpen, Plus, Pencil, Trash2 } from 'lucide-react';
 import type { Location } from '@/lib/providers/types';
 import type { LocationStore } from '@/lib/store';
 import { Button } from '@/components/ui/Button';
 import { Card, CardHeader, CardSubtitle, CardTitle } from '@/components/ui/Card';
 import { BottomSheet } from '@/components/ui/BottomSheet';
 import { LocationForm } from './LocationForm';
-import { useFishability } from '@/features/map/useFishability';
-import { fishabilityColor } from '@/lib/fishability';
-import { distanceMi, useUserLocation } from '@/lib/userLocation';
 
 /**
  * Lazy-load the Waters Guide — it bundles Leaflet for the embedded
@@ -81,14 +78,52 @@ export function LocationsList({
         </div>
       ) : (
         locations.map((loc) => (
-          <SpotCard
-            key={loc.id}
-            location={loc}
-            onEdit={() => setSheet({ kind: 'edit', loc })}
-            onDelete={() => {
-              if (confirm(`Delete "${loc.name}"?`)) store.remove(loc.id);
-            }}
-          />
+          <Card key={loc.id}>
+            <CardHeader>
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <CardTitle>{loc.name}</CardTitle>
+                  <CardSubtitle>
+                    {[loc.river, loc.type, loc.state]
+                      .filter(Boolean)
+                      .join(' · ')}
+                    {' · '}
+                    <span className="num">
+                      {loc.lat.toFixed(3)}, {loc.lng.toFixed(3)}
+                    </span>
+                  </CardSubtitle>
+                </div>
+                {/* Touch targets bumped to 44x44 per the original
+                    UI/UX guidelines ("44 px min — he's holding a
+                    rod"). No other visual changes to this card. */}
+                <div className="flex gap-1">
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    aria-label="Edit"
+                    onClick={() => setSheet({ kind: 'edit', loc })}
+                    className="min-w-11 min-h-11"
+                  >
+                    <Pencil className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    aria-label="Delete"
+                    onClick={() => {
+                      if (confirm(`Delete "${loc.name}"?`)) store.remove(loc.id);
+                    }}
+                    className="min-w-11 min-h-11"
+                  >
+                    <Trash2 className="w-4 h-4 text-danger" />
+                  </Button>
+                </div>
+              </div>
+            </CardHeader>
+            <div className="px-4 pb-4 text-xs text-muted">
+              {providerSummary(loc)}
+            </div>
+          </Card>
         ))
       )}
 
@@ -125,120 +160,6 @@ export function LocationsList({
       )}
     </div>
   );
-}
-
-/**
- * One card in the Spots list. Pulled into its own component so the
- * per-spot `useFishability()` hook is legal (can't call hooks inside
- * a .map() callback). The hook spins up three provider fetches per
- * spot, same as the Map-tab markers — the same handful of fetches
- * the user already pays for if they've visited the Map tab this
- * session.
- *
- * Polish over the prior version:
- *   - Fishability dot (green / yellow / red) next to the name so you
- *     can tell which spots are firing at a glance
- *   - Distance-from-you chip when GPS is available
- *   - Lat/lng to 4 decimals (~11 m) instead of 3 (~111 m) so two
- *     close pins are distinguishable
- *   - 44 px touch targets on Pencil + Trash
- *   - Card has a bit more vertical breathing room
- */
-function SpotCard({
-  location,
-  onEdit,
-  onDelete,
-}: {
-  location: Location;
-  onEdit: () => void;
-  onDelete: () => void;
-}) {
-  const { rating } = useFishability(location);
-  const userLoc = useUserLocation();
-  const distance =
-    userLoc != null
-      ? distanceMi(userLoc, { lat: location.lat, lng: location.lng })
-      : null;
-
-  return (
-    <Card>
-      <CardHeader>
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-2 min-w-0">
-              {/* Fishability dot — same color tokens as the Map-tab
-                  markers. Falls back to a muted ring while rating is
-                  resolving so the layout doesn't pop. */}
-              <span
-                className="w-2.5 h-2.5 rounded-full flex-none border border-border"
-                style={{
-                  backgroundColor:
-                    rating === 'unknown' ? 'transparent' : fishabilityColor(rating),
-                  borderColor:
-                    rating === 'unknown' ? 'currentColor' : fishabilityColor(rating),
-                  opacity: rating === 'unknown' ? 0.4 : 1,
-                }}
-                aria-label={`Fishability: ${rating}`}
-                title={`Fishability: ${rating}`}
-              />
-              <CardTitle className="truncate">{location.name}</CardTitle>
-            </div>
-            <CardSubtitle>
-              <span className="inline-flex items-center gap-1 flex-wrap">
-                {[location.river, location.type, location.state]
-                  .filter(Boolean)
-                  .join(' · ')}
-                {' · '}
-                <span className="num">
-                  {location.lat.toFixed(4)}, {location.lng.toFixed(4)}
-                </span>
-                {distance != null && (
-                  <span className="inline-flex items-center gap-0.5 text-[10px] text-info/90 ml-1">
-                    <MapPin className="w-2.5 h-2.5" />
-                    {formatDistance(distance)}
-                  </span>
-                )}
-              </span>
-            </CardSubtitle>
-          </div>
-          {/* Touch targets bumped to 44x44 px (per UI/UX guidelines in
-              the plan — "He's holding a rod"). Buttons set
-              size="icon" with explicit min sizing in the className
-              for guaranteed mobile reachability. */}
-          <div className="flex gap-1 flex-none">
-            <Button
-              size="icon"
-              variant="ghost"
-              aria-label="Edit"
-              onClick={onEdit}
-              className="min-w-11 min-h-11"
-            >
-              <Pencil className="w-4 h-4" />
-            </Button>
-            <Button
-              size="icon"
-              variant="ghost"
-              aria-label="Delete"
-              onClick={onDelete}
-              className="min-w-11 min-h-11"
-            >
-              <Trash2 className="w-4 h-4 text-danger" />
-            </Button>
-          </div>
-        </div>
-      </CardHeader>
-      <div className="px-4 pb-4 text-xs text-muted">
-        {providerSummary(location)}
-      </div>
-    </Card>
-  );
-}
-
-/** Compact distance string — '0.4 mi' / '12 mi' / '120 mi'. */
-function formatDistance(mi: number): string {
-  if (mi < 1) return `${mi.toFixed(1)} mi`;
-  if (mi < 10) return `${mi.toFixed(1)} mi`;
-  return `${Math.round(mi)} mi`;
 }
 
 function providerSummary(loc: Location): string {
