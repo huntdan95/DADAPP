@@ -14,6 +14,7 @@ import {
 import { Button } from '@/components/ui/Button';
 import { BottomNav } from '@/components/ui/BottomNav';
 import { ConditionsCard } from '@/features/conditions/ConditionsCard';
+import { WatersGuideCard } from '@/features/conditions/WatersGuideCard';
 import { SpotPicker } from '@/features/conditions/SpotPicker';
 import { SignInScreen } from '@/features/auth/SignInScreen';
 import { WelcomeBanner } from '@/features/onboarding/WelcomeBanner';
@@ -335,10 +336,18 @@ export default function App() {
               onAdd={() => setAddSpotOpen(true)}
             />
             {selectedLocation ? (
-              <ConditionsCard
-                key={`${selectedLocation.id}:${refreshKey}`}
-                location={selectedLocation}
-              />
+              <>
+                {/* Waters Guide card — shows only when the spot matches
+                    a curated waterbody profile. Sits above the
+                    Conditions card so the "where am I and what is this
+                    place known for" answer is the first thing the user
+                    sees when looking at a famous water. */}
+                <WatersGuideCard location={selectedLocation} />
+                <ConditionsCard
+                  key={`${selectedLocation.id}:${refreshKey}`}
+                  location={selectedLocation}
+                />
+              </>
             ) : locations.length === 0 ? (
               <div className="text-center text-muted py-12">
                 No spots yet — tap{' '}
