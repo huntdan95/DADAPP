@@ -145,13 +145,25 @@ function HatchRow({
       className="text-left rounded-lg bg-surface-2 border border-border p-2.5 hover:border-accent/40 active:scale-[0.99] transition"
     >
       <div className="flex items-baseline justify-between gap-2">
-        <div className="text-sm font-semibold flex items-center gap-1.5">
-          {hatch.name}
-          {inWindow && <span className="text-[10px] text-accent">IN WINDOW</span>}
-          <ChevronRight className="w-3 h-3 text-muted" />
+        {/* Name on the left — gets `min-w-0` + a truncating <span> so a
+            long name like "Blue Winged Olive (spring)" can shrink without
+            shoving IN WINDOW onto its own line. The chevron is
+            flex-none so it stays glued to the end of whatever name fits. */}
+        <div className="text-sm font-semibold flex items-center gap-1.5 min-w-0 flex-1">
+          <span className="truncate">{hatch.name}</span>
+          <ChevronRight className="w-3 h-3 text-muted flex-none" />
         </div>
-        <div className="text-[10px] text-muted num">
-          {hatch.waterTempMinF}–{hatch.waterTempMaxF}°F · {hatch.timeOfDay}
+        {/* Right side groups IN WINDOW with the temp/time meta because
+            both come from the current water reading. whitespace-nowrap +
+            flex-none keep IN WINDOW intact on one line no matter the
+            screen width — that's the bug we're fixing here. */}
+        <div className="flex items-center gap-1.5 text-[10px] num whitespace-nowrap flex-none">
+          {inWindow && (
+            <span className="text-accent font-semibold">IN WINDOW</span>
+          )}
+          <span className="text-muted">
+            {hatch.waterTempMinF}–{hatch.waterTempMaxF}°F · {hatch.timeOfDay}
+          </span>
         </div>
       </div>
       <div className="text-xs text-muted italic mt-0.5">{hatch.scientific}</div>
