@@ -251,8 +251,10 @@ function normalizeMt() {
   return loadJson('data/seed/mt-raw.json')
     .filter((r) => r.water && r.date && /^\d{4}-\d{2}-\d{2}$/.test(r.date))
     .map((r) => {
-      const noteBits = ['Seeded from MT FWP news releases / FWP-CEA permit listings.'];
+      const noteBits = ['Seeded from MT FWP FishMT plantsearchgrid endpoint.'];
       if (r.hatchery) noteBits.push(`Hatchery: ${r.hatchery}.`);
+      if (r.strain) noteBits.push(`Strain: ${r.strain}.`);
+      if (r.region) noteBits.push(r.region + '.');
       if (r.notes) noteBits.push(r.notes);
       return {
         date: r.date,
@@ -286,6 +288,37 @@ function normalizeNc() {
         notes: noteBits.join(' '),
       };
     });
+}
+
+function normalizePa() {
+  if (!fs.existsSync(path.join(__dirname, '..', 'data', 'seed', 'pa-raw.json'))) return [];
+  return loadJson('data/seed/pa-raw.json')
+    .filter((r) => r.water && r.date && /^\d{4}-\d{2}-\d{2}$/.test(r.date))
+    .map((r) => ({
+      date: r.date,
+      locationName: r.county ? `${r.water} (${r.county} Co., Sec ${r.sec || '?'})` : r.water,
+      state: 'PA',
+      species: canonicalSpecies(r.species),
+      size: r.size,
+      source: 'pa-fbc',
+      notes:
+        r.notes ?? 'Seeded from PA PFBC 2026 Adult Trout Stocking Schedule.',
+    }));
+}
+
+function normalizeOk() {
+  if (!fs.existsSync(path.join(__dirname, '..', 'data', 'seed', 'ok-raw.json'))) return [];
+  return loadJson('data/seed/ok-raw.json')
+    .filter((r) => r.water && r.date && /^\d{4}-\d{2}-\d{2}$/.test(r.date))
+    .map((r) => ({
+      date: r.date,
+      locationName: r.county ? `${r.water} (${r.county} Co.)` : r.water,
+      state: 'OK',
+      species: canonicalSpecies(r.species),
+      size: r.size,
+      source: 'ok-odwc',
+      notes: r.notes ?? 'Seeded from ODWC trout-area published cadence.',
+    }));
 }
 
 // ---- Firestore REST helpers ------------------------------------------------
@@ -363,10 +396,15 @@ async function writeIfMissing(accessToken, id, fields) {
   const il = normalizeIl();
   const mt = normalizeMt();
   const nc = normalizeNc();
-  const all = [...ut, ...co, ...id, ...ar, ...il, ...mt, ...nc];
+  const pa = normalizePa();
+  const ok = normalizeOk();
+  const all = [...ut, ...co, ...id, ...ar, ...il, ...mt, ...nc, ...pa, ...ok];
   console.log(
-    `Normalized: UT ${ut.length}, CO ${co.length}, ID ${id.length}, ` +
-      `AR ${ar.length}, IL ${il.length}, MT ${mt.length}, NC ${nc.length} = ${all.length} total`
+    `Normalized:\n` +
+      `  UT ${ut.length.toString().padStart(5)}   CO ${co.length.toString().padStart(5)}   ID ${id.length.toString().padStart(5)}\n` +
+      `  AR ${ar.length.toString().padStart(5)}   IL ${il.length.toString().padStart(5)}   MT ${mt.length.toString().padStart(5)}\n` +
+      `  NC ${nc.length.toString().padStart(5)}   PA ${pa.length.toString().padStart(5)}   OK ${ok.length.toString().padStart(5)}\n` +
+      `  = ${all.length} total`
   );
 
   let written = 0;
