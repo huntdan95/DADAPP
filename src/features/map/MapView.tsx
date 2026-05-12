@@ -34,7 +34,19 @@ import { watchUserLaunches } from '@/lib/boatLaunches/userLaunches';
 import { cn } from '@/lib/utils';
 import { friendlyError } from '@/lib/errors';
 
-export function MapView({ locations }: { locations: Location[] }) {
+export function MapView({
+  locations,
+  focus,
+}: {
+  locations: Location[];
+  /**
+   * Versioned focus token from the parent. When `key` changes the map
+   * pans to the matching location and opens its conditions card. The
+   * `key` mechanism lets the parent re-trigger the focus even if the
+   * same spot id is re-saved at the same coordinates.
+   */
+  focus?: { id: string; key: number } | null;
+}) {
   const [basemap, setBasemap] = useState<BasemapKey>('osm');
   const [selected, setSelected] = useState<Location | null>(null);
   const [showLaunches, setShowLaunches] = useState(true);
@@ -85,6 +97,26 @@ export function MapView({ locations }: { locations: Location[] }) {
   const [legendOpen, setLegendOpen] = useState(false);
   const [seeding, setSeeding] = useState(false);
   const [seedError, setSeedError] = useState<string | null>(null);
+
+  /**
+   * Parent-driven focus: when the App.tsx layer hands us a new
+   * focus token (spot id + version key), pan the camera to that
+   * spot and pop its conditions card open. We watch `focus.key`
+   * specifically so re-saving the same spot still triggers the
+   * camera move. The location may not be in our `locations` array
+   * yet (Firestore round-trip), so we also re-check whenever
+   * `locations` grows and there's still a pending focus.
+   */
+  useEffect(() => {
+    if (!focus) return;
+    const loc = locations.find((l) => l.id === focus.id);
+    if (!loc) return;
+    setRecenterTo({ lat: loc.lat, lng: loc.lng, zoom: 14 });
+    setSelected(loc);
+    // No need to clear `focus` from this side — the parent owns
+    // it. New focus events arrive as a new `key`, which makes
+    // this effect re-fire even if the id is the same.
+  }, [focus, locations]);
 
   // Try to fix our position on mount so we can show "you are here" without
   // requiring the user to tap anything. If permission is denied we just
@@ -430,6 +462,11 @@ export function MapView({ locations }: { locations: Location[] }) {
               onSave={async (loc) => {
                 await getLocationStore().upsert(loc);
                 setSeedFromLaunch(null);
+                // Already on the map view — pan to the new pin and
+                // pop its conditions card locally. No need to bounce
+                // through App.tsx's focus token.
+                setRecenterTo({ lat: loc.lat, lng: loc.lng, zoom: 14 });
+                setSelected(loc);
               }}
             />
           </Suspense>

@@ -15,9 +15,16 @@ type SheetState =
 export function LocationsList({
   locations,
   store,
+  onSpotCreated,
 }: {
   locations: Location[];
   store: LocationStore;
+  /**
+   * Fires only when a NEW spot is saved from this list (not on edit).
+   * App.tsx uses it to switch the user to the Map tab and pan the
+   * camera to the new pin.
+   */
+  onSpotCreated?: (id: string) => void;
 }) {
   const [sheet, setSheet] = useState<SheetState>({ kind: 'closed' });
 
@@ -93,8 +100,10 @@ export function LocationsList({
             initial={sheet.kind === 'edit' ? sheet.loc : undefined}
             onCancel={() => setSheet({ kind: 'closed' })}
             onSave={async (loc) => {
+              const wasCreate = sheet.kind === 'create';
               await store.upsert(loc);
               setSheet({ kind: 'closed' });
+              if (wasCreate) onSpotCreated?.(loc.id);
             }}
           />
         )}

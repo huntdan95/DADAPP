@@ -86,6 +86,16 @@ export default function App() {
   const [selectedSpotId, setSelectedSpotId] = useState<string | null>(null);
   const [addSpotOpen, setAddSpotOpen] = useState(false);
   const [healthOpen, setHealthOpen] = useState(false);
+  /**
+   * Versioned focus token for the Map view. When the user saves a new
+   * spot from anywhere, we set this to {id, key} so MapView can pan +
+   * open the conditions card. The `key` lets the user re-save the same
+   * spot (or save a second new spot at the same coords) and still get
+   * the camera move — useEffect fires whenever `key` changes.
+   */
+  const [mapFocus, setMapFocus] = useState<{ id: string; key: number } | null>(
+    null
+  );
 
   // Only initialize the store once auth has resolved into a usable state.
   // Otherwise Firestore listeners fire while signed-out and 403.
@@ -347,13 +357,23 @@ export default function App() {
 
         {tab === 'map' && (
           <Suspense fallback={<TabFallback />}>
-            <MapView locations={locations} />
+            <MapView locations={locations} focus={mapFocus} />
           </Suspense>
         )}
 
         {tab === 'spots' && store && (
           <Suspense fallback={<TabFallback />}>
-            <LocationsList locations={locations} store={store} />
+            <LocationsList
+              locations={locations}
+              store={store}
+              onSpotCreated={(id) => {
+                // Same jump-to-the-pin behavior as the Conditions-tab
+                // add-spot flow. Edits don't fire this — only new
+                // spots.
+                setMapFocus({ id, key: Date.now() });
+                setTab('map');
+              }}
+            />
           </Suspense>
         )}
 
@@ -388,6 +408,13 @@ export default function App() {
                 await store.upsert(loc);
                 setSelectedSpotId(loc.id);
                 setAddSpotOpen(false);
+                // Drop the user on the Map tab focused on the new
+                // pin — they just told us where to fish, the most
+                // useful next view is the map zoomed in on it. A
+                // versioned key forces re-focus even if the same
+                // spot was just edited at the same coords.
+                setMapFocus({ id: loc.id, key: Date.now() });
+                setTab('map');
               }}
             />
           </Suspense>
