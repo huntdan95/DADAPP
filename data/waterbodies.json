@@ -9215,5 +9215,2354 @@
       "Bolivar"
     ],
     "notes": "Designated TN State Scenic River. Slow blackwater bottomland — unique West TN character."
+  },
+  {
+    "id": "mi-river-au-sable-north-branch",
+    "name": "Au Sable River — North Branch",
+    "state": "MI",
+    "region": "NLP wild-trout rivers",
+    "type": "river",
+    "county": "Crawford / Otsego",
+    "river": "Au Sable River (North Branch)",
+    "signatureSpecies": "Brook trout, brown trout",
+    "species": [
+      {
+        "name": "Brook trout",
+        "importance": "signature",
+        "size": "8-12 in, occasional 14+",
+        "notes": "Wild specks — the North Branch is the brookie-stronghold branch of the Au Sable."
+      },
+      {
+        "name": "Brown trout",
+        "importance": "strong",
+        "size": "10-16 in"
+      },
+      {
+        "name": "Rainbow trout",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Hex hatch night fishing",
+        "target": "Brown + brook trout",
+        "when": "Late June through mid-July",
+        "technique": "Size 6 Hex dries; spinners fall at dusk",
+        "where": "Silt-bottom slow stretches below Lovells",
+        "details": "The North Branch Hex hatch fishes similarly to the Holy Water but with smaller water + smaller crowds."
+      },
+      {
+        "title": "Searching dry-fly small water",
+        "target": "Brook trout",
+        "when": "May-September",
+        "technique": "Adams (#14-16), Royal Wulff, Madsen's Skunk, Roberts Yellow Drake",
+        "where": "Pocket water + log jams throughout"
+      }
+    ],
+    "access": [
+      "Lovells",
+      "Twin Bridge",
+      "Sheep Ranch",
+      "Dam 4"
+    ],
+    "regulations": "Flies-only stretches; catch + release in select water.",
+    "notes": "Fuller's North Branch Outing Club (Bear Andrews's guide base) is here. Smaller + intimate version of the Holy Water."
+  },
+  {
+    "id": "mi-river-au-sable-south-branch",
+    "name": "Au Sable River — South Branch",
+    "state": "MI",
+    "region": "NLP wild-trout rivers",
+    "type": "river",
+    "county": "Crawford / Roscommon",
+    "river": "Au Sable River (South Branch)",
+    "signatureSpecies": "Brown trout, brook trout",
+    "species": [
+      {
+        "name": "Brown trout",
+        "importance": "signature",
+        "size": "10-16 in, occasional 22+"
+      },
+      {
+        "name": "Brook trout",
+        "importance": "strong",
+        "size": "8-12 in"
+      },
+      {
+        "name": "Rainbow trout",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Mason Tract wild-trout fishing",
+        "target": "Brown + brook trout",
+        "when": "May-October",
+        "technique": "Dry-fly + dry-dropper + small streamers",
+        "where": "Mason Tract (special regs section between Smith Bridge + Lower High Banks)",
+        "details": "The South Branch's Mason Tract is one of MI's flagship wild-trout management stretches. Special regs apply."
+      },
+      {
+        "title": "Hex hatch big browns",
+        "target": "Brown trout",
+        "when": "Late June through mid-July",
+        "technique": "Size 6 Hex dries",
+        "where": "Silt holes below Smith Bridge"
+      }
+    ],
+    "access": [
+      "Smith Bridge",
+      "Chase Bridge",
+      "Lower High Banks",
+      "Canoe Harbor"
+    ],
+    "regulations": "Mason Tract = flies-only catch-and-release.",
+    "notes": "Joins the main Au Sable below Smith Bridge. Mason Tract is sacred trout water."
+  },
+  {
+    "id": "mi-river-jordan",
+    "name": "Jordan River",
+    "state": "MI",
+    "region": "NLP wild-trout rivers",
+    "type": "river",
+    "county": "Antrim / Charlevoix",
+    "river": "Jordan River",
+    "signatureSpecies": "Brook trout, brown trout, steelhead",
+    "species": [
+      {
+        "name": "Brook trout",
+        "importance": "signature",
+        "size": "7-11 in, occasional 14+",
+        "notes": "Coldwater jewel — designated MI Wild + Scenic."
+      },
+      {
+        "name": "Brown trout",
+        "importance": "strong",
+        "size": "10-16 in"
+      },
+      {
+        "name": "Steelhead",
+        "importance": "good",
+        "size": "6-10 lb",
+        "notes": "Lake Michigan run via Lake Charlevoix."
+      },
+      {
+        "name": "Rainbow trout",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Headwater wild brookie wading",
+        "target": "Brook trout",
+        "when": "May-September",
+        "technique": "Small dries (#14-18); small streamers",
+        "where": "Headwaters at Jordan Valley + downstream"
+      }
+    ],
+    "access": [
+      "Jordan Valley Pathway",
+      "Graves Crossing",
+      "Pinney Bridge"
+    ],
+    "regulations": "MI Wild + Scenic River designation. Special regs apply in stretches.",
+    "notes": "Pristine designated Wild + Scenic River draining into Lake Charlevoix. Brookie water at its finest."
+  },
+  {
+    "id": "mi-river-sturgeon-cheboygan",
+    "name": "Sturgeon River (Cheboygan)",
+    "state": "MI",
+    "region": "NLP wild-trout rivers",
+    "type": "river",
+    "county": "Otsego / Cheboygan",
+    "river": "Sturgeon River",
+    "signatureSpecies": "Brown trout, brook trout",
+    "species": [
+      {
+        "name": "Brown trout",
+        "importance": "signature",
+        "size": "10-16 in"
+      },
+      {
+        "name": "Brook trout",
+        "importance": "strong",
+        "size": "8-12 in"
+      },
+      {
+        "name": "Rainbow trout",
+        "importance": "good"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "good",
+        "notes": "Lower river."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Trout wading near Wolverine",
+        "target": "Brown + brook trout",
+        "when": "May-October",
+        "technique": "Adams, Stim, sm streamers; Borchers Drake in season",
+        "where": "Below Wolverine; pocket water"
+      }
+    ],
+    "access": [
+      "Wolverine",
+      "Trowbridge",
+      "Mullett Lake outlet"
+    ],
+    "notes": "Not the UP Sturgeon River — this is the NE LP Sturgeon, which drains into Mullett Lake then to the Inland Waterway. Confusingly-named."
+  },
+  {
+    "id": "mi-river-pigeon-otsego",
+    "name": "Pigeon River (Otsego County)",
+    "state": "MI",
+    "region": "NLP wild-trout rivers",
+    "type": "river",
+    "county": "Otsego / Cheboygan",
+    "river": "Pigeon River",
+    "signatureSpecies": "Brown trout, brook trout",
+    "species": [
+      {
+        "name": "Brown trout",
+        "importance": "signature",
+        "size": "10-16 in"
+      },
+      {
+        "name": "Brook trout",
+        "importance": "strong",
+        "size": "7-11 in"
+      },
+      {
+        "name": "Rainbow trout",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Pigeon River Country wading",
+        "target": "Brown + brook trout",
+        "when": "May-October",
+        "technique": "Dry-fly + small streamers",
+        "where": "Pigeon River Country State Forest",
+        "details": "Pigeon River Country = MI's largest contiguous public forest. Wild-trout water."
+      }
+    ],
+    "access": [
+      "Pigeon Bridge",
+      "Pickerel Lake area",
+      "Big Hardwood",
+      "Cornwall Creek"
+    ],
+    "notes": "NOT the same Pigeon River as the LaGrange-County trout stream in NE Indiana. This one's in the heart of Pigeon River Country State Forest."
+  },
+  {
+    "id": "mi-river-black-cheboygan",
+    "name": "Black River (Cheboygan)",
+    "state": "MI",
+    "region": "NLP wild-trout rivers",
+    "type": "river",
+    "county": "Cheboygan / Montmorency",
+    "river": "Black River",
+    "signatureSpecies": "Brown trout, brook trout",
+    "species": [
+      {
+        "name": "Brown trout",
+        "importance": "signature",
+        "size": "10-16 in"
+      },
+      {
+        "name": "Brook trout",
+        "importance": "strong"
+      },
+      {
+        "name": "Rainbow trout",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Wild-trout wading",
+        "target": "Brown + brook trout",
+        "when": "May-October",
+        "technique": "Dry-fly + nymphs",
+        "where": "Through Pigeon River Country"
+      }
+    ],
+    "access": [
+      "Pigeon River Country roads",
+      "Tower Bridge"
+    ],
+    "notes": "Pigeon-Country sister stream. Tannic-stained water."
+  },
+  {
+    "id": "mi-river-thunder-bay",
+    "name": "Thunder Bay River",
+    "state": "MI",
+    "region": "NE Lower Peninsula",
+    "type": "great-lake-trib",
+    "county": "Alpena",
+    "river": "Thunder Bay River",
+    "signatureSpecies": "Walleye, steelhead, brown trout",
+    "species": [
+      {
+        "name": "Walleye",
+        "importance": "signature",
+        "size": "14-22 in",
+        "notes": "Spring run from Lake Huron."
+      },
+      {
+        "name": "Steelhead",
+        "importance": "strong",
+        "size": "6-12 lb",
+        "notes": "Lake Huron strain."
+      },
+      {
+        "name": "Brown trout",
+        "importance": "good",
+        "size": "10-16 in"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "good"
+      },
+      {
+        "name": "Northern pike",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Spring walleye + steelhead at 9th Street Dam",
+        "target": "Walleye, steelhead",
+        "when": "March-May",
+        "technique": "Jig + minnow for walleye; float-rig + spawn sacs for steelhead",
+        "where": "9th Street Dam (Alpena) tailwater"
+      }
+    ],
+    "access": [
+      "9th Street Dam",
+      "Alpena",
+      "Hubbard Lake outlet"
+    ],
+    "notes": "NE LP's main Lake Huron trib. Drains Hubbard Lake. Less crowded than Lake Michigan tribs."
+  },
+  {
+    "id": "mi-river-augres",
+    "name": "AuGres River",
+    "state": "MI",
+    "region": "NE Lower Peninsula",
+    "type": "great-lake-trib",
+    "county": "Iosco / Arenac",
+    "river": "AuGres River",
+    "signatureSpecies": "Steelhead, walleye, brown trout",
+    "species": [
+      {
+        "name": "Steelhead",
+        "importance": "signature",
+        "size": "6-12 lb"
+      },
+      {
+        "name": "Brown trout",
+        "importance": "strong",
+        "size": "10-16 in"
+      },
+      {
+        "name": "Walleye",
+        "importance": "good",
+        "size": "Lower river spring run."
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Lake Huron strain steelhead",
+        "target": "Steelhead",
+        "when": "October-April",
+        "technique": "Float-rig with spawn sacs + yarn flies",
+        "where": "East + West Branch confluence + below"
+      }
+    ],
+    "access": [
+      "Whittemore",
+      "East Branch",
+      "West Branch"
+    ],
+    "notes": "Lake Huron strain steelhead trib. Less famous than Manistee/PM but quality fishery."
+  },
+  {
+    "id": "mi-river-cheboygan",
+    "name": "Cheboygan River",
+    "state": "MI",
+    "region": "NE Lower Peninsula",
+    "type": "great-lake-trib",
+    "county": "Cheboygan",
+    "river": "Cheboygan River",
+    "signatureSpecies": "Walleye, smallmouth bass, muskie, pike",
+    "species": [
+      {
+        "name": "Walleye",
+        "importance": "strong",
+        "size": "14-22 in"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "strong",
+        "size": "2-4 lb"
+      },
+      {
+        "name": "Muskellunge",
+        "importance": "good",
+        "size": "36-44 in",
+        "notes": "Connected to Mullett + Burt Inland Waterway muskies."
+      },
+      {
+        "name": "Northern pike",
+        "importance": "strong"
+      },
+      {
+        "name": "Brown trout",
+        "importance": "good",
+        "notes": "Below the Cheboygan Lock."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Spring walleye below the lock",
+        "target": "Walleye",
+        "when": "April-May",
+        "technique": "Jig + minnow",
+        "where": "Below the Cheboygan Lock; the Inland Waterway outlet"
+      }
+    ],
+    "access": [
+      "Cheboygan State Park",
+      "Cheboygan Lock"
+    ],
+    "notes": "Connects the Inland Waterway (Mullett/Burt/Crooked) to Lake Huron. Outflow channel for one of the great inland-lake systems in MI."
+  },
+  {
+    "id": "mi-river-manistee-hodenpyl",
+    "name": "Manistee River — Hodenpyl to Tippy",
+    "state": "MI",
+    "region": "NLP wild-trout rivers",
+    "type": "tailwater",
+    "county": "Wexford / Manistee",
+    "river": "Manistee River",
+    "signatureSpecies": "Brown trout, rainbow trout, smallmouth bass",
+    "species": [
+      {
+        "name": "Brown trout",
+        "importance": "signature",
+        "size": "12-20 in, 25+ possible",
+        "notes": "Trophy class — the Hodenpyl-to-Tippy stretch holds the biggest wild MI browns outside of the lower Manistee salmon zone."
+      },
+      {
+        "name": "Rainbow trout",
+        "importance": "strong",
+        "size": "10-16 in"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "good",
+        "size": "Lower portion as water warms"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Streamer-fishing trophy browns",
+        "target": "Brown trout",
+        "when": "April-November",
+        "technique": "Articulated streamers (Galloup Sex Dungeon, Mini D&D, Lynch Triple D)",
+        "where": "Banks + log jams; deep current seams",
+        "details": "The Hodenpyl-to-Tippy section is the trophy-brown gem of the Manistee that doesn't see salmon crowds. Float in drift boat."
+      },
+      {
+        "title": "Hex hatch night fishing",
+        "target": "Brown trout",
+        "when": "Late June through mid-July",
+        "technique": "Size 6 Hex dries",
+        "where": "Silt-bottom slow stretches"
+      }
+    ],
+    "access": [
+      "Hodenpyl Dam",
+      "Yellow Trees",
+      "Pine Creek",
+      "Tippy Pond head"
+    ],
+    "regulations": "Wild trout management; gear restrictions in select stretches.",
+    "notes": "The \"in-between\" stretch of the Manistee — wild-trout water that's neither the Upper (Cameron Bridge stretch) nor the salmon-zone Lower (Tippy + below). Trophy quality."
+  },
+  {
+    "id": "mi-river-bear",
+    "name": "Bear River",
+    "state": "MI",
+    "region": "NLP wild-trout rivers",
+    "type": "great-lake-trib",
+    "county": "Emmet",
+    "river": "Bear River",
+    "signatureSpecies": "Brown trout, steelhead",
+    "species": [
+      {
+        "name": "Brown trout",
+        "importance": "strong",
+        "size": "10-16 in"
+      },
+      {
+        "name": "Steelhead",
+        "importance": "strong",
+        "size": "6-12 lb",
+        "notes": "Petoskey-area run."
+      },
+      {
+        "name": "Brook trout",
+        "importance": "good",
+        "notes": "Headwaters."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Steelhead through Petoskey",
+        "target": "Steelhead",
+        "when": "October-April",
+        "technique": "Float-rig + small streamers",
+        "where": "Through downtown Petoskey to Little Traverse Bay"
+      }
+    ],
+    "access": [
+      "Bear River Greenway (Petoskey)",
+      "Mouth at Little Traverse Bay"
+    ],
+    "notes": "Urban steelhead — flows through downtown Petoskey to Little Traverse Bay."
+  },
+  {
+    "id": "mi-river-crystal",
+    "name": "Crystal River (Glen Arbor)",
+    "state": "MI",
+    "region": "NLP wild-trout rivers",
+    "type": "river",
+    "county": "Leelanau",
+    "river": "Crystal River",
+    "signatureSpecies": "Brook trout",
+    "species": [
+      {
+        "name": "Brook trout",
+        "importance": "signature",
+        "size": "7-10 in",
+        "notes": "Tiny pristine stream — sight-fishing for wild brookies."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Sight-fish small brookies",
+        "target": "Brook trout",
+        "when": "May-September",
+        "technique": "Small dries (#16-18 Adams, Royal Wulff)",
+        "where": "Throughout — short casts, stealth"
+      }
+    ],
+    "access": [
+      "Glen Arbor",
+      "Sleeping Bear Dunes National Lakeshore"
+    ],
+    "notes": "Inside Sleeping Bear Dunes National Lakeshore. Drains Glen Lake to Lake Michigan."
+  },
+  {
+    "id": "mi-river-pine-manistee-trib",
+    "name": "Pine River (Manistee tributary)",
+    "state": "MI",
+    "region": "NLP wild-trout rivers",
+    "type": "river",
+    "county": "Wexford / Manistee",
+    "river": "Pine River",
+    "signatureSpecies": "Brown trout, rainbow trout",
+    "species": [
+      {
+        "name": "Brown trout",
+        "importance": "signature",
+        "size": "10-16 in"
+      },
+      {
+        "name": "Rainbow trout",
+        "importance": "strong",
+        "size": "10-14 in"
+      },
+      {
+        "name": "Brook trout",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Pine River wild-trout wading",
+        "target": "Brown + rainbow trout",
+        "when": "May-October",
+        "technique": "Dry-fly + small streamers",
+        "where": "Throughout",
+        "details": "Designated Wild + Scenic River. Excellent paddling water."
+      }
+    ],
+    "access": [
+      "Edgetts Bridge",
+      "Lincoln Bridge",
+      "Peterson Bridge"
+    ],
+    "regulations": "Wild + Scenic designation. Gear restrictions on stretches.",
+    "notes": "Designated MI Wild + Scenic River. Joins the Big Manistee at Tippy Pond."
+  },
+  {
+    "id": "mi-cass-lake-oakland",
+    "name": "Cass Lake (Oakland County)",
+    "state": "MI",
+    "region": "SE Michigan metro lakes",
+    "type": "natural-lake",
+    "county": "Oakland",
+    "acres": 1280,
+    "maxDepthFt": 123,
+    "lat": 42.61,
+    "lng": -83.36,
+    "signatureSpecies": "Smallmouth bass, walleye, muskie",
+    "species": [
+      {
+        "name": "Smallmouth bass",
+        "importance": "signature",
+        "size": "2-4 lb"
+      },
+      {
+        "name": "Walleye",
+        "importance": "strong",
+        "size": "14-20 in"
+      },
+      {
+        "name": "Muskellunge",
+        "importance": "good",
+        "size": "36-44 in",
+        "notes": "IDNR stocked."
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "strong"
+      },
+      {
+        "name": "Yellow perch",
+        "importance": "good"
+      },
+      {
+        "name": "Pike",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Smallmouth on deep clear structure",
+        "target": "Smallmouth bass",
+        "when": "June-October",
+        "technique": "Drop-shot, Ned, tubes",
+        "where": "Rocky humps + dropoffs in the deep basin"
+      }
+    ],
+    "access": [
+      "Dodge Brothers State Park",
+      "Cass Lake Public Access"
+    ],
+    "notes": "Largest of the Oakland County chain lakes. Deep (123 ft) glacial basin."
+  },
+  {
+    "id": "mi-orchard-lake",
+    "name": "Orchard Lake",
+    "state": "MI",
+    "region": "SE Michigan metro lakes",
+    "type": "natural-lake",
+    "county": "Oakland",
+    "acres": 795,
+    "maxDepthFt": 110,
+    "signatureSpecies": "Smallmouth bass, walleye, perch",
+    "species": [
+      {
+        "name": "Smallmouth bass",
+        "importance": "strong",
+        "size": "2-4 lb"
+      },
+      {
+        "name": "Walleye",
+        "importance": "strong",
+        "size": "14-20 in"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Yellow perch",
+        "importance": "strong"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Walleye trolling cabbage edges",
+        "target": "Walleye",
+        "when": "May-October",
+        "technique": "Crawler harnesses + jig + minnow",
+        "where": "Cabbage edges 10-16 ft"
+      }
+    ],
+    "access": [
+      "Orchard Lake Public Access"
+    ],
+    "notes": "Twin to Cass Lake — connected via channel. Deep clear suburban water."
+  },
+  {
+    "id": "mi-wixom-lake",
+    "name": "Wixom Lake",
+    "state": "MI",
+    "region": "SE Michigan metro lakes",
+    "type": "reservoir",
+    "county": "Gladwin / Midland",
+    "acres": 1980,
+    "maxDepthFt": 35,
+    "signatureSpecies": "Largemouth bass, walleye, crappie",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "signature",
+        "size": "2-4 lb"
+      },
+      {
+        "name": "Walleye",
+        "importance": "strong",
+        "size": "14-20 in"
+      },
+      {
+        "name": "Crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "strong"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "good"
+      },
+      {
+        "name": "Northern pike",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Largemouth on pad edges",
+        "target": "Largemouth bass",
+        "when": "May-September",
+        "technique": "Frogs, senkos, swim jigs",
+        "where": "Pad fields + dock corners"
+      }
+    ],
+    "access": [
+      "Wixom Lake Marina"
+    ],
+    "notes": "Tittabawassee River impoundment. 2020 dam failure (Edenville Dam) drained the lake; rebuilding underway."
+  },
+  {
+    "id": "mi-devils-lake",
+    "name": "Devils Lake",
+    "state": "MI",
+    "region": "SE Michigan metro lakes",
+    "type": "natural-lake",
+    "county": "Lenawee",
+    "acres": 1330,
+    "maxDepthFt": 65,
+    "signatureSpecies": "Bluegill, largemouth bass, walleye",
+    "species": [
+      {
+        "name": "Bluegill",
+        "importance": "signature",
+        "size": "7-9 in"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong",
+        "size": "2-4 lb"
+      },
+      {
+        "name": "Walleye",
+        "importance": "strong",
+        "size": "14-20 in",
+        "notes": "IDNR-stocked."
+      },
+      {
+        "name": "Crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Bluegill on spawning beds",
+        "target": "Bluegill",
+        "when": "May-June",
+        "technique": "Wax worm under bobber; small jigs",
+        "where": "Sand/gravel shoreline coves"
+      }
+    ],
+    "access": [
+      "Devils Lake Public Access"
+    ],
+    "notes": "Irish Hills classic. Suburban Detroit / Toledo / Ann Arbor weekend destination."
+  },
+  {
+    "id": "mi-wamplers-lake",
+    "name": "Wamplers Lake",
+    "state": "MI",
+    "region": "SE Michigan metro lakes",
+    "type": "natural-lake",
+    "county": "Lenawee / Jackson",
+    "acres": 770,
+    "maxDepthFt": 75,
+    "signatureSpecies": "Bluegill, largemouth bass, walleye",
+    "species": [
+      {
+        "name": "Bluegill",
+        "importance": "signature"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Walleye",
+        "importance": "strong",
+        "size": "14-20 in"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "good"
+      },
+      {
+        "name": "Crappie",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Walleye on rocky points",
+        "target": "Walleye",
+        "when": "April-October",
+        "technique": "Crawler harnesses; jig + minnow",
+        "where": "Main-lake points"
+      }
+    ],
+    "access": [
+      "W. J. Hayes State Park",
+      "Public Access"
+    ],
+    "notes": "Irish Hills State Park lake. Deep clear glacial basin."
+  },
+  {
+    "id": "mi-whitmore-lake",
+    "name": "Whitmore Lake",
+    "state": "MI",
+    "region": "SE Michigan metro lakes",
+    "type": "natural-lake",
+    "county": "Livingston / Washtenaw",
+    "acres": 685,
+    "maxDepthFt": 70,
+    "signatureSpecies": "Walleye, bluegill, smallmouth bass",
+    "species": [
+      {
+        "name": "Walleye",
+        "importance": "strong",
+        "size": "14-20 in",
+        "notes": "IDNR stocked."
+      },
+      {
+        "name": "Bluegill",
+        "importance": "strong"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Northern pike",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Walleye + smallmouth on humps",
+        "target": "Walleye + smallmouth",
+        "when": "May-October",
+        "technique": "Jig + minnow",
+        "where": "Main-lake humps"
+      }
+    ],
+    "access": [
+      "Whitmore Lake Public Access"
+    ],
+    "notes": "Between Ann Arbor + Brighton. Suburban multi-species lake."
+  },
+  {
+    "id": "mi-pinckney-chain",
+    "name": "Pinckney Recreation Area Chain",
+    "state": "MI",
+    "region": "SE Michigan metro lakes",
+    "type": "natural-lake",
+    "county": "Livingston / Washtenaw",
+    "acres": 1000,
+    "maxDepthFt": 60,
+    "signatureSpecies": "Largemouth bass, bluegill, pike",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "strong"
+      },
+      {
+        "name": "Northern pike",
+        "importance": "strong"
+      },
+      {
+        "name": "Crappie",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Chain lake largemouth + pike",
+        "target": "Largemouth + pike",
+        "when": "May-October",
+        "technique": "Senkos, spinnerbaits, in-line spinners",
+        "where": "Pad edges + channel connections"
+      }
+    ],
+    "access": [
+      "Pinckney Recreation Area entrances"
+    ],
+    "notes": "Bruin + Patterson + Hi-Land + Half Moon + Cedar + Watson + Blind chain. Pinckney SRA, electric-motor-only sections."
+  },
+  {
+    "id": "mi-walled-lake",
+    "name": "Walled Lake",
+    "state": "MI",
+    "region": "SE Michigan metro lakes",
+    "type": "natural-lake",
+    "county": "Oakland",
+    "acres": 645,
+    "maxDepthFt": 65,
+    "signatureSpecies": "Largemouth bass, bluegill",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "strong"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "good"
+      },
+      {
+        "name": "Northern pike",
+        "importance": "good"
+      },
+      {
+        "name": "Yellow perch",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Dock-corner largemouth",
+        "target": "Largemouth bass",
+        "when": "May-September",
+        "technique": "Senkos, jig + craw under docks",
+        "where": "Private dock concentrations around the entire shoreline"
+      }
+    ],
+    "access": [
+      "Walled Lake City Park"
+    ],
+    "notes": "Heavily-developed Oakland County lake. Dock-corner bass culture."
+  },
+  {
+    "id": "mi-kent-lake",
+    "name": "Kent Lake (Kensington Metropark)",
+    "state": "MI",
+    "region": "SE Michigan metro lakes",
+    "type": "reservoir",
+    "county": "Livingston / Oakland",
+    "acres": 1200,
+    "maxDepthFt": 45,
+    "signatureSpecies": "Largemouth bass, pike, walleye, panfish",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Northern pike",
+        "importance": "strong"
+      },
+      {
+        "name": "Walleye",
+        "importance": "good",
+        "notes": "IDNR-stocked."
+      },
+      {
+        "name": "Bluegill",
+        "importance": "strong"
+      },
+      {
+        "name": "Crappie",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Metropark multi-species access",
+        "target": "All",
+        "when": "Year-round",
+        "technique": "Light tackle + bobber + worm baits",
+        "where": "Kensington Metropark public access"
+      }
+    ],
+    "access": [
+      "Kensington Metropark"
+    ],
+    "notes": "Huron River impoundment in Kensington Metropark. SE MI's most-visited public lake."
+  },
+  {
+    "id": "mi-river-huron-se",
+    "name": "Huron River (SE Michigan)",
+    "state": "MI",
+    "region": "SE Michigan metro waters",
+    "type": "river",
+    "county": "Livingston / Washtenaw / Wayne",
+    "river": "Huron River",
+    "lat": 42.27,
+    "lng": -83.74,
+    "signatureSpecies": "Smallmouth bass, largemouth bass, channel catfish, walleye",
+    "species": [
+      {
+        "name": "Smallmouth bass",
+        "importance": "signature",
+        "size": "1-3 lb, 4+ possible",
+        "notes": "Ann Arbor + Ypsilanti stretch is genuinely good smallmouth water."
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Walleye",
+        "importance": "good",
+        "size": "14-22 in",
+        "notes": "Below Ford Lake + French Landing dams."
+      },
+      {
+        "name": "Rock bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Northern pike",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Urban smallmouth wading",
+        "target": "Smallmouth bass",
+        "when": "May-October",
+        "technique": "Tubes, Ned, in-line spinners; topwater poppers at dawn",
+        "where": "Below the Argo Dam + through Ann Arbor; Gallup Park stretch",
+        "details": "The Huron through Ann Arbor is one of the best urban smallmouth fisheries in MI. Schultz Outfitters' Single Fly Cray was developed for this water."
+      }
+    ],
+    "access": [
+      "Argo Park (Ann Arbor)",
+      "Gallup Park",
+      "Geddes Pond",
+      "Ypsilanti Riverside Park",
+      "Belleville Lake"
+    ],
+    "notes": "Schultz Outfitters' home water — Mike Schultz developed Single Fly Cray + McLovin here. Premier urban smallmouth + bass + carp + pike."
+  },
+  {
+    "id": "mi-river-raisin",
+    "name": "River Raisin",
+    "state": "MI",
+    "region": "SE Michigan metro waters",
+    "type": "great-lake-trib",
+    "county": "Lenawee / Monroe",
+    "river": "River Raisin",
+    "signatureSpecies": "Walleye, smallmouth bass, channel catfish",
+    "species": [
+      {
+        "name": "Walleye",
+        "importance": "signature",
+        "size": "14-22 in",
+        "notes": "Spring run from Lake Erie."
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "good"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "White bass",
+        "importance": "good",
+        "notes": "Spring run."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Spring walleye + white bass run",
+        "target": "Walleye, white bass",
+        "when": "March-April",
+        "technique": "Jig + minnow at 1/4 oz; small swimbaits",
+        "where": "Below Monroe + Dundee dams"
+      }
+    ],
+    "access": [
+      "Monroe",
+      "Dundee",
+      "Adrian"
+    ],
+    "notes": "Drains to Lake Erie at Monroe. Lake Erie strain walleye spring run."
+  },
+  {
+    "id": "mi-lake-erie-mi",
+    "name": "Lake Erie (Michigan waters)",
+    "state": "MI",
+    "region": "SE Michigan + Lake Erie",
+    "type": "great-lake",
+    "county": "Monroe",
+    "lat": 41.85,
+    "lng": -83.2,
+    "signatureSpecies": "Walleye, yellow perch, smallmouth bass",
+    "species": [
+      {
+        "name": "Walleye",
+        "importance": "signature",
+        "size": "15-28 in, 10+ lb possible",
+        "notes": "Lake Erie is the walleye capital of the world. MI portion is the western basin walleye gold mine."
+      },
+      {
+        "name": "Yellow perch",
+        "importance": "signature",
+        "size": "8-13 in, jumbo possible"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "strong",
+        "size": "2-5 lb"
+      },
+      {
+        "name": "White bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Northern pike",
+        "importance": "good"
+      },
+      {
+        "name": "Lake sturgeon",
+        "importance": "present",
+        "notes": "Catch + release."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Western Basin walleye trolling",
+        "target": "Walleye",
+        "when": "May-October",
+        "technique": "Crawler harnesses on lead-core / planer boards; trolling Reef Runners + Husky Jerks; spring jigging",
+        "where": "Western Basin reefs off Monroe + Sterling State Park; Brest Bay",
+        "details": "Lake Erie walleye charter scene is the biggest in the Great Lakes. 50+ fish days are normal in peak summer. MI waters share with OH + Ontario."
+      },
+      {
+        "title": "Jumbo perch summer drift",
+        "target": "Yellow perch",
+        "when": "June-October",
+        "technique": "Crappie minnow + emerald shiners on perch rigs",
+        "where": "Mid-basin gravel + sand humps"
+      }
+    ],
+    "access": [
+      "Sterling State Park",
+      "Bolles Harbor",
+      "Monroe",
+      "Detroit Beach"
+    ],
+    "managementProgram": [
+      "Tri-state + Ontario cooperative walleye + perch management"
+    ],
+    "notes": "The walleye capital of the world. MI portion is the SW corner of the western basin. Charter scene + amateur scene both huge."
+  },
+  {
+    "id": "mi-river-ontonagon",
+    "name": "Ontonagon River",
+    "state": "MI",
+    "region": "UP rivers — Lake Superior tribs",
+    "type": "great-lake-trib",
+    "county": "Ontonagon",
+    "river": "Ontonagon River",
+    "signatureSpecies": "Brook trout, brown trout, walleye",
+    "species": [
+      {
+        "name": "Brook trout",
+        "importance": "signature",
+        "size": "7-12 in"
+      },
+      {
+        "name": "Brown trout",
+        "importance": "strong"
+      },
+      {
+        "name": "Walleye",
+        "importance": "good",
+        "size": "Lower river."
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "good"
+      },
+      {
+        "name": "Northern pike",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "East Branch + Middle Branch wild brookies",
+        "target": "Brook trout",
+        "when": "May-September",
+        "technique": "Small dries + small streamers",
+        "where": "East + Middle + South Branch above the main river"
+      }
+    ],
+    "access": [
+      "Porcupine Mountains",
+      "Bergland",
+      "Rockland"
+    ],
+    "notes": "Four branches drain the western UP. Wilderness river through the Porkies. Drains to Lake Superior at Ontonagon."
+  },
+  {
+    "id": "mi-river-presque-isle",
+    "name": "Presque Isle River",
+    "state": "MI",
+    "region": "UP rivers — Lake Superior tribs",
+    "type": "great-lake-trib",
+    "county": "Gogebic / Ontonagon",
+    "river": "Presque Isle River",
+    "signatureSpecies": "Brook trout, steelhead",
+    "species": [
+      {
+        "name": "Brook trout",
+        "importance": "signature",
+        "size": "7-11 in"
+      },
+      {
+        "name": "Steelhead",
+        "importance": "strong",
+        "size": "6-10 lb"
+      },
+      {
+        "name": "Brown trout",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Wilderness brookie wading",
+        "target": "Brook trout",
+        "when": "May-September",
+        "technique": "Small dries",
+        "where": "Through Porcupine Mountains Wilderness"
+      }
+    ],
+    "access": [
+      "Porcupine Mountains Wilderness State Park"
+    ],
+    "notes": "Flows through Porkies Wilderness — Manabezho Falls + Manido Falls. Pristine character."
+  },
+  {
+    "id": "mi-river-yellow-dog",
+    "name": "Yellow Dog River",
+    "state": "MI",
+    "region": "UP rivers — Lake Superior tribs",
+    "type": "river",
+    "county": "Marquette",
+    "river": "Yellow Dog River",
+    "signatureSpecies": "Brook trout",
+    "species": [
+      {
+        "name": "Brook trout",
+        "importance": "signature",
+        "size": "7-11 in, occasional 14+",
+        "notes": "Iconic UP brookie water."
+      },
+      {
+        "name": "Brown trout",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Headwater brookie sight-fishing",
+        "target": "Brook trout",
+        "when": "May-September",
+        "technique": "Adams (#14-16), Royal Wulff, small streamers",
+        "where": "Upper river above the falls"
+      }
+    ],
+    "access": [
+      "Big Pup Falls trailhead",
+      "McCormick Wilderness"
+    ],
+    "notes": "Drains the McCormick Wilderness. Wild + pristine. McCormick is the closest thing to a designated wilderness in the LP and UP — no motorized vehicles."
+  },
+  {
+    "id": "mi-river-salmon-trout",
+    "name": "Salmon Trout River",
+    "state": "MI",
+    "region": "UP rivers — Lake Superior tribs",
+    "type": "great-lake-trib",
+    "county": "Marquette",
+    "river": "Salmon Trout River",
+    "signatureSpecies": "Coaster brook trout, brown trout, steelhead",
+    "species": [
+      {
+        "name": "Coaster brook trout",
+        "importance": "signature",
+        "size": "2-5 lb",
+        "notes": "The Salmon Trout is the LAST native coaster brook trout river in the lower 48. Critical conservation status."
+      },
+      {
+        "name": "Brown trout",
+        "importance": "strong"
+      },
+      {
+        "name": "Steelhead",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Coaster brook trout — conservation status",
+        "target": "Coaster brook trout",
+        "when": "September-October (run from Lake Superior)",
+        "technique": "Small streamers (black-nose dace, sculpins); small spinners",
+        "where": "Lower river up from Lake Superior",
+        "details": "Coaster brook trout have nearly disappeared from Lake Superior. The Salmon Trout River + a few Canadian tribs are the last self-sustaining populations. CATCH + RELEASE. Use barbless. Keep them wet."
+      }
+    ],
+    "access": [
+      "Limited public access; Huron Mountain Club controls much shoreline"
+    ],
+    "regulations": "Strict catch-and-release for coaster brook trout. Designated wild-trout stream.",
+    "managementProgram": [
+      "MI DNR coaster brook trout conservation",
+      "Huron Mountain Club private stewardship"
+    ],
+    "notes": "Coaster brook trout last stand. Access is heavily restricted because much of the watershed is private (Huron Mountain Club). One of the most important conservation fisheries in the Great Lakes basin."
+  },
+  {
+    "id": "mi-river-big-garlic",
+    "name": "Big Garlic River",
+    "state": "MI",
+    "region": "UP rivers — Lake Superior tribs",
+    "type": "great-lake-trib",
+    "county": "Marquette",
+    "river": "Big Garlic River",
+    "signatureSpecies": "Brook trout, steelhead",
+    "species": [
+      {
+        "name": "Brook trout",
+        "importance": "signature",
+        "size": "7-11 in"
+      },
+      {
+        "name": "Steelhead",
+        "importance": "strong",
+        "size": "6-10 lb"
+      },
+      {
+        "name": "Brown trout",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Spring steelhead",
+        "target": "Steelhead",
+        "when": "April-May",
+        "technique": "Float-rig + small streamers",
+        "where": "Lower river"
+      }
+    ],
+    "access": [
+      "Lake Superior mouth area"
+    ],
+    "notes": "Lake Superior trib north of Marquette. Smaller + intimate steelhead trib."
+  },
+  {
+    "id": "mi-lake-michigamme",
+    "name": "Lake Michigamme",
+    "state": "MI",
+    "region": "UP inland lakes",
+    "type": "natural-lake",
+    "county": "Marquette / Baraga",
+    "acres": 4360,
+    "maxDepthFt": 70,
+    "signatureSpecies": "Walleye, smallmouth bass, muskie, pike",
+    "species": [
+      {
+        "name": "Walleye",
+        "importance": "signature",
+        "size": "14-22 in"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "strong",
+        "size": "2-4 lb"
+      },
+      {
+        "name": "Muskellunge",
+        "importance": "strong",
+        "size": "36-44 in",
+        "notes": "IDNR-stocked."
+      },
+      {
+        "name": "Northern pike",
+        "importance": "strong"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "good"
+      },
+      {
+        "name": "Yellow perch",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Multi-species cabbage edges",
+        "target": "Walleye + pike + musky",
+        "when": "May-October",
+        "technique": "Crawler harnesses for walleye; bucktails for musky; in-line spinners for pike",
+        "where": "Cabbage edges throughout"
+      }
+    ],
+    "access": [
+      "Van Riper State Park",
+      "Michigamme"
+    ],
+    "notes": "Western UP's premier multi-species lake. Van Riper State Park access. Drains via the Michigamme River."
+  },
+  {
+    "id": "mi-manistique-lakes",
+    "name": "Manistique Lake System (Big + South + Round)",
+    "state": "MI",
+    "region": "UP inland lakes",
+    "type": "natural-lake",
+    "county": "Luce / Mackinac",
+    "acres": 16850,
+    "maxDepthFt": 25,
+    "lat": 46.32,
+    "lng": -85.85,
+    "signatureSpecies": "Walleye, smallmouth bass, muskie, perch",
+    "species": [
+      {
+        "name": "Walleye",
+        "importance": "signature",
+        "size": "14-22 in"
+      },
+      {
+        "name": "Muskellunge",
+        "importance": "strong",
+        "size": "36-46 in"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Northern pike",
+        "importance": "strong"
+      },
+      {
+        "name": "Yellow perch",
+        "importance": "strong"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Shallow weed-flat walleye",
+        "target": "Walleye",
+        "when": "May-October",
+        "technique": "Crawler harnesses; jig + minnow at dusk",
+        "where": "Weed edges throughout the chain"
+      }
+    ],
+    "access": [
+      "Curtis",
+      "Big Manistique Lake Public Access"
+    ],
+    "notes": "Three connected UP lakes (Big Manistique + South + Round). Big Manistique is the largest UP inland lake at 10,000+ acres."
+  },
+  {
+    "id": "mi-bond-falls-flowage",
+    "name": "Bond Falls Flowage",
+    "state": "MI",
+    "region": "UP inland lakes",
+    "type": "reservoir",
+    "county": "Ontonagon",
+    "acres": 2120,
+    "maxDepthFt": 30,
+    "signatureSpecies": "Walleye, muskie, pike",
+    "species": [
+      {
+        "name": "Walleye",
+        "importance": "signature",
+        "size": "14-20 in"
+      },
+      {
+        "name": "Muskellunge",
+        "importance": "strong",
+        "size": "36-44 in",
+        "notes": "IDNR-stocked."
+      },
+      {
+        "name": "Northern pike",
+        "importance": "strong"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "good"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Musky over flooded timber",
+        "target": "Muskellunge",
+        "when": "May-November",
+        "technique": "Bucktails, gliders, large rubber",
+        "where": "Flooded timber + the main channel"
+      }
+    ],
+    "access": [
+      "Bond Falls Recreation Area"
+    ],
+    "notes": "Middle Branch Ontonagon River impoundment. Tannin-stained water + UP wilderness character."
+  },
+  {
+    "id": "mi-lake-gogebic-already",
+    "name": "Lake of the Clouds (Porcupine Mountains)",
+    "state": "MI",
+    "region": "UP inland lakes",
+    "type": "natural-lake",
+    "county": "Ontonagon",
+    "acres": 133,
+    "maxDepthFt": 25,
+    "signatureSpecies": "Brook trout",
+    "species": [
+      {
+        "name": "Brook trout",
+        "importance": "signature",
+        "size": "8-12 in"
+      },
+      {
+        "name": "Northern pike",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Hike-in brookies",
+        "target": "Brook trout",
+        "when": "June-September",
+        "technique": "Small streamers + dries",
+        "where": "Hike-in only — Porcupine Mountains Wilderness"
+      }
+    ],
+    "access": [
+      "Hike-in via Porcupine Mountains Wilderness"
+    ],
+    "notes": "Iconic Porcupine Mountains lake — the scenic overlook is one of the most-photographed in MI. Hike-in fishery."
+  },
+  {
+    "id": "mi-brevoort-lake",
+    "name": "Brevoort Lake",
+    "state": "MI",
+    "region": "UP inland lakes",
+    "type": "natural-lake",
+    "county": "Mackinac",
+    "acres": 4230,
+    "maxDepthFt": 30,
+    "signatureSpecies": "Walleye, smallmouth bass, perch",
+    "species": [
+      {
+        "name": "Walleye",
+        "importance": "signature",
+        "size": "14-22 in"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Yellow perch",
+        "importance": "strong"
+      },
+      {
+        "name": "Northern pike",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Walleye on weed flats",
+        "target": "Walleye",
+        "when": "May-October",
+        "technique": "Crawler harnesses",
+        "where": "Weed flats"
+      }
+    ],
+    "access": [
+      "Brevoort Lake Campground (USFS)",
+      "Public Access"
+    ],
+    "notes": "East-central UP lake near St. Ignace. Hiawatha National Forest access."
+  },
+  {
+    "id": "mi-river-anna",
+    "name": "Anna River",
+    "state": "MI",
+    "region": "UP rivers — Lake Superior tribs",
+    "type": "great-lake-trib",
+    "county": "Alger",
+    "river": "Anna River",
+    "signatureSpecies": "Steelhead, coho salmon, brook trout",
+    "species": [
+      {
+        "name": "Steelhead",
+        "importance": "signature",
+        "size": "6-10 lb"
+      },
+      {
+        "name": "Coho salmon",
+        "importance": "strong",
+        "size": "4-8 lb",
+        "notes": "Fall run."
+      },
+      {
+        "name": "Brook trout",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Fall coho run at Munising mouth",
+        "target": "Coho salmon",
+        "when": "September-October",
+        "technique": "Spawn sacs + spinners",
+        "where": "Mouth at Munising Bay"
+      }
+    ],
+    "access": [
+      "Munising",
+      "Mouth at Lake Superior"
+    ],
+    "notes": "Small UP Lake Superior trib at Munising. Pictured Rocks area."
+  },
+  {
+    "id": "mi-river-carp-up",
+    "name": "Carp River (UP, Marquette)",
+    "state": "MI",
+    "region": "UP rivers — Lake Superior tribs",
+    "type": "great-lake-trib",
+    "county": "Marquette",
+    "river": "Carp River",
+    "signatureSpecies": "Steelhead, brook trout",
+    "species": [
+      {
+        "name": "Steelhead",
+        "importance": "signature",
+        "size": "6-10 lb"
+      },
+      {
+        "name": "Brook trout",
+        "importance": "strong"
+      },
+      {
+        "name": "Coho salmon",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Steelhead near Marquette",
+        "target": "Steelhead",
+        "when": "October-April",
+        "technique": "Float-rig + small streamers",
+        "where": "Lower river up from Lake Superior"
+      }
+    ],
+    "access": [
+      "Marquette",
+      "Carp River mouth"
+    ],
+    "notes": "Marquette's home Lake Superior trib. Confusingly-named — there are multiple Carp Rivers in MI."
+  },
+  {
+    "id": "mi-muskegon-lake",
+    "name": "Muskegon Lake",
+    "state": "MI",
+    "region": "West MI Lake Michigan harbors",
+    "type": "great-lake-trib",
+    "county": "Muskegon",
+    "acres": 4150,
+    "maxDepthFt": 75,
+    "lat": 43.22,
+    "lng": -86.3,
+    "signatureSpecies": "Walleye, smallmouth bass, salmon",
+    "species": [
+      {
+        "name": "Walleye",
+        "importance": "signature",
+        "size": "14-22 in"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "strong",
+        "size": "2-4 lb"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Northern pike",
+        "importance": "strong"
+      },
+      {
+        "name": "Yellow perch",
+        "importance": "strong"
+      },
+      {
+        "name": "King salmon",
+        "importance": "good",
+        "notes": "Fall stagers + spring near-shore."
+      },
+      {
+        "name": "Brown trout",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Multi-species harbor fishery",
+        "target": "Walleye + smallmouth + pike",
+        "when": "May-October",
+        "technique": "Crawler harnesses, jerkbaits, in-line spinners",
+        "where": "Old industrial pier remnants + main basin"
+      }
+    ],
+    "access": [
+      "Muskegon Lake Public Access",
+      "Pere Marquette Park"
+    ],
+    "notes": "Muskegon River drains here. Direct connection to Lake Michigan via the channel. Strong harbor + lake fishery."
+  },
+  {
+    "id": "mi-white-lake",
+    "name": "White Lake",
+    "state": "MI",
+    "region": "West MI Lake Michigan harbors",
+    "type": "great-lake-trib",
+    "county": "Muskegon",
+    "acres": 2570,
+    "maxDepthFt": 90,
+    "signatureSpecies": "Walleye, smallmouth bass, panfish",
+    "species": [
+      {
+        "name": "Walleye",
+        "importance": "strong"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "strong"
+      },
+      {
+        "name": "Northern pike",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Multi-species walleye + bass",
+        "target": "Walleye + bass",
+        "when": "May-October",
+        "technique": "Crawler harnesses + jerkbaits",
+        "where": "Main basin + weed edges"
+      }
+    ],
+    "access": [
+      "White Lake Public Access",
+      "Whitehall"
+    ],
+    "notes": "White River drains here. Connected to Lake Michigan via channel."
+  },
+  {
+    "id": "mi-mona-lake",
+    "name": "Mona Lake",
+    "state": "MI",
+    "region": "West MI Lake Michigan harbors",
+    "type": "great-lake-trib",
+    "county": "Muskegon",
+    "acres": 740,
+    "maxDepthFt": 40,
+    "signatureSpecies": "Largemouth bass, walleye, bluegill",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Walleye",
+        "importance": "good"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "strong"
+      },
+      {
+        "name": "Crappie",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Largemouth on docks",
+        "target": "Largemouth bass",
+        "when": "May-September",
+        "technique": "Senkos under docks",
+        "where": "Dock concentrations"
+      }
+    ],
+    "access": [
+      "Mona Lake Boat Launch"
+    ],
+    "notes": "Muskegon-area smaller harbor lake. Connected to Lake Michigan."
+  },
+  {
+    "id": "mi-spring-lake",
+    "name": "Spring Lake",
+    "state": "MI",
+    "region": "West MI Lake Michigan harbors",
+    "type": "great-lake-trib",
+    "county": "Ottawa",
+    "acres": 1180,
+    "maxDepthFt": 60,
+    "signatureSpecies": "Smallmouth bass, walleye, pike, panfish",
+    "species": [
+      {
+        "name": "Smallmouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Walleye",
+        "importance": "strong"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Northern pike",
+        "importance": "strong"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Smallmouth on submerged structure",
+        "target": "Smallmouth bass",
+        "when": "May-October",
+        "technique": "Drop-shot + Ned",
+        "where": "Main lake humps"
+      }
+    ],
+    "access": [
+      "Spring Lake Public Access",
+      "Mill Point Park"
+    ],
+    "notes": "Grand River backwater near Grand Haven. Connected via channel."
+  },
+  {
+    "id": "mi-hess-lake",
+    "name": "Hess Lake",
+    "state": "MI",
+    "region": "West MI inland lakes",
+    "type": "natural-lake",
+    "county": "Newaygo",
+    "acres": 760,
+    "maxDepthFt": 25,
+    "signatureSpecies": "Largemouth bass, bluegill, walleye",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "signature",
+        "size": "7-9 in"
+      },
+      {
+        "name": "Walleye",
+        "importance": "good",
+        "notes": "Stocked."
+      },
+      {
+        "name": "Crappie",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Big bluegill in cattails",
+        "target": "Bluegill",
+        "when": "May-September",
+        "technique": "Wax worm under bobber; small jigs",
+        "where": "Cattail edges + lily pads"
+      }
+    ],
+    "access": [
+      "Hess Lake Public Access"
+    ],
+    "notes": "Newaygo-area lake. Reputation for big bluegills."
+  },
+  {
+    "id": "mi-river-cass",
+    "name": "Cass River",
+    "state": "MI",
+    "region": "Saginaw Bay system",
+    "type": "river",
+    "county": "Tuscola / Sanilac",
+    "river": "Cass River",
+    "signatureSpecies": "Walleye, smallmouth bass, channel catfish",
+    "species": [
+      {
+        "name": "Walleye",
+        "importance": "signature",
+        "size": "14-22 in",
+        "notes": "Spring run from Saginaw Bay."
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "White bass",
+        "importance": "good"
+      },
+      {
+        "name": "Northern pike",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Spring walleye run",
+        "target": "Walleye",
+        "when": "March-May",
+        "technique": "Jig + minnow",
+        "where": "Below Frankenmuth + Cass City dams"
+      }
+    ],
+    "access": [
+      "Frankenmuth",
+      "Caro",
+      "Cass City"
+    ],
+    "notes": "Saginaw watershed feeder. Spring walleye run is the iconic event."
+  },
+  {
+    "id": "mi-river-shiawassee",
+    "name": "Shiawassee River",
+    "state": "MI",
+    "region": "Saginaw Bay system",
+    "type": "river",
+    "county": "Livingston / Shiawassee / Saginaw",
+    "river": "Shiawassee River",
+    "signatureSpecies": "Smallmouth bass, channel catfish, walleye",
+    "species": [
+      {
+        "name": "Smallmouth bass",
+        "importance": "signature",
+        "size": "1-3 lb",
+        "notes": "Schultz Outfitters fishes the upper Shiawassee for bass + carp + pike."
+      },
+      {
+        "name": "Walleye",
+        "importance": "strong",
+        "size": "Lower river spring run"
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "good"
+      },
+      {
+        "name": "Carp",
+        "importance": "strong",
+        "notes": "Schultz Outfitters carp water."
+      },
+      {
+        "name": "Northern pike",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Float-trip smallmouth + carp",
+        "target": "Smallmouth bass + carp",
+        "when": "May-October",
+        "technique": "Tubes + Ned for bass; Single Fly Cray + McLovin for carp",
+        "where": "Above Owosso through Byron",
+        "details": "One of Schultz Outfitters' home rivers. Same fly-on-the-water carp + smallmouth water as the Huron."
+      }
+    ],
+    "access": [
+      "Byron",
+      "Corunna",
+      "Owosso"
+    ],
+    "notes": "Schultz Outfitters carp + smallmouth water. SE MI float-trip classic."
+  },
+  {
+    "id": "mi-river-flint",
+    "name": "Flint River (MI)",
+    "state": "MI",
+    "region": "Saginaw Bay system",
+    "type": "river",
+    "county": "Genesee / Saginaw / Lapeer",
+    "river": "Flint River",
+    "signatureSpecies": "Smallmouth bass, walleye, carp",
+    "species": [
+      {
+        "name": "Smallmouth bass",
+        "importance": "signature",
+        "size": "1-3 lb"
+      },
+      {
+        "name": "Walleye",
+        "importance": "good"
+      },
+      {
+        "name": "Carp",
+        "importance": "strong",
+        "notes": "Schultz Outfitters carp water."
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "good"
+      },
+      {
+        "name": "Northern pike",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Schultz home-water smallmouth + carp",
+        "target": "Smallmouth bass + carp",
+        "when": "May-October",
+        "technique": "Tubes, Ned, in-line spinners; Single Fly Cray + McLovin for carp",
+        "where": "Above Flint city through Davison",
+        "details": "Schultz Outfitters' four-river fishing rotation includes the Flint. Strong urban smallmouth + carp."
+      }
+    ],
+    "access": [
+      "Holloway Reservoir",
+      "Genesee Recreation Area",
+      "Flushing"
+    ],
+    "notes": "SE MI Schultz-system river. Smallmouth + carp + pike rotation."
+  },
+  {
+    "id": "mi-river-au-sable-mainstem",
+    "name": "Au Sable River — Mainstem (Mio to Foote)",
+    "state": "MI",
+    "region": "NLP wild-trout rivers",
+    "type": "tailwater",
+    "county": "Oscoda / Iosco",
+    "river": "Au Sable River",
+    "signatureSpecies": "Brown trout, rainbow trout",
+    "species": [
+      {
+        "name": "Brown trout",
+        "importance": "signature",
+        "size": "12-20 in, 25+ possible",
+        "notes": "Trophy zone — the lower mainstem from Mio Dam to Foote Dam."
+      },
+      {
+        "name": "Rainbow trout",
+        "importance": "strong",
+        "size": "10-16 in"
+      },
+      {
+        "name": "Smallmouth bass",
+        "importance": "good",
+        "size": "Below the trout zone."
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Streamer trophy browns",
+        "target": "Brown trout",
+        "when": "April-November",
+        "technique": "Articulated streamers (Sex Dungeon, Mini D&D, Boogie Man)",
+        "where": "Below Mio Dam down through the impounded pondage stretches",
+        "details": "The Mio-to-Foote stretch of the Au Sable is the trophy-brown alternative to the Holy Water. Bigger water, bigger fish, fewer fly anglers (more bait + lure pressure)."
+      },
+      {
+        "title": "Hex hatch night fishing",
+        "target": "Brown trout",
+        "when": "Late June through mid-July",
+        "technique": "Size 6 Hex dries",
+        "where": "Silt-bottom holes"
+      }
+    ],
+    "access": [
+      "Mio Dam",
+      "Comins Flats",
+      "McKinley Bridge",
+      "Cooke Dam",
+      "Five Channels"
+    ],
+    "notes": "The \"below Mio\" stretch is technically still the Au Sable mainstem. Series of small dams (Mio, Alcona, Loud, Five Channels, Cooke, Foote) — wider + slower than the Holy Water."
+  },
+  {
+    "id": "mi-river-grand-upper",
+    "name": "Grand River — Upper (Lansing + above)",
+    "state": "MI",
+    "region": "Southern Lower Peninsula",
+    "type": "river-segment",
+    "county": "Jackson / Eaton / Ingham",
+    "river": "Grand River",
+    "signatureSpecies": "Smallmouth bass, walleye, carp",
+    "species": [
+      {
+        "name": "Smallmouth bass",
+        "importance": "signature",
+        "size": "1-3 lb"
+      },
+      {
+        "name": "Carp",
+        "importance": "signature"
+      },
+      {
+        "name": "Walleye",
+        "importance": "strong",
+        "notes": "Below Lansing dams."
+      },
+      {
+        "name": "Channel catfish",
+        "importance": "strong"
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "good"
+      },
+      {
+        "name": "Northern pike",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Lansing-stretch smallmouth + carp",
+        "target": "Smallmouth bass + carp",
+        "when": "May-October",
+        "technique": "Tubes, Ned, in-line spinners; carp flies",
+        "where": "Through downtown Lansing + East Lansing",
+        "details": "Underrated urban smallmouth + carp through MSU's home city. Multiple low-head dams create habitat zones."
+      }
+    ],
+    "access": [
+      "North Lansing Dam",
+      "Brenke Fish Ladder (Lansing)",
+      "Red Cedar confluence",
+      "Eaton Rapids"
+    ],
+    "notes": "Upper Grand. Lansing's urban smallmouth + carp fishery. Distinct from the salmon-zone Grand below Grand Rapids."
+  },
+  {
+    "id": "mi-lake-lansing",
+    "name": "Lake Lansing",
+    "state": "MI",
+    "region": "Southern Lower Peninsula",
+    "type": "natural-lake",
+    "county": "Ingham",
+    "acres": 460,
+    "maxDepthFt": 45,
+    "signatureSpecies": "Largemouth bass, bluegill",
+    "species": [
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "strong"
+      },
+      {
+        "name": "Northern pike",
+        "importance": "good"
+      },
+      {
+        "name": "Crappie",
+        "importance": "good"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Suburban largemouth + bluegill",
+        "target": "Largemouth + bluegill",
+        "when": "May-September",
+        "technique": "Senkos for bass; wax worms for bluegill",
+        "where": "Pad edges + dock corners"
+      }
+    ],
+    "access": [
+      "Lake Lansing North + South Park"
+    ],
+    "notes": "East Lansing's home lake. MSU students fish here."
+  },
+  {
+    "id": "mi-reeds-lake",
+    "name": "Reeds Lake",
+    "state": "MI",
+    "region": "West MI inland lakes",
+    "type": "natural-lake",
+    "county": "Kent",
+    "acres": 270,
+    "maxDepthFt": 70,
+    "signatureSpecies": "Smallmouth bass, walleye, bluegill",
+    "species": [
+      {
+        "name": "Smallmouth bass",
+        "importance": "strong",
+        "size": "2-4 lb"
+      },
+      {
+        "name": "Walleye",
+        "importance": "strong",
+        "size": "14-20 in",
+        "notes": "IDNR-stocked."
+      },
+      {
+        "name": "Largemouth bass",
+        "importance": "strong"
+      },
+      {
+        "name": "Bluegill",
+        "importance": "strong"
+      }
+    ],
+    "patterns": [
+      {
+        "title": "Deep-clear smallmouth",
+        "target": "Smallmouth bass",
+        "when": "June-October",
+        "technique": "Drop-shot, Ned",
+        "where": "Deep humps + bluff edges"
+      }
+    ],
+    "access": [
+      "Manhattan Park",
+      "East Grand Rapids"
+    ],
+    "notes": "East Grand Rapids' home lake. Small + deep + clear. Premier suburban GR fishery."
   }
 ]
