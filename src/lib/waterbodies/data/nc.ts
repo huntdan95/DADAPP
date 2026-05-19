@@ -33,7 +33,7 @@ export const NC_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 6_812,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '02138520' },
     },
     species: ['Smallmouth Bass', 'Largemouth Bass', 'Walleye', 'White Bass', 'Crappie'],
     accessNotes:
@@ -49,7 +49,7 @@ export const NC_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 13_400,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '02145910' },
     },
     species: ['Largemouth Bass', 'Spotted Bass', 'Striped Bass', 'Hybrid Bass', 'Crappie', 'Catfish'],
     accessNotes:
@@ -65,7 +65,7 @@ export const NC_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 5_240,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '0212378405' },
     },
     species: ['Striped Bass', 'Largemouth Bass', 'White Perch', 'Crappie', 'Catfish'],
     accessNotes:
@@ -82,7 +82,7 @@ export const NC_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 13_900,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '02098197' },
     },
     species: ['Largemouth Bass', 'Striped Bass', 'White Perch', 'Catfish', 'Crappie'],
     accessNotes:

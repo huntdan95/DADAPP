@@ -169,7 +169,7 @@ export const AL_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 45_180,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '0234296910' },
     },
     species: ['Largemouth Bass', 'Crappie', 'Bream', 'Catfish', 'Striped Bass'],
     accessNotes:

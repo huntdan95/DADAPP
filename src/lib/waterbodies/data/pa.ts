@@ -264,7 +264,7 @@ export const PA_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 5_700,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '01428900' },
     },
     species: ['Smallmouth Bass', 'Largemouth Bass', 'Walleye', 'Lake Trout', 'Striped Bass', 'Trout'],
     accessNotes:
@@ -280,7 +280,7 @@ export const PA_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 8_300,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '01563100' },
     },
     species: ['Striped Bass', 'Lake Trout', 'Smallmouth Bass', 'Largemouth Bass', 'Trout', 'Catfish'],
     accessNotes:
@@ -297,7 +297,7 @@ export const PA_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 17_088,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '03100500' },
     },
     species: ['Walleye', 'Muskie', 'Largemouth Bass', 'Crappie', 'Bluegill', 'Catfish'],
     accessNotes:

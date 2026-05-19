@@ -182,7 +182,7 @@ export const ID_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 31_000,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '12415500' },
     },
     species: ['Chinook Salmon', 'Northern Pike', 'Smallmouth Bass', 'Largemouth Bass', 'Cutthroat Trout', 'Kokanee Salmon'],
     accessNotes:
@@ -198,7 +198,7 @@ export const ID_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 23_350,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '12393000' },
     },
     species: ['Lake Trout', 'Cutthroat Trout', 'Bull Trout', 'Kokanee Salmon'],
     accessNotes:

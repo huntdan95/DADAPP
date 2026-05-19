@@ -35,7 +35,7 @@ export const MS_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 35_000,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '07285500' },
     },
     species: ['Crappie', 'Largemouth Bass', 'White Bass', 'Catfish', 'Bream'],
     accessNotes:
@@ -83,7 +83,7 @@ export const MS_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 6_700,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '02430005' },
     },
     species: ['Largemouth Bass', 'Smallmouth Bass', 'Crappie', 'Bream', 'Catfish'],
     accessNotes:
@@ -102,7 +102,7 @@ export const MS_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 33_000,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '02485600' },
     },
     species: ['Largemouth Bass', 'Crappie', 'White Bass', 'Catfish', 'Bream'],
     accessNotes:

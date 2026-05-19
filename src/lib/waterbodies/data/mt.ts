@@ -167,7 +167,7 @@ export const MT_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 122_000,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '12371550' },
     },
     species: ['Lake Trout', 'Yellow Perch', 'Lake Whitefish', 'Northern Pike', 'Bull Trout'],
     accessNotes:
@@ -199,7 +199,7 @@ export const MT_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 3_700,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '06065500' },
     },
     species: ['Walleye', 'Rainbow Trout', 'Perch', 'Kokanee Salmon'],
     accessNotes:
@@ -215,7 +215,7 @@ export const MT_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 4_810,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '06066500' },
     },
     species: ['Walleye', 'Rainbow Trout', 'Brown Trout', 'Perch', 'Kokanee Salmon'],
     accessNotes:

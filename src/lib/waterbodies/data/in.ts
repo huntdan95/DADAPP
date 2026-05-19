@@ -108,7 +108,7 @@ export const IN_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 8_800,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '03373681' },
     },
     species: ['Largemouth Bass', 'Striped Bass', 'White Bass', 'Crappie', 'Bluegill'],
     accessNotes:
@@ -124,7 +124,7 @@ export const IN_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 3_180,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '03327000' },
     },
     species: ['Walleye', 'Largemouth Bass', 'Smallmouth Bass', 'White Bass', 'Crappie', 'Catfish'],
     accessNotes:
@@ -140,7 +140,7 @@ export const IN_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 2_855,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '03324500' },
     },
     species: ['Walleye', 'Largemouth Bass', 'Crappie', 'Catfish', 'Bluegill'],
     accessNotes:
@@ -156,7 +156,7 @@ export const IN_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 5_260,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '03275990' },
     },
     species: ['Striped Bass', 'Largemouth Bass', 'Smallmouth Bass', 'White Bass', 'Crappie'],
     accessNotes:
@@ -173,7 +173,7 @@ export const IN_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 2_060,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '03340870' },
     },
     species: ['Largemouth Bass', 'Striped Bass', 'White Bass', 'Crappie', 'Catfish'],
     accessNotes:
@@ -191,7 +191,7 @@ export const IN_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 3_060,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '03331010' },
     },
     species: ['Largemouth Bass', 'Smallmouth Bass', 'Walleye', 'Northern Pike', 'Yellow Perch', 'Bluegill', 'Crappie'],
     accessNotes:
@@ -207,7 +207,7 @@ export const IN_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 1_854,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '03331440' },
     },
     species: ['Largemouth Bass', 'Smallmouth Bass', 'Walleye', 'Yellow Perch', 'Bluegill'],
     accessNotes:

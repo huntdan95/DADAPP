@@ -230,7 +230,7 @@ export const CO_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 9_180,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '382847107120401' },
     },
     species: ['Lake Trout', 'Kokanee Salmon', 'Rainbow Trout', 'Brown Trout', 'Yellow Perch'],
     accessNotes:
@@ -247,7 +247,7 @@ export const CO_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 3_233,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '09051050' },
     },
     species: ['Rainbow Trout', 'Brown Trout', 'Lake Trout', 'Kokanee Salmon', 'Arctic Char'],
     accessNotes:

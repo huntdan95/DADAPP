@@ -22,7 +22,7 @@ export const GA_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 38_000,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '02334400' },
     },
     species: ['Striped Bass', 'Spotted Bass', 'Largemouth Bass', 'Crappie', 'Bream', 'Catfish'],
     accessNotes:
@@ -59,7 +59,7 @@ export const GA_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 12_000,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '02393500' },
     },
     species: ['Striped Bass', 'Hybrid Bass', 'Spotted Bass', 'Largemouth Bass', 'Crappie', 'Catfish'],
     accessNotes:
@@ -92,7 +92,7 @@ export const GA_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 56_000,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '02187010' },
     },
     species: ['Largemouth Bass', 'Spotted Bass', 'Striped Bass', 'Hybrid Bass', 'Crappie', 'Bream'],
     accessNotes:
@@ -109,7 +109,7 @@ export const GA_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 26_650,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '02188100' },
     },
     species: ['Largemouth Bass', 'Spotted Bass', 'Striped Bass', 'Hybrid Bass', 'Crappie'],
     accessNotes:
@@ -126,7 +126,7 @@ export const GA_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 70_000,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '02193900' },
     },
     species: ['Largemouth Bass', 'Spotted Bass', 'Striped Bass', 'Hybrid Bass', 'Crappie', 'Catfish'],
     accessNotes:
@@ -142,7 +142,7 @@ export const GA_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 25_900,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '02339400' },
     },
     species: ['Largemouth Bass', 'Spotted Bass', 'Crappie', 'Hybrid Bass', 'Striped Bass'],
     accessNotes:
@@ -190,7 +190,7 @@ export const GA_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 3_220,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '02381400' },
     },
     species: ['Smallmouth Bass', 'Spotted Bass', 'Largemouth Bass', 'Walleye', 'Crappie', 'Striped Bass'],
     accessNotes:
@@ -275,7 +275,7 @@ export const GA_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 4_180,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '03550500' },
     },
     species: ['Walleye', 'Spotted Bass', 'Largemouth Bass', 'Smallmouth Bass', 'Crappie'],
     accessNotes:

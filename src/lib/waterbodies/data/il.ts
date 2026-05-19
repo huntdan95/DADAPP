@@ -84,7 +84,7 @@ export const IL_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 18_900,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '05595952' },
     },
     species: ['Largemouth Bass', 'Crappie', 'Bluegill', 'Catfish', 'White Bass'],
     accessNotes:
@@ -100,7 +100,7 @@ export const IL_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 11_100,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '05592000' },
     },
     species: ['Walleye', 'Largemouth Bass', 'White Bass', 'Crappie', 'Catfish'],
     accessNotes:
@@ -116,7 +116,7 @@ export const IL_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 26_000,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '05593000' },
     },
     species: ['White Bass', 'Largemouth Bass', 'Walleye', 'Catfish', 'Crappie', 'Bluegill'],
     accessNotes:
@@ -132,7 +132,7 @@ export const IL_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 4_232,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '05576250' },
     },
     species: ['Largemouth Bass', 'Striped Bass', 'White Bass', 'Crappie', 'Catfish'],
     accessNotes:
@@ -148,7 +148,7 @@ export const IL_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 4_900,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '05578300' },
     },
     species: ['Largemouth Bass', 'Hybrid Bass', 'White Bass', 'Crappie', 'Catfish'],
     accessNotes:

@@ -102,7 +102,7 @@ export const KY_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 8_270,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '03249498' },
     },
     species: ['Muskie', 'Largemouth Bass', 'Spotted Bass', 'Crappie', 'Bluegill'],
     accessNotes:
@@ -118,7 +118,7 @@ export const KY_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 8_210,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '03305990' },
     },
     species: ['Largemouth Bass', 'Spotted Bass', 'Crappie', 'Bluegill', 'Channel Catfish'],
     accessNotes:
@@ -134,7 +134,7 @@ export const KY_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 6_060,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '03404820' },
     },
     species: [
       'Smallmouth Bass',

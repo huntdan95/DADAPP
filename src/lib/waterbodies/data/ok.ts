@@ -12,13 +12,21 @@ export const OK_WATERBODIES: Waterbody[] = [
     name: 'Lake Texoma',
     states: ['OK', 'TX'],
     type: 'reservoir',
-    bbox: [33.78, -97.05, 34.05, -96.30],
+    // Expanded north to cover the Washita + Cumberland arms (the dam
+    // is at the south end; lake extends well into OK to the north).
+    bbox: [33.78, -97.12, 34.18, -96.28],
     centroid: { lat: 33.92, lng: -96.70 },
     surfaceAreaAcres: 89_000,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '07331500' },
     },
+    alternateLakeStations: [
+      {
+        provider: { kind: 'usgs-lake', siteId: '07331455' },
+        label: 'USGS — Lake Texoma at Cumberland Cut (OK side)',
+      },
+    ],
     species: ['Striped Bass', 'Largemouth Bass', 'Smallmouth Bass', 'White Bass', 'Catfish', 'Crappie'],
     accessNotes:
       'USACE on Red River, OK/TX border. Striped bass capital — naturally reproducing population (rare for inland waters). Live shad on downlines.',
@@ -29,12 +37,16 @@ export const OK_WATERBODIES: Waterbody[] = [
     aliases: ['Lake Eufaula OK'],
     states: ['OK'],
     type: 'reservoir',
-    bbox: [35.20, -95.85, 35.40, -95.30],
+    // Expanded south to cover the long Canadian-River + Deep-Fork
+    // southern arms (the original bbox cut off everything south of
+    // 35.20°N — the Brooken / Crowder zone). On-lake station
+    // 07244800 sits at ~35.31°N near the dam.
+    bbox: [34.95, -95.95, 35.45, -95.28],
     centroid: { lat: 35.30, lng: -95.55 },
     surfaceAreaAcres: 102_500,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '07244800' },
     },
     species: ['Largemouth Bass', 'White Bass', 'Striped Bass', 'Crappie', 'Catfish'],
     accessNotes:
@@ -45,13 +57,21 @@ export const OK_WATERBODIES: Waterbody[] = [
     name: 'Keystone Lake',
     states: ['OK'],
     type: 'reservoir',
-    bbox: [36.10, -96.55, 36.35, -96.10],
+    // Two arms: Cimarron River (NW) + Arkansas River (W). Widening
+    // the bbox slightly west + south to cover them.
+    bbox: [36.08, -96.60, 36.38, -96.10],
     centroid: { lat: 36.22, lng: -96.32 },
     surfaceAreaAcres: 26_300,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '07164200' },
     },
+    alternateLakeStations: [
+      {
+        provider: { kind: 'usgs-lake', siteId: '07153150' },
+        label: 'USGS — Keystone Lake near Cleveland (NW arm)',
+      },
+    ],
     species: ['Striped Bass', 'White Bass', 'Largemouth Bass', 'Sand Bass', 'Catfish', 'Crappie'],
     accessNotes:
       'USACE west of Tulsa on Arkansas + Cimarron. Striper + white bass schoolers. Stained heavy water.',
@@ -61,12 +81,12 @@ export const OK_WATERBODIES: Waterbody[] = [
     name: 'Skiatook Lake',
     states: ['OK'],
     type: 'reservoir',
-    bbox: [36.32, -96.18, 36.45, -95.95],
+    bbox: [36.30, -96.20, 36.48, -95.92],
     centroid: { lat: 36.38, lng: -96.06 },
     surfaceAreaAcres: 10_500,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '07177400' },
     },
     species: ['Striped Bass', 'White Bass', 'Largemouth Bass', 'Spotted Bass', 'Crappie'],
     accessNotes:
@@ -78,12 +98,12 @@ export const OK_WATERBODIES: Waterbody[] = [
     aliases: ['Tenkiller'],
     states: ['OK'],
     type: 'reservoir',
-    bbox: [35.50, -95.10, 35.75, -94.85],
+    bbox: [35.50, -95.10, 35.80, -94.83],
     centroid: { lat: 35.62, lng: -94.97 },
     surfaceAreaAcres: 12_900,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '07197500' },
     },
     species: ['Largemouth Bass', 'Smallmouth Bass', 'Spotted Bass', 'Striped Bass', 'Walleye', 'Crappie'],
     accessNotes:
@@ -95,12 +115,15 @@ export const OK_WATERBODIES: Waterbody[] = [
     aliases: ['Grand Lake', 'Pensacola Lake'],
     states: ['OK'],
     type: 'reservoir',
-    bbox: [36.40, -95.10, 36.85, -94.65],
+    // Lake runs from Pensacola Dam (Langley, ~36.47°N) north-east
+    // all the way to Twin Bridges (~36.85°N). On-lake station
+    // 07190000 sits at Langley.
+    bbox: [36.40, -95.12, 36.88, -94.62],
     centroid: { lat: 36.62, lng: -94.88 },
     surfaceAreaAcres: 46_500,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '07190000' },
     },
     species: ['Largemouth Bass', 'Spotted Bass', 'Smallmouth Bass', 'Striped Bass', 'Crappie', 'Catfish'],
     accessNotes:
@@ -111,12 +134,12 @@ export const OK_WATERBODIES: Waterbody[] = [
     name: 'Broken Bow Lake',
     states: ['OK'],
     type: 'reservoir',
-    bbox: [34.10, -94.78, 34.35, -94.55],
+    bbox: [34.08, -94.80, 34.40, -94.55],
     centroid: { lat: 34.22, lng: -94.66 },
     surfaceAreaAcres: 14_220,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '07338900' },
     },
     species: ['Largemouth Bass', 'Smallmouth Bass', 'Spotted Bass', 'Striped Bass', 'Catfish', 'Bream'],
     accessNotes:
@@ -127,12 +150,12 @@ export const OK_WATERBODIES: Waterbody[] = [
     name: 'Oologah Lake',
     states: ['OK'],
     type: 'reservoir',
-    bbox: [36.40, -95.78, 36.60, -95.50],
+    bbox: [36.38, -95.82, 36.65, -95.48],
     centroid: { lat: 36.50, lng: -95.65 },
     surfaceAreaAcres: 29_500,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '07171300' },
     },
     species: ['Striped Bass', 'White Bass', 'Largemouth Bass', 'Crappie', 'Catfish'],
     accessNotes:

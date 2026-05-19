@@ -18,7 +18,7 @@ export const FL_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 467_200,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '02259100' },
     },
     species: ['Largemouth Bass', 'Bluegill', 'Speckled Perch', 'Bowfin', 'Channel Catfish'],
     accessNotes:
@@ -67,7 +67,7 @@ export const FL_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 46_000,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '291830081362200' },
     },
     species: ['Largemouth Bass', 'Striped Bass', 'Bluegill', 'Speckled Perch', 'Bowfin', 'Catfish'],
     accessNotes:
@@ -83,7 +83,7 @@ export const FL_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 30_800,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '02237698' },
     },
     species: ['Largemouth Bass', 'Bluegill', 'Channel Catfish'],
     accessNotes:
@@ -100,7 +100,7 @@ export const FL_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 9_500,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '02243960' },
     },
     species: ['Largemouth Bass', 'Speckled Perch', 'Bream', 'Catfish'],
     accessNotes:
@@ -148,7 +148,7 @@ export const FL_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 37_500,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '02357500' },
     },
     species: ['Largemouth Bass', 'Striped Bass', 'Hybrid Bass', 'Crappie', 'Catfish'],
     accessNotes:
@@ -164,7 +164,7 @@ export const FL_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 2_534,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '02307359' },
     },
     species: ['Largemouth Bass', 'Bluegill', 'Snook', 'Speckled Perch'],
     accessNotes:

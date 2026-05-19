@@ -200,7 +200,7 @@ export const UT_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 109_000,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '415955111212401' },
     },
     species: ['Cutthroat Trout', 'Lake Trout', 'Cisco', 'Whitefish', 'Yellow Perch'],
     accessNotes:
@@ -216,7 +216,7 @@ export const UT_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 2_874,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '10140100' },
     },
     species: ['Tiger Muskie', 'Smallmouth Bass', 'Largemouth Bass', 'Yellow Perch', 'Rainbow Trout'],
     accessNotes:

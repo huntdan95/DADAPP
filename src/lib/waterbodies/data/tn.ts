@@ -589,7 +589,7 @@ export const TN_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 36_240,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '03566535' },
     },
     species: [
       'Largemouth Bass',
@@ -683,7 +683,7 @@ export const TN_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 15_000,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '07027000' },
     },
     species: [
       'Crappie',
@@ -706,7 +706,7 @@ export const TN_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 22_500,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '03426310' },
     },
     species: [
       'Largemouth Bass',
@@ -753,7 +753,7 @@ export const TN_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 11_960,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '03418420' },
     },
     species: [
       'Smallmouth Bass',
@@ -776,7 +776,7 @@ export const TN_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 7_450,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '03435000' },
     },
     species: [
       'Catfish',

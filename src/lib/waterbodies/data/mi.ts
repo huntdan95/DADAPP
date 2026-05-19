@@ -391,7 +391,7 @@ export const MI_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 4_150,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '04122100' },
     },
     species: [
       'Chinook Salmon',
@@ -418,7 +418,7 @@ export const MI_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 2_550,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '04122200' },
     },
     species: [
       'Smallmouth Bass',
@@ -443,7 +443,7 @@ export const MI_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 1_780,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '04108800' },
     },
     species: [
       'Smallmouth Bass',
@@ -543,7 +543,7 @@ export const MI_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 9_600,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '442805084411001' },
     },
     species: [
       'Lake Trout',
@@ -567,7 +567,7 @@ export const MI_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 20_044,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '442400084472801' },
     },
     species: [
       'Walleye',
@@ -590,7 +590,7 @@ export const MI_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 18_770,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '450415085153501' },
     },
     species: [
       'Smallmouth Bass',
@@ -613,7 +613,7 @@ export const MI_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 7_730,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '450415085153501' },
     },
     species: [
       'Smallmouth Bass',
@@ -636,7 +636,7 @@ export const MI_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 1_780,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '450415085153501' },
     },
     species: [
       'Smallmouth Bass',
@@ -683,7 +683,7 @@ export const MI_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 2_860,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '04127200' },
     },
     species: [
       'Smallmouth Bass',
@@ -775,7 +775,7 @@ export const MI_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 17_260,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '450415085153501' },
     },
     species: [
       'Smallmouth Bass',
@@ -999,7 +999,7 @@ export const MI_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 12_960,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '04035995' },
     },
     species: [
       'Walleye',
@@ -1139,7 +1139,7 @@ export const MI_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 1_240,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '04121970' },
     },
     species: [
       'Walleye',
@@ -1248,7 +1248,7 @@ export const MI_WATERBODIES: Waterbody[] = [
     surfaceAreaAcres: 1_900,
     dataProviders: {
       weather: { kind: 'open-meteo' },
-      lakeData: { kind: 'estimated' },
+      lakeData: { kind: 'usgs-lake', siteId: '442746083212201' },
     },
     species: [
       'Walleye',
